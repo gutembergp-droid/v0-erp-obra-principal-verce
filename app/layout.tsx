@@ -9,8 +9,8 @@ const _geist = Geist({ subsets: ["latin"] })
 const _geistMono = Geist_Mono({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "ERP GENESIS - Gestão de Obras de Infraestrutura",
-  description: "Plataforma corporativa integrada para empresas de engenharia pesada e infraestrutura",
+  title: "ERP GENESIS - Plataforma de Gestão de Obras",
+  description: "Sistema ERP para engenharia pesada e infraestrutura - O Corporativo Governa, a Obra Executa",
   generator: "v0.app",
   icons: {
     icon: [
@@ -38,7 +38,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
-      <body className="font-sans antialiased">
+      <body className={`font-sans antialiased`}>
         <AuthProvider>{children}</AuthProvider>
         <Analytics />
       </body>

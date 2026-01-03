@@ -1,72 +1,46 @@
 "use client"
 
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react"
-import { useRouter } from "next/navigation"
-import { type User, getStoredAuth, getStoredUser, setAuth, clearAuth, loginUser } from "@/lib/auth"
+import type React from "react"
+import { createContext, useContext, useState } from "react"
+import { type User, DEFAULT_USER } from "@/lib/auth"
 
 interface AuthContextType {
   user: User | null
-  isLoading: boolean
   isAuthenticated: boolean
-  login: (email: string, password: string) => Promise<void>
+  isLoading: boolean
+  login: (email: string, password: string) => Promise<boolean>
   logout: () => void
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
-export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const router = useRouter()
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const [user, setUser] = useState<User | null>(DEFAULT_USER)
+  const [isAuthenticated, setIsAuthenticated] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
 
-  useEffect(() => {
-    // Verificar autenticação no carregamento
-    const storedUser = getStoredUser()
-    const storedAuth = getStoredAuth()
-
-    if (storedUser && storedAuth) {
-      setUser(storedUser)
-    }
-    setIsLoading(false)
-  }, [])
-
-  const login = async (email: string, password: string) => {
-    setIsLoading(true)
-    try {
-      const { tokens, user: userData } = await loginUser(email, password)
-      setAuth(tokens, userData)
-      setUser(userData)
-      router.push("/")
-    } finally {
-      setIsLoading(false)
-    }
+  const login = async (email: string, password: string): Promise<boolean> => {
+    // Login sempre retorna true em modo desenvolvimento
+    setUser(DEFAULT_USER)
+    setIsAuthenticated(true)
+    return true
   }
 
   const logout = () => {
-    clearAuth()
-    setUser(null)
-    router.push("/login")
+    // Logout desabilitado em modo desenvolvimento
+    // setUser(null)
+    // setIsAuthenticated(false)
   }
 
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        isLoading,
-        isAuthenticated: !!user,
-        login,
-        logout,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={{ user, isAuthenticated, isLoading, login, logout }}>{children}</AuthContext.Provider>
   )
 }
 
 export function useAuth() {
   const context = useContext(AuthContext)
   if (context === undefined) {
-    throw new Error("useAuth deve ser usado dentro de AuthProvider")
+    throw new Error("useAuth must be used within an AuthProvider")
   }
   return context
 }

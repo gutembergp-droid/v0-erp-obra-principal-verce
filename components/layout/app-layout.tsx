@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { Sidebar } from "./sidebar"
-import { ProtectedRoute } from "./protected-route"
+import { Topbar } from "./topbar"
 
 interface AppLayoutProps {
   children: React.ReactNode
@@ -10,11 +10,12 @@ interface AppLayoutProps {
 
 export function AppLayout({ children }: AppLayoutProps) {
   return (
-    <ProtectedRoute>
-      <div className="flex h-screen bg-background">
-        <Sidebar />
-        <main className="flex-1 overflow-auto">{children}</main>
+    <div className="flex h-screen bg-gray-50">
+      <Sidebar />
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <Topbar />
+        <main className="flex-1 overflow-auto p-6">{children}</main>
       </div>
-    </ProtectedRoute>
+    </div>
   )
 }

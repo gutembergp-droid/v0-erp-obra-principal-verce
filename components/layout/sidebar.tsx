@@ -4,212 +4,270 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import {
-  LayoutDashboard,
   Building2,
   Users,
   FileText,
-  Landmark,
-  FolderOpen,
-  Settings,
-  LogOut,
-  ChevronLeft,
-  ChevronRight,
-  ChevronDown,
+  FolderKanban,
+  CheckCircle2,
   Briefcase,
-  Calculator,
+  HardHat,
+  ChevronDown,
+  Ruler,
+  Calendar,
+  Factory,
   Package,
+  DollarSign,
   ClipboardCheck,
-  ShieldCheck,
+  Shield,
   Leaf,
   Wallet,
-  BarChart3,
-  HardHat,
+  Search,
+  FileStack,
+  TrendingUp,
   Wrench,
-  CalendarDays,
-  Factory,
+  UserCog,
+  Scale,
+  FolderOpen,
+  Building,
 } from "lucide-react"
-import { Button } from "@/components/ui/button"
 import { useState } from "react"
-import { useAuth } from "@/contexts/auth-context"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
+import { Input } from "@/components/ui/input"
 
-// Estrutura conforme Memorial Descritivo Oficial
-const corporativoNav = [
-  { name: "Dashboard", href: "/", icon: LayoutDashboard },
-  { name: "Clientes", href: "/corporativo/clientes", icon: Users },
-  { name: "Contratos", href: "/corporativo/contratos", icon: FileText },
-  { name: "Centros de Custo", href: "/corporativo/centros-custo", icon: Landmark },
-  { name: "Planilhas Analíticas", href: "/corporativo/planilhas", icon: FolderOpen },
-  { name: "Obras", href: "/corporativo/obras", icon: Building2 },
-  { name: "Usuários", href: "/corporativo/usuarios", icon: Users },
-  { name: "Configurações", href: "/corporativo/configuracoes", icon: Settings },
+const corporativoNavigation = [
+  {
+    name: "Corporativo",
+    icon: Building2,
+    submenu: [
+      { name: "Clientes", href: "/corporativo/clientes", icon: Users },
+      { name: "Contratos", href: "/corporativo/contratos", icon: FileText },
+      { name: "Portfólio de Obras", href: "/corporativo/portfolio", icon: FolderKanban },
+      { name: "Homologações", href: "/corporativo/homologacoes", icon: CheckCircle2 },
+    ],
+  },
+  {
+    name: "Gestão de Obras",
+    icon: Building,
+    submenu: [{ name: "Todas as Obras", href: "/corporativo/obras", icon: FolderOpen }],
+  },
 ]
 
-const obraNav = [
-  { name: "Comercial", href: "/obra/comercial", icon: Briefcase },
-  { name: "Engenharia", href: "/obra/engenharia", icon: Wrench },
-  { name: "Planejamento", href: "/obra/planejamento", icon: CalendarDays },
-  { name: "Produção", href: "/obra/producao", icon: Factory },
-  { name: "Suprimentos", href: "/obra/suprimentos", icon: Package },
-  { name: "Custos", href: "/obra/custos", icon: Calculator },
-  { name: "Qualidade", href: "/obra/qualidade", icon: ClipboardCheck },
-  { name: "SST", href: "/obra/sst", icon: ShieldCheck },
-  { name: "Meio Ambiente", href: "/obra/meio-ambiente", icon: Leaf },
-  { name: "Financeiro", href: "/obra/financeiro", icon: Wallet },
-  { name: "Gerencial", href: "/obra/gerencial", icon: BarChart3 },
+const obraNavigation = [
+  {
+    name: "Comercial",
+    icon: Briefcase,
+    submenu: [
+      { name: "Estruturação", href: "/obra/comercial/estruturacao", icon: FileStack },
+      { name: "Receita", href: "/obra/comercial/receita", icon: TrendingUp },
+      { name: "Suprimentos", href: "/obra/comercial/suprimentos", icon: Package },
+      { name: "Engenharia de Valor", href: "/obra/comercial/engenharia-valor", icon: DollarSign },
+    ],
+  },
+  {
+    name: "Engenharia",
+    icon: Ruler,
+    submenu: [
+      { name: "Projetos", href: "/obra/engenharia/projetos", icon: FileText },
+      { name: "Planejamento & Controle", href: "/obra/engenharia/planejamento", icon: Calendar },
+    ],
+  },
+  {
+    name: "Produção",
+    icon: Factory,
+    submenu: [
+      { name: "Campo / Execução", href: "/obra/producao/campo", icon: HardHat },
+      { name: "Produtividade", href: "/obra/producao/produtividade", icon: TrendingUp },
+      { name: "Equipamentos", href: "/obra/producao/equipamentos", icon: Wrench },
+    ],
+  },
+  {
+    name: "Administrativo",
+    icon: Wallet,
+    submenu: [
+      { name: "RH / Pessoal", href: "/obra/administrativo/rh", icon: UserCog },
+      { name: "Financeiro Obra", href: "/obra/administrativo/financeiro", icon: DollarSign },
+      { name: "Patrimônio", href: "/obra/administrativo/patrimonio", icon: Package },
+      { name: "Documentos", href: "/obra/administrativo/documentos", icon: FileText },
+    ],
+  },
+  {
+    name: "Garantidores",
+    icon: Shield,
+    badge: "Trava",
+    submenu: [
+      { name: "Qualidade", href: "/obra/garantidores/qualidade", icon: ClipboardCheck },
+      { name: "SSMA", href: "/obra/garantidores/ssma", icon: Shield },
+      { name: "Meio Ambiente", href: "/obra/garantidores/meio-ambiente", icon: Leaf },
+      { name: "Jurídico", href: "/obra/garantidores/juridico", icon: Scale },
+    ],
+  },
+]
+
+// Mock de obras disponíveis
+const obrasDisponiveis = [
+  { id: "br-101-lote-2", nome: "BR-101-LOTE 2", descricao: "Duplicação Rodovia BR-101 - Lote 2", status: "Ativo" },
+  { id: "br-116-lote-1", nome: "BR-116-LOTE 1", descricao: "Manutenção BR-116", status: "Ativo" },
 ]
 
 export function Sidebar() {
   const pathname = usePathname()
-  const { user, logout } = useAuth()
-  const [collapsed, setCollapsed] = useState(false)
-  const [corporativoOpen, setCorporativoOpen] = useState(true)
-  const [obraOpen, setObraOpen] = useState(true)
+  const [obraAtual, setObraAtual] = useState(obrasDisponiveis[0])
+  const [searchQuery, setSearchQuery] = useState("")
+
+  // Estados para controlar menus expandidos
+  const [expandedMenus, setExpandedMenus] = useState<Record<string, boolean>>({
+    Corporativo: true,
+    "Gestão de Obras": true,
+    Comercial: true,
+    Engenharia: true,
+    Produção: false,
+    Administrativo: false,
+    Garantidores: false,
+  })
+
+  const toggleMenu = (name: string) => {
+    setExpandedMenus((prev) => ({ ...prev, [name]: !prev[name] }))
+  }
 
   const isActive = (href: string) => pathname === href
+  const isInSection = (basePath: string) => pathname.startsWith(basePath)
 
   return (
-    <aside
-      className={cn(
-        "flex flex-col h-screen bg-sidebar border-r border-sidebar-border transition-all duration-300",
-        collapsed ? "w-16" : "w-64",
-      )}
-    >
-      {/* Logo */}
-      <div className="flex items-center gap-3 px-4 h-16 border-b border-sidebar-border">
-        <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-primary">
-          <HardHat className="w-6 h-6 text-primary-foreground" />
-        </div>
-        {!collapsed && (
-          <div className="flex flex-col">
-            <span className="font-semibold text-sidebar-foreground">GENESIS</span>
-            <span className="text-xs text-muted-foreground">ERP de Obras</span>
+    <aside className="flex flex-col h-screen w-64 bg-white border-r border-gray-200">
+      {/* Logo e Seletor de Obra */}
+      <div className="border-b border-gray-200">
+        {/* Logo */}
+        <div className="flex items-center gap-2 px-4 py-3">
+          <div className="flex items-center justify-center w-8 h-8 rounded bg-amber-700">
+            <HardHat className="w-5 h-5 text-white" />
           </div>
-        )}
+          <span className="font-bold text-gray-900">GENESIS</span>
+        </div>
+
+        {/* Seletor de Obra */}
+        <div className="px-3 pb-3">
+          <div className="flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-lg border border-gray-200">
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-semibold text-amber-700">{obraAtual.nome}</span>
+                <span className="text-xs px-1.5 py-0.5 bg-green-100 text-green-700 rounded">Ativo</span>
+              </div>
+              <p className="text-xs text-gray-500 truncate">{obraAtual.descricao}</p>
+            </div>
+            <ChevronDown className="w-4 h-4 text-gray-400 flex-shrink-0" />
+          </div>
+        </div>
+
+        {/* Campo de Busca */}
+        <div className="px-3 pb-3">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <Input
+              placeholder="Buscar no menu..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-9 h-8 text-sm bg-gray-50 border-gray-200"
+            />
+          </div>
+        </div>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 px-2 py-4 space-y-2 overflow-y-auto">
+      <nav className="flex-1 overflow-y-auto py-2">
         {/* Módulo Corporativo */}
-        <Collapsible open={corporativoOpen && !collapsed} onOpenChange={setCorporativoOpen}>
-          <CollapsibleTrigger asChild>
-            <button
-              className={cn(
-                "flex items-center gap-3 w-full px-3 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider transition-colors",
-                "text-primary hover:bg-sidebar-accent",
-                collapsed && "justify-center",
-              )}
-            >
-              <Landmark className="w-4 h-4 flex-shrink-0" />
-              {!collapsed && (
-                <>
-                  <span className="flex-1 text-left">Corporativo</span>
-                  <ChevronDown className={cn("w-4 h-4 transition-transform", corporativoOpen && "rotate-180")} />
-                </>
-              )}
-            </button>
-          </CollapsibleTrigger>
-          <CollapsibleContent className="space-y-1 mt-1">
-            {corporativoNav.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className={cn(
-                  "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
-                  isActive(item.href)
-                    ? "bg-sidebar-primary text-sidebar-primary-foreground"
-                    : "text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-                  collapsed && "justify-center",
-                )}
-              >
-                <item.icon className="w-4 h-4 flex-shrink-0" />
-                {!collapsed && <span>{item.name}</span>}
-              </Link>
-            ))}
-          </CollapsibleContent>
-        </Collapsible>
+        <div className="px-3 mb-1">
+          <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Módulo Corporativo</span>
+        </div>
 
-        {/* Módulo Obra */}
-        <Collapsible open={obraOpen && !collapsed} onOpenChange={setObraOpen}>
-          <CollapsibleTrigger asChild>
-            <button
+        {corporativoNavigation.map((section) => (
+          <Collapsible
+            key={section.name}
+            open={expandedMenus[section.name]}
+            onOpenChange={() => toggleMenu(section.name)}
+          >
+            <CollapsibleTrigger className="flex items-center justify-between w-full px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50">
+              <div className="flex items-center gap-2">
+                <section.icon className="w-4 h-4 text-gray-500" />
+                <span>{section.name}</span>
+              </div>
+              <ChevronDown
+                className={cn(
+                  "w-4 h-4 text-gray-400 transition-transform",
+                  expandedMenus[section.name] && "rotate-180",
+                )}
+              />
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+              {section.submenu.map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className={cn(
+                    "flex items-center gap-2 px-3 py-1.5 pl-9 text-sm transition-colors",
+                    isActive(item.href) ? "text-amber-700 bg-amber-50 font-medium" : "text-gray-600 hover:bg-gray-50",
+                  )}
+                >
+                  <item.icon className="w-4 h-4" />
+                  <span>{item.name}</span>
+                </Link>
+              ))}
+            </CollapsibleContent>
+          </Collapsible>
+        ))}
+
+        {/* Departamentos da Obra */}
+        <div className="px-3 mt-4 mb-1">
+          <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Departamentos da Obra</span>
+        </div>
+
+        {obraNavigation.map((dept) => (
+          <Collapsible key={dept.name} open={expandedMenus[dept.name]} onOpenChange={() => toggleMenu(dept.name)}>
+            <CollapsibleTrigger
               className={cn(
-                "flex items-center gap-3 w-full px-3 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider transition-colors",
-                "text-chart-2 hover:bg-sidebar-accent",
-                collapsed && "justify-center",
+                "flex items-center justify-between w-full px-3 py-1.5 text-sm font-medium hover:bg-gray-50",
+                isInSection(`/obra/${dept.name.toLowerCase()}`) ? "text-amber-700" : "text-gray-700",
               )}
             >
-              <Building2 className="w-4 h-4 flex-shrink-0" />
-              {!collapsed && (
-                <>
-                  <span className="flex-1 text-left">Obra</span>
-                  <ChevronDown className={cn("w-4 h-4 transition-transform", obraOpen && "rotate-180")} />
-                </>
-              )}
-            </button>
-          </CollapsibleTrigger>
-          <CollapsibleContent className="space-y-1 mt-1">
-            {obraNav.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className={cn(
-                  "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
-                  isActive(item.href)
-                    ? "bg-sidebar-primary text-sidebar-primary-foreground"
-                    : "text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-                  collapsed && "justify-center",
+              <div className="flex items-center gap-2">
+                <dept.icon className="w-4 h-4 text-gray-500" />
+                <span>{dept.name}</span>
+                {dept.badge && (
+                  <span className="text-xs px-1.5 py-0.5 bg-red-100 text-red-700 rounded">{dept.badge}</span>
                 )}
-              >
-                <item.icon className="w-4 h-4 flex-shrink-0" />
-                {!collapsed && <span>{item.name}</span>}
-              </Link>
-            ))}
-          </CollapsibleContent>
-        </Collapsible>
+              </div>
+              <ChevronDown
+                className={cn("w-4 h-4 text-gray-400 transition-transform", expandedMenus[dept.name] && "rotate-180")}
+              />
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+              {dept.submenu.map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className={cn(
+                    "flex items-center gap-2 px-3 py-1.5 pl-9 text-sm transition-colors",
+                    isActive(item.href) ? "text-amber-700 bg-amber-50 font-medium" : "text-gray-600 hover:bg-gray-50",
+                  )}
+                >
+                  <item.icon className="w-4 h-4" />
+                  <span>{item.name}</span>
+                </Link>
+              ))}
+            </CollapsibleContent>
+          </Collapsible>
+        ))}
       </nav>
 
-      {/* Collapse Button */}
-      <div className="px-2 py-2 border-t border-sidebar-border">
-        <Button
-          variant="ghost"
-          size="sm"
-          className="w-full justify-center text-muted-foreground hover:text-sidebar-foreground"
-          onClick={() => setCollapsed(!collapsed)}
-        >
-          {collapsed ? (
-            <ChevronRight className="w-4 h-4" />
-          ) : (
-            <>
-              <ChevronLeft className="w-4 h-4 mr-2" />
-              <span>Recolher</span>
-            </>
-          )}
-        </Button>
-      </div>
-
-      {/* User */}
-      <div className="px-2 py-3 border-t border-sidebar-border">
-        <div className={cn("flex items-center gap-3 px-3 py-2 rounded-lg", collapsed ? "justify-center" : "")}>
-          <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
-            <span className="text-sm font-medium text-primary">{user?.nome?.charAt(0) || "U"}</span>
+      {/* Usuário */}
+      <div className="p-3 border-t border-gray-200">
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center">
+            <span className="text-sm font-medium text-amber-700">U</span>
           </div>
-          {!collapsed && (
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium truncate text-sidebar-foreground">{user?.nome || "Usuário"}</p>
-              <p className="text-xs text-muted-foreground truncate">{user?.cargo || "Cargo"}</p>
-            </div>
-          )}
-          {!collapsed && (
-            <Button
-              variant="ghost"
-              size="icon"
-              className="flex-shrink-0 text-muted-foreground hover:text-destructive"
-              onClick={logout}
-            >
-              <LogOut className="w-4 h-4" />
-            </Button>
-          )}
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-medium text-gray-900 truncate">Usuário</p>
+            <p className="text-xs text-gray-500 truncate">Administrador</p>
+          </div>
         </div>
       </div>
     </aside>
