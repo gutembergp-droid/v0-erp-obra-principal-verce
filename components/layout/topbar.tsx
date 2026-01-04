@@ -1,17 +1,6 @@
 "use client"
 
-import {
-  Star,
-  FileText,
-  Calendar,
-  MessageSquare,
-  BookOpen,
-  GraduationCap,
-  HelpCircle,
-  Bot,
-  Sun,
-  Bell,
-} from "lucide-react"
+import { Star, FileText, Calendar, MessageSquare, Home, GraduationCap, HelpCircle, Bot, Sun, Bell } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { usePathname } from "next/navigation"
@@ -22,10 +11,10 @@ import { usePathname } from "next/navigation"
 
 const acoesRapidas = [
   { icon: Star, label: "Favoritos", href: "#" },
-  { icon: FileText, label: "Requisição", href: "#" },
-  { icon: Calendar, label: "Calendário", href: "#" },
-  { icon: MessageSquare, label: "Chat & Vídeo", href: "#" },
-  { icon: BookOpen, label: "Documentação", href: "#" },
+  { icon: FileText, label: "Requisicao", href: "#" },
+  { icon: Calendar, label: "Calendario", href: "#" },
+  { icon: MessageSquare, label: "Chat e Video", href: "#" },
+  { icon: Home, label: "Home", href: "/intranet" },
   { icon: GraduationCap, label: "Treinamento", href: "#" },
   { icon: HelpCircle, label: "Suporte", href: "#" },
   { icon: Bot, label: "Assistente IA", href: "#" },
