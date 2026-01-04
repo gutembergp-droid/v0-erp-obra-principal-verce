@@ -2,51 +2,66 @@
 
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react"
 
-type Theme = "aahbrant" | "dark" | "high-contrast"
+type Theme = "light" | "dark"
 
 interface ThemeContextType {
   theme: Theme
   setTheme: (theme: Theme) => void
+  toggleTheme: () => void
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>("aahbrant")
+  const [theme, setTheme] = useState<Theme>("light")
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
     setMounted(true)
     const stored = localStorage.getItem("genesis-theme") as Theme | null
-    if (stored) {
+    if (stored && (stored === "light" || stored === "dark")) {
       setTheme(stored)
+      applyTheme(stored)
     }
   }, [])
 
-  useEffect(() => {
-    if (!mounted) return
+  const applyTheme = (newTheme: Theme) => {
+    const html = document.documentElement
+    const body = document.body
 
-    const root = document.documentElement
+    // Remove classe dark
+    html.classList.remove("dark")
+    body.classList.remove("dark")
 
-    // Remove todas as classes de tema
-    root.classList.remove("dark", "high-contrast")
-
-    // Aplica a classe correta
-    if (theme === "dark") {
-      root.classList.add("dark")
-    } else if (theme === "high-contrast") {
-      root.classList.add("high-contrast")
+    // Aplica classe dark se necessario
+    if (newTheme === "dark") {
+      html.classList.add("dark")
+      body.classList.add("dark")
+      html.style.colorScheme = "dark"
+    } else {
+      html.style.colorScheme = "light"
     }
 
     // Salva no localStorage
-    localStorage.setItem("genesis-theme", theme)
-  }, [theme, mounted])
-
-  if (!mounted) {
-    return null
+    localStorage.setItem("genesis-theme", newTheme)
   }
 
-  return <ThemeContext.Provider value={{ theme, setTheme }}>{children}</ThemeContext.Provider>
+  useEffect(() => {
+    if (mounted) {
+      applyTheme(theme)
+    }
+  }, [theme, mounted])
+
+  const toggleTheme = () => {
+    const newTheme = theme === "light" ? "dark" : "light"
+    setTheme(newTheme)
+  }
+
+  if (!mounted) {
+    return <div className="min-h-screen bg-background" />
+  }
+
+  return <ThemeContext.Provider value={{ theme, setTheme, toggleTheme }}>{children}</ThemeContext.Provider>
 }
 
 export function useTheme() {

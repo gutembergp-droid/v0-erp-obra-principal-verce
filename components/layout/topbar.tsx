@@ -25,7 +25,6 @@ import {
   Clock,
   MinusCircle,
   XCircle,
-  Contrast,
   Check,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -69,32 +68,25 @@ const statusOptions = [
 
 const themeOptions = [
   {
-    value: "aahbrant" as const,
-    label: "Aahbrant",
-    description: "Tema institucional",
+    value: "light" as const,
+    label: "Claro",
+    description: "Tema claro",
     icon: Sun,
-    color: "bg-[#96110D]",
+    color: "bg-amber-400",
   },
   {
     value: "dark" as const,
     label: "Escuro",
-    description: "Tema noturno",
+    description: "Tema escuro",
     icon: Moon,
-    color: "bg-gray-900",
-  },
-  {
-    value: "high-contrast" as const,
-    label: "Alto Contraste",
-    description: "Acessibilidade",
-    icon: Contrast,
-    color: "bg-black",
+    color: "bg-slate-700",
   },
 ]
 
 export function Topbar() {
   const pathname = usePathname()
   const [currentStatus, setCurrentStatus] = useState(statusOptions[0])
-  const { theme, setTheme } = useTheme()
+  const { theme, setTheme, toggleTheme } = useTheme()
 
   const getBreadcrumb = () => {
     const parts = pathname.split("/").filter(Boolean)
@@ -147,6 +139,45 @@ export function Topbar() {
             <Sun className="w-4 h-4 text-primary" />
             <span>28°C</span>
           </div>
+
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                onClick={toggleTheme}
+                className="flex items-center gap-1.5 h-8 px-2 bg-secondary/50 border border-border/50 rounded-full cursor-pointer transition-all duration-200 hover:bg-secondary/80"
+              >
+                <Sun
+                  className={cn(
+                    "w-3.5 h-3.5 transition-colors duration-200",
+                    theme === "light" ? "text-amber-500" : "text-muted-foreground",
+                  )}
+                />
+                <div className="relative w-10 h-5 bg-muted rounded-full">
+                  <div
+                    className={cn(
+                      "absolute top-0.5 w-4 h-4 rounded-full shadow-md transition-all duration-300 ease-in-out",
+                      theme === "dark" ? "bg-slate-700" : "bg-amber-400",
+                    )}
+                    style={{
+                      left: theme === "dark" ? "calc(100% - 18px)" : "2px",
+                    }}
+                  />
+                </div>
+                <Moon
+                  className={cn(
+                    "w-3.5 h-3.5 transition-colors duration-200",
+                    theme === "dark" ? "text-slate-300" : "text-muted-foreground",
+                  )}
+                />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent
+              side="bottom"
+              className="bg-foreground text-background px-3 py-1.5 text-xs font-medium rounded-md shadow-lg"
+            >
+              {theme === "light" ? "Mudar para Escuro" : "Mudar para Claro"}
+            </TooltipContent>
+          </Tooltip>
 
           {/* Notificacoes */}
           <DropdownMenu>

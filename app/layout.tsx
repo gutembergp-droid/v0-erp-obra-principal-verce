@@ -46,8 +46,10 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="pt-BR" suppressHydrationWarning>
-      <body className={`${montserrat.variable} ${bebasNeue.variable} font-sans antialiased`}>
+    <html lang="pt-BR" className="bg-background" suppressHydrationWarning>
+      <body
+        className={`${montserrat.variable} ${bebasNeue.variable} font-sans antialiased bg-background text-foreground min-h-screen`}
+      >
         <ThemeProvider>
           <AuthProvider>{children}</AuthProvider>
         </ThemeProvider>
