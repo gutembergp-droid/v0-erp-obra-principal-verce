@@ -109,7 +109,7 @@ export function Topbar() {
         </div>
 
         <div className="flex-1 flex items-center justify-center">
-          <div className="flex items-center gap-1 bg-secondary/50 border border-border/50 rounded-xl p-2 shadow-sm">
+          <div className="flex items-center gap-1.5 bg-secondary/50 border border-border/50 rounded-xl p-2 shadow-sm">
             {acoesRapidas.map((acao, index) => (
               <Tooltip key={acao.label}>
                 <TooltipTrigger asChild>
@@ -117,13 +117,13 @@ export function Topbar() {
                     variant="ghost"
                     size="sm"
                     className={cn(
-                      "h-9 w-9 p-0 transition-all duration-200 cursor-pointer rounded-lg",
+                      "h-9 w-9 p-0 transition-all duration-200 cursor-pointer rounded-lg border",
                       index === 4
-                        ? "bg-primary text-primary-foreground shadow-md hover:bg-primary/90 hover:scale-105"
-                        : "text-muted-foreground hover:bg-accent/80 hover:text-foreground hover:scale-105",
+                        ? "bg-primary text-primary-foreground border-primary shadow-md hover:bg-primary/90 hover:scale-105"
+                        : "bg-card/80 border-border/40 text-muted-foreground hover:bg-accent hover:border-border hover:text-foreground hover:scale-105 shadow-sm",
                     )}
                   >
-                    <acao.icon className="w-[18px] h-[18px]" />
+                    <acao.icon className="w-[21px] h-[21px]" />
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent
