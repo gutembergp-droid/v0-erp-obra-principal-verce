@@ -23,67 +23,67 @@ export function HubContent() {
 
   return (
     <AppLayout>
-      <div className="h-full flex flex-col">
+      <div className="flex-1 min-h-0 flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between pb-2 flex-shrink-0">
           <div>
-            <h1 className="text-2xl font-semibold text-foreground">GENESIS Hub</h1>
-            <p className="text-muted-foreground text-sm">Central de Comunicacao e Produtividade</p>
+            <h1 className="text-lg font-semibold text-foreground">GENESIS Hub</h1>
+            <p className="text-muted-foreground text-xs">Central de Comunicacao e Produtividade</p>
           </div>
           <div className="flex items-center gap-2">
-            <div className="flex items-center gap-2 px-3 py-1.5 bg-emerald-500/10 text-emerald-600 rounded-full text-sm">
-              <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
+            <div className="flex items-center gap-2 px-3 py-1 bg-emerald-500/10 text-emerald-600 rounded-full text-xs">
+              <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
               12 online
             </div>
           </div>
         </div>
 
         {/* Main Tabs */}
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col">
-          <TabsList className="bg-card border border-border/50 p-1 rounded-xl w-fit">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 min-h-0 flex flex-col">
+          <TabsList className="bg-card border border-border/50 p-1 rounded-xl w-fit flex-shrink-0">
             <TabsTrigger
               value="chat"
-              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-lg px-4 py-2 gap-2"
+              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-lg px-4 py-1.5 gap-2 text-sm"
             >
               <MessageSquare className="w-4 h-4" />
               Chat
             </TabsTrigger>
             <TabsTrigger
               value="calendar"
-              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-lg px-4 py-2 gap-2"
+              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-lg px-4 py-1.5 gap-2 text-sm"
             >
               <Calendar className="w-4 h-4" />
               Calendario
             </TabsTrigger>
             <TabsTrigger
               value="meetings"
-              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-lg px-4 py-2 gap-2"
+              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-lg px-4 py-1.5 gap-2 text-sm"
             >
               <Video className="w-4 h-4" />
               Reunioes
             </TabsTrigger>
             <TabsTrigger
               value="ai"
-              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-lg px-4 py-2 gap-2"
+              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-lg px-4 py-1.5 gap-2 text-sm"
             >
               <Bot className="w-4 h-4" />
               Assistente IA
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="chat" className="flex-1 mt-4">
+          <TabsContent value="chat" className="flex-1 min-h-0 mt-2 data-[state=inactive]:hidden">
             <ChatModule />
           </TabsContent>
 
-          <TabsContent value="calendar" className="flex-1 mt-4">
+          <TabsContent value="calendar" className="flex-1 min-h-0 mt-2 data-[state=inactive]:hidden">
             <CalendarModule />
           </TabsContent>
 
-          <TabsContent value="meetings" className="flex-1 mt-4">
+          <TabsContent value="meetings" className="flex-1 min-h-0 mt-2 data-[state=inactive]:hidden">
             <MeetingModule />
           </TabsContent>
 
-          <TabsContent value="ai" className="flex-1 mt-4">
+          <TabsContent value="ai" className="flex-1 min-h-0 mt-2 data-[state=inactive]:hidden">
             <AIAssistantModule />
           </TabsContent>
         </Tabs>

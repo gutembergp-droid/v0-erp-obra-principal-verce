@@ -119,32 +119,32 @@ export function ChatModule() {
   const [messageInput, setMessageInput] = useState("")
 
   return (
-    <div className="h-[calc(100vh-220px)] flex gap-4">
+    <div className="h-full min-h-0 flex gap-3">
       {/* Sidebar de Conversas */}
-      <Card className="w-80 flex flex-col border-border/50 bg-card/50 backdrop-blur-sm">
+      <Card className="w-72 min-h-0 flex flex-col border-border/50 bg-card/50 backdrop-blur-sm">
         {/* Header */}
-        <div className="p-4 border-b border-border/50">
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="font-semibold text-foreground">Conversas</h2>
-            <Button size="icon" variant="ghost" className="h-8 w-8 rounded-lg hover:bg-primary/10">
-              <Plus className="w-4 h-4" />
+        <div className="p-3 border-b border-border/50 flex-shrink-0">
+          <div className="flex items-center justify-between mb-2">
+            <h2 className="font-semibold text-foreground text-sm">Conversas</h2>
+            <Button size="icon" variant="ghost" className="h-7 w-7 rounded-lg hover:bg-primary/10">
+              <Plus className="w-3.5 h-3.5" />
             </Button>
           </div>
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
             <Input
               placeholder="Buscar conversas..."
-              className="pl-9 bg-background/50 border-border/50 rounded-lg h-9"
+              className="pl-8 bg-background/50 border-border/50 rounded-lg h-8 text-sm"
             />
           </div>
         </div>
 
         {/* Lista de Conversas */}
-        <ScrollArea className="flex-1">
+        <ScrollArea className="flex-1 min-h-0">
           <div className="p-2">
             {/* Fixados */}
             <div className="mb-2">
-              <span className="text-xs text-muted-foreground px-2 font-medium">FIXADOS</span>
+              <span className="text-[10px] text-muted-foreground px-2 font-medium uppercase">Fixados</span>
             </div>
             {conversations
               .filter((c) => c.pinned)
@@ -152,15 +152,15 @@ export function ChatModule() {
                 <button
                   key={conv.id}
                   onClick={() => setSelectedConversation(conv)}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl transition-all ${
+                  className={`w-full flex items-center gap-2.5 p-2.5 rounded-lg transition-all ${
                     selectedConversation.id === conv.id ? "bg-primary/10 border border-primary/20" : "hover:bg-muted/50"
                   }`}
                 >
                   <div className="relative">
-                    <Avatar className="h-10 w-10">
-                      <AvatarFallback className="bg-primary/10 text-primary text-sm">
+                    <Avatar className="h-9 w-9">
+                      <AvatarFallback className="bg-primary/10 text-primary text-xs">
                         {conv.type === "channel" ? (
-                          <Hash className="w-4 h-4" />
+                          <Hash className="w-3.5 h-3.5" />
                         ) : (
                           conv.name
                             .split(" ")
@@ -171,18 +171,18 @@ export function ChatModule() {
                       </AvatarFallback>
                     </Avatar>
                     {conv.online && (
-                      <span className="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 border-2 border-card rounded-full"></span>
+                      <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 border-2 border-card rounded-full"></span>
                     )}
                   </div>
                   <div className="flex-1 min-w-0 text-left">
                     <div className="flex items-center justify-between">
-                      <span className="font-medium text-sm text-foreground truncate">{conv.name}</span>
-                      <span className="text-xs text-muted-foreground">{conv.time}</span>
+                      <span className="font-medium text-xs text-foreground truncate">{conv.name}</span>
+                      <span className="text-[10px] text-muted-foreground">{conv.time}</span>
                     </div>
-                    <p className="text-xs text-muted-foreground truncate">{conv.lastMessage}</p>
+                    <p className="text-[10px] text-muted-foreground truncate">{conv.lastMessage}</p>
                   </div>
                   {conv.unread > 0 && (
-                    <span className="bg-primary text-primary-foreground text-xs font-medium px-2 py-0.5 rounded-full">
+                    <span className="bg-primary text-primary-foreground text-[10px] font-medium px-1.5 py-0.5 rounded-full">
                       {conv.unread}
                     </span>
                   )}
@@ -190,8 +190,8 @@ export function ChatModule() {
               ))}
 
             {/* Recentes */}
-            <div className="mb-2 mt-4">
-              <span className="text-xs text-muted-foreground px-2 font-medium">RECENTES</span>
+            <div className="mb-2 mt-3">
+              <span className="text-[10px] text-muted-foreground px-2 font-medium uppercase">Recentes</span>
             </div>
             {conversations
               .filter((c) => !c.pinned)
@@ -199,15 +199,15 @@ export function ChatModule() {
                 <button
                   key={conv.id}
                   onClick={() => setSelectedConversation(conv)}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl transition-all ${
+                  className={`w-full flex items-center gap-2.5 p-2.5 rounded-lg transition-all ${
                     selectedConversation.id === conv.id ? "bg-primary/10 border border-primary/20" : "hover:bg-muted/50"
                   }`}
                 >
                   <div className="relative">
-                    <Avatar className="h-10 w-10">
-                      <AvatarFallback className="bg-muted text-muted-foreground text-sm">
+                    <Avatar className="h-9 w-9">
+                      <AvatarFallback className="bg-muted text-muted-foreground text-xs">
                         {conv.type === "channel" ? (
-                          <Hash className="w-4 h-4" />
+                          <Hash className="w-3.5 h-3.5" />
                         ) : (
                           conv.name
                             .split(" ")
@@ -218,18 +218,18 @@ export function ChatModule() {
                       </AvatarFallback>
                     </Avatar>
                     {conv.online && (
-                      <span className="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 border-2 border-card rounded-full"></span>
+                      <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 border-2 border-card rounded-full"></span>
                     )}
                   </div>
                   <div className="flex-1 min-w-0 text-left">
                     <div className="flex items-center justify-between">
-                      <span className="font-medium text-sm text-foreground truncate">{conv.name}</span>
-                      <span className="text-xs text-muted-foreground">{conv.time}</span>
+                      <span className="font-medium text-xs text-foreground truncate">{conv.name}</span>
+                      <span className="text-[10px] text-muted-foreground">{conv.time}</span>
                     </div>
-                    <p className="text-xs text-muted-foreground truncate">{conv.lastMessage}</p>
+                    <p className="text-[10px] text-muted-foreground truncate">{conv.lastMessage}</p>
                   </div>
                   {conv.unread > 0 && (
-                    <span className="bg-primary text-primary-foreground text-xs font-medium px-2 py-0.5 rounded-full">
+                    <span className="bg-primary text-primary-foreground text-[10px] font-medium px-1.5 py-0.5 rounded-full">
                       {conv.unread}
                     </span>
                   )}
@@ -240,14 +240,14 @@ export function ChatModule() {
       </Card>
 
       {/* Area Principal do Chat */}
-      <Card className="flex-1 flex flex-col border-border/50 bg-card/50 backdrop-blur-sm">
+      <Card className="flex-1 min-h-0 flex flex-col border-border/50 bg-card/50 backdrop-blur-sm">
         {/* Header do Chat */}
-        <div className="p-4 border-b border-border/50 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Avatar className="h-10 w-10">
-              <AvatarFallback className="bg-primary/10 text-primary">
+        <div className="p-3 border-b border-border/50 flex items-center justify-between flex-shrink-0">
+          <div className="flex items-center gap-2.5">
+            <Avatar className="h-9 w-9">
+              <AvatarFallback className="bg-primary/10 text-primary text-xs">
                 {selectedConversation.type === "channel" ? (
-                  <Hash className="w-4 h-4" />
+                  <Hash className="w-3.5 h-3.5" />
                 ) : (
                   selectedConversation.name
                     .split(" ")
@@ -258,8 +258,8 @@ export function ChatModule() {
               </AvatarFallback>
             </Avatar>
             <div>
-              <h3 className="font-semibold text-foreground">{selectedConversation.name}</h3>
-              <p className="text-xs text-muted-foreground">
+              <h3 className="font-semibold text-foreground text-sm">{selectedConversation.name}</h3>
+              <p className="text-[10px] text-muted-foreground">
                 {selectedConversation.type === "group"
                   ? "5 membros"
                   : selectedConversation.type === "channel"
@@ -269,60 +269,62 @@ export function ChatModule() {
             </div>
           </div>
           <div className="flex items-center gap-1">
-            <Button size="icon" variant="ghost" className="h-9 w-9 rounded-lg hover:bg-primary/10">
-              <Phone className="w-4 h-4" />
+            <Button size="icon" variant="ghost" className="h-8 w-8 rounded-lg hover:bg-primary/10">
+              <Phone className="w-3.5 h-3.5" />
             </Button>
-            <Button size="icon" variant="ghost" className="h-9 w-9 rounded-lg hover:bg-primary/10">
-              <Video className="w-4 h-4" />
+            <Button size="icon" variant="ghost" className="h-8 w-8 rounded-lg hover:bg-primary/10">
+              <Video className="w-3.5 h-3.5" />
             </Button>
-            <Button size="icon" variant="ghost" className="h-9 w-9 rounded-lg hover:bg-primary/10">
-              <Users className="w-4 h-4" />
+            <Button size="icon" variant="ghost" className="h-8 w-8 rounded-lg hover:bg-primary/10">
+              <Users className="w-3.5 h-3.5" />
             </Button>
-            <Button size="icon" variant="ghost" className="h-9 w-9 rounded-lg hover:bg-primary/10">
-              <Pin className="w-4 h-4" />
+            <Button size="icon" variant="ghost" className="h-8 w-8 rounded-lg hover:bg-primary/10">
+              <Pin className="w-3.5 h-3.5" />
             </Button>
-            <Button size="icon" variant="ghost" className="h-9 w-9 rounded-lg hover:bg-primary/10">
-              <MoreVertical className="w-4 h-4" />
+            <Button size="icon" variant="ghost" className="h-8 w-8 rounded-lg hover:bg-primary/10">
+              <MoreVertical className="w-3.5 h-3.5" />
             </Button>
           </div>
         </div>
 
-        {/* Mensagens */}
-        <ScrollArea className="flex-1 p-4">
-          <div className="space-y-4">
+        {/* Mensagens - area com scroll interno */}
+        <ScrollArea className="flex-1 min-h-0 p-3">
+          <div className="space-y-3">
             {messages.map((msg) => (
-              <div key={msg.id} className={`flex gap-3 ${msg.isMe ? "flex-row-reverse" : ""}`}>
-                <Avatar className="h-8 w-8 mt-1">
-                  <AvatarFallback className={`text-xs ${msg.isMe ? "bg-primary text-primary-foreground" : "bg-muted"}`}>
+              <div key={msg.id} className={`flex gap-2.5 ${msg.isMe ? "flex-row-reverse" : ""}`}>
+                <Avatar className="h-7 w-7 mt-0.5 flex-shrink-0">
+                  <AvatarFallback
+                    className={`text-[10px] ${msg.isMe ? "bg-primary text-primary-foreground" : "bg-muted"}`}
+                  >
                     {msg.avatar}
                   </AvatarFallback>
                 </Avatar>
                 <div className={`max-w-[70%] ${msg.isMe ? "items-end" : "items-start"}`}>
-                  <div className="flex items-center gap-2 mb-1">
-                    {!msg.isMe && <span className="text-sm font-medium text-foreground">{msg.sender}</span>}
-                    <span className="text-xs text-muted-foreground">{msg.time}</span>
+                  <div className="flex items-center gap-2 mb-0.5">
+                    {!msg.isMe && <span className="text-xs font-medium text-foreground">{msg.sender}</span>}
+                    <span className="text-[10px] text-muted-foreground">{msg.time}</span>
                   </div>
                   {msg.content && (
                     <div
-                      className={`px-4 py-2.5 rounded-2xl ${
+                      className={`px-3 py-2 rounded-xl ${
                         msg.isMe
-                          ? "bg-primary text-primary-foreground rounded-br-md"
-                          : "bg-muted/50 text-foreground rounded-bl-md"
+                          ? "bg-primary text-primary-foreground rounded-br-sm"
+                          : "bg-muted/50 text-foreground rounded-bl-sm"
                       }`}
                     >
-                      <p className="text-sm">{msg.content}</p>
+                      <p className="text-xs">{msg.content}</p>
                     </div>
                   )}
                   {msg.attachment && (
-                    <div className="mt-2 flex items-center gap-3 px-4 py-3 bg-muted/30 border border-border/50 rounded-xl">
-                      <div className="p-2 bg-primary/10 rounded-lg">
-                        <FileText className="w-5 h-5 text-primary" />
+                    <div className="mt-1.5 flex items-center gap-2.5 px-3 py-2 bg-muted/30 border border-border/50 rounded-lg">
+                      <div className="p-1.5 bg-primary/10 rounded-md">
+                        <FileText className="w-4 h-4 text-primary" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-foreground truncate">{msg.attachment.name}</p>
-                        <p className="text-xs text-muted-foreground">{msg.attachment.size}</p>
+                        <p className="text-xs font-medium text-foreground truncate">{msg.attachment.name}</p>
+                        <p className="text-[10px] text-muted-foreground">{msg.attachment.size}</p>
                       </div>
-                      <Button size="sm" variant="ghost" className="h-8 px-3 text-primary hover:bg-primary/10">
+                      <Button size="sm" variant="ghost" className="h-7 px-2 text-xs text-primary hover:bg-primary/10">
                         Baixar
                       </Button>
                     </div>
@@ -334,26 +336,26 @@ export function ChatModule() {
         </ScrollArea>
 
         {/* Input de Mensagem */}
-        <div className="p-4 border-t border-border/50">
+        <div className="p-3 border-t border-border/50 flex-shrink-0">
           <div className="flex items-center gap-2">
-            <div className="flex-1 flex items-center gap-2 bg-background/50 border border-border/50 rounded-xl px-4 py-2">
-              <Button size="icon" variant="ghost" className="h-8 w-8 rounded-lg hover:bg-muted">
-                <Paperclip className="w-4 h-4 text-muted-foreground" />
+            <div className="flex-1 flex items-center gap-1.5 bg-background/50 border border-border/50 rounded-xl px-3 py-1.5">
+              <Button size="icon" variant="ghost" className="h-7 w-7 rounded-lg hover:bg-muted">
+                <Paperclip className="w-3.5 h-3.5 text-muted-foreground" />
               </Button>
               <Input
                 value={messageInput}
                 onChange={(e) => setMessageInput(e.target.value)}
                 placeholder="Digite sua mensagem..."
-                className="flex-1 border-0 bg-transparent focus-visible:ring-0 px-0 h-8"
+                className="flex-1 border-0 bg-transparent focus-visible:ring-0 px-0 h-7 text-sm"
               />
-              <Button size="icon" variant="ghost" className="h-8 w-8 rounded-lg hover:bg-muted">
-                <Smile className="w-4 h-4 text-muted-foreground" />
+              <Button size="icon" variant="ghost" className="h-7 w-7 rounded-lg hover:bg-muted">
+                <Smile className="w-3.5 h-3.5 text-muted-foreground" />
               </Button>
-              <Button size="icon" variant="ghost" className="h-8 w-8 rounded-lg hover:bg-muted">
-                <Mic className="w-4 h-4 text-muted-foreground" />
+              <Button size="icon" variant="ghost" className="h-7 w-7 rounded-lg hover:bg-muted">
+                <Mic className="w-3.5 h-3.5 text-muted-foreground" />
               </Button>
             </div>
-            <Button size="icon" className="h-10 w-10 rounded-xl bg-primary hover:bg-primary/90">
+            <Button size="icon" className="h-9 w-9 rounded-xl bg-primary hover:bg-primary/90">
               <Send className="w-4 h-4" />
             </Button>
           </div>
