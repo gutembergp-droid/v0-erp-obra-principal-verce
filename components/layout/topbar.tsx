@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Link from "next/link"
 import {
   Star,
   ShoppingCart,
@@ -52,15 +53,15 @@ import { useTheme } from "@/contexts/theme-context"
 import { Input } from "@/components/ui/input"
 
 const acoesRapidas = [
-  { icon: Star, label: "Favoritos", href: "#" },
-  { icon: ShoppingCart, label: "Suprimento", href: "#" },
-  { icon: Calendar, label: "Calendario", href: "#" },
-  { icon: MessageSquare, label: "Chat", href: "#" },
+  { icon: Star, label: "Favoritos", href: "/favoritos" },
+  { icon: ShoppingCart, label: "Suprimento", href: "/obra/comercial/suprimentos" },
+  { icon: Calendar, label: "Calendario", href: "/hub?tab=calendar" },
+  { icon: MessageSquare, label: "Chat", href: "/hub?tab=chat" },
   { icon: Home, label: "Home", href: "/intranet", isMain: true },
-  { icon: FileText, label: "Docs", href: "#" },
-  { icon: GraduationCap, label: "Treinamento", href: "#" },
-  { icon: Bot, label: "IA", href: "#" },
-  { icon: Headphones, label: "Suporte", href: "#" },
+  { icon: FileText, label: "Docs", href: "/documentos" },
+  { icon: GraduationCap, label: "Treinamento", href: "/treinamento" },
+  { icon: Bot, label: "IA", href: "/hub?tab=ai" },
+  { icon: Headphones, label: "Suporte", href: "/suporte" },
 ]
 
 const statusOptions = [
@@ -116,7 +117,8 @@ export function Topbar() {
               return (
                 <Tooltip key={acao.label}>
                   <TooltipTrigger asChild>
-                    <button
+                    <Link
+                      href={acao.href}
                       className={cn(
                         "relative flex items-center justify-center w-9 h-9 rounded-xl transition-all duration-200 cursor-pointer",
                         isHome
@@ -128,7 +130,7 @@ export function Topbar() {
                         className={cn("w-[18px] h-[18px]", isHome && "w-[17px] h-[17px]")}
                         strokeWidth={isHome ? 2.5 : 1.8}
                       />
-                    </button>
+                    </Link>
                   </TooltipTrigger>
                   <TooltipContent
                     side="bottom"
