@@ -56,7 +56,7 @@ const acoesRapidas = [
   { icon: ShoppingCart, label: "Suprimento", href: "#" },
   { icon: Calendar, label: "Calendario", href: "#" },
   { icon: MessageSquare, label: "Chat", href: "#" },
-  { icon: Home, label: "Home", href: "/intranet" },
+  { icon: Home, label: "Home", href: "/intranet", isMain: true },
   { icon: FileText, label: "Docs", href: "#" },
   { icon: GraduationCap, label: "Treinamento", href: "#" },
   { icon: Bot, label: "IA", href: "#" },
@@ -108,84 +108,90 @@ export function Topbar() {
           <span className="text-foreground font-medium">Dashboard da Obra</span>
         </div>
 
+        {/* Parte 2: Acoes Rapidas */}
         <div className="flex-1 flex items-center justify-center">
-          <div className="flex items-center gap-1.5 bg-secondary/50 border border-border/50 rounded-xl p-2 shadow-sm">
-            {acoesRapidas.map((acao, index) => (
-              <Tooltip key={acao.label}>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className={cn(
-                      "h-9 w-9 p-0 transition-all duration-200 cursor-pointer rounded-lg border",
-                      index === 4
-                        ? "bg-primary text-primary-foreground border-primary shadow-md hover:bg-primary/90 hover:scale-105"
-                        : "bg-card/80 border-border/40 text-muted-foreground hover:bg-accent hover:border-border hover:text-foreground hover:scale-105 shadow-sm",
-                    )}
+          <div className="inline-flex items-center bg-card/95 backdrop-blur-md border border-border/50 rounded-2xl p-1.5 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.1),0_4px_16px_-4px_rgba(0,0,0,0.05)]">
+            {acoesRapidas.map((acao, index) => {
+              const isHome = index === 4
+              return (
+                <Tooltip key={acao.label}>
+                  <TooltipTrigger asChild>
+                    <button
+                      className={cn(
+                        "relative flex items-center justify-center w-9 h-9 rounded-xl transition-all duration-200 cursor-pointer",
+                        isHome
+                          ? "bg-primary text-primary-foreground mx-0.5 shadow-[0_2px_8px_-2px_var(--primary)] hover:shadow-[0_4px_12px_-2px_var(--primary)] hover:brightness-110"
+                          : "text-muted-foreground hover:text-foreground hover:bg-accent/60",
+                      )}
+                    >
+                      <acao.icon
+                        className={cn("w-[18px] h-[18px]", isHome && "w-[17px] h-[17px]")}
+                        strokeWidth={isHome ? 2.5 : 1.8}
+                      />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent
+                    side="bottom"
+                    sideOffset={8}
+                    className="bg-foreground text-background px-2.5 py-1 text-xs font-medium rounded-lg shadow-lg border-0"
                   >
-                    <acao.icon className="w-[21px] h-[21px]" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent
-                  side="bottom"
-                  className="bg-popover text-popover-foreground border border-border px-3 py-1.5 text-xs font-medium rounded-md shadow-lg"
-                >
-                  {acao.label}
-                </TooltipContent>
-              </Tooltip>
-            ))}
+                    {acao.label}
+                  </TooltipContent>
+                </Tooltip>
+              )
+            })}
           </div>
         </div>
 
         {/* Parte 3: Status e Avatar */}
         <div className="flex items-center gap-4">
+          {/* Campo de busca */}
           <div className="relative hidden lg:block">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/70" />
             <Input
               placeholder="Buscar..."
-              className="pl-9 h-9 w-52 bg-secondary border-border text-foreground placeholder:text-muted-foreground rounded-xl"
+              className="pl-9 h-9 w-48 bg-accent/30 border-border/50 text-foreground placeholder:text-muted-foreground/60 rounded-xl focus:bg-accent/50 transition-colors"
             />
           </div>
 
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Cloud className="w-5 h-5" />
-            <span className="font-medium">28°C</span>
+          <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+            <Cloud className="w-4 h-4" />
+            <span className="font-medium text-xs">28°C</span>
           </div>
 
+          {/* Toggle de tema */}
           <Tooltip>
             <TooltipTrigger asChild>
               <button
                 onClick={toggleTheme}
-                className="flex items-center gap-1.5 h-9 px-2 bg-secondary border border-border rounded-full cursor-pointer transition-all duration-200 hover:bg-accent"
+                className="flex items-center gap-0.5 h-8 px-1 bg-accent/40 border border-border/40 rounded-full cursor-pointer transition-all duration-200 hover:bg-accent/60"
                 aria-label="Alternar tema"
               >
-                {/* Sol - lado esquerdo */}
                 <div
                   className={cn(
-                    "flex items-center justify-center w-7 h-7 rounded-full transition-all duration-300",
-                    theme === "light" ? "bg-amber-400 text-white shadow-md" : "text-muted-foreground",
+                    "flex items-center justify-center w-6 h-6 rounded-full transition-all duration-300",
+                    theme === "light" ? "bg-amber-400 text-white shadow-sm" : "text-muted-foreground/60",
                   )}
                 >
-                  <Sun className="w-4 h-4" />
+                  <Sun className="w-3.5 h-3.5" />
                 </div>
 
-                {/* Monitor no centro */}
-                <Monitor className="w-5 h-5 text-muted-foreground mx-0.5" />
+                <Monitor className="w-4 h-4 text-muted-foreground/50 mx-0.5" />
 
-                {/* Lua - lado direito */}
                 <div
                   className={cn(
-                    "flex items-center justify-center w-7 h-7 rounded-full transition-all duration-300",
-                    theme === "dark" ? "bg-slate-600 text-white shadow-md" : "text-muted-foreground",
+                    "flex items-center justify-center w-6 h-6 rounded-full transition-all duration-300",
+                    theme === "dark" ? "bg-slate-600 text-white shadow-sm" : "text-muted-foreground/60",
                   )}
                 >
-                  <Moon className="w-4 h-4" />
+                  <Moon className="w-3.5 h-3.5" />
                 </div>
               </button>
             </TooltipTrigger>
             <TooltipContent
               side="bottom"
-              className="bg-popover text-popover-foreground border border-border px-3 py-1.5 text-xs font-medium rounded-md shadow-lg"
+              sideOffset={8}
+              className="bg-foreground text-background px-2.5 py-1 text-xs font-medium rounded-lg shadow-lg border-0"
             >
               {theme === "light" ? "Mudar para Escuro" : "Mudar para Claro"}
             </TooltipContent>
@@ -199,10 +205,10 @@ export function Topbar() {
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="h-9 w-9 p-0 relative transition-all duration-200 hover:bg-accent hover:text-accent-foreground hover:scale-110 cursor-pointer"
+                    className="h-8 w-8 p-0 relative transition-all duration-200 hover:bg-accent/60 cursor-pointer rounded-xl"
                   >
-                    <Bell className="w-5 h-5" />
-                    <span className="absolute -top-1 -right-1 w-5 h-5 bg-destructive text-destructive-foreground text-xs rounded-full flex items-center justify-center animate-pulse">
+                    <Bell className="w-[18px] h-[18px] text-muted-foreground" />
+                    <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-primary text-primary-foreground text-[10px] font-semibold rounded-full flex items-center justify-center">
                       3
                     </span>
                   </Button>
@@ -210,7 +216,8 @@ export function Topbar() {
               </TooltipTrigger>
               <TooltipContent
                 side="bottom"
-                className="bg-popover text-popover-foreground border border-border px-3 py-1.5 text-xs font-medium rounded-md shadow-lg"
+                sideOffset={8}
+                className="bg-foreground text-background px-2.5 py-1 text-xs font-medium rounded-lg shadow-lg border-0"
               >
                 Notificacoes
               </TooltipContent>
@@ -237,31 +244,32 @@ export function Topbar() {
             </DropdownMenuContent>
           </DropdownMenu>
 
+          {/* Avatar */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
                 variant="ghost"
-                className="flex items-center gap-2.5 h-auto py-2 px-2.5 hover:bg-accent rounded-lg transition-all duration-200 cursor-pointer"
+                className="flex items-center gap-2 h-auto py-1.5 px-2 hover:bg-accent/60 rounded-xl transition-all duration-200 cursor-pointer"
               >
                 <div className="relative">
-                  <Avatar className="w-9 h-9 border-2 border-primary">
+                  <Avatar className="w-8 h-8 border border-border/50">
                     <AvatarImage src="/placeholder-user.png" />
-                    <AvatarFallback className="bg-primary text-primary-foreground text-sm font-medium">
+                    <AvatarFallback className="bg-primary text-primary-foreground text-xs font-semibold">
                       AD
                     </AvatarFallback>
                   </Avatar>
                   <span
                     className={cn(
-                      "absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 border-card",
+                      "absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-card",
                       currentStatus.bg,
                     )}
                   />
                 </div>
                 <div className="flex flex-col items-start">
-                  <span className="text-sm font-medium text-foreground">Administrador</span>
-                  <span className="text-xs text-muted-foreground">{currentStatus.label}</span>
+                  <span className="text-xs font-semibold text-foreground leading-tight">Administrador</span>
+                  <span className="text-[10px] text-muted-foreground leading-tight">{currentStatus.label}</span>
                 </div>
-                <ChevronDown className="w-4 h-4 text-muted-foreground" />
+                <ChevronDown className="w-3.5 h-3.5 text-muted-foreground/70" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-72">
