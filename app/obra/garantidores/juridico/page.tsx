@@ -8,18 +8,8 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import {
-  Plus,
-  Search,
-  Scale,
-  FileText,
-  CheckCircle2,
-  Clock,
-  AlertTriangle,
-  Eye,
-  Calendar,
-  DollarSign,
-} from "lucide-react"
+import { InfoTooltip } from "@/components/ui/info-tooltip"
+import { Plus, Search, FileText, CheckCircle2, Clock, AlertTriangle, Eye, Calendar, DollarSign } from "lucide-react"
 
 // Dados mockados de Contratos
 const contratosMock = [
@@ -101,28 +91,18 @@ export default function JuridicoPage() {
 
   return (
     <AppLayout>
-      <Header title="Juridico" description="Gestao Contratual, Aditivos e Pleitos" />
+      <Header
+        title="Juridico"
+        description="Gestao Contratual, Aditivos e Pleitos"
+        rightContent={
+          <InfoTooltip
+            title="Setor Juridico - GARANTIDOR"
+            description="Gerencia a gestao contratual (contratos principais e subcontratos), aditivos e pleitos (reequilibrios, prorrogacoes). Garante conformidade juridica de todas as operacoes."
+          />
+        }
+      />
 
       <div className="p-6 space-y-6">
-        {/* Conceito */}
-        <Card className="border-slate-500/20 bg-slate-500/5">
-          <CardContent className="pt-6">
-            <div className="flex items-start gap-4">
-              <div className="p-3 rounded-lg bg-slate-500/10">
-                <Scale className="w-6 h-6 text-slate-500" />
-              </div>
-              <div>
-                <h3 className="font-semibold">Setor Juridico - GARANTIDOR</h3>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Gerencia a <strong>gestao contratual</strong> (contratos principais e subcontratos),
-                  <strong> aditivos</strong> e<strong> pleitos</strong> (reequilibrios, prorrogacoes). Garante
-                  conformidade juridica de todas as operacoes.
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
         {/* Metricas */}
         <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
           <Card>

@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { AppLayout } from "@/components/layout/app-layout"
 import { Header } from "@/components/layout/header"
+import { InfoTooltip } from "@/components/ui/info-tooltip"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -123,27 +124,15 @@ export default function RDOPage() {
       <Header
         title="RDO - Relatorio Diario de Obra"
         description="Registro diario de clima, efetivo, equipamentos e atividades executadas"
+        rightContent={
+          <InfoTooltip
+            title="Setor de Campo / Execucao"
+            description="O RDO (Relatorio Diario de Obra) registra todas as atividades executadas, condicoes climaticas, efetivo mobilizado, equipamentos em operacao e ocorrencias do dia."
+          />
+        }
       />
 
       <div className="p-6 space-y-6">
-        {/* Conceito */}
-        <Card className="border-amber-500/20 bg-amber-500/5">
-          <CardContent className="pt-6">
-            <div className="flex items-start gap-4">
-              <div className="p-3 rounded-lg bg-amber-500/10">
-                <FileText className="w-6 h-6 text-amber-500" />
-              </div>
-              <div>
-                <h3 className="font-semibold">Setor de Campo / Execucao</h3>
-                <p className="text-sm text-muted-foreground mt-1">
-                  O <strong>RDO (Relatorio Diario de Obra)</strong> registra todas as atividades executadas, condicoes
-                  climaticas, efetivo mobilizado, equipamentos em operacao e ocorrencias do dia.
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
         {/* Metricas */}
         <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
           <Card>

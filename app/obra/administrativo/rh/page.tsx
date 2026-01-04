@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { AppLayout } from "@/components/layout/app-layout"
 import { Header } from "@/components/layout/header"
+import { InfoTooltip } from "@/components/ui/info-tooltip"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -126,27 +127,18 @@ export default function RHPage() {
 
   return (
     <AppLayout>
-      <Header title="RH - Recursos Humanos" description="Gestao de Pessoal, Controle de Ponto e Afastamentos" />
+      <Header
+        title="RH - Recursos Humanos"
+        description="Gestao de Pessoal, Controle de Ponto e Afastamentos"
+        rightContent={
+          <InfoTooltip
+            title="Setor de RH"
+            description="Gerencia o cadastro de colaboradores, controle de ponto (entradas, saidas, horas extras) e afastamentos (ferias, licencas, atestados)."
+          />
+        }
+      />
 
       <div className="p-6 space-y-6">
-        {/* Conceito */}
-        <Card className="border-indigo-500/20 bg-indigo-500/5">
-          <CardContent className="pt-6">
-            <div className="flex items-start gap-4">
-              <div className="p-3 rounded-lg bg-indigo-500/10">
-                <Users className="w-6 h-6 text-indigo-500" />
-              </div>
-              <div>
-                <h3 className="font-semibold">Setor de RH</h3>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Gerencia o <strong>cadastro de colaboradores</strong>,<strong> controle de ponto</strong> (entradas,
-                  saidas, horas extras) e<strong> afastamentos</strong> (ferias, licencas, atestados).
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
         {/* Metricas */}
         <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
           <Card>

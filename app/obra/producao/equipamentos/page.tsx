@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { AppLayout } from "@/components/layout/app-layout"
 import { Header } from "@/components/layout/header"
+import { InfoTooltip } from "@/components/ui/info-tooltip"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -136,28 +137,18 @@ export default function EquipamentosPage() {
 
   return (
     <AppLayout>
-      <Header title="Equipamentos" description="Gestao de Ativos, Manutencao e Abastecimento" />
+      <Header
+        title="Equipamentos"
+        description="Gestao de Ativos, Manutencao e Abastecimento"
+        rightContent={
+          <InfoTooltip
+            title="Setor de Equipamentos"
+            description="Gerencia a frota de equipamentos, controle de manutencoes preventivas e corretivas, e abastecimento com rastreamento de consumo."
+          />
+        }
+      />
 
       <div className="p-6 space-y-6">
-        {/* Conceito */}
-        <Card className="border-slate-500/20 bg-slate-500/5">
-          <CardContent className="pt-6">
-            <div className="flex items-start gap-4">
-              <div className="p-3 rounded-lg bg-slate-500/10">
-                <Truck className="w-6 h-6 text-slate-500" />
-              </div>
-              <div>
-                <h3 className="font-semibold">Setor de Equipamentos</h3>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Gerencia a <strong>frota de equipamentos</strong>, controle de
-                  <strong> manutencoes preventivas e corretivas</strong>, e<strong> abastecimento</strong> com
-                  rastreamento de consumo.
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
         {/* Metricas */}
         <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
           <Card>

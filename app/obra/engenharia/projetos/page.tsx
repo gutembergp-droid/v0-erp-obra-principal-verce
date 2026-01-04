@@ -2,13 +2,13 @@
 
 import { useState } from "react"
 import { AppLayout } from "@/components/layout/app-layout"
-import { Header } from "@/components/layout/header"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { InfoTooltip } from "@/components/ui/info-tooltip"
 import {
   Search,
   Plus,
@@ -122,28 +122,21 @@ export default function ProjetosPage() {
 
   return (
     <AppLayout>
-      <Header title="Projetos" description="GED, Controle de Revisoes, Fluxo de Aprovacao e Compatibilizacao" />
+      <div className="px-6 pt-6 pb-2">
+        <div className="flex items-center gap-3">
+          <h1 className="text-2xl font-bold">Projetos</h1>
+          <InfoTooltip
+            title="Setor de Projetos"
+            description="Gerencia a Gestao Eletronica de Documentos (GED), Controle de Revisoes com versionamento, Fluxo de Aprovacao tecnica e Compatibilizacao entre disciplinas."
+            icon={<FolderOpen className="w-4 h-4" />}
+          />
+        </div>
+        <p className="text-sm text-muted-foreground mt-1">
+          GED, Controle de Revisoes, Fluxo de Aprovacao e Compatibilizacao
+        </p>
+      </div>
 
       <div className="p-6 space-y-6">
-        {/* Conceito */}
-        <Card className="border-blue-500/20 bg-blue-500/5">
-          <CardContent className="pt-6">
-            <div className="flex items-start gap-4">
-              <div className="p-3 rounded-lg bg-blue-500/10">
-                <FolderOpen className="w-6 h-6 text-blue-500" />
-              </div>
-              <div>
-                <h3 className="font-semibold">Setor de Projetos</h3>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Gerencia a <strong>Gestao Eletronica de Documentos (GED)</strong>,
-                  <strong> Controle de Revisoes</strong> com versionamento,
-                  <strong> Fluxo de Aprovacao</strong> tecnica e<strong> Compatibilizacao</strong> entre disciplinas.
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
         {/* Metricas */}
         <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
           <Card>

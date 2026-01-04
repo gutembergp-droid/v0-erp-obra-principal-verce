@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Progress } from "@/components/ui/progress"
+import { InfoTooltip } from "@/components/ui/info-tooltip"
 import {
   Plus,
   CheckCircle2,
@@ -161,28 +162,15 @@ export default function PlanejamentoPage() {
       <Header
         title="Planejamento e Controle"
         description="Cronograma, Pacotes de Trabalho, Caminho Critico e Avanco Fisico"
+        rightContent={
+          <InfoTooltip
+            title="Setor de Planejamento e Controle"
+            description="Gerencia o Cronograma geral da obra, Pacotes de Trabalho (Work Packages), Caminho Critico (CPM) e Avanco Fisico por item da EAP."
+          />
+        }
       />
 
       <div className="p-6 space-y-6">
-        {/* Conceito */}
-        <Card className="border-purple-500/20 bg-purple-500/5">
-          <CardContent className="pt-6">
-            <div className="flex items-start gap-4">
-              <div className="p-3 rounded-lg bg-purple-500/10">
-                <Calendar className="w-6 h-6 text-purple-500" />
-              </div>
-              <div>
-                <h3 className="font-semibold">Setor de Planejamento e Controle</h3>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Gerencia o <strong>Cronograma</strong> geral da obra,
-                  <strong> Pacotes de Trabalho</strong> (Work Packages),
-                  <strong> Caminho Critico</strong> (CPM) e<strong> Avanco Fisico</strong> por item da EAP.
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
         {/* Metricas */}
         <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
           <Card>

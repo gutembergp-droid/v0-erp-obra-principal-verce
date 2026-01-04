@@ -2,13 +2,13 @@
 
 import { useState } from "react"
 import { AppLayout } from "@/components/layout/app-layout"
-import { Header } from "@/components/layout/header"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Progress } from "@/components/ui/progress"
+import { InfoTooltip } from "@/components/ui/info-tooltip"
 import {
   CheckCircle2,
   Clock,
@@ -111,28 +111,19 @@ export default function ReceitaPage() {
 
   return (
     <AppLayout>
-      <Header title="Receita" description="Medicoes (MP/MC), Gestao de Aditivos e Faturamento" />
+      <div className="px-6 pt-6 pb-2">
+        <div className="flex items-center gap-3">
+          <h1 className="text-2xl font-bold">Receita</h1>
+          <InfoTooltip
+            title="Setor de Receita"
+            description="Gerencia Medicoes (MP - Producao e MC - Cliente), Aditivos (acrescimos e supressoes contratuais) e Faturamento (emissao de notas fiscais)."
+            icon={<DollarSign className="w-4 h-4" />}
+          />
+        </div>
+        <p className="text-sm text-muted-foreground mt-1">Medicoes (MP/MC), Gestao de Aditivos e Faturamento</p>
+      </div>
 
       <div className="p-6 space-y-6">
-        {/* Conceito */}
-        <Card className="border-green-500/20 bg-green-500/5">
-          <CardContent className="pt-6">
-            <div className="flex items-start gap-4">
-              <div className="p-3 rounded-lg bg-green-500/10">
-                <DollarSign className="w-6 h-6 text-green-500" />
-              </div>
-              <div>
-                <h3 className="font-semibold">Setor de Receita</h3>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Gerencia <strong>Medicoes</strong> (MP - Producao e MC - Cliente),
-                  <strong> Aditivos</strong> (acrescimos e supressoes contratuais) e<strong> Faturamento</strong>{" "}
-                  (emissao de notas fiscais).
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
         {/* Metricas */}
         <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
           <Card>

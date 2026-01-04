@@ -9,18 +9,8 @@ import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Progress } from "@/components/ui/progress"
-import {
-  Plus,
-  CheckCircle2,
-  Clock,
-  TrendingUp,
-  TrendingDown,
-  Target,
-  BarChart3,
-  Users,
-  Truck,
-  Timer,
-} from "lucide-react"
+import { InfoTooltip } from "@/components/ui/info-tooltip"
+import { Plus, CheckCircle2, Clock, TrendingUp, TrendingDown, Target, Users, Truck, Timer } from "lucide-react"
 
 // Dados mockados de Apontamentos
 const apontamentosMock = [
@@ -113,27 +103,18 @@ export default function ApontamentosPage() {
 
   return (
     <AppLayout>
-      <Header title="Apontamentos de Producao" description="Registro e analise de produtividade por item da EAP" />
+      <Header
+        title="Apontamentos de Producao"
+        description="Registro e analise de produtividade por item da EAP"
+        rightContent={
+          <InfoTooltip
+            title="Setor de Produtividade"
+            description="Registra apontamentos de producao vinculados aos itens da EAP, permitindo analise de produtividade real vs meta e identificacao de desvios."
+          />
+        }
+      />
 
       <div className="p-6 space-y-6">
-        {/* Conceito */}
-        <Card className="border-cyan-500/20 bg-cyan-500/5">
-          <CardContent className="pt-6">
-            <div className="flex items-start gap-4">
-              <div className="p-3 rounded-lg bg-cyan-500/10">
-                <BarChart3 className="w-6 h-6 text-cyan-500" />
-              </div>
-              <div>
-                <h3 className="font-semibold">Setor de Produtividade</h3>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Registra <strong>apontamentos de producao</strong> vinculados aos itens da EAP, permitindo analise de
-                  <strong> produtividade real vs meta</strong> e identificacao de desvios.
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
         {/* Metricas */}
         <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
           <Card>

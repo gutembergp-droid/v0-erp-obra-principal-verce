@@ -8,7 +8,8 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Plus, Shield, AlertTriangle, CheckCircle2, Clock, HardHat, Leaf, FileText, Lock, Users } from "lucide-react"
+import { Plus, Shield, AlertTriangle, CheckCircle2, Clock, HardHat, Leaf, FileText, Users } from "lucide-react"
+import { InfoTooltip } from "@/components/ui/info-tooltip"
 
 // Dados mockados de Seguranca (SST)
 const segurancaMock = [
@@ -95,32 +96,15 @@ export default function SSMAPage() {
       <Header
         title="SSMA - Seguranca, Saude e Meio Ambiente"
         description="Seguranca do Trabalho (SST) e Meio Ambiente - O Escudo do Lucro (Gate 6)"
+        rightContent={
+          <InfoTooltip
+            title="Setor de SSMA - GARANTIDOR"
+            description="Poder de Trava (Gate 6): Libera ou paralisa frentes de trabalho por questoes de Seguranca (SST) ou Meio Ambiente. Garante conformidade com NRs e licencas ambientais."
+          />
+        }
       />
 
       <div className="p-6 space-y-6">
-        {/* Conceito */}
-        <Card className="border-red-500/20 bg-red-500/5">
-          <CardContent className="pt-6">
-            <div className="flex items-start gap-4">
-              <div className="p-3 rounded-lg bg-red-500/10">
-                <HardHat className="w-6 h-6 text-red-500" />
-              </div>
-              <div className="flex-1">
-                <h3 className="font-semibold">Setor de SSMA - GARANTIDOR</h3>
-                <p className="text-sm text-muted-foreground mt-1">
-                  <strong>Poder de Trava (Gate 6):</strong> Libera ou paralisa frentes de trabalho por questoes de
-                  <strong> Seguranca (SST)</strong> ou<strong> Meio Ambiente</strong>. Garante conformidade com NRs e
-                  licencas ambientais.
-                </p>
-              </div>
-              <Badge className="bg-red-500">
-                <Lock className="w-3 h-3 mr-1" />
-                Gate 6
-              </Badge>
-            </div>
-          </CardContent>
-        </Card>
-
         {/* Metricas */}
         <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
           <Card>

@@ -2,13 +2,13 @@
 
 import { useState } from "react"
 import { AppLayout } from "@/components/layout/app-layout"
-import { Header } from "@/components/layout/header"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Progress } from "@/components/ui/progress"
+import { InfoTooltip } from "@/components/ui/info-tooltip"
 import {
   Plus,
   CheckCircle2,
@@ -139,31 +139,21 @@ export default function EngenhariaValorPage() {
 
   return (
     <AppLayout>
-      <Header
-        title="Engenharia de Valor"
-        description="Validacao de Custos, Performance CRCO e Otimizacao - Busca do Lucro Extra"
-      />
+      <div className="px-6 pt-6 pb-2">
+        <div className="flex items-center gap-3">
+          <h1 className="text-2xl font-bold">Engenharia de Valor</h1>
+          <InfoTooltip
+            title="Setor de Engenharia de Valor"
+            description="Responsavel por Validacao de Custos (auditoria de NFs e medicoes), Performance CRCO (Custo Real vs Custo Orcado) e Otimizacao (engenharia de valor para maximizar resultado)."
+            icon={<Target className="w-4 h-4" />}
+          />
+        </div>
+        <p className="text-sm text-muted-foreground mt-1">
+          Validacao de Custos, Performance CRCO e Otimizacao - Busca do Lucro Extra
+        </p>
+      </div>
 
       <div className="p-6 space-y-6">
-        {/* Conceito */}
-        <Card className="border-emerald-500/20 bg-emerald-500/5">
-          <CardContent className="pt-6">
-            <div className="flex items-start gap-4">
-              <div className="p-3 rounded-lg bg-emerald-500/10">
-                <Target className="w-6 h-6 text-emerald-500" />
-              </div>
-              <div>
-                <h3 className="font-semibold">Setor de Engenharia de Valor</h3>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Responsavel por <strong>Validacao de Custos</strong> (auditoria de NFs e medicoes),
-                  <strong> Performance CRCO</strong> (Custo Real vs Custo Orcado) e<strong> Otimizacao</strong>{" "}
-                  (engenharia de valor para maximizar resultado).
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
         {/* Metricas */}
         <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
           <Card>

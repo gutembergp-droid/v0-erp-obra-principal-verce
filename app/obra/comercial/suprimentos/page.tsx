@@ -2,13 +2,13 @@
 
 import { useState } from "react"
 import { AppLayout } from "@/components/layout/app-layout"
-import { Header } from "@/components/layout/header"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { InfoTooltip } from "@/components/ui/info-tooltip"
 import {
   Search,
   Plus,
@@ -142,31 +142,21 @@ export default function SuprimentosPage() {
 
   return (
     <AppLayout>
-      <Header
-        title="Suprimentos"
-        description="Requisicao, Compra e Medicao de Terceiros - Fluxo completo de aquisicoes"
-      />
+      <div className="px-6 pt-6 pb-2">
+        <div className="flex items-center gap-3">
+          <h1 className="text-2xl font-bold">Suprimentos</h1>
+          <InfoTooltip
+            title="Setor de Suprimentos"
+            description="Gerencia todo o ciclo de aquisicoes: Requisicao (pedido interno vinculado a EAP), Compra (cotacao e ordem de compra) e Medicao de Terceiros (pagamento de subcontratados)."
+            icon={<ShoppingCart className="w-4 h-4" />}
+          />
+        </div>
+        <p className="text-sm text-muted-foreground mt-1">
+          Requisicao, Compra e Medicao de Terceiros - Fluxo completo de aquisicoes
+        </p>
+      </div>
 
       <div className="p-6 space-y-6">
-        {/* Conceito */}
-        <Card className="border-orange-500/20 bg-orange-500/5">
-          <CardContent className="pt-6">
-            <div className="flex items-start gap-4">
-              <div className="p-3 rounded-lg bg-orange-500/10">
-                <ShoppingCart className="w-6 h-6 text-orange-500" />
-              </div>
-              <div>
-                <h3 className="font-semibold">Setor de Suprimentos</h3>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Gerencia todo o ciclo de aquisicoes: <strong>Requisicao</strong> (pedido interno vinculado a EAP),
-                  <strong> Compra</strong> (cotacao e ordem de compra) e <strong>Medicao de Terceiros</strong>{" "}
-                  (pagamento de subcontratados).
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
         {/* Metricas */}
         <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
           <Card>

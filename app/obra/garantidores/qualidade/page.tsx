@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { InfoTooltip } from "@/components/ui/info-tooltip"
 import {
   Plus,
   Search,
@@ -117,32 +118,15 @@ export default function QualidadePage() {
       <Header
         title="Qualidade"
         description="FVS, Nao Conformidades e Gates de Liberacao - O Escudo do Lucro (Gate 5)"
+        rightContent={
+          <InfoTooltip
+            title="Setor de Qualidade - GARANTIDOR"
+            description="Poder de Trava (Gate 5): Libera ou bloqueia servicos atraves de FVS (Ficha de Verificacao de Servico) e controla Nao Conformidades. Nenhum servico avanca sem aprovacao da Qualidade."
+          />
+        }
       />
 
       <div className="p-6 space-y-6">
-        {/* Conceito */}
-        <Card className="border-emerald-500/20 bg-emerald-500/5">
-          <CardContent className="pt-6">
-            <div className="flex items-start gap-4">
-              <div className="p-3 rounded-lg bg-emerald-500/10">
-                <Shield className="w-6 h-6 text-emerald-500" />
-              </div>
-              <div className="flex-1">
-                <h3 className="font-semibold">Setor de Qualidade - GARANTIDOR</h3>
-                <p className="text-sm text-muted-foreground mt-1">
-                  <strong>Poder de Trava (Gate 5):</strong> Libera ou bloqueia servicos atraves de
-                  <strong> FVS (Ficha de Verificacao de Servico)</strong> e controla
-                  <strong> Nao Conformidades</strong>. Nenhum servico avanca sem aprovacao da Qualidade.
-                </p>
-              </div>
-              <Badge className="bg-emerald-500">
-                <Lock className="w-3 h-3 mr-1" />
-                Gate 5
-              </Badge>
-            </div>
-          </CardContent>
-        </Card>
-
         {/* Metricas */}
         <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
           <Card>

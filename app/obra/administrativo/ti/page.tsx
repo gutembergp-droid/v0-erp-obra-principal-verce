@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { AppLayout } from "@/components/layout/app-layout"
 import { Header } from "@/components/layout/header"
+import { InfoTooltip } from "@/components/ui/info-tooltip"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -93,27 +94,18 @@ export default function TIPage() {
 
   return (
     <AppLayout>
-      <Header title="TI / Infraestrutura" description="Gestao de Ativos de Tecnologia da Informacao" />
+      <Header
+        title="TI / Infraestrutura"
+        description="Gestao de Ativos de Tecnologia da Informacao"
+        rightContent={
+          <InfoTooltip
+            title="Setor de TI / Infraestrutura"
+            description="Gerencia os ativos de TI da obra (notebooks, monitores, impressoras, equipamentos de rede), controle de garantias e suporte tecnico."
+          />
+        }
+      />
 
       <div className="p-6 space-y-6">
-        {/* Conceito */}
-        <Card className="border-violet-500/20 bg-violet-500/5">
-          <CardContent className="pt-6">
-            <div className="flex items-start gap-4">
-              <div className="p-3 rounded-lg bg-violet-500/10">
-                <Server className="w-6 h-6 text-violet-500" />
-              </div>
-              <div>
-                <h3 className="font-semibold">Setor de TI / Infraestrutura</h3>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Gerencia os <strong>ativos de TI</strong> da obra (notebooks, monitores, impressoras, equipamentos de
-                  rede), controle de garantias e suporte tecnico.
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
         {/* Metricas */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <Card>
