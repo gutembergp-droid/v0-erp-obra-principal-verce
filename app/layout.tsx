@@ -20,7 +20,7 @@ const bebasNeue = Bebas_Neue({
 export const metadata: Metadata = {
   title: "ERP GENESIS - Plataforma de Gestao de Obras",
   description: "Sistema ERP para engenharia pesada e infraestrutura - O Corporativo Governa, a Obra Executa",
-  generator: "v0.app",
+  generator: "v0.dev",
   icons: {
     icon: [
       {
