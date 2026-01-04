@@ -4,11 +4,9 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import {
-  Building2,
   Users,
   FileText,
   FolderKanban,
-  CheckCircle2,
   Briefcase,
   HardHat,
   ChevronDown,
@@ -27,8 +25,29 @@ import {
   Wrench,
   UserCog,
   Scale,
-  FolderOpen,
-  Building,
+  Target,
+  DoorOpen,
+  PieChart,
+  BarChart3,
+  Megaphone,
+  Monitor,
+  Boxes,
+  ShieldCheck,
+  FileSearch,
+  TreePine,
+  Receipt,
+  ShoppingCart,
+  Brain,
+  Bot,
+  Sparkles,
+  GraduationCap,
+  Users2,
+  Cog,
+  Gauge,
+  CalendarCheck,
+  KeyRound,
+  Network,
+  Activity,
 } from "lucide-react"
 import { useState } from "react"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
@@ -36,31 +55,86 @@ import { Input } from "@/components/ui/input"
 
 const corporativoNavigation = [
   {
-    name: "Corporativo",
-    icon: Building2,
+    name: "Estrategico",
+    icon: Target,
     submenu: [
-      { name: "Clientes", href: "/corporativo/clientes", icon: Users },
-      { name: "Contratos", href: "/corporativo/contratos", icon: FileText },
-      { name: "Portfolio de Obras", href: "/corporativo/portfolio", icon: FolderKanban },
-      { name: "Homologacoes", href: "/corporativo/homologacoes", icon: CheckCircle2 },
+      { name: "Planejamento Estrategico", href: "/corporativo/estrategico/planejamento", icon: Target },
+      { name: "IAM & Matriz de Perfis", href: "/corporativo/estrategico/iam", icon: KeyRound },
+      { name: "Alcadas & Governanca", href: "/corporativo/estrategico/alcadas", icon: Network },
+      { name: "Gestao de Acessos (Catraca)", href: "/corporativo/estrategico/acessos", icon: DoorOpen },
+      { name: "Analytics Corporativo", href: "/corporativo/estrategico/analytics", icon: BarChart3 },
     ],
   },
   {
-    name: "Gestao de Obras",
-    icon: Building,
-    submenu: [{ name: "Todas as Obras", href: "/corporativo/obras", icon: FolderOpen }],
+    name: "Comercial",
+    icon: Briefcase,
+    submenu: [
+      { name: "Clientes & CRM", href: "/corporativo/comercial/clientes", icon: Users },
+      { name: "Contratos & Orcamentos", href: "/corporativo/comercial/contratos", icon: Receipt },
+      { name: "Portfolio de Obras", href: "/corporativo/comercial/portfolio", icon: FolderKanban },
+    ],
+  },
+  {
+    name: "Administrativo",
+    icon: Wallet,
+    submenu: [
+      { name: "RH & Gestao Talentos", href: "/corporativo/administrativo/rh", icon: UserCog },
+      { name: "TI & Comunicacao", href: "/corporativo/administrativo/ti", icon: Monitor },
+      { name: "Mural Hermes", href: "/corporativo/administrativo/mural", icon: Megaphone },
+      { name: "Ativos & Patrimonio", href: "/corporativo/administrativo/ativos", icon: Boxes },
+      { name: "Controladoria & FP&A", href: "/corporativo/administrativo/controladoria", icon: PieChart },
+    ],
+  },
+  {
+    name: "Auditoria e Controle",
+    icon: ShieldCheck,
+    submenu: [
+      { name: "Compliance & Processos", href: "/corporativo/auditoria/compliance", icon: ClipboardCheck },
+      { name: "Auditoria de Campo", href: "/corporativo/auditoria/campo", icon: FileSearch },
+      { name: "Controle de Estoque", href: "/corporativo/auditoria/estoque", icon: Package },
+    ],
+  },
+  {
+    name: "QSMS",
+    icon: Shield,
+    submenu: [
+      { name: "Qualidade", href: "/corporativo/qsms/qualidade", icon: ShieldCheck },
+      { name: "Seguranca do Trabalho", href: "/corporativo/qsms/seguranca", icon: Shield },
+      { name: "Meio Ambiente", href: "/corporativo/qsms/meio-ambiente", icon: TreePine },
+      { name: "Social & Comunidade", href: "/corporativo/qsms/social", icon: Users2 },
+    ],
+  },
+  {
+    name: "Gestao Inteligente",
+    icon: Brain,
+    submenu: [
+      { name: "Protocolo HERMES", href: "/corporativo/inteligencia/hermes", icon: Sparkles },
+      { name: "Treinamento & Curadoria IAs", href: "/corporativo/inteligencia/treinamento", icon: GraduationCap },
+      { name: "Comite de Validacao", href: "/corporativo/inteligencia/comite", icon: Users2 },
+      { name: "Fabrica de Agentes", href: "/corporativo/inteligencia/fabrica", icon: Bot },
+    ],
   },
 ]
 
 const obraNavigation = [
   {
+    name: "Gerencial do Contrato",
+    icon: Gauge,
+    submenu: [
+      { name: "Cockpit de Governanca", href: "/obra/gerencial/cockpit", icon: Activity },
+      { name: "Encerramento Mensal", href: "/obra/gerencial/encerramento", icon: CalendarCheck },
+      { name: "Indicadores & KPIs", href: "/obra/gerencial/indicadores", icon: BarChart3 },
+    ],
+  },
+  {
     name: "Comercial",
     icon: Briefcase,
     submenu: [
-      { name: "Estruturacao", href: "/obra/comercial/estruturacao", icon: FileStack },
-      { name: "Receita", href: "/obra/comercial/receita", icon: TrendingUp },
-      { name: "Suprimentos", href: "/obra/comercial/suprimentos", icon: Package },
-      { name: "Engenharia de Valor", href: "/obra/comercial/engenharia-valor", icon: DollarSign },
+      { name: "Estrutura (EAP)", href: "/obra/comercial/estrutura", icon: FileStack },
+      { name: "Receita & Medicao", href: "/obra/comercial/receita", icon: TrendingUp },
+      { name: "Custo & Meta 0.9", href: "/obra/comercial/custo", icon: DollarSign },
+      { name: "Suprimento & Compor 90", href: "/obra/comercial/suprimento", icon: ShoppingCart },
+      { name: "Analytics Comercial", href: "/obra/comercial/analytics", icon: BarChart3 },
     ],
   },
   {
@@ -87,18 +161,25 @@ const obraNavigation = [
       { name: "RH / Pessoal", href: "/obra/administrativo/rh", icon: UserCog },
       { name: "Financeiro Obra", href: "/obra/administrativo/financeiro", icon: DollarSign },
       { name: "Patrimonio", href: "/obra/administrativo/patrimonio", icon: Package },
-      { name: "Documentos", href: "/obra/administrativo/documentos", icon: FileText },
+      { name: "Comunicacao", href: "/obra/administrativo/comunicacao", icon: Megaphone },
     ],
   },
   {
     name: "Garantidores",
     icon: Shield,
-    badge: "Trava",
     submenu: [
       { name: "Qualidade", href: "/obra/garantidores/qualidade", icon: ClipboardCheck },
       { name: "SSMA", href: "/obra/garantidores/ssma", icon: Shield },
       { name: "Meio Ambiente", href: "/obra/garantidores/meio-ambiente", icon: Leaf },
       { name: "Juridico", href: "/obra/garantidores/juridico", icon: Scale },
+    ],
+  },
+  {
+    name: "Gestao Inteligente",
+    icon: Brain,
+    submenu: [
+      { name: "Feedback & Calibragem", href: "/obra/inteligencia/feedback", icon: Cog },
+      { name: "Agentes da Obra", href: "/obra/inteligencia/agentes", icon: Bot },
     ],
   },
 ]
@@ -115,12 +196,16 @@ export function Sidebar() {
 
   const [expandedMenus, setExpandedMenus] = useState<Record<string, boolean>>({
     Corporativo: true,
+    Estrategico: true,
     "Gestao de Obras": true,
     Comercial: true,
     Engenharia: true,
     Producao: false,
     Administrativo: false,
     Garantidores: false,
+    "Auditoria e Controle": false,
+    QSMS: false,
+    "Gestao Inteligente": false,
   })
 
   const toggleMenu = (name: string) => {
@@ -235,9 +320,6 @@ export function Sidebar() {
               <div className="flex items-center gap-2">
                 <dept.icon className="w-4 h-4 text-sidebar-foreground/70" />
                 <span>{dept.name}</span>
-                {dept.badge && (
-                  <span className="text-xs px-1.5 py-0.5 bg-primary/20 text-primary rounded">{dept.badge}</span>
-                )}
               </div>
               <ChevronDown
                 className={cn(
