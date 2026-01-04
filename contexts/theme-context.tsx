@@ -13,52 +13,55 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>("light")
+  const [theme, setThemeState] = useState<Theme>("light")
   const [mounted, setMounted] = useState(false)
 
-  useEffect(() => {
-    setMounted(true)
-    const stored = localStorage.getItem("genesis-theme") as Theme | null
-    if (stored && (stored === "light" || stored === "dark")) {
-      setTheme(stored)
-      applyTheme(stored)
-    }
-  }, [])
-
   const applyTheme = (newTheme: Theme) => {
-    const html = document.documentElement
-    const body = document.body
+    const root = document.documentElement
 
-    // Remove classe dark
-    html.classList.remove("dark")
-    body.classList.remove("dark")
+    // Remove todas as classes de tema
+    root.classList.remove("light", "dark")
+    document.body.classList.remove("light", "dark")
 
-    // Aplica classe dark se necessario
-    if (newTheme === "dark") {
-      html.classList.add("dark")
-      body.classList.add("dark")
-      html.style.colorScheme = "dark"
-    } else {
-      html.style.colorScheme = "light"
-    }
+    // Adiciona a classe do tema atual
+    root.classList.add(newTheme)
+    document.body.classList.add(newTheme)
+
+    // Define o atributo data-theme para compatibilidade
+    root.setAttribute("data-theme", newTheme)
+
+    // Define color-scheme para elementos nativos do browser
+    root.style.colorScheme = newTheme
 
     // Salva no localStorage
     localStorage.setItem("genesis-theme", newTheme)
   }
 
   useEffect(() => {
-    if (mounted) {
-      applyTheme(theme)
-    }
-  }, [theme, mounted])
+    setMounted(true)
+    // Verifica se ha tema salvo
+    const stored = localStorage.getItem("genesis-theme") as Theme | null
+    // Verifica preferencia do sistema
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches
+
+    const initialTheme = stored || (prefersDark ? "dark" : "light")
+    setThemeState(initialTheme)
+    applyTheme(initialTheme)
+  }, [])
+
+  const setTheme = (newTheme: Theme) => {
+    setThemeState(newTheme)
+    applyTheme(newTheme)
+  }
 
   const toggleTheme = () => {
     const newTheme = theme === "light" ? "dark" : "light"
     setTheme(newTheme)
   }
 
+  // Evita flash de conteudo sem estilo
   if (!mounted) {
-    return <div className="min-h-screen bg-background" />
+    return null
   }
 
   return <ThemeContext.Provider value={{ theme, setTheme, toggleTheme }}>{children}</ThemeContext.Provider>

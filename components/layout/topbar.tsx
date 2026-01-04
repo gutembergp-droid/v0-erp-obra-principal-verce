@@ -26,6 +26,8 @@ import {
   MinusCircle,
   XCircle,
   Check,
+  Monitor,
+  Cloud,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
@@ -46,6 +48,8 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { useTheme } from "@/contexts/theme-context"
+import { Input } from "@/components/ui/input"
+import { Search } from "lucide-react"
 
 const acoesRapidas = [
   { icon: Star, label: "Favoritos", href: "#" },
@@ -96,16 +100,16 @@ export function Topbar() {
 
   return (
     <TooltipProvider delayDuration={200}>
-      <header className="flex items-center justify-between h-14 px-4 bg-card border-b border-border">
+      <header className="flex items-center justify-between h-[70px] px-4 bg-card border-b border-border">
         {/* Parte 1: Breadcrumb/Contexto */}
         <div className="flex items-center gap-2 text-sm">
-          <span className="text-muted-foreground">{getBreadcrumb()}</span>
+          <span className="text-foreground/70">{getBreadcrumb()}</span>
           <span className="text-border">/</span>
           <span className="text-foreground font-medium">Dashboard da Obra</span>
         </div>
 
         {/* Parte 2: Acoes Rapidas */}
-        <div className="flex items-center gap-0.5 bg-secondary/50 border border-border/50 rounded-xl p-1.5 shadow-sm">
+        <div className="flex items-center gap-1 bg-secondary/50 border border-border/50 rounded-xl p-2 shadow-sm">
           {acoesRapidas.map((acao, index) => (
             <Tooltip key={acao.label}>
               <TooltipTrigger asChild>
@@ -113,18 +117,18 @@ export function Topbar() {
                   variant="ghost"
                   size="sm"
                   className={cn(
-                    "h-8 w-8 p-0 transition-all duration-200 cursor-pointer rounded-lg",
+                    "h-9 w-9 p-0 transition-all duration-200 cursor-pointer rounded-lg",
                     index === 4
                       ? "bg-primary text-primary-foreground shadow-md hover:bg-primary/90 hover:scale-105"
                       : "text-muted-foreground hover:bg-accent/80 hover:text-foreground hover:scale-105",
                   )}
                 >
-                  <acao.icon className="w-4 h-4" />
+                  <acao.icon className="w-[18px] h-[18px]" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent
                 side="bottom"
-                className="bg-foreground text-background px-3 py-1.5 text-xs font-medium rounded-md shadow-lg"
+                className="bg-popover text-popover-foreground border border-border px-3 py-1.5 text-xs font-medium rounded-md shadow-lg"
               >
                 {acao.label}
               </TooltipContent>
@@ -133,47 +137,46 @@ export function Topbar() {
         </div>
 
         {/* Parte 3: Status e Avatar */}
-        <div className="flex items-center gap-3">
-          {/* Temperatura/Clima */}
-          <div className="flex items-center gap-1 text-sm text-muted-foreground">
-            <Sun className="w-4 h-4 text-primary" />
-            <span>28°C</span>
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <Cloud className="w-5 h-5" />
+            <span className="font-medium">28°C</span>
           </div>
 
           <Tooltip>
             <TooltipTrigger asChild>
               <button
                 onClick={toggleTheme}
-                className="flex items-center gap-1.5 h-8 px-2 bg-secondary/50 border border-border/50 rounded-full cursor-pointer transition-all duration-200 hover:bg-secondary/80"
+                className="flex items-center gap-1.5 h-9 px-2 bg-secondary border border-border rounded-full cursor-pointer transition-all duration-200 hover:bg-accent"
+                aria-label="Alternar tema"
               >
-                <Sun
+                {/* Sol - lado esquerdo */}
+                <div
                   className={cn(
-                    "w-3.5 h-3.5 transition-colors duration-200",
-                    theme === "light" ? "text-amber-500" : "text-muted-foreground",
+                    "flex items-center justify-center w-7 h-7 rounded-full transition-all duration-300",
+                    theme === "light" ? "bg-amber-400 text-white shadow-md" : "text-muted-foreground",
                   )}
-                />
-                <div className="relative w-10 h-5 bg-muted rounded-full">
-                  <div
-                    className={cn(
-                      "absolute top-0.5 w-4 h-4 rounded-full shadow-md transition-all duration-300 ease-in-out",
-                      theme === "dark" ? "bg-slate-700" : "bg-amber-400",
-                    )}
-                    style={{
-                      left: theme === "dark" ? "calc(100% - 18px)" : "2px",
-                    }}
-                  />
+                >
+                  <Sun className="w-4 h-4" />
                 </div>
-                <Moon
+
+                {/* Monitor no centro */}
+                <Monitor className="w-5 h-5 text-muted-foreground mx-0.5" />
+
+                {/* Lua - lado direito */}
+                <div
                   className={cn(
-                    "w-3.5 h-3.5 transition-colors duration-200",
-                    theme === "dark" ? "text-slate-300" : "text-muted-foreground",
+                    "flex items-center justify-center w-7 h-7 rounded-full transition-all duration-300",
+                    theme === "dark" ? "bg-slate-600 text-white shadow-md" : "text-muted-foreground",
                   )}
-                />
+                >
+                  <Moon className="w-4 h-4" />
+                </div>
               </button>
             </TooltipTrigger>
             <TooltipContent
               side="bottom"
-              className="bg-foreground text-background px-3 py-1.5 text-xs font-medium rounded-md shadow-lg"
+              className="bg-popover text-popover-foreground border border-border px-3 py-1.5 text-xs font-medium rounded-md shadow-lg"
             >
               {theme === "light" ? "Mudar para Escuro" : "Mudar para Claro"}
             </TooltipContent>
@@ -187,10 +190,10 @@ export function Topbar() {
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="h-8 w-8 p-0 relative transition-all duration-200 hover:bg-accent hover:text-accent-foreground hover:scale-110 cursor-pointer"
+                    className="h-9 w-9 p-0 relative transition-all duration-200 hover:bg-accent hover:text-accent-foreground hover:scale-110 cursor-pointer"
                   >
-                    <Bell className="w-4 h-4" />
-                    <span className="absolute -top-1 -right-1 w-4 h-4 bg-destructive text-destructive-foreground text-xs rounded-full flex items-center justify-center animate-pulse">
+                    <Bell className="w-5 h-5" />
+                    <span className="absolute -top-1 -right-1 w-5 h-5 bg-destructive text-destructive-foreground text-xs rounded-full flex items-center justify-center animate-pulse">
                       3
                     </span>
                   </Button>
@@ -198,7 +201,7 @@ export function Topbar() {
               </TooltipTrigger>
               <TooltipContent
                 side="bottom"
-                className="bg-foreground text-background px-3 py-1.5 text-xs font-medium rounded-md shadow-lg"
+                className="bg-popover text-popover-foreground border border-border px-3 py-1.5 text-xs font-medium rounded-md shadow-lg"
               >
                 Notificacoes
               </TooltipContent>
@@ -225,14 +228,23 @@ export function Topbar() {
             </DropdownMenuContent>
           </DropdownMenu>
 
+          {/* Campo de busca */}
+          <div className="relative hidden lg:block">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Input
+              placeholder="Buscar..."
+              className="pl-9 h-9 w-52 bg-secondary border-border text-foreground placeholder:text-muted-foreground"
+            />
+          </div>
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
                 variant="ghost"
-                className="flex items-center gap-2 h-auto py-1.5 px-2 hover:bg-accent rounded-lg transition-all duration-200 cursor-pointer"
+                className="flex items-center gap-2.5 h-auto py-2 px-2.5 hover:bg-accent rounded-lg transition-all duration-200 cursor-pointer"
               >
                 <div className="relative">
-                  <Avatar className="w-8 h-8 border-2 border-primary">
+                  <Avatar className="w-9 h-9 border-2 border-primary">
                     <AvatarImage src="/placeholder-user.png" />
                     <AvatarFallback className="bg-primary text-primary-foreground text-sm font-medium">
                       AD
@@ -240,7 +252,7 @@ export function Topbar() {
                   </Avatar>
                   <span
                     className={cn(
-                      "absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full border-2 border-card",
+                      "absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 border-card",
                       currentStatus.bg,
                     )}
                   />
@@ -272,7 +284,9 @@ export function Topbar() {
               <DropdownMenuGroup>
                 <DropdownMenuSub>
                   <DropdownMenuSubTrigger className="py-2.5 cursor-pointer">
-                    <currentStatus.icon className={cn("w-4 h-4 mr-2", currentStatus.color)} />
+                    {currentStatus.icon.className && (
+                      <currentStatus.icon className={cn("w-4 h-4 mr-2", currentStatus.color)} />
+                    )}
                     <span>Status: {currentStatus.label}</span>
                   </DropdownMenuSubTrigger>
                   <DropdownMenuPortal>
@@ -283,7 +297,7 @@ export function Topbar() {
                           onClick={() => setCurrentStatus(status)}
                           className="py-2 cursor-pointer"
                         >
-                          <status.icon className={cn("w-4 h-4 mr-2", status.color)} />
+                          {status.icon.className && <status.icon className={cn("w-4 h-4 mr-2", status.color)} />}
                           <span>{status.label}</span>
                           {currentStatus.label === status.label && <Check className="w-4 h-4 ml-auto text-primary" />}
                         </DropdownMenuItem>
@@ -328,7 +342,7 @@ export function Topbar() {
                           className="py-3 cursor-pointer flex items-center gap-3"
                         >
                           <div className={cn("w-6 h-6 rounded-full flex items-center justify-center", option.color)}>
-                            <option.icon className="w-3.5 h-3.5 text-white" />
+                            {option.icon.className && <option.icon className="w-3.5 h-3.5 text-white" />}
                           </div>
                           <div className="flex flex-col">
                             <span className="font-medium">{option.label}</span>
