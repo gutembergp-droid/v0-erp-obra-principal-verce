@@ -1,15 +1,24 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Geist, Geist_Mono } from "next/font/google"
+import { Montserrat, Bebas_Neue } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { AuthProvider } from "@/contexts/auth-context"
+import { ThemeProvider } from "@/contexts/theme-context"
 import "./globals.css"
 
-const _geist = Geist({ subsets: ["latin"] })
-const _geistMono = Geist_Mono({ subsets: ["latin"] })
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  variable: "--font-montserrat",
+})
+
+const bebasNeue = Bebas_Neue({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-bebas",
+})
 
 export const metadata: Metadata = {
-  title: "ERP GENESIS - Plataforma de Gestão de Obras",
+  title: "ERP GENESIS - Plataforma de Gestao de Obras",
   description: "Sistema ERP para engenharia pesada e infraestrutura - O Corporativo Governa, a Obra Executa",
   generator: "v0.app",
   icons: {
@@ -37,9 +46,11 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="pt-BR">
-      <body className={`font-sans antialiased`}>
-        <AuthProvider>{children}</AuthProvider>
+    <html lang="pt-BR" suppressHydrationWarning>
+      <body className={`${montserrat.variable} ${bebasNeue.variable} font-sans antialiased`}>
+        <ThemeProvider>
+          <AuthProvider>{children}</AuthProvider>
+        </ThemeProvider>
         <Analytics />
       </body>
     </html>
