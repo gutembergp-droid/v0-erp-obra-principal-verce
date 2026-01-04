@@ -266,19 +266,6 @@ export function Sidebar() {
           </Collapsible>
         ))}
       </nav>
-
-      {/* Usuario */}
-      <div className="p-3 border-t border-sidebar-border">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
-            <span className="text-sm font-medium text-primary">U</span>
-          </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-sidebar-foreground truncate">Usuario</p>
-            <p className="text-xs text-sidebar-foreground/60 truncate">Administrador</p>
-          </div>
-        </div>
-      </div>
     </aside>
   )
 }

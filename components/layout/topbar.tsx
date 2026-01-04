@@ -28,6 +28,7 @@ import {
   Check,
   Monitor,
   Cloud,
+  Search,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
@@ -49,7 +50,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { useTheme } from "@/contexts/theme-context"
 import { Input } from "@/components/ui/input"
-import { Search } from "lucide-react"
 
 const acoesRapidas = [
   { icon: Star, label: "Favoritos", href: "#" },
@@ -108,36 +108,45 @@ export function Topbar() {
           <span className="text-foreground font-medium">Dashboard da Obra</span>
         </div>
 
-        {/* Parte 2: Acoes Rapidas */}
-        <div className="flex items-center gap-1 bg-secondary/50 border border-border/50 rounded-xl p-2 shadow-sm">
-          {acoesRapidas.map((acao, index) => (
-            <Tooltip key={acao.label}>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className={cn(
-                    "h-9 w-9 p-0 transition-all duration-200 cursor-pointer rounded-lg",
-                    index === 4
-                      ? "bg-primary text-primary-foreground shadow-md hover:bg-primary/90 hover:scale-105"
-                      : "text-muted-foreground hover:bg-accent/80 hover:text-foreground hover:scale-105",
-                  )}
+        <div className="flex-1 flex items-center justify-center">
+          <div className="flex items-center gap-1 bg-secondary/50 border border-border/50 rounded-xl p-2 shadow-sm">
+            {acoesRapidas.map((acao, index) => (
+              <Tooltip key={acao.label}>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className={cn(
+                      "h-9 w-9 p-0 transition-all duration-200 cursor-pointer rounded-lg",
+                      index === 4
+                        ? "bg-primary text-primary-foreground shadow-md hover:bg-primary/90 hover:scale-105"
+                        : "text-muted-foreground hover:bg-accent/80 hover:text-foreground hover:scale-105",
+                    )}
+                  >
+                    <acao.icon className="w-[18px] h-[18px]" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent
+                  side="bottom"
+                  className="bg-popover text-popover-foreground border border-border px-3 py-1.5 text-xs font-medium rounded-md shadow-lg"
                 >
-                  <acao.icon className="w-[18px] h-[18px]" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent
-                side="bottom"
-                className="bg-popover text-popover-foreground border border-border px-3 py-1.5 text-xs font-medium rounded-md shadow-lg"
-              >
-                {acao.label}
-              </TooltipContent>
-            </Tooltip>
-          ))}
+                  {acao.label}
+                </TooltipContent>
+              </Tooltip>
+            ))}
+          </div>
         </div>
 
         {/* Parte 3: Status e Avatar */}
         <div className="flex items-center gap-4">
+          <div className="relative hidden lg:block">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Input
+              placeholder="Buscar..."
+              className="pl-9 h-9 w-52 bg-secondary border-border text-foreground placeholder:text-muted-foreground rounded-xl"
+            />
+          </div>
+
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Cloud className="w-5 h-5" />
             <span className="font-medium">28°C</span>
@@ -227,15 +236,6 @@ export function Topbar() {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-
-          {/* Campo de busca */}
-          <div className="relative hidden lg:block">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-            <Input
-              placeholder="Buscar..."
-              className="pl-9 h-9 w-52 bg-secondary border-border text-foreground placeholder:text-muted-foreground"
-            />
-          </div>
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
