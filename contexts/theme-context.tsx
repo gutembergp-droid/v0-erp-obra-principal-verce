@@ -38,6 +38,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   }
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true)
     // Verifica se ha tema salvo
     const stored = localStorage.getItem("genesis-theme") as Theme | null
