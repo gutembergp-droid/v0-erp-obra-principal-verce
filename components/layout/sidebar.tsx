@@ -49,6 +49,7 @@ import {
   KeyRound,
   Network,
   Activity,
+  LayoutList,
 } from "lucide-react"
 import { useCallback, useReducer } from "react"
 
@@ -130,6 +131,7 @@ const obraNavigation = [
     name: "Comercial",
     icon: Briefcase,
     submenu: [
+      { name: "Estruturacao Geral", href: "/obra/comercial/estruturacao-geral", icon: LayoutList },
       { name: "Estrutura (EAP)", href: "/obra/comercial/estrutura", icon: FileStack },
       { name: "Receita & Medicao", href: "/obra/comercial/receita", icon: TrendingUp },
       { name: "Custo & Meta 0.9", href: "/obra/comercial/custo", icon: DollarSign },
