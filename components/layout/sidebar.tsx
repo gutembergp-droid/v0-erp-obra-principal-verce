@@ -49,7 +49,7 @@ import {
   Network,
   Activity,
 } from "lucide-react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { Input } from "@/components/ui/input"
 
@@ -206,7 +206,33 @@ export function Sidebar() {
     "Auditoria e Controle": false,
     QSMS: false,
     "Gestao Inteligente": false,
+    "Gerencial do Contrato": false,
   })
+
+  useEffect(() => {
+    const routeToDepartment: Record<string, string> = {
+      "/obra/gerencial": "Gerencial do Contrato",
+      "/obra/comercial": "Comercial",
+      "/obra/engenharia": "Engenharia",
+      "/obra/producao": "Producao",
+      "/obra/administrativo": "Administrativo",
+      "/obra/garantidores": "Garantidores",
+      "/obra/inteligencia": "Gestao Inteligente",
+      "/corporativo/estrategico": "Estrategico",
+      "/corporativo/comercial": "Comercial",
+      "/corporativo/administrativo": "Administrativo",
+      "/corporativo/auditoria": "Auditoria e Controle",
+      "/corporativo/qsms": "QSMS",
+      "/corporativo/inteligencia": "Gestao Inteligente",
+    }
+
+    for (const [route, department] of Object.entries(routeToDepartment)) {
+      if (pathname.startsWith(route)) {
+        setExpandedMenus((prev) => ({ ...prev, [department]: true }))
+        break
+      }
+    }
+  }, [pathname])
 
   const toggleMenu = (name: string) => {
     setExpandedMenus((prev) => ({ ...prev, [name]: !prev[name] }))
