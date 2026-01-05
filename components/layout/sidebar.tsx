@@ -19,7 +19,6 @@ import {
   Shield,
   Leaf,
   Wallet,
-  Search,
   FileStack,
   TrendingUp,
   Wrench,
@@ -51,7 +50,6 @@ import {
 } from "lucide-react"
 import { useState, useEffect } from "react"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
-import { Input } from "@/components/ui/input"
 
 const corporativoNavigation = [
   {
@@ -192,8 +190,6 @@ const obrasDisponiveis = [
 export function Sidebar() {
   const pathname = usePathname()
   const [obraAtual, setObraAtual] = useState(obrasDisponiveis[0])
-  const [searchQuery, setSearchQuery] = useState("")
-
   const [expandedMenus, setExpandedMenus] = useState<Record<string, boolean>>({
     Corporativo: true,
     Estrategico: true,
@@ -264,19 +260,6 @@ export function Sidebar() {
               <p className="text-xs text-sidebar-foreground/60 truncate">{obraAtual.descricao}</p>
             </div>
             <ChevronDown className="w-4 h-4 text-sidebar-foreground/50 flex-shrink-0" />
-          </div>
-        </div>
-
-        {/* Campo de Busca */}
-        <div className="px-3 pb-3">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-sidebar-foreground/50" />
-            <Input
-              placeholder="Buscar no menu..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-9 h-8 text-sm bg-sidebar-accent border-sidebar-border text-sidebar-foreground placeholder:text-sidebar-foreground/50"
-            />
           </div>
         </div>
       </div>
