@@ -1,5 +1,7 @@
 "use client"
 
+import { useState } from "react"
+
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
@@ -48,8 +50,7 @@ import {
   Network,
   Activity,
 } from "lucide-react"
-import { useState, useEffect } from "react"
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
+import { useCallback, useReducer } from "react"
 
 const corporativoNavigation = [
   {
@@ -187,60 +188,58 @@ const obrasDisponiveis = [
   { id: "br-116-lote-1", nome: "BR-116-LOTE 1", descricao: "Manutencao BR-116", status: "Ativo" },
 ]
 
+const initialExpandedState: Record<string, boolean> = {
+  // Corporativo
+  Estrategico: false,
+  "Comercial-corp": false,
+  "Administrativo-corp": false,
+  "Auditoria e Controle": false,
+  QSMS: false,
+  "Gestao Inteligente-corp": false,
+  // Obra
+  "Gerencial do Contrato": false,
+  "Comercial-obra": false,
+  Engenharia: false,
+  Producao: false,
+  "Administrativo-obra": false,
+  Garantidores: false,
+  "Gestao Inteligente-obra": false,
+}
+
+type MenuAction = { type: "TOGGLE"; name: string }
+
+function menuReducer(state: Record<string, boolean>, action: MenuAction): Record<string, boolean> {
+  switch (action.type) {
+    case "TOGGLE":
+      return { ...state, [action.name]: !state[action.name] }
+    default:
+      return state
+  }
+}
+
 export function Sidebar() {
   const pathname = usePathname()
-  const [obraAtual, setObraAtual] = useState(obrasDisponiveis[0])
-  const [expandedMenus, setExpandedMenus] = useState<Record<string, boolean>>({
-    Corporativo: true,
-    Estrategico: true,
-    "Gestao de Obras": true,
-    Comercial: true,
-    Engenharia: true,
-    Producao: false,
-    Administrativo: false,
-    Garantidores: false,
-    "Auditoria e Controle": false,
-    QSMS: false,
-    "Gestao Inteligente": false,
-    "Gerencial do Contrato": false,
-  })
+  const [obraAtual] = useState(obrasDisponiveis[0])
 
-  useEffect(() => {
-    const routeToDepartment: Record<string, string> = {
-      "/obra/gerencial": "Gerencial do Contrato",
-      "/obra/comercial": "Comercial",
-      "/obra/engenharia": "Engenharia",
-      "/obra/producao": "Producao",
-      "/obra/administrativo": "Administrativo",
-      "/obra/garantidores": "Garantidores",
-      "/obra/inteligencia": "Gestao Inteligente",
-      "/corporativo/estrategico": "Estrategico",
-      "/corporativo/comercial": "Comercial",
-      "/corporativo/administrativo": "Administrativo",
-      "/corporativo/auditoria": "Auditoria e Controle",
-      "/corporativo/qsms": "QSMS",
-      "/corporativo/inteligencia": "Gestao Inteligente",
-    }
+  const [expandedMenus, dispatch] = useReducer(menuReducer, initialExpandedState)
 
-    for (const [route, department] of Object.entries(routeToDepartment)) {
-      if (pathname.startsWith(route)) {
-        setExpandedMenus((prev) => ({ ...prev, [department]: true }))
-        break
-      }
-    }
-  }, [pathname])
-
-  const toggleMenu = (name: string) => {
-    setExpandedMenus((prev) => ({ ...prev, [name]: !prev[name] }))
-  }
+  const handleToggle = useCallback((menuKey: string) => {
+    dispatch({ type: "TOGGLE", name: menuKey })
+  }, [])
 
   const isActive = (href: string) => pathname === href
-  const isInSection = (basePath: string) => pathname.startsWith(basePath)
+
+  const getMenuKey = useCallback((name: string, module: "corp" | "obra") => {
+    if (name === "Comercial" || name === "Administrativo" || name === "Gestao Inteligente") {
+      return `${name}-${module}`
+    }
+    return name
+  }, [])
 
   return (
     <aside className="flex flex-col h-screen w-64 bg-sidebar border-r border-sidebar-border">
       {/* Logo e Seletor de Obra */}
-      <div className="border-b border-sidebar-border">
+      <div className="border-b border-sidebar-border flex-shrink-0">
         {/* Logo */}
         <div className="flex items-center gap-2 px-4 py-3">
           <div className="flex items-center justify-center w-8 h-8 rounded bg-primary">
@@ -264,7 +263,7 @@ export function Sidebar() {
         </div>
       </div>
 
-      {/* Navigation */}
+      {/* Navigation - overflow-y-auto para scroll quando necessario */}
       <nav className="flex-1 overflow-y-auto py-2">
         {/* Modulo Corporativo */}
         <div className="px-3 mb-1">
@@ -273,43 +272,54 @@ export function Sidebar() {
           </span>
         </div>
 
-        {corporativoNavigation.map((section) => (
-          <Collapsible
-            key={section.name}
-            open={expandedMenus[section.name]}
-            onOpenChange={() => toggleMenu(section.name)}
-          >
-            <CollapsibleTrigger className="flex items-center justify-between w-full px-3 py-1.5 text-sm font-medium text-sidebar-foreground hover:bg-sidebar-accent">
-              <div className="flex items-center gap-2">
-                <section.icon className="w-4 h-4 text-sidebar-foreground/70" />
-                <span>{section.name}</span>
-              </div>
-              <ChevronDown
-                className={cn(
-                  "w-4 h-4 text-sidebar-foreground/50 transition-transform",
-                  expandedMenus[section.name] && "rotate-180",
-                )}
-              />
-            </CollapsibleTrigger>
-            <CollapsibleContent>
-              {section.submenu.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
+        {corporativoNavigation.map((section) => {
+          const menuKey = getMenuKey(section.name, "corp")
+          const isOpen = expandedMenus[menuKey]
+
+          return (
+            <div key={menuKey}>
+              <button
+                type="button"
+                onClick={() => handleToggle(menuKey)}
+                className="flex items-center justify-between w-full px-3 py-1.5 text-sm font-medium text-sidebar-foreground hover:bg-sidebar-accent"
+              >
+                <div className="flex items-center gap-2">
+                  <section.icon className="w-4 h-4 text-sidebar-foreground/70" />
+                  <span>{section.name}</span>
+                </div>
+                <ChevronDown
                   className={cn(
-                    "flex items-center gap-2 px-3 py-1.5 pl-9 text-sm transition-colors",
-                    isActive(item.href)
-                      ? "text-primary bg-sidebar-accent font-medium"
-                      : "text-sidebar-foreground/80 hover:bg-sidebar-accent",
+                    "w-4 h-4 text-sidebar-foreground/50 transition-transform duration-200",
+                    isOpen && "rotate-180",
                   )}
-                >
-                  <item.icon className="w-4 h-4" />
-                  <span>{item.name}</span>
-                </Link>
-              ))}
-            </CollapsibleContent>
-          </Collapsible>
-        ))}
+                />
+              </button>
+
+              <div
+                className={cn(
+                  "overflow-hidden transition-all duration-200",
+                  isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0",
+                )}
+              >
+                {section.submenu.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={cn(
+                      "flex items-center gap-2 px-3 py-1.5 pl-9 text-sm transition-colors",
+                      isActive(item.href)
+                        ? "text-primary bg-primary/10 font-medium"
+                        : "text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-foreground",
+                    )}
+                  >
+                    <item.icon className="w-4 h-4" />
+                    <span>{item.name}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )
+        })}
 
         {/* Departamentos da Obra */}
         <div className="px-3 mt-4 mb-1">
@@ -318,44 +328,54 @@ export function Sidebar() {
           </span>
         </div>
 
-        {obraNavigation.map((dept) => (
-          <Collapsible key={dept.name} open={expandedMenus[dept.name]} onOpenChange={() => toggleMenu(dept.name)}>
-            <CollapsibleTrigger
-              className={cn(
-                "flex items-center justify-between w-full px-3 py-1.5 text-sm font-medium hover:bg-sidebar-accent",
-                isInSection(`/obra/${dept.name.toLowerCase()}`) ? "text-primary" : "text-sidebar-foreground",
-              )}
-            >
-              <div className="flex items-center gap-2">
-                <dept.icon className="w-4 h-4 text-sidebar-foreground/70" />
-                <span>{dept.name}</span>
-              </div>
-              <ChevronDown
-                className={cn(
-                  "w-4 h-4 text-sidebar-foreground/50 transition-transform",
-                  expandedMenus[dept.name] && "rotate-180",
-                )}
-              />
-            </CollapsibleTrigger>
-            <CollapsibleContent>
-              {dept.submenu.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
+        {obraNavigation.map((dept) => {
+          const menuKey = getMenuKey(dept.name, "obra")
+          const isOpen = expandedMenus[menuKey]
+
+          return (
+            <div key={menuKey}>
+              <button
+                type="button"
+                onClick={() => handleToggle(menuKey)}
+                className="flex items-center justify-between w-full px-3 py-1.5 text-sm font-medium text-sidebar-foreground hover:bg-sidebar-accent"
+              >
+                <div className="flex items-center gap-2">
+                  <dept.icon className="w-4 h-4 text-sidebar-foreground/70" />
+                  <span>{dept.name}</span>
+                </div>
+                <ChevronDown
                   className={cn(
-                    "flex items-center gap-2 px-3 py-1.5 pl-9 text-sm transition-colors",
-                    isActive(item.href)
-                      ? "text-primary bg-sidebar-accent font-medium"
-                      : "text-sidebar-foreground/80 hover:bg-sidebar-accent",
+                    "w-4 h-4 text-sidebar-foreground/50 transition-transform duration-200",
+                    isOpen && "rotate-180",
                   )}
-                >
-                  <item.icon className="w-4 h-4" />
-                  <span>{item.name}</span>
-                </Link>
-              ))}
-            </CollapsibleContent>
-          </Collapsible>
-        ))}
+                />
+              </button>
+
+              <div
+                className={cn(
+                  "overflow-hidden transition-all duration-200",
+                  isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0",
+                )}
+              >
+                {dept.submenu.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={cn(
+                      "flex items-center gap-2 px-3 py-1.5 pl-9 text-sm transition-colors",
+                      isActive(item.href)
+                        ? "text-primary bg-primary/10 font-medium"
+                        : "text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-foreground",
+                    )}
+                  >
+                    <item.icon className="w-4 h-4" />
+                    <span>{item.name}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )
+        })}
       </nav>
     </aside>
   )
