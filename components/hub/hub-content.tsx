@@ -17,6 +17,7 @@ export function HubContent() {
 
   useEffect(() => {
     if (tabParam && ["chat", "calendar", "meetings", "ai"].includes(tabParam)) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setActiveTab(tabParam)
     }
   }, [tabParam])
