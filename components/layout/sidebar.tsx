@@ -121,7 +121,8 @@ const obraNavigation = [
     icon: Gauge,
     submenu: [
       { name: "Cockpit de Governanca", href: "/obra/gerencial/cockpit", icon: Activity },
-      { name: "Encerramento Mensal", href: "/obra/gerencial/encerramento", icon: CalendarCheck },
+      { name: "Agenda Gerencial", href: "/obra/gerencial/agenda", icon: CalendarCheck },
+      { name: "Encerramento Mensal", href: "/obra/gerencial/encerramento", icon: FileText },
       { name: "Indicadores & KPIs", href: "/obra/gerencial/indicadores", icon: BarChart3 },
     ],
   },
