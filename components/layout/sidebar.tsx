@@ -50,6 +50,7 @@ import {
   Network,
   Activity,
   LayoutList,
+  FileSignature,
 } from "lucide-react"
 import { useCallback, useReducer } from "react"
 
@@ -132,6 +133,7 @@ const obraNavigation = [
     icon: Briefcase,
     submenu: [
       { name: "Estruturacao Geral", href: "/obra/comercial/estruturacao-geral", icon: LayoutList },
+      { name: "EST-01 Contrato", href: "/obra/comercial/estruturacao-contrato", icon: FileSignature },
       { name: "Estrutura (EAP)", href: "/obra/comercial/estrutura", icon: FileStack },
       { name: "Receita & Medicao", href: "/obra/comercial/receita", icon: TrendingUp },
       { name: "Custo & Meta 0.9", href: "/obra/comercial/custo", icon: DollarSign },
