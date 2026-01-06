@@ -31,6 +31,7 @@ import {
   Truck,
   ClipboardCheck,
   Divide,
+  FileText,
 } from "lucide-react"
 
 // ============================================================================
@@ -354,40 +355,66 @@ function VisaoPerformanceContent() {
 
   return (
     <div className="overflow-auto h-full">
-      <div className="p-4 md:p-6 space-y-6">
+      <div className="flex flex-col h-full p-4">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="flex items-center justify-between mb-4 flex-shrink-0">
           <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
-              <Gauge className="h-5 w-5 text-primary" />
+            <div className="flex items-center justify-center w-9 h-9 rounded-lg border border-border">
+              <Gauge className="w-4 h-4 text-muted-foreground" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-xl font-bold text-foreground">Cockpit de Governanca</h1>
-                <Badge variant="outline" className="bg-primary/10 text-primary border-primary/30">
+                <h1 className="text-lg font-bold text-foreground">Cockpit de Governanca</h1>
+                <InfoTooltip title="Visao Performance" description="Indicadores de performance e KPIs GNESIS" />
+                <Badge variant="outline" className="text-[9px] h-5 border-primary/50 text-primary bg-primary/10">
                   PERFORMANCE
                 </Badge>
               </div>
-              <p className="text-sm text-muted-foreground">BR-101 LOTE 2 | Compor 90</p>
+              <p className="text-[11px] text-muted-foreground">BR-101 LOTE 2 | Compor 90</p>
             </div>
           </div>
 
           {/* Navegacao entre visoes */}
           <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm" onClick={() => navegarPara("/obra/gerencial/cockpit")}>
-              Geral
-            </Button>
-            <Button variant="outline" size="sm" onClick={() => navegarPara("/obra/gerencial/cockpit/visao-contrato")}>
-              Contrato
-            </Button>
-            <Button variant="default" size="sm">
-              Performance
-            </Button>
-            <Button variant="outline" size="sm" onClick={() => navegarPara("/obra/gerencial/cockpit/visao-financeiro")}>
-              Financeiro
-            </Button>
-            <Button variant="outline" size="sm" className="ml-2 bg-transparent">
+            <div className="flex items-center gap-1 p-1 rounded-lg border border-border bg-muted/30">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-7 px-3 text-xs hover:bg-muted/50"
+                onClick={() => navegarPara("/obra/gerencial/cockpit")}
+              >
+                Geral
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-7 px-3 text-xs hover:bg-muted/50"
+                onClick={() => navegarPara("/obra/gerencial/cockpit/visao-contrato")}
+              >
+                Contrato
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-7 px-3 text-xs bg-muted/50 border border-primary/30"
+                disabled
+              >
+                Performance
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-7 px-3 text-xs hover:bg-muted/50"
+                onClick={() => navegarPara("/obra/gerencial/cockpit/visao-financeiro")}
+              >
+                Financeiro
+              </Button>
+            </div>
+            <Badge variant="outline" className="text-[10px] h-6 px-2">
               Janeiro 2025
+            </Badge>
+            <Button variant="outline" size="sm" className="h-8 w-8 p-0 bg-transparent" title="Gerar Relatorio">
+              <FileText className="w-4 h-4" />
             </Button>
           </div>
         </div>

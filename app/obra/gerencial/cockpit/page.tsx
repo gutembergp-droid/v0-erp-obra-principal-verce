@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { Suspense, useState } from "react"
+import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -28,8 +28,11 @@ import {
   Activity,
   Receipt,
   AlertCircle,
+  Calculator,
+  Landmark,
 } from "lucide-react"
 import { InfoTooltip } from "@/components/ui/info-tooltip"
+import { DRECard } from "@/components/indicadores"
 
 // ============================================================================
 // DADOS MOCKADOS - GC-01 COCKPIT DE GOVERNANCA
@@ -419,8 +422,8 @@ function CockpitContent() {
                   title="GC-01 - Cockpit de Governanca"
                   description="Painel executivo com visao integrada: Gestao do Contrato com Cliente e Gerenciamento Interno da Obra."
                 />
-                <Badge variant="outline" className="text-[9px] h-5 border-border text-muted-foreground">
-                  GC-01
+                <Badge variant="outline" className="text-[9px] h-5 border-primary/50 text-primary bg-primary/10">
+                  GERAL
                 </Badge>
               </div>
               <p className="text-[11px] text-muted-foreground">BR-101 LOTE 2 | Compor 90</p>
@@ -907,16 +910,382 @@ function CockpitContent() {
   )
 }
 
-export default function CockpitPage() {
+export default function CockpitGovernanca() {
+  const router = useRouter()
+  const [painelAberto, setPainelAberto] = useState(false)
+  const [itemSelecionado, setItemSelecionado] = useState<string | null>(null)
+  const [categoriaSelecionada, setCategoriaSelecionada] = useState<string | null>(null)
+
+  const dreItens = [
+    {
+      codigo: "FAT",
+      nome: "FATURAMENTO",
+      valor: 176000000,
+      previsto: 180000000,
+      icone: DollarSign,
+      cor: "#10b981",
+      tipo: "receita" as const,
+    },
+    {
+      codigo: "CD",
+      nome: "CUSTO DIRETO",
+      valor: 142600000,
+      previsto: 145000000,
+      icone: Calculator,
+      cor: "#f59e0b",
+      tipo: "custo" as const,
+    },
+    {
+      codigo: "CI",
+      nome: "CUSTO INDIRETO",
+      valor: 18100000,
+      previsto: 19000000,
+      icone: Landmark,
+      cor: "#8b5cf6",
+      tipo: "custo" as const,
+    },
+  ]
+
   return (
-    <Suspense
-      fallback={
-        <div className="flex items-center justify-center h-full">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+    <div className="min-h-screen bg-background">
+      <div className="p-6 space-y-6">
+        {/* Header com navegacao */}
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-primary/10 rounded-lg">
+              <Gauge className="h-6 w-6 text-primary" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h1 className="text-2xl font-bold text-foreground">Cockpit de Governanca</h1>
+                <InfoTooltip content="Visao consolidada dos indicadores de governanca da obra" />
+                <Badge variant="outline" className="ml-2">
+                  GERAL
+                </Badge>
+              </div>
+              <p className="text-sm text-muted-foreground">BR-101 LOTE 2 | Compor 90</p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <div className="flex bg-muted rounded-lg p-1">
+              <Button variant="default" size="sm" className="rounded-md">
+                Geral
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="rounded-md"
+                onClick={() => router.push("/obra/gerencial/cockpit/visao-contrato")}
+              >
+                Contrato
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="rounded-md"
+                onClick={() => router.push("/obra/gerencial/cockpit/visao-performance")}
+              >
+                Performance
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="rounded-md"
+                onClick={() => router.push("/obra/gerencial/cockpit/visao-financeiro")}
+              >
+                Financeiro
+              </Button>
+            </div>
+            <Button variant="outline" size="sm">
+              <Calendar className="h-4 w-4 mr-2" />
+              Janeiro 2025
+            </Button>
+            <Button variant="outline" size="sm">
+              <FileText className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
-      }
-    >
-      <CockpitContent />
-    </Suspense>
+
+        {/* BLOCO 1: GESTAO DO CONTRATO COM CLIENTE */}
+        <div className="space-y-4">
+          <div className="flex items-center gap-2">
+            <Briefcase className="h-5 w-5 text-primary" />
+            <h2 className="text-lg font-semibold">GESTAO DO CONTRATO COM CLIENTE</h2>
+          </div>
+
+          {/* Cards Financeiros Hibridos - Receita */}
+          <div className="grid grid-cols-4 gap-2 mb-3">
+            <CardFinanceiroHibrido
+              titulo="Receita Contratada"
+              valor={gestaoCliente.receita.contratada}
+              percentual={100}
+              previstoPercentual={100}
+              icone={<DollarSign className="w-4 h-4" />}
+              subtitulo="valor atual"
+            />
+            <CardFinanceiroHibrido
+              titulo="Receita Medida"
+              valor={gestaoCliente.receita.medidaAcumulada}
+              percentual={gestaoCliente.receita.percentualMedido}
+              previstoPercentual={gestaoCliente.receita.previsto}
+              icone={<FileCheck className="w-4 h-4" />}
+              subtitulo="acumulado"
+            />
+            <CardFinanceiroHibrido
+              titulo="A Faturar"
+              valor={gestaoCliente.receita.aFaturar}
+              percentual={(gestaoCliente.receita.aFaturar / gestaoCliente.receita.medidaAcumulada) * 100}
+              previstoPercentual={5}
+              icone={<Receipt className="w-4 h-4" />}
+              subtitulo="medido nao faturado"
+            />
+            <CardFinanceiroHibrido
+              titulo="A Receber"
+              valor={gestaoCliente.receita.aReceber}
+              percentual={(gestaoCliente.receita.aReceber / gestaoCliente.receita.medidaAcumulada) * 100}
+              previstoPercentual={10}
+              icone={<Clock className="w-4 h-4" />}
+              subtitulo="faturado nao pago"
+            />
+          </div>
+
+          {/* Cronograma + Change Control + Alertas Cliente */}
+          <div className="grid grid-cols-12 gap-2">
+            {/* Cronograma Contratual */}
+            <div className="col-span-6 p-3 rounded-lg border border-border bg-card">
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <Calendar className="w-4 h-4 text-muted-foreground" />
+                  <span className="text-[10px] font-semibold uppercase tracking-wide">Cronograma Contratual</span>
+                </div>
+                <div className="flex items-center gap-3 text-[9px] text-muted-foreground">
+                  <span>
+                    Inicio: <strong className="text-foreground">{gestaoCliente.cronograma.dataInicio}</strong>
+                  </span>
+                  <span>
+                    Termino: <strong className="text-foreground">{gestaoCliente.cronograma.dataTermino}</strong>
+                  </span>
+                </div>
+              </div>
+
+              <div className="relative h-5 bg-muted/30 rounded overflow-hidden mb-1.5">
+                <div
+                  className="absolute top-0 left-0 h-2.5 bg-muted-foreground/40"
+                  style={{ width: `${gestaoCliente.cronograma.percentualPrevisto}%` }}
+                />
+                <div
+                  className="absolute top-2.5 left-0 h-2.5 bg-primary/70"
+                  style={{ width: `${gestaoCliente.cronograma.percentualRealizado}%` }}
+                />
+                <div
+                  className="absolute top-0 bottom-0 w-0.5 bg-foreground"
+                  style={{
+                    left: `${(gestaoCliente.cronograma.diasDecorridos / gestaoCliente.cronograma.diasTotais) * 100}%`,
+                  }}
+                />
+              </div>
+
+              <div className="flex items-center justify-between text-[9px]">
+                <div className="flex items-center gap-3">
+                  <span className="flex items-center gap-1">
+                    <div className="w-2.5 h-1.5 bg-muted-foreground/40 rounded-sm" />
+                    Previsto: {gestaoCliente.cronograma.percentualPrevisto}%
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <div className="w-2.5 h-1.5 bg-primary/70 rounded-sm" />
+                    Realizado: {gestaoCliente.cronograma.percentualRealizado}%
+                  </span>
+                  <span
+                    className={`font-semibold ${
+                      gestaoCliente.cronograma.percentualRealizado >= gestaoCliente.cronograma.percentualPrevisto
+                        ? "text-emerald-600 dark:text-emerald-400"
+                        : "text-destructive"
+                    }`}
+                  >
+                    Desvio:{" "}
+                    {(
+                      gestaoCliente.cronograma.percentualRealizado - gestaoCliente.cronograma.percentualPrevisto
+                    ).toFixed(1)}
+                    %
+                  </span>
+                </div>
+                <span className="text-muted-foreground">
+                  {gestaoCliente.cronograma.diasDecorridos}/{gestaoCliente.cronograma.diasTotais} dias
+                </span>
+              </div>
+            </div>
+
+            {/* Change Control */}
+            <div className="col-span-3 p-3 rounded-lg border border-border bg-card">
+              <div className="flex items-center gap-2 mb-2">
+                <Scale className="w-4 h-4 text-muted-foreground" />
+                <span className="text-[10px] font-semibold uppercase tracking-wide">Change Control</span>
+              </div>
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between text-[11px]">
+                  <span className="text-muted-foreground">SMEs Abertas</span>
+                  <Badge variant="outline" className="h-5 text-[10px]">
+                    {gestaoCliente.changeControl.smesAbertas}
+                  </Badge>
+                </div>
+                <div className="flex items-center justify-between text-[11px]">
+                  <span className="text-muted-foreground">Aditivos Pendentes</span>
+                  <Badge variant="outline" className="h-5 text-[10px]">
+                    {gestaoCliente.changeControl.aditivosPendentes}
+                  </Badge>
+                </div>
+                <div className="flex items-center justify-between text-[11px]">
+                  <span className="text-muted-foreground">Pleitos Ativos</span>
+                  <Badge variant="outline" className="h-5 text-[10px]">
+                    {gestaoCliente.changeControl.pleitosAtivos}
+                  </Badge>
+                </div>
+                <div className="pt-1.5 border-t border-border">
+                  <div className="flex items-center justify-between text-[11px]">
+                    <span className="text-muted-foreground">Em Negociacao</span>
+                    <span className="font-semibold text-foreground">
+                      {formatarMoeda(gestaoCliente.changeControl.valorEmNegociacao)}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Alertas Cliente */}
+            <div className="col-span-3 p-3 rounded-lg border border-border bg-card">
+              <div className="flex items-center gap-2 mb-2">
+                <AlertTriangle className="w-4 h-4 text-muted-foreground" />
+                <span className="text-[10px] font-semibold uppercase tracking-wide">Alertas Cliente</span>
+              </div>
+              <ScrollArea className="h-[80px]">
+                <div className="space-y-1.5">
+                  {alertasCliente.map((alerta) => (
+                    <div
+                      key={alerta.id}
+                      className="flex items-center gap-2 p-1.5 rounded bg-muted/30 cursor-pointer hover:bg-muted/50"
+                    >
+                      <div
+                        className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${
+                          alerta.tipo === "critico"
+                            ? "bg-destructive"
+                            : alerta.tipo === "atencao"
+                              ? "bg-amber-500"
+                              : "bg-primary"
+                        }`}
+                      />
+                      <span className="text-[10px] flex-1 truncate">{alerta.titulo}</span>
+                      <span className="text-[9px] text-muted-foreground">{alerta.valor}</span>
+                    </div>
+                  ))}
+                </div>
+              </ScrollArea>
+            </div>
+          </div>
+        </div>
+
+        {/* ================================================================== */}
+        {/* BLOCO 2: GERENCIAMENTO INTERNO DA OBRA - KPIs GNESIS               */}
+        {/* ================================================================== */}
+        <div className="space-y-4">
+          <div className="flex items-center gap-2">
+            <HardHat className="h-5 w-5 text-primary" />
+            <h2 className="text-lg font-semibold">GERENCIAMENTO INTERNO DA OBRA</h2>
+          </div>
+
+          <DRECard titulo="RESULTADO ECONOMICO (DRE)" itens={dreItens} />
+
+          {/* Indicadores Complementares + Alertas */}
+          <div className="grid grid-cols-12 gap-2">
+            {/* Performance Fisica */}
+            <div className="col-span-3 p-3 rounded-lg border border-border bg-card">
+              <div className="flex items-center gap-2 mb-2">
+                <Activity className="w-4 h-4 text-muted-foreground" />
+                <span className="text-[10px] font-semibold uppercase tracking-wide">Performance Fisica</span>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <CardKpiSimples
+                  titulo="SPI"
+                  valor={gerenciamentoInterno.performance.spi}
+                  meta={1.0}
+                  icone={<TrendingUp className="w-3.5 h-3.5" />}
+                  status={gerenciamentoInterno.performance.spi >= 1.0 ? "ok" : "atencao"}
+                />
+                <CardKpiSimples
+                  titulo="CPI"
+                  valor={gerenciamentoInterno.performance.cpi}
+                  meta={1.0}
+                  icone={<Target className="w-3.5 h-3.5" />}
+                  status={gerenciamentoInterno.performance.cpi >= 1.0 ? "ok" : "atencao"}
+                />
+              </div>
+            </div>
+
+            {/* Qualidade / SSMA / Juridico */}
+            <div className="col-span-6 p-3 rounded-lg border border-border bg-card">
+              <div className="flex items-center gap-2 mb-2">
+                <ShieldAlert className="w-4 h-4 text-muted-foreground" />
+                <span className="text-[10px] font-semibold uppercase tracking-wide">Garantidores</span>
+              </div>
+              <div className="grid grid-cols-3 gap-3">
+                <div className="space-y-1">
+                  <span className="text-[9px] text-muted-foreground uppercase">Qualidade</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg font-bold">{gerenciamentoInterno.qualidade.taxaConformidade}%</span>
+                    <Badge variant="outline" className="text-[9px] h-4">
+                      {gerenciamentoInterno.qualidade.ncsAbertas} NCs
+                    </Badge>
+                  </div>
+                </div>
+                <div className="space-y-1">
+                  <span className="text-[9px] text-muted-foreground uppercase">SSMA</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg font-bold">{gerenciamentoInterno.ssma.diasSemAcidente}</span>
+                    <span className="text-[10px] text-muted-foreground">dias s/ acidente</span>
+                  </div>
+                </div>
+                <div className="space-y-1">
+                  <span className="text-[9px] text-muted-foreground uppercase">Juridico</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg font-bold">{gerenciamentoInterno.juridico.processosAtivos}</span>
+                    <span className="text-[10px] text-muted-foreground">processos</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Alertas Internos */}
+            <div className="col-span-3 p-3 rounded-lg border border-border bg-card">
+              <div className="flex items-center gap-2 mb-2">
+                <AlertCircle className="w-4 h-4 text-muted-foreground" />
+                <span className="text-[10px] font-semibold uppercase tracking-wide">Alertas Internos</span>
+              </div>
+              <ScrollArea className="h-[80px]">
+                <div className="space-y-1.5">
+                  {alertasInternos.map((alerta) => (
+                    <div
+                      key={alerta.id}
+                      className="flex items-center gap-2 p-1.5 rounded bg-muted/30 cursor-pointer hover:bg-muted/50"
+                    >
+                      <div
+                        className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${
+                          alerta.tipo === "critico"
+                            ? "bg-destructive"
+                            : alerta.tipo === "atencao"
+                              ? "bg-amber-500"
+                              : "bg-emerald-500"
+                        }`}
+                      />
+                      <span className="text-[10px] flex-1 truncate">{alerta.titulo}</span>
+                      <span className="text-[9px] text-muted-foreground">{alerta.valor}</span>
+                    </div>
+                  ))}
+                </div>
+              </ScrollArea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }

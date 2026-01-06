@@ -28,6 +28,7 @@ import {
   CircleDollarSign,
   Calculator,
   Target,
+  FileText,
 } from "lucide-react"
 import { InfoTooltip } from "@/components/ui/info-tooltip"
 
@@ -483,6 +484,9 @@ function VisaoFinanceiroContent() {
             <Badge variant="outline" className="text-[10px] h-6 px-2">
               Janeiro 2025
             </Badge>
+            <Button variant="outline" size="sm" className="h-8 w-8 p-0 bg-transparent" title="Gerar Relatorio">
+              <FileText className="w-4 h-4" />
+            </Button>
           </div>
         </div>
 

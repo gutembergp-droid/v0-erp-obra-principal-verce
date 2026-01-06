@@ -14,7 +14,6 @@ import {
   Calendar,
   ArrowUp,
   ArrowDown,
-  Briefcase,
   FileCheck,
   Scale,
   Receipt,
@@ -33,6 +32,7 @@ import {
   FileMinus,
   FilePlus,
   ShieldAlert,
+  Gauge,
 } from "lucide-react"
 import { InfoTooltip } from "@/components/ui/info-tooltip"
 
@@ -336,19 +336,17 @@ function VisaoContratoContent() {
         <div className="flex items-center justify-between mb-4 flex-shrink-0">
           <div className="flex items-center gap-3">
             <div className="flex items-center justify-center w-9 h-9 rounded-lg border border-border">
-              <Briefcase className="w-4 h-4 text-muted-foreground" />
+              <Gauge className="w-4 h-4 text-muted-foreground" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-lg font-bold text-foreground">Visao Contrato</h1>
-                <InfoTooltip title="Gestao Contratual" description="100% focada na relacao com o cliente" />
+                <h1 className="text-lg font-bold text-foreground">Cockpit de Governanca</h1>
+                <InfoTooltip title="Visao Contrato" description="100% focada na relacao com o cliente" />
                 <Badge variant="outline" className="text-[9px] h-5 border-primary/50 text-primary bg-primary/10">
                   CONTRATO
                 </Badge>
               </div>
-              <p className="text-[11px] text-muted-foreground">
-                {contratoGeral.numero} | {contratoGeral.cliente}
-              </p>
+              <p className="text-[11px] text-muted-foreground">BR-101 LOTE 2 | Compor 90</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -389,6 +387,9 @@ function VisaoContratoContent() {
             <Badge variant="outline" className="text-[10px] h-6 px-2">
               Janeiro 2025
             </Badge>
+            <Button variant="outline" size="sm" className="h-8 w-8 p-0 bg-transparent" title="Gerar Relatorio">
+              <FileText className="w-4 h-4" />
+            </Button>
           </div>
         </div>
 
