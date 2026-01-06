@@ -1,0 +1,6 @@
+export { KPICardOficial } from "./kpi-card-oficial"
+export { KPICardSimples } from "./kpi-card-simples"
+export { CardConsolidado } from "./card-consolidado"
+export { ComposicaoCustos } from "./composicao-custos"
+export { CicloGovernanca } from "./ciclo-governanca"
+export { AlertasModulo } from "./alertas-modulo"

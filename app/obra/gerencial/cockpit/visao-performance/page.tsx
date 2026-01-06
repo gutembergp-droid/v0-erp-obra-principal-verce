@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
+import { InfoTooltip } from "@/components/ui/info-tooltip"
 import {
   Gauge,
   AlertTriangle,
@@ -29,128 +30,146 @@ import {
   Users,
   Truck,
   ClipboardCheck,
-  Zap,
-  Timer,
-  Award,
+  Divide,
 } from "lucide-react"
-import { InfoTooltip } from "@/components/ui/info-tooltip"
 
 // ============================================================================
-// DADOS MOCKADOS - 100% PERFORMANCE
+// DADOS MOCKADOS - 100% PERFORMANCE COM KPIs GNESIS
 // ============================================================================
 
 const dreResumo = {
-  receitaLiquida: 176000000,
+  faturamento: 176000000,
+  impostos: 12320000,
+  receitaLiquida: 163680000,
   custosDiretos: 142560000,
   custosIndiretos: 18120000,
+  dag: 5280000,
   margemBruta: 15320000,
   margemBrutaPercent: 8.7,
   metaMargemPercent: 9.0,
-  despesasOperacionais: 4200000,
   lucroOperacional: 11120000,
   lucroOperacionalPercent: 6.3,
   ebitda: 13450000,
   ebitdaPercent: 7.6,
 }
 
-const indicadoresPerformance = {
-  spi: { valor: 0.95, meta: 1.0, status: "atencao" as const },
-  cpi: { valor: 1.02, meta: 1.0, status: "ok" as const },
-  produtividade: { valor: 94.2, meta: 95.0, status: "atencao" as const },
-  eficiencia: { valor: 97.8, meta: 95.0, status: "ok" as const },
-  idr: { valor: 0.97, meta: 1.0, status: "atencao" as const }, // Indice de Desempenho de Resultado
-  ipe: { valor: 1.01, meta: 1.0, status: "ok" as const }, // Indice de Performance Economica
+const kpisGnesis = {
+  fcd: {
+    codigo: "F/CD",
+    nome: "Faturamento / Custo Direto",
+    formula: "Faturamento ÷ Custo Direto",
+    valor: 1.23,
+    meta: 1.25,
+    status: "atencao" as const,
+    interpretacao: "Cada R$1 de CD gera R$1,23 de faturamento",
+    acaoGerencial: "Otimizar produtividade para aumentar faturamento",
+    historico: [1.18, 1.2, 1.21, 1.22, 1.23, 1.23],
+  },
+  crco: {
+    codigo: "CR/CO",
+    nome: "Custo Real / Custo Orcado",
+    formula: "Custo Real ÷ Custo Orçado",
+    valor: 0.98,
+    meta: 1.0,
+    status: "ok" as const,
+    interpretacao: "Custo 2% abaixo do orçado - eficiência",
+    acaoGerencial: "Manter controles e monitorar tendências",
+    historico: [1.02, 1.01, 0.99, 0.98, 0.98, 0.98],
+  },
+  cicd: {
+    codigo: "CI/CD",
+    nome: "Custo Indireto / Custo Direto",
+    formula: "Custo Indireto ÷ Custo Direto",
+    valor: 0.127,
+    meta: 0.12,
+    status: "atencao" as const,
+    interpretacao: "12,7% de overhead sobre custos diretos",
+    acaoGerencial: "Revisar estrutura administrativa",
+    historico: [0.14, 0.135, 0.13, 0.128, 0.127, 0.127],
+  },
+  mo: {
+    codigo: "MO",
+    nome: "Margem Operacional",
+    formula: "(Fat - Imp - CD - CI - DAG) ÷ Faturamento",
+    valor: 0.063,
+    meta: 0.07,
+    status: "atencao" as const,
+    interpretacao: "Margem de 6,3% sobre faturamento",
+    acaoGerencial: "Aumentar receita ou reduzir custos indiretos",
+    historico: [0.055, 0.058, 0.06, 0.062, 0.063, 0.063],
+  },
 }
 
-const custoMeta = {
-  orcadoTotal: 231917000,
-  realizadoTotal: 160680000,
-  percentualRealizado: 69.3,
-  previsto: 72.0,
-  desvioTotal: 2340000,
-  desvioPercent: 1.5,
-  tendenciaFinal: 235800000,
-  variacaoTendencia: 1.7,
+const composicaoCustos = {
+  custoDireto: {
+    total: 142560000,
+    materiais: 49800000,
+    maoDeObra: 59200000,
+    equipamentos: 26100000,
+    subempreiteiros: 7460000,
+  },
+  custoIndireto: {
+    total: 18120000,
+    administracao: 7200000,
+    canteiro: 4800000,
+    suporte: 3600000,
+    seguros: 2520000,
+  },
+  dag: 5280000,
 }
 
 const custosPorCategoria = [
-  { categoria: "Mao de Obra", orcado: 85000000, realizado: 59200000, meta: 58000000, status: "atencao" as const },
-  { categoria: "Materiais", orcado: 72000000, realizado: 49800000, meta: 50400000, status: "ok" as const },
-  { categoria: "Equipamentos", orcado: 38000000, realizado: 26100000, meta: 26600000, status: "ok" as const },
-  { categoria: "Terceiros", orcado: 28000000, realizado: 19580000, meta: 19600000, status: "ok" as const },
-  { categoria: "Indiretos", orcado: 8917000, realizado: 6000000, meta: 6200000, status: "ok" as const },
+  { categoria: "Mao de Obra", orcado: 58000000, realizado: 59200000, desvio: 1200000, status: "atencao" as const },
+  { categoria: "Materiais", orcado: 50400000, realizado: 49800000, desvio: -600000, status: "ok" as const },
+  { categoria: "Equipamentos", orcado: 26600000, realizado: 26100000, desvio: -500000, status: "ok" as const },
+  { categoria: "Terceiros", orcado: 19600000, realizado: 19580000, desvio: -20000, status: "ok" as const },
+  { categoria: "Indiretos", orcado: 6200000, realizado: 6000000, desvio: -200000, status: "ok" as const },
 ]
 
 const qualidade = {
+  conformidade: 93.5,
   inspecoesRealizadas: 234,
-  inspecoesPendentes: 18,
   inspecoesProgramadas: 252,
-  taxaConformidade: 93.5,
   ncsAbertas: 7,
   ncsFechadas: 45,
-  ncsTotal: 52,
-  acoesCorretivas: 12,
-  acoesPendentes: 4,
-  tempoMedioFechamento: 8.5, // dias
 }
 
 const ssma = {
   diasSemAcidente: 127,
-  metaDiasSemAcidente: 180,
-  incidentesMes: 2,
-  incidentesAno: 14,
   taxaFrequencia: 0.8,
-  taxaGravidade: 12.3,
-  treinamentosRealizados: 45,
-  treinamentosPendentes: 8,
   ddsRealizados: 98,
   ddsProgramados: 100,
-  epiConformidade: 97.2,
 }
 
 const juridico = {
   processosAtivos: 2,
-  processosEncerrados: 5,
-  notificacoesPendentes: 1,
-  notificacoesRespondidas: 12,
   riscoEstimado: 850000,
-  provisaoContabil: 650000,
-  contratosTerceiros: 23,
-  contratosVencer30d: 4,
-  irregularidades: 0,
+  contratosVencer: 4,
 }
 
 const efetivo = {
-  previsto: 380,
-  presente: 342,
-  ausente: 38,
+  presentes: 342,
   percentualPresenca: 90.0,
-  turnover: 3.2,
-  horasExtras: 1240,
-  horasNormais: 58400,
-  produtividadeHH: 94.2,
-  terceiros: 85,
   proprios: 257,
+  terceiros: 85,
+  turnover: 3.2,
 }
 
 const equipamentos = {
-  disponiveis: 45,
   emOperacao: 38,
+  disponibilidade: 84.4,
   emManutencao: 5,
   parados: 2,
-  disponibilidade: 84.4,
   utilizacao: 89.5,
-  horasProdutivasTotal: 12400,
-  horasParadasTotal: 1800,
 }
 
 const alertasPerformance = [
-  { id: 1, tipo: "critico", titulo: "Desvio de custo Mao de Obra", valor: "+2.1%", area: "Custo", dias: 3 },
-  { id: 2, tipo: "atencao", titulo: "SPI abaixo da meta (0.95)", valor: "-5%", area: "Cronograma", dias: 7 },
-  { id: 3, tipo: "atencao", titulo: "7 NCs abertas", valor: "Qualidade", area: "Qualidade", dias: 15 },
-  { id: 4, tipo: "info", titulo: "127 dias sem acidentes", valor: "SSMA", area: "SSMA", dias: 0 },
-  { id: 5, tipo: "atencao", titulo: "4 contratos vencem em 30 dias", valor: "Juridico", area: "Juridico", dias: 5 },
-  { id: 6, tipo: "info", titulo: "CPI acima da meta (1.02)", valor: "+2%", area: "Custo", dias: 0 },
+  { id: 1, tipo: "critico", titulo: "CI/CD acima da meta (12,7%)", valor: "+0.7%", area: "Custo Indireto", dias: 3 },
+  { id: 2, tipo: "atencao", titulo: "F/CD abaixo da meta (1.23)", valor: "-1.6%", area: "Faturamento", dias: 7 },
+  { id: 3, tipo: "atencao", titulo: "MO abaixo da meta (6,3%)", valor: "-10%", area: "Margem", dias: 5 },
+  { id: 4, tipo: "info", titulo: "CR/CO dentro da meta (0.98)", valor: "-2%", area: "Custo", dias: 0 },
+  { id: 5, tipo: "atencao", titulo: "Desvio Mao de Obra +R$ 1.2 Mi", valor: "+2.1%", area: "Custo Direto", dias: 3 },
+  { id: 6, tipo: "info", titulo: "127 dias sem acidentes", valor: "SSMA", area: "SSMA", dias: 0 },
 ]
 
 // ============================================================================
@@ -163,9 +182,102 @@ function formatarMoeda(valor: number): string {
   return valor.toLocaleString("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 })
 }
 
+// Nova função para formatar percentual de KPIs GNESIS
+function formatarPercentual(valor: number): string {
+  return `${(valor * 100).toFixed(1)}%`
+}
+
 // ============================================================================
 // COMPONENTES
 // ============================================================================
+
+interface KPIGnesisCardProps {
+  kpi: {
+    codigo: string
+    nome: string
+    formula: string
+    valor: number
+    meta: number
+    status: "ok" | "atencao" | "critico"
+    interpretacao: string
+    historico: number[]
+  }
+  onClick?: () => void
+}
+
+function KPIGnesisCard({ kpi, onClick }: KPIGnesisCardProps) {
+  const desvio = ((kpi.valor - kpi.meta) / kpi.meta) * 100
+  const isPercentual = kpi.codigo === "MO" || kpi.codigo === "CI/CD"
+  const valorFormatado = isPercentual ? formatarPercentual(kpi.valor) : kpi.valor.toFixed(2)
+  const metaFormatada = isPercentual ? formatarPercentual(kpi.meta) : kpi.meta.toFixed(2)
+
+  return (
+    <div
+      className="p-4 rounded-lg border border-border bg-card cursor-pointer hover:border-primary/40 transition-colors"
+      onClick={onClick}
+    >
+      <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center gap-2">
+          <Divide className="h-4 w-4 text-muted-foreground" />
+          <span className="text-xs font-bold text-primary">{kpi.codigo}</span>
+        </div>
+        <Badge
+          variant="outline"
+          className={
+            kpi.status === "ok"
+              ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30"
+              : kpi.status === "atencao"
+                ? "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30"
+                : "bg-destructive/10 text-destructive border-destructive/30"
+          }
+        >
+          {kpi.status === "ok" ? "Na Meta" : kpi.status === "atencao" ? "Atenção" : "Crítico"}
+        </Badge>
+      </div>
+
+      <p className="text-[10px] text-muted-foreground mb-2 truncate">{kpi.nome}</p>
+
+      <div className="flex items-baseline gap-2 mb-2">
+        <span className="text-2xl font-bold text-foreground">{valorFormatado}</span>
+        <span className="text-xs text-muted-foreground">/ {metaFormatada}</span>
+        <span
+          className={`text-xs font-medium flex items-center gap-0.5 ${
+            desvio >= 0 ? "text-emerald-600 dark:text-emerald-400" : "text-destructive"
+          }`}
+        >
+          {desvio >= 0 ? <ArrowUp className="h-3 w-3" /> : <ArrowDown className="h-3 w-3" />}
+          {Math.abs(desvio).toFixed(1)}%
+        </span>
+      </div>
+
+      {/* Mini grafico de barras do historico */}
+      <div className="flex items-end gap-1 h-8 mb-2">
+        {kpi.historico.map((valor, i) => {
+          const maxVal = Math.max(...kpi.historico)
+          const minVal = Math.min(...kpi.historico) * 0.9
+          const altura = ((valor - minVal) / (maxVal - minVal)) * 100
+          return (
+            <div
+              key={i}
+              className={`flex-1 rounded-t transition-all ${
+                i === kpi.historico.length - 1
+                  ? kpi.status === "ok"
+                    ? "bg-emerald-500"
+                    : kpi.status === "atencao"
+                      ? "bg-amber-500"
+                      : "bg-destructive"
+                  : "bg-muted-foreground/30"
+              }`}
+              style={{ height: `${Math.max(altura, 10)}%` }}
+            />
+          )
+        })}
+      </div>
+
+      <p className="text-[9px] text-muted-foreground truncate">{kpi.formula}</p>
+    </div>
+  )
+}
 
 interface CardDREProps {
   titulo: string
@@ -195,511 +307,344 @@ function CardDRE({ titulo, valor, percentual, meta, icone, tipo = "resultado", o
             className={`flex items-center gap-0.5 text-[10px] font-semibold ${
               tipo === "custo"
                 ? desvio <= 0
-                  ? "text-primary"
+                  ? "text-emerald-600 dark:text-emerald-400"
                   : "text-destructive"
                 : desvio >= 0
-                  ? "text-primary"
+                  ? "text-emerald-600 dark:text-emerald-400"
                   : "text-destructive"
             }`}
           >
-            {desvio >= 0 ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />}
-            {desvio > 0 ? "+" : ""}
-            {desvio.toFixed(1)}%
+            {desvio >= 0 ? <ArrowUp className="h-3 w-3" /> : <ArrowDown className="h-3 w-3" />}
+            {Math.abs(desvio).toFixed(1)}%
           </div>
         )}
       </div>
-      <div className="mb-1">
-        <span className="text-xl font-bold tabular-nums text-foreground">{formatarMoeda(valor)}</span>
-      </div>
+      <div className="text-xl font-bold text-foreground">{formatarMoeda(valor)}</div>
       {percentual !== undefined && (
-        <div className="flex items-center gap-2">
-          <Progress value={Math.min(percentual * 10, 100)} className="h-1.5 flex-1" />
-          <span className="text-[10px] tabular-nums font-medium text-foreground">{percentual}%</span>
-          {meta && <span className="text-[9px] text-muted-foreground">meta: {meta}%</span>}
+        <div className="mt-2">
+          <Progress value={(percentual / (meta || 100)) * 100} className="h-1.5" />
+          <div className="flex justify-between mt-1">
+            <span className="text-[10px] text-muted-foreground">{percentual.toFixed(1)}%</span>
+            <span className="text-[10px] text-muted-foreground">meta: {meta}%</span>
+          </div>
         </div>
       )}
     </div>
   )
 }
 
-interface CardKpiProps {
-  titulo: string
-  valor: number | string
-  meta?: number | string
-  unidade?: string
-  icone: React.ReactNode
-  status: "ok" | "atencao" | "critico"
-  invertido?: boolean
-}
-
-function CardKpi({ titulo, valor, meta, unidade = "", icone, status, invertido = false }: CardKpiProps) {
-  const numValor = typeof valor === "number" ? valor : Number.parseFloat(valor)
-  const numMeta = typeof meta === "number" ? meta : meta ? Number.parseFloat(meta) : numValor
-  const percentualMeta = invertido ? (numMeta / numValor) * 100 : (numValor / numMeta) * 100
-
-  return (
-    <div className="p-2.5 rounded-lg border border-border bg-card">
-      <div className="flex items-center justify-between mb-1">
-        <div className="flex items-center gap-1.5">
-          <div className="text-muted-foreground">{icone}</div>
-          <span className="text-[9px] text-muted-foreground uppercase tracking-wider">{titulo}</span>
-        </div>
-        <div
-          className={`w-2 h-2 rounded-full ${
-            status === "ok" ? "bg-primary" : status === "atencao" ? "bg-amber-500" : "bg-destructive"
-          }`}
-        />
-      </div>
-      <div className="flex items-baseline gap-1">
-        <span className="text-lg font-bold tabular-nums text-foreground">
-          {valor}
-          {unidade}
-        </span>
-        {meta && (
-          <span className="text-[10px] text-muted-foreground">
-            / {meta}
-            {unidade}
-          </span>
-        )}
-      </div>
-      {meta && <Progress value={Math.min(percentualMeta, 100)} className="h-1 mt-1.5" />}
-    </div>
-  )
-}
-
-function CardCustoCategoria({
-  categoria,
-  orcado,
-  realizado,
-  meta,
-  status,
-}: {
-  categoria: string
-  orcado: number
-  realizado: number
-  meta: number
-  status: "ok" | "atencao" | "critico"
-}) {
-  const percentualRealizado = (realizado / orcado) * 100
-  const percentualMeta = (meta / orcado) * 100
-  const desvio = realizado - meta
-
-  return (
-    <div className="flex items-center gap-3 py-2 border-b border-border last:border-0">
-      <div className="w-24 text-[11px] font-medium text-foreground">{categoria}</div>
-      <div className="flex-1">
-        <div className="relative h-4 bg-muted/30 rounded overflow-hidden">
-          <div
-            className="absolute top-0 left-0 h-2 bg-muted-foreground/40 rounded-t"
-            style={{ width: `${percentualMeta}%` }}
-          />
-          <div
-            className={`absolute top-2 left-0 h-2 rounded-b ${status === "ok" ? "bg-primary" : status === "atencao" ? "bg-amber-500" : "bg-destructive"}`}
-            style={{ width: `${percentualRealizado}%` }}
-          />
-        </div>
-      </div>
-      <div className="w-20 text-right">
-        <span className="text-[10px] font-medium text-foreground">{formatarMoeda(realizado)}</span>
-      </div>
-      <div className={`w-16 text-right text-[10px] font-semibold ${desvio <= 0 ? "text-primary" : "text-destructive"}`}>
-        {desvio > 0 ? "+" : ""}
-        {formatarMoeda(desvio)}
-      </div>
-      <div
-        className={`w-2 h-2 rounded-full ${status === "ok" ? "bg-primary" : status === "atencao" ? "bg-amber-500" : "bg-destructive"}`}
-      />
-    </div>
-  )
-}
-
 // ============================================================================
-// COMPONENTE PRINCIPAL - VISAO PERFORMANCE
+// COMPONENTE PRINCIPAL
 // ============================================================================
 
 function VisaoPerformanceContent() {
   const router = useRouter()
-  const [painelAberto, setPainelAberto] = useState(false)
-  const [painelTipo, setPainelTipo] = useState<"dre" | "custo" | "qualidade" | "ssma" | "juridico" | "alerta" | null>(
-    null,
-  )
-  const [itemSelecionado, setItemSelecionado] = useState<any>(null)
+  const [sheetOpen, setSheetOpen] = useState(false)
+  const [sheetContent, setSheetContent] = useState<{
+    tipo: "kpi" | "custo" | "alerta"
+    dados: any
+  } | null>(null)
 
-  const abrirPainel = (tipo: "dre" | "custo" | "qualidade" | "ssma" | "juridico" | "alerta", item?: any) => {
-    setPainelTipo(tipo)
-    setItemSelecionado(item)
-    setPainelAberto(true)
+  const navegarPara = (rota: string) => router.push(rota)
+
+  const abrirSheet = (tipo: "kpi" | "custo" | "alerta", dados: any) => {
+    setSheetContent({ tipo, dados })
+    setSheetOpen(true)
   }
 
   return (
     <div className="overflow-auto h-full">
-      <div className="flex flex-col h-full p-4">
-        {/* HEADER */}
-        <div className="flex items-center justify-between mb-4 flex-shrink-0">
+      <div className="p-4 md:p-6 space-y-6">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="flex items-center justify-center w-9 h-9 rounded-lg border border-border">
-              <Gauge className="w-4 h-4 text-muted-foreground" />
+            <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
+              <Gauge className="h-5 w-5 text-primary" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-lg font-bold text-foreground">Cockpit de Governanca</h1>
-                <InfoTooltip
-                  title="Visao Performance"
-                  description="Indicadores de performance, resultado e eficiencia da obra"
-                />
-                <Badge variant="outline" className="text-[9px] h-5 border-primary/50 text-primary bg-primary/10">
+                <h1 className="text-xl font-bold text-foreground">Cockpit de Governanca</h1>
+                <Badge variant="outline" className="bg-primary/10 text-primary border-primary/30">
                   PERFORMANCE
                 </Badge>
               </div>
-              <p className="text-[11px] text-muted-foreground">BR-101 LOTE 2 | Compor 90</p>
+              <p className="text-sm text-muted-foreground">BR-101 LOTE 2 | Compor 90</p>
             </div>
           </div>
+
+          {/* Navegacao entre visoes */}
           <div className="flex items-center gap-2">
-            <div className="flex items-center gap-1 p-1 rounded-lg border border-border bg-muted/30">
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-7 px-3 text-xs hover:bg-muted/50"
-                onClick={() => router.push("/obra/gerencial/cockpit")}
-              >
-                Geral
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-7 px-3 text-xs hover:bg-muted/50"
-                onClick={() => router.push("/obra/gerencial/cockpit/visao-contrato")}
-              >
-                Contrato
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-7 px-3 text-xs bg-muted/50 border border-primary/30"
-                disabled
-              >
-                Performance
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-7 px-3 text-xs hover:bg-muted/50"
-                onClick={() => router.push("/obra/gerencial/cockpit/visao-financeiro")}
-              >
-                Financeiro
-              </Button>
-            </div>
-            <Badge variant="outline" className="text-[10px] h-6 px-2">
+            <Button variant="outline" size="sm" onClick={() => navegarPara("/obra/gerencial/cockpit")}>
+              Geral
+            </Button>
+            <Button variant="outline" size="sm" onClick={() => navegarPara("/obra/gerencial/cockpit/visao-contrato")}>
+              Contrato
+            </Button>
+            <Button variant="default" size="sm">
+              Performance
+            </Button>
+            <Button variant="outline" size="sm" onClick={() => navegarPara("/obra/gerencial/cockpit/visao-financeiro")}>
+              Financeiro
+            </Button>
+            <Button variant="outline" size="sm" className="ml-2 bg-transparent">
               Janeiro 2025
-            </Badge>
+            </Button>
           </div>
         </div>
 
-        {/* ================================================================== */}
-        {/* BLOCO 1: DRE RESUMIDO E INDICADORES PRINCIPAIS                     */}
-        {/* ================================================================== */}
-        <div className="mb-4 flex-shrink-0">
-          <div className="flex items-center gap-2 mb-3">
-            <PieChart className="w-4 h-4 text-muted-foreground" />
-            <h2 className="text-xs font-semibold uppercase tracking-wide text-foreground">Resultado Economico (DRE)</h2>
-            <div className="flex-1 h-px bg-border" />
+        <div className="space-y-3">
+          <div className="flex items-center gap-2">
+            <Target className="h-4 w-4 text-primary" />
+            <h2 className="text-sm font-semibold text-foreground">INDICADORES GNESIS (KPIs Oficiais)</h2>
+            <InfoTooltip content="KPIs oficiais do manual ERP-GNESIS para gestão de contratos" />
           </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {Object.values(kpisGnesis).map((kpi) => (
+              <KPIGnesisCard key={kpi.codigo} kpi={kpi} onClick={() => abrirSheet("kpi", kpi)} />
+            ))}
+          </div>
+        </div>
 
-          <div className="grid grid-cols-6 gap-2 mb-3">
+        {/* RESULTADO ECONOMICO (DRE) */}
+        <div className="space-y-3">
+          <div className="flex items-center gap-2">
+            <PieChart className="h-4 w-4 text-primary" />
+            <h2 className="text-sm font-semibold text-foreground">RESULTADO ECONOMICO (DRE)</h2>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
             <CardDRE
-              titulo="Receita Liquida"
-              valor={dreResumo.receitaLiquida}
-              icone={<DollarSign className="w-4 h-4" />}
+              titulo="Faturamento"
+              valor={dreResumo.faturamento}
+              icone={<DollarSign className="h-4 w-4" />}
               tipo="receita"
-              onClick={() => abrirPainel("dre")}
             />
             <CardDRE
-              titulo="Custos Diretos"
+              titulo="Custo Direto"
               valor={dreResumo.custosDiretos}
-              icone={<Calculator className="w-4 h-4" />}
+              icone={<Calculator className="h-4 w-4" />}
               tipo="custo"
-              onClick={() => abrirPainel("dre")}
             />
             <CardDRE
-              titulo="Custos Indiretos"
+              titulo="Custo Indireto"
               valor={dreResumo.custosIndiretos}
-              icone={<Calculator className="w-4 h-4" />}
+              icone={<BarChart3 className="h-4 w-4" />}
               tipo="custo"
-              onClick={() => abrirPainel("dre")}
             />
+            <CardDRE titulo="DAG" valor={dreResumo.dag} icone={<Activity className="h-4 w-4" />} tipo="custo" />
             <CardDRE
               titulo="Margem Bruta"
               valor={dreResumo.margemBruta}
               percentual={dreResumo.margemBrutaPercent}
               meta={dreResumo.metaMargemPercent}
-              icone={<Percent className="w-4 h-4" />}
+              icone={<Percent className="h-4 w-4" />}
               tipo="resultado"
-              onClick={() => abrirPainel("dre")}
             />
             <CardDRE
               titulo="Lucro Operacional"
               valor={dreResumo.lucroOperacional}
               percentual={dreResumo.lucroOperacionalPercent}
               meta={7.0}
-              icone={<TrendingUp className="w-4 h-4" />}
+              icone={<TrendingUp className="h-4 w-4" />}
               tipo="resultado"
-              onClick={() => abrirPainel("dre")}
-            />
-            <CardDRE
-              titulo="EBITDA"
-              valor={dreResumo.ebitda}
-              percentual={dreResumo.ebitdaPercent}
-              meta={8.0}
-              icone={<BarChart3 className="w-4 h-4" />}
-              tipo="resultado"
-              onClick={() => abrirPainel("dre")}
-            />
-          </div>
-
-          {/* INDICADORES DE PERFORMANCE */}
-          <div className="grid grid-cols-6 gap-2">
-            <CardKpi
-              titulo="SPI"
-              valor={indicadoresPerformance.spi.valor}
-              meta={indicadoresPerformance.spi.meta}
-              icone={<Timer className="w-3.5 h-3.5" />}
-              status={indicadoresPerformance.spi.status}
-            />
-            <CardKpi
-              titulo="CPI"
-              valor={indicadoresPerformance.cpi.valor}
-              meta={indicadoresPerformance.cpi.meta}
-              icone={<DollarSign className="w-3.5 h-3.5" />}
-              status={indicadoresPerformance.cpi.status}
-            />
-            <CardKpi
-              titulo="Produtividade"
-              valor={indicadoresPerformance.produtividade.valor}
-              meta={indicadoresPerformance.produtividade.meta}
-              unidade="%"
-              icone={<Zap className="w-3.5 h-3.5" />}
-              status={indicadoresPerformance.produtividade.status}
-            />
-            <CardKpi
-              titulo="Eficiencia"
-              valor={indicadoresPerformance.eficiencia.valor}
-              meta={indicadoresPerformance.eficiencia.meta}
-              unidade="%"
-              icone={<Target className="w-3.5 h-3.5" />}
-              status={indicadoresPerformance.eficiencia.status}
-            />
-            <CardKpi
-              titulo="IDR"
-              valor={indicadoresPerformance.idr.valor}
-              meta={indicadoresPerformance.idr.meta}
-              icone={<Activity className="w-3.5 h-3.5" />}
-              status={indicadoresPerformance.idr.status}
-            />
-            <CardKpi
-              titulo="IPE"
-              valor={indicadoresPerformance.ipe.valor}
-              meta={indicadoresPerformance.ipe.meta}
-              icone={<Award className="w-3.5 h-3.5" />}
-              status={indicadoresPerformance.ipe.status}
             />
           </div>
         </div>
 
-        {/* ================================================================== */}
-        {/* BLOCO 2: CUSTO META E RECURSOS                                     */}
-        {/* ================================================================== */}
-        <div className="mb-4 flex-shrink-0">
-          <div className="flex items-center gap-2 mb-3">
-            <Scale className="w-4 h-4 text-muted-foreground" />
-            <h2 className="text-xs font-semibold uppercase tracking-wide text-foreground">Custo Meta e Recursos</h2>
-            <div className="flex-1 h-px bg-border" />
+        {/* CUSTO META E RECURSOS */}
+        <div className="space-y-3">
+          <div className="flex items-center gap-2">
+            <Scale className="h-4 w-4 text-primary" />
+            <h2 className="text-sm font-semibold text-foreground">CUSTO META E RECURSOS</h2>
           </div>
-
-          <div className="grid grid-cols-12 gap-3">
-            {/* CUSTO META POR CATEGORIA */}
-            <div className="col-span-6 p-3 rounded-lg border border-border bg-card">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-[10px] font-semibold uppercase tracking-wide">Custo por Categoria</span>
-                <div className="flex items-center gap-2 text-[9px] text-muted-foreground">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            {/* Tabela de custos por categoria */}
+            <div className="lg:col-span-1 p-4 rounded-lg border border-border bg-card">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-xs font-semibold text-foreground">CUSTO POR CATEGORIA</h3>
+                <div className="flex gap-2 text-[9px]">
                   <span className="flex items-center gap-1">
-                    <div className="w-2 h-1.5 bg-muted-foreground/40 rounded-sm" />
-                    Meta
+                    <div className="h-2 w-2 rounded-full bg-primary" /> Meta
                   </span>
                   <span className="flex items-center gap-1">
-                    <div className="w-2 h-1.5 bg-primary rounded-sm" />
-                    Real
+                    <div className="h-2 w-2 rounded-full bg-destructive" /> Real
                   </span>
                 </div>
               </div>
-              <div className="space-y-0">
+              <div className="space-y-3">
                 {custosPorCategoria.map((cat) => (
-                  <CardCustoCategoria key={cat.categoria} {...cat} />
+                  <div key={cat.categoria} className="space-y-1">
+                    <div className="flex justify-between text-xs">
+                      <span className="text-muted-foreground">{cat.categoria}</span>
+                      <div className="flex gap-2">
+                        <span className="text-foreground font-medium">{formatarMoeda(cat.realizado)}</span>
+                        <span
+                          className={`font-medium ${cat.desvio <= 0 ? "text-emerald-600 dark:text-emerald-400" : "text-destructive"}`}
+                        >
+                          {cat.desvio >= 0 ? "+" : ""}
+                          {formatarMoeda(cat.desvio)}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="relative h-2 bg-muted rounded-full overflow-hidden">
+                      <div
+                        className="absolute h-full bg-primary/40 rounded-full"
+                        style={{ width: `${(cat.orcado / 60000000) * 100}%` }}
+                      />
+                      <div
+                        className={`absolute h-full rounded-full ${cat.status === "ok" ? "bg-primary" : "bg-destructive"}`}
+                        style={{ width: `${(cat.realizado / 60000000) * 100}%` }}
+                      />
+                    </div>
+                  </div>
                 ))}
-              </div>
-              <div className="mt-2 pt-2 border-t border-border flex items-center justify-between">
-                <span className="text-[11px] font-semibold text-foreground">TOTAL</span>
-                <div className="flex items-center gap-4">
-                  <span className="text-[11px] font-bold text-foreground">
-                    {formatarMoeda(custoMeta.realizadoTotal)}
-                  </span>
-                  <span
-                    className={`text-[10px] font-semibold ${custoMeta.desvioTotal <= 0 ? "text-primary" : "text-destructive"}`}
-                  >
-                    {custoMeta.desvioTotal > 0 ? "+" : ""}
-                    {formatarMoeda(custoMeta.desvioTotal)}
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* EFETIVO E EQUIPAMENTOS */}
-            <div className="col-span-3 space-y-3">
-              {/* EFETIVO */}
-              <div className="p-3 rounded-lg border border-border bg-card">
-                <div className="flex items-center gap-2 mb-2">
-                  <Users className="w-4 h-4 text-muted-foreground" />
-                  <span className="text-[10px] font-semibold uppercase tracking-wide">Efetivo</span>
-                </div>
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="text-center p-2 rounded bg-muted/30">
-                    <div className="text-lg font-bold text-foreground">{efetivo.presente}</div>
-                    <div className="text-[9px] text-muted-foreground">Presentes</div>
-                  </div>
-                  <div className="text-center p-2 rounded bg-muted/30">
-                    <div className="text-lg font-bold text-foreground">{efetivo.percentualPresenca}%</div>
-                    <div className="text-[9px] text-muted-foreground">Presenca</div>
-                  </div>
-                </div>
-                <div className="mt-2 space-y-1.5">
-                  <div className="flex items-center justify-between text-[10px]">
-                    <span className="text-muted-foreground">Proprios</span>
-                    <span className="font-medium text-foreground">{efetivo.proprios}</span>
-                  </div>
-                  <div className="flex items-center justify-between text-[10px]">
-                    <span className="text-muted-foreground">Terceiros</span>
-                    <span className="font-medium text-foreground">{efetivo.terceiros}</span>
-                  </div>
-                  <div className="flex items-center justify-between text-[10px]">
-                    <span className="text-muted-foreground">Turnover</span>
-                    <span className="font-medium text-foreground">{efetivo.turnover}%</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* EQUIPAMENTOS */}
-              <div className="p-3 rounded-lg border border-border bg-card">
-                <div className="flex items-center gap-2 mb-2">
-                  <Truck className="w-4 h-4 text-muted-foreground" />
-                  <span className="text-[10px] font-semibold uppercase tracking-wide">Equipamentos</span>
-                </div>
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="text-center p-2 rounded bg-muted/30">
-                    <div className="text-lg font-bold text-foreground">{equipamentos.emOperacao}</div>
-                    <div className="text-[9px] text-muted-foreground">Operando</div>
-                  </div>
-                  <div className="text-center p-2 rounded bg-muted/30">
-                    <div className="text-lg font-bold text-foreground">{equipamentos.disponibilidade}%</div>
-                    <div className="text-[9px] text-muted-foreground">Disponib.</div>
-                  </div>
-                </div>
-                <div className="mt-2 space-y-1.5">
-                  <div className="flex items-center justify-between text-[10px]">
-                    <span className="text-muted-foreground">Em Manutencao</span>
-                    <span className="font-medium text-foreground">{equipamentos.emManutencao}</span>
-                  </div>
-                  <div className="flex items-center justify-between text-[10px]">
-                    <span className="text-muted-foreground">Parados</span>
-                    <span className="font-medium text-destructive">{equipamentos.parados}</span>
-                  </div>
-                  <div className="flex items-center justify-between text-[10px]">
-                    <span className="text-muted-foreground">Utilizacao</span>
-                    <span className="font-medium text-foreground">{equipamentos.utilizacao}%</span>
+                <div className="pt-2 border-t border-border">
+                  <div className="flex justify-between text-xs font-semibold">
+                    <span className="text-foreground">TOTAL</span>
+                    <div className="flex gap-2">
+                      <span className="text-foreground">{formatarMoeda(160680000)}</span>
+                      <span className="text-destructive">+R$ 2.3 Mi</span>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* QUALIDADE, SSMA, JURIDICO */}
-            <div className="col-span-3 space-y-3">
-              {/* QUALIDADE */}
-              <div
-                className="p-3 rounded-lg border border-border bg-card cursor-pointer hover:border-primary/40"
-                onClick={() => abrirPainel("qualidade")}
-              >
-                <div className="flex items-center justify-between mb-2">
+            {/* Efetivo e Equipamentos */}
+            <div className="space-y-4">
+              <div className="p-4 rounded-lg border border-border bg-card">
+                <div className="flex items-center gap-2 mb-3">
+                  <Users className="h-4 w-4 text-primary" />
+                  <h3 className="text-xs font-semibold text-foreground">EFETIVO</h3>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-foreground">{efetivo.presentes}</div>
+                    <div className="text-[10px] text-muted-foreground">Presentes</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-foreground">{efetivo.percentualPresenca}%</div>
+                    <div className="text-[10px] text-muted-foreground">Presenca</div>
+                  </div>
+                </div>
+                <div className="grid grid-cols-3 gap-2 mt-3 pt-3 border-t border-border">
+                  <div className="text-center">
+                    <div className="text-sm font-semibold text-foreground">{efetivo.proprios}</div>
+                    <div className="text-[9px] text-muted-foreground">Proprios</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-sm font-semibold text-foreground">{efetivo.terceiros}</div>
+                    <div className="text-[9px] text-muted-foreground">Terceiros</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-sm font-semibold text-foreground">{efetivo.turnover}%</div>
+                    <div className="text-[9px] text-muted-foreground">Turnover</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-4 rounded-lg border border-border bg-card">
+                <div className="flex items-center gap-2 mb-3">
+                  <Truck className="h-4 w-4 text-primary" />
+                  <h3 className="text-xs font-semibold text-foreground">EQUIPAMENTOS</h3>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-foreground">{equipamentos.emOperacao}</div>
+                    <div className="text-[10px] text-muted-foreground">Operando</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-foreground">{equipamentos.disponibilidade}%</div>
+                    <div className="text-[10px] text-muted-foreground">Disponib.</div>
+                  </div>
+                </div>
+                <div className="grid grid-cols-3 gap-2 mt-3 pt-3 border-t border-border">
+                  <div className="text-center">
+                    <div className="text-sm font-semibold text-foreground">{equipamentos.emManutencao}</div>
+                    <div className="text-[9px] text-muted-foreground">Em Manutencao</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-sm font-semibold text-foreground">{equipamentos.parados}</div>
+                    <div className="text-[9px] text-muted-foreground">Parados</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-sm font-semibold text-foreground">{equipamentos.utilizacao}%</div>
+                    <div className="text-[9px] text-muted-foreground">Utilizacao</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Qualidade, SSMA, Juridico */}
+            <div className="space-y-4">
+              <div className="p-4 rounded-lg border border-border bg-card">
+                <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
-                    <ClipboardCheck className="w-4 h-4 text-muted-foreground" />
-                    <span className="text-[10px] font-semibold uppercase tracking-wide">Qualidade</span>
+                    <ClipboardCheck className="h-4 w-4 text-primary" />
+                    <h3 className="text-xs font-semibold text-foreground">QUALIDADE</h3>
                   </div>
-                  <Badge variant={qualidade.ncsAbertas > 5 ? "destructive" : "outline"} className="text-[9px] h-5">
+                  <Badge variant="outline" className="text-[9px] bg-amber-500/10 text-amber-600 dark:text-amber-400">
                     {qualidade.ncsAbertas} NCs
                   </Badge>
                 </div>
-                <div className="space-y-1.5">
-                  <div className="flex items-center justify-between text-[10px]">
+                <div className="space-y-2">
+                  <div className="flex justify-between text-xs">
                     <span className="text-muted-foreground">Conformidade</span>
-                    <span className="font-semibold text-foreground">{qualidade.taxaConformidade}%</span>
+                    <span className="font-semibold text-foreground">{qualidade.conformidade}%</span>
                   </div>
-                  <Progress value={qualidade.taxaConformidade} className="h-1.5" />
-                  <div className="flex items-center justify-between text-[10px]">
+                  <div className="flex justify-between text-xs">
                     <span className="text-muted-foreground">Inspecoes</span>
-                    <span className="font-medium text-foreground">
+                    <span className="font-semibold text-foreground">
                       {qualidade.inspecoesRealizadas}/{qualidade.inspecoesProgramadas}
                     </span>
                   </div>
                 </div>
               </div>
 
-              {/* SSMA */}
-              <div
-                className="p-3 rounded-lg border border-border bg-card cursor-pointer hover:border-primary/40"
-                onClick={() => abrirPainel("ssma")}
-              >
-                <div className="flex items-center justify-between mb-2">
+              <div className="p-4 rounded-lg border border-border bg-card">
+                <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
-                    <ShieldCheck className="w-4 h-4 text-muted-foreground" />
-                    <span className="text-[10px] font-semibold uppercase tracking-wide">SSMA</span>
+                    <ShieldCheck className="h-4 w-4 text-primary" />
+                    <h3 className="text-xs font-semibold text-foreground">SSMA</h3>
                   </div>
-                  <Badge variant="outline" className="text-[9px] h-5 border-primary/50 text-primary">
+                  <Badge
+                    variant="outline"
+                    className="text-[9px] bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                  >
                     {ssma.diasSemAcidente} dias s/ acid.
                   </Badge>
                 </div>
-                <div className="space-y-1.5">
-                  <div className="flex items-center justify-between text-[10px]">
+                <div className="space-y-2">
+                  <div className="flex justify-between text-xs">
                     <span className="text-muted-foreground">Taxa Frequencia</span>
                     <span className="font-semibold text-foreground">{ssma.taxaFrequencia}</span>
                   </div>
-                  <div className="flex items-center justify-between text-[10px]">
+                  <div className="flex justify-between text-xs">
                     <span className="text-muted-foreground">DDS Realizados</span>
-                    <span className="font-medium text-foreground">
+                    <span className="font-semibold text-foreground">
                       {ssma.ddsRealizados}/{ssma.ddsProgramados}
                     </span>
                   </div>
                 </div>
               </div>
 
-              {/* JURIDICO */}
-              <div
-                className="p-3 rounded-lg border border-border bg-card cursor-pointer hover:border-primary/40"
-                onClick={() => abrirPainel("juridico")}
-              >
-                <div className="flex items-center justify-between mb-2">
+              <div className="p-4 rounded-lg border border-border bg-card">
+                <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
-                    <Gavel className="w-4 h-4 text-muted-foreground" />
-                    <span className="text-[10px] font-semibold uppercase tracking-wide">Juridico</span>
+                    <Gavel className="h-4 w-4 text-primary" />
+                    <h3 className="text-xs font-semibold text-foreground">JURIDICO</h3>
                   </div>
-                  <Badge variant={juridico.processosAtivos > 0 ? "outline" : "secondary"} className="text-[9px] h-5">
+                  <Badge variant="outline" className="text-[9px] bg-amber-500/10 text-amber-600 dark:text-amber-400">
                     {juridico.processosAtivos} ativos
                   </Badge>
                 </div>
-                <div className="space-y-1.5">
-                  <div className="flex items-center justify-between text-[10px]">
+                <div className="space-y-2">
+                  <div className="flex justify-between text-xs">
                     <span className="text-muted-foreground">Risco Estimado</span>
                     <span className="font-semibold text-foreground">{formatarMoeda(juridico.riscoEstimado)}</span>
                   </div>
-                  <div className="flex items-center justify-between text-[10px]">
+                  <div className="flex justify-between text-xs">
                     <span className="text-muted-foreground">Contratos a Vencer</span>
-                    <span className="font-medium text-foreground">{juridico.contratosVencer30d}</span>
+                    <span className="font-semibold text-foreground">{juridico.contratosVencer}</span>
                   </div>
                 </div>
               </div>
@@ -707,351 +652,155 @@ function VisaoPerformanceContent() {
           </div>
         </div>
 
-        {/* ================================================================== */}
-        {/* BLOCO 3: ALERTAS DE PERFORMANCE                                    */}
-        {/* ================================================================== */}
-        <div className="flex-1 min-h-0">
-          <div className="flex items-center gap-2 mb-3">
-            <AlertTriangle className="w-4 h-4 text-muted-foreground" />
-            <h2 className="text-xs font-semibold uppercase tracking-wide text-foreground">Alertas de Performance</h2>
-            <Badge variant="outline" className="text-[9px] h-5">
-              {alertasPerformance.length}
-            </Badge>
-            <div className="flex-1 h-px bg-border" />
+        {/* ALERTAS DE PERFORMANCE */}
+        <div className="space-y-3">
+          <div className="flex items-center gap-2">
+            <AlertTriangle className="h-4 w-4 text-primary" />
+            <h2 className="text-sm font-semibold text-foreground">ALERTAS DE PERFORMANCE</h2>
+            <Badge variant="outline">{alertasPerformance.length}</Badge>
           </div>
-
-          <ScrollArea className="h-[140px]">
-            <div className="grid grid-cols-3 gap-2">
-              {alertasPerformance.map((alerta) => (
-                <div
-                  key={alerta.id}
-                  className={`p-2.5 rounded-lg border cursor-pointer hover:border-primary/40 transition-colors ${
-                    alerta.tipo === "critico"
-                      ? "border-destructive/50 bg-destructive/5"
-                      : alerta.tipo === "atencao"
-                        ? "border-amber-500/50 bg-amber-500/5"
-                        : "border-border bg-card"
-                  }`}
-                  onClick={() => abrirPainel("alerta", alerta)}
-                >
-                  <div className="flex items-start gap-2">
-                    <div
-                      className={`mt-0.5 ${
-                        alerta.tipo === "critico"
-                          ? "text-destructive"
-                          : alerta.tipo === "atencao"
-                            ? "text-amber-500"
-                            : "text-primary"
-                      }`}
-                    >
-                      {alerta.tipo === "critico" ? (
-                        <AlertCircle className="w-4 h-4" />
-                      ) : alerta.tipo === "atencao" ? (
-                        <AlertTriangle className="w-4 h-4" />
-                      ) : (
-                        <CheckCircle2 className="w-4 h-4" />
-                      )}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-[11px] font-medium text-foreground truncate">{alerta.titulo}</p>
-                      <div className="flex items-center justify-between mt-1">
-                        <Badge variant="outline" className="text-[9px] h-4 px-1.5">
-                          {alerta.area}
-                        </Badge>
-                        <span className="text-[10px] font-semibold text-muted-foreground">{alerta.valor}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </ScrollArea>
-        </div>
-
-        {/* ================================================================== */}
-        {/* PAINEL LATERAL - DRILL DOWN                                        */}
-        {/* ================================================================== */}
-        <Sheet open={painelAberto} onOpenChange={setPainelAberto}>
-          <SheetContent className="w-[400px] sm:w-[500px]">
-            <SheetHeader>
-              <SheetTitle className="flex items-center gap-2">
-                {painelTipo === "dre" && (
-                  <>
-                    <PieChart className="w-5 h-5" /> Detalhes DRE
-                  </>
-                )}
-                {painelTipo === "custo" && (
-                  <>
-                    <Calculator className="w-5 h-5" /> Analise de Custo
-                  </>
-                )}
-                {painelTipo === "qualidade" && (
-                  <>
-                    <ClipboardCheck className="w-5 h-5" /> Qualidade
-                  </>
-                )}
-                {painelTipo === "ssma" && (
-                  <>
-                    <ShieldCheck className="w-5 h-5" /> SSMA
-                  </>
-                )}
-                {painelTipo === "juridico" && (
-                  <>
-                    <Gavel className="w-5 h-5" /> Juridico
-                  </>
-                )}
-                {painelTipo === "alerta" && (
-                  <>
-                    <AlertTriangle className="w-5 h-5" /> Detalhe do Alerta
-                  </>
-                )}
-              </SheetTitle>
-            </SheetHeader>
-
-            <div className="mt-6 space-y-4">
-              {painelTipo === "dre" && (
-                <>
-                  <div className="p-4 rounded-lg border border-border bg-muted/30">
-                    <h4 className="text-sm font-semibold mb-3">Demonstrativo de Resultado</h4>
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-sm">
-                        <span>Receita Liquida</span>
-                        <span className="font-medium">{formatarMoeda(dreResumo.receitaLiquida)}</span>
-                      </div>
-                      <div className="flex justify-between text-sm text-destructive">
-                        <span>(-) Custos Diretos</span>
-                        <span>{formatarMoeda(-dreResumo.custosDiretos)}</span>
-                      </div>
-                      <div className="flex justify-between text-sm text-destructive">
-                        <span>(-) Custos Indiretos</span>
-                        <span>{formatarMoeda(-dreResumo.custosIndiretos)}</span>
-                      </div>
-                      <div className="flex justify-between text-sm font-semibold border-t pt-2">
-                        <span>= Margem Bruta</span>
-                        <span className="text-primary">
-                          {formatarMoeda(dreResumo.margemBruta)} ({dreResumo.margemBrutaPercent}%)
-                        </span>
-                      </div>
-                      <div className="flex justify-between text-sm text-destructive">
-                        <span>(-) Despesas Operacionais</span>
-                        <span>{formatarMoeda(-dreResumo.despesasOperacionais)}</span>
-                      </div>
-                      <div className="flex justify-between text-sm font-semibold border-t pt-2">
-                        <span>= Lucro Operacional</span>
-                        <span className="text-primary">
-                          {formatarMoeda(dreResumo.lucroOperacional)} ({dreResumo.lucroOperacionalPercent}%)
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="p-4 rounded-lg border border-border">
-                    <h4 className="text-sm font-semibold mb-2">Comparativo com Meta</h4>
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-sm">
-                        <span>Margem Bruta Real</span>
-                        <span>{dreResumo.margemBrutaPercent}%</span>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span>Margem Bruta Meta</span>
-                        <span>{dreResumo.metaMargemPercent}%</span>
-                      </div>
-                      <div className="flex justify-between text-sm font-semibold">
-                        <span>Desvio</span>
-                        <span
-                          className={
-                            dreResumo.margemBrutaPercent >= dreResumo.metaMargemPercent
-                              ? "text-primary"
-                              : "text-destructive"
-                          }
-                        >
-                          {(dreResumo.margemBrutaPercent - dreResumo.metaMargemPercent).toFixed(1)}%
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </>
-              )}
-
-              {painelTipo === "qualidade" && (
-                <>
-                  <div className="p-4 rounded-lg border border-border bg-muted/30">
-                    <h4 className="text-sm font-semibold mb-3">Indicadores de Qualidade</h4>
-                    <div className="grid grid-cols-2 gap-3">
-                      <div className="text-center p-3 rounded bg-card border">
-                        <div className="text-2xl font-bold text-foreground">{qualidade.taxaConformidade}%</div>
-                        <div className="text-xs text-muted-foreground">Conformidade</div>
-                      </div>
-                      <div className="text-center p-3 rounded bg-card border">
-                        <div className="text-2xl font-bold text-foreground">{qualidade.ncsAbertas}</div>
-                        <div className="text-xs text-muted-foreground">NCs Abertas</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="p-4 rounded-lg border border-border">
-                    <h4 className="text-sm font-semibold mb-2">Detalhamento</h4>
-                    <div className="space-y-2 text-sm">
-                      <div className="flex justify-between">
-                        <span>Inspecoes Realizadas</span>
-                        <span>{qualidade.inspecoesRealizadas}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>Inspecoes Pendentes</span>
-                        <span>{qualidade.inspecoesPendentes}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>NCs Fechadas</span>
-                        <span>{qualidade.ncsFechadas}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>Acoes Corretivas</span>
-                        <span>{qualidade.acoesCorretivas}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>Tempo Medio Fechamento</span>
-                        <span>{qualidade.tempoMedioFechamento} dias</span>
-                      </div>
-                    </div>
-                  </div>
-                </>
-              )}
-
-              {painelTipo === "ssma" && (
-                <>
-                  <div className="p-4 rounded-lg border border-primary/30 bg-primary/5">
-                    <div className="text-center">
-                      <div className="text-4xl font-bold text-primary">{ssma.diasSemAcidente}</div>
-                      <div className="text-sm text-muted-foreground">Dias sem acidentes</div>
-                      <Progress value={(ssma.diasSemAcidente / ssma.metaDiasSemAcidente) * 100} className="h-2 mt-2" />
-                      <div className="text-xs text-muted-foreground mt-1">Meta: {ssma.metaDiasSemAcidente} dias</div>
-                    </div>
-                  </div>
-                  <div className="p-4 rounded-lg border border-border">
-                    <h4 className="text-sm font-semibold mb-2">Indicadores SSMA</h4>
-                    <div className="space-y-2 text-sm">
-                      <div className="flex justify-between">
-                        <span>Taxa de Frequencia</span>
-                        <span>{ssma.taxaFrequencia}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>Taxa de Gravidade</span>
-                        <span>{ssma.taxaGravidade}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>Incidentes no Mes</span>
-                        <span>{ssma.incidentesMes}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>Incidentes no Ano</span>
-                        <span>{ssma.incidentesAno}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>DDS Realizados</span>
-                        <span>
-                          {ssma.ddsRealizados}/{ssma.ddsProgramados}
-                        </span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>Conformidade EPI</span>
-                        <span>{ssma.epiConformidade}%</span>
-                      </div>
-                    </div>
-                  </div>
-                </>
-              )}
-
-              {painelTipo === "juridico" && (
-                <>
-                  <div className="p-4 rounded-lg border border-border bg-muted/30">
-                    <h4 className="text-sm font-semibold mb-3">Situacao Juridica</h4>
-                    <div className="grid grid-cols-2 gap-3">
-                      <div className="text-center p-3 rounded bg-card border">
-                        <div className="text-2xl font-bold text-foreground">{juridico.processosAtivos}</div>
-                        <div className="text-xs text-muted-foreground">Processos Ativos</div>
-                      </div>
-                      <div className="text-center p-3 rounded bg-card border">
-                        <div className="text-2xl font-bold text-foreground">
-                          {formatarMoeda(juridico.riscoEstimado)}
-                        </div>
-                        <div className="text-xs text-muted-foreground">Risco Estimado</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="p-4 rounded-lg border border-border">
-                    <h4 className="text-sm font-semibold mb-2">Detalhamento</h4>
-                    <div className="space-y-2 text-sm">
-                      <div className="flex justify-between">
-                        <span>Processos Encerrados</span>
-                        <span>{juridico.processosEncerrados}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>Notificacoes Pendentes</span>
-                        <span>{juridico.notificacoesPendentes}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>Provisao Contabil</span>
-                        <span>{formatarMoeda(juridico.provisaoContabil)}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>Contratos Terceiros</span>
-                        <span>{juridico.contratosTerceiros}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>Contratos a Vencer (30d)</span>
-                        <span className="text-amber-500">{juridico.contratosVencer30d}</span>
-                      </div>
-                    </div>
-                  </div>
-                </>
-              )}
-
-              {painelTipo === "alerta" && itemSelecionado && (
-                <div className="p-4 rounded-lg border border-border">
-                  <div className="flex items-center gap-2 mb-3">
-                    {itemSelecionado.tipo === "critico" ? (
-                      <AlertCircle className="w-5 h-5 text-destructive" />
-                    ) : itemSelecionado.tipo === "atencao" ? (
-                      <AlertTriangle className="w-5 h-5 text-amber-500" />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+            {alertasPerformance.map((alerta) => (
+              <div
+                key={alerta.id}
+                className={`p-3 rounded-lg border cursor-pointer hover:border-primary/40 transition-colors ${
+                  alerta.tipo === "critico"
+                    ? "bg-destructive/5 border-destructive/30"
+                    : alerta.tipo === "atencao"
+                      ? "bg-amber-500/5 border-amber-500/30"
+                      : "bg-emerald-500/5 border-emerald-500/30"
+                }`}
+                onClick={() => abrirSheet("alerta", alerta)}
+              >
+                <div className="flex items-start gap-3">
+                  <div
+                    className={`p-1.5 rounded-full ${
+                      alerta.tipo === "critico"
+                        ? "bg-destructive/20"
+                        : alerta.tipo === "atencao"
+                          ? "bg-amber-500/20"
+                          : "bg-emerald-500/20"
+                    }`}
+                  >
+                    {alerta.tipo === "critico" ? (
+                      <AlertCircle className="h-3 w-3 text-destructive" />
+                    ) : alerta.tipo === "atencao" ? (
+                      <AlertTriangle className="h-3 w-3 text-amber-500" />
                     ) : (
-                      <CheckCircle2 className="w-5 h-5 text-primary" />
+                      <CheckCircle2 className="h-3 w-3 text-emerald-500" />
                     )}
-                    <Badge
-                      variant={
-                        itemSelecionado.tipo === "critico"
-                          ? "destructive"
-                          : itemSelecionado.tipo === "atencao"
-                            ? "outline"
-                            : "secondary"
-                      }
-                    >
-                      {itemSelecionado.tipo.toUpperCase()}
-                    </Badge>
                   </div>
-                  <h4 className="text-sm font-semibold mb-2">{itemSelecionado.titulo}</h4>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between">
-                      <span>Area</span>
-                      <span>{itemSelecionado.area}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Valor/Impacto</span>
-                      <span className="font-medium">{itemSelecionado.valor}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Dias em Aberto</span>
-                      <span>{itemSelecionado.dias}</span>
-                    </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-medium text-foreground truncate">{alerta.titulo}</p>
+                    <p className="text-[10px] text-muted-foreground">{alerta.area}</p>
                   </div>
-                  <div className="mt-4 pt-4 border-t">
-                    <Button className="w-full" size="sm">
-                      Ver Detalhes Completos
-                    </Button>
+                  <span className="text-xs font-semibold text-foreground">{alerta.valor}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Sheet para detalhes */}
+      <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
+        <SheetContent>
+          <SheetHeader>
+            <SheetTitle>
+              {sheetContent?.tipo === "kpi"
+                ? `KPI: ${sheetContent.dados.codigo}`
+                : sheetContent?.tipo === "custo"
+                  ? "Detalhe de Custo"
+                  : "Detalhe do Alerta"}
+            </SheetTitle>
+          </SheetHeader>
+          <ScrollArea className="h-[calc(100vh-120px)] mt-4">
+            {sheetContent?.tipo === "kpi" && (
+              <div className="space-y-4">
+                <div className="p-4 rounded-lg bg-muted/30">
+                  <p className="text-sm font-semibold text-foreground">{sheetContent.dados.nome}</p>
+                  <p className="text-xs text-muted-foreground mt-1">{sheetContent.dados.formula}</p>
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="p-3 rounded-lg border border-border">
+                    <p className="text-[10px] text-muted-foreground">Valor Atual</p>
+                    <p className="text-xl font-bold text-foreground">
+                      {sheetContent.dados.codigo === "MO" || sheetContent.dados.codigo === "CI/CD"
+                        ? formatarPercentual(sheetContent.dados.valor)
+                        : sheetContent.dados.valor.toFixed(2)}
+                    </p>
+                  </div>
+                  <div className="p-3 rounded-lg border border-border">
+                    <p className="text-[10px] text-muted-foreground">Meta</p>
+                    <p className="text-xl font-bold text-foreground">
+                      {sheetContent.dados.codigo === "MO" || sheetContent.dados.codigo === "CI/CD"
+                        ? formatarPercentual(sheetContent.dados.meta)
+                        : sheetContent.dados.meta.toFixed(2)}
+                    </p>
                   </div>
                 </div>
-              )}
-            </div>
-          </SheetContent>
-        </Sheet>
-      </div>
+                <div className="p-4 rounded-lg border border-border">
+                  <p className="text-xs font-semibold text-foreground mb-2">Interpretacao</p>
+                  <p className="text-sm text-muted-foreground">{sheetContent.dados.interpretacao}</p>
+                </div>
+                <div className="p-4 rounded-lg border border-primary/30 bg-primary/5">
+                  <p className="text-xs font-semibold text-primary mb-2">Acao Gerencial</p>
+                  <p className="text-sm text-foreground">{sheetContent.dados.acaoGerencial}</p>
+                </div>
+                <div className="p-4 rounded-lg border border-border">
+                  <p className="text-xs font-semibold text-foreground mb-3">Historico (6 meses)</p>
+                  <div className="flex items-end gap-2 h-24">
+                    {sheetContent.dados.historico.map((valor: number, i: number) => {
+                      const maxVal = Math.max(...sheetContent.dados.historico)
+                      const minVal = Math.min(...sheetContent.dados.historico) * 0.9
+                      const altura = ((valor - minVal) / (maxVal - minVal)) * 100
+                      return (
+                        <div key={i} className="flex-1 flex flex-col items-center gap-1">
+                          <div
+                            className={`w-full rounded-t transition-all ${
+                              i === sheetContent.dados.historico.length - 1 ? "bg-primary" : "bg-muted-foreground/30"
+                            }`}
+                            style={{ height: `${Math.max(altura, 10)}%` }}
+                          />
+                          <span className="text-[9px] text-muted-foreground">
+                            {sheetContent.dados.codigo === "MO" || sheetContent.dados.codigo === "CI/CD"
+                              ? `${(valor * 100).toFixed(1)}%`
+                              : valor.toFixed(2)}
+                          </span>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
+              </div>
+            )}
+            {sheetContent?.tipo === "alerta" && (
+              <div className="space-y-4">
+                <div
+                  className={`p-4 rounded-lg ${
+                    sheetContent.dados.tipo === "critico"
+                      ? "bg-destructive/10"
+                      : sheetContent.dados.tipo === "atencao"
+                        ? "bg-amber-500/10"
+                        : "bg-emerald-500/10"
+                  }`}
+                >
+                  <p className="text-sm font-semibold text-foreground">{sheetContent.dados.titulo}</p>
+                  <p className="text-xs text-muted-foreground mt-1">Area: {sheetContent.dados.area}</p>
+                </div>
+                <div className="p-4 rounded-lg border border-border">
+                  <p className="text-xs font-semibold text-foreground mb-2">Valor do Desvio</p>
+                  <p className="text-2xl font-bold text-foreground">{sheetContent.dados.valor}</p>
+                </div>
+                <div className="p-4 rounded-lg border border-border">
+                  <p className="text-xs font-semibold text-foreground mb-2">Dias em Alerta</p>
+                  <p className="text-xl font-bold text-foreground">{sheetContent.dados.dias} dias</p>
+                </div>
+              </div>
+            )}
+          </ScrollArea>
+        </SheetContent>
+      </Sheet>
     </div>
   )
 }

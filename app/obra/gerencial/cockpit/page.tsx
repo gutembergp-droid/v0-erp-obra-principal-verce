@@ -21,7 +21,6 @@ import {
   HardHat,
   TrendingUp,
   Target,
-  BarChart3,
   Briefcase,
   FileCheck,
   Scale,
@@ -29,8 +28,6 @@ import {
   Activity,
   Receipt,
   AlertCircle,
-  CheckCircle2,
-  Gavel,
 } from "lucide-react"
 import { InfoTooltip } from "@/components/ui/info-tooltip"
 
@@ -79,49 +76,82 @@ const gestaoCliente = {
   },
 }
 
-// BLOCO 2: GERENCIAMENTO INTERNO DA OBRA
+// BLOCO 2: GERENCIAMENTO INTERNO DA OBRA - KPIs GNESIS
 const gerenciamentoInterno = {
-  custo: {
-    orcado: 231917000,
-    realizado: 160680000,
-    percentualRealizado: 69.3,
-    previsto: 72.0,
-    saldo: 71237000,
-    desvio: -2.7,
+  // Dados base para calculos
+  faturamento: 176000000,
+  impostos: 8800000, // 5% do faturamento
+  custoDireto: 142560000,
+  custoIndireto: 18120000,
+  dag: 4200000, // Despesas Administrativas Gerais
+
+  // KPIs GNESIS calculados
+  kpis: {
+    fcd: {
+      // F/CD - Faturamento sobre Custo Direto
+      valor: 1.23,
+      meta: 1.2,
+      formula: "Faturamento / Custo Direto",
+      interpretacao: "Cada R$1 de CD gera R$1,23 de faturamento",
+      status: "ok" as const,
+    },
+    crco: {
+      // CR/CO - Custo Real sobre Custo Orcado
+      valor: 0.97,
+      meta: 1.0,
+      formula: "Custo Real / Custo Orcado",
+      interpretacao: "Gastando 3% menos que o orcado",
+      status: "ok" as const,
+    },
+    cicd: {
+      // CI/CD - Custo Indireto sobre Custo Direto
+      valor: 0.127,
+      meta: 0.15,
+      formula: "Custo Indireto / Custo Direto",
+      interpretacao: "Estrutura de gestao eficiente",
+      status: "ok" as const,
+    },
+    mo: {
+      // MO - Margem Operacional
+      valor: 8.7,
+      meta: 9.0,
+      formula: "(Fat - Imp - CD - CI - DAG) / Fat",
+      interpretacao: "Margem operacional de 8,7%",
+      status: "atencao" as const,
+    },
   },
+
+  // Composicao de custos
+  composicaoCustoDireto: {
+    maoDeObra: { valor: 59200000, percentual: 41.5 },
+    materiais: { valor: 49800000, percentual: 34.9 },
+    equipamentos: { valor: 26100000, percentual: 18.3 },
+    subempreiteiros: { valor: 7460000, percentual: 5.3 },
+  },
+  composicaoCustoIndireto: {
+    administracao: { valor: 7248000, percentual: 40.0 },
+    canteiro: { valor: 5436000, percentual: 30.0 },
+    suporte: { valor: 3624000, percentual: 20.0 },
+    seguros: { valor: 1812000, percentual: 10.0 },
+  },
+
+  // Resultado
   resultado: {
-    receitaLiquida: 176000000,
-    custoTotal: 160680000,
-    margemBruta: 15320000,
-    margemPercentual: 8.7,
-    metaMargem: 9.0,
-    dag: 4200000,
-    lucroOperacional: 11120000,
+    receitaLiquida: 167200000, // Fat - Impostos
+    margemBruta: 24640000, // Rec Liq - CD
+    lucroOperacional: 2320000, // Margem - CI - DAG
   },
+
+  // Performance fisica
   performance: {
     spi: 0.95,
     cpi: 1.02,
-    produtividade: 94.2,
-    eficiencia: 97.8,
   },
-  qualidade: {
-    inspecoesRealizadas: 234,
-    inspecoesPendentes: 18,
-    ncsAbertas: 7,
-    ncsFechadas: 45,
-    taxaConformidade: 93.5,
-  },
-  ssma: {
-    diasSemAcidente: 127,
-    incidentesMes: 2,
-    quaseAcidentes: 5,
-    taxaFrequencia: 0.8,
-  },
-  juridico: {
-    processosAtivos: 2,
-    notificacoesPendentes: 1,
-    riscoEstimado: 850000,
-  },
+
+  // Qualidade, SSMA, Juridico (resumidos)
+  qualidade: { taxaConformidade: 93.5, ncsAbertas: 7 },
+  ssma: { diasSemAcidente: 127, taxaFrequencia: 0.8 },
+  juridico: { processosAtivos: 2, riscoEstimado: 850000 },
 }
 
 // Alertas consolidados
@@ -132,9 +162,10 @@ const alertasCliente = [
 ]
 
 const alertasInternos = [
-  { id: 1, tipo: "critico", titulo: "Desvio de custo Frente 3", valor: "+12%", dias: 3 },
-  { id: 2, tipo: "atencao", titulo: "7 NCs abertas", valor: "Qualidade", dias: 15 },
-  { id: 3, tipo: "info", titulo: "127 dias sem acidentes", valor: "SSMA", dias: 0 },
+  { id: 1, tipo: "atencao", titulo: "MO abaixo da meta (8.7% vs 9.0%)", valor: "-0.3%", dias: 0 },
+  { id: 2, tipo: "critico", titulo: "SPI abaixo de 1.0", valor: "0.95", dias: 7 },
+  { id: 3, tipo: "info", titulo: "F/CD acima da meta", valor: "1.23", dias: 0 },
+  { id: 4, tipo: "info", titulo: "127 dias sem acidentes", valor: "SSMA", dias: 0 },
 ]
 
 // ============================================================================
@@ -182,14 +213,13 @@ function CardFinanceiroHibrido({
       className="p-3 rounded-lg border border-border bg-card cursor-pointer hover:border-primary/40 transition-colors"
       onClick={onClick}
     >
-      {/* Header */}
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
           <div className="text-muted-foreground">{icone}</div>
           <span className="text-[10px] text-muted-foreground uppercase tracking-wider font-medium">{titulo}</span>
         </div>
         <div
-          className={`flex items-center gap-0.5 text-[10px] font-semibold ${desvio >= 0 ? "text-primary" : "text-destructive"}`}
+          className={`flex items-center gap-0.5 text-[10px] font-semibold ${desvio >= 0 ? "text-emerald-600 dark:text-emerald-400" : "text-destructive"}`}
         >
           {desvio >= 0 ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />}
           {desvio > 0 ? "+" : ""}
@@ -197,15 +227,12 @@ function CardFinanceiroHibrido({
         </div>
       </div>
 
-      {/* Valor Principal */}
       <div className="mb-2">
         <span className="text-xl font-bold tabular-nums text-foreground">{formatarMoeda(valor)}</span>
         {subtitulo && <span className="text-[10px] text-muted-foreground ml-1.5">{subtitulo}</span>}
       </div>
 
-      {/* Grafico Barras Horizontal: Previsto x Realizado */}
       <div className="space-y-1">
-        {/* Barra Previsto */}
         <div className="flex items-center gap-2">
           <span className="text-[9px] text-muted-foreground w-14">Previsto</span>
           <div className="flex-1 h-2 bg-muted/30 rounded overflow-hidden">
@@ -216,7 +243,6 @@ function CardFinanceiroHibrido({
           </div>
           <span className="text-[9px] tabular-nums text-muted-foreground w-10 text-right">{previstoPercentual}%</span>
         </div>
-        {/* Barra Realizado */}
         <div className="flex items-center gap-2">
           <span className="text-[9px] text-muted-foreground w-14">Realizado</span>
           <div className="flex-1 h-2 bg-muted/30 rounded overflow-hidden">
@@ -233,7 +259,86 @@ function CardFinanceiroHibrido({
 }
 
 // ============================================================================
-// COMPONENTE: CARD KPI HIBRIDO (para indicadores)
+// ============================================================================
+
+interface CardKpiGnesisProps {
+  codigo: string
+  nome: string
+  valor: number
+  meta: number
+  formula: string
+  interpretacao: string
+  status: "ok" | "atencao" | "critico"
+  unidade?: string
+  invertido?: boolean
+  onClick?: () => void
+}
+
+function CardKpiGnesis({
+  codigo,
+  nome,
+  valor,
+  meta,
+  formula,
+  interpretacao,
+  status,
+  unidade = "",
+  invertido = false,
+  onClick,
+}: CardKpiGnesisProps) {
+  const desvio = invertido ? meta - valor : valor - meta
+  const percentualMeta = invertido ? (meta / valor) * 100 : (valor / meta) * 100
+
+  return (
+    <div
+      className="p-3 rounded-lg border border-border bg-card cursor-pointer hover:border-primary/40 transition-colors"
+      onClick={onClick}
+    >
+      <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center gap-2">
+          <Badge variant="outline" className="text-[9px] h-5 px-1.5 font-mono">
+            {codigo}
+          </Badge>
+          <span className="text-[10px] text-muted-foreground uppercase tracking-wider">{nome}</span>
+        </div>
+        <div
+          className={`w-2.5 h-2.5 rounded-full ${
+            status === "ok" ? "bg-emerald-500" : status === "atencao" ? "bg-amber-500" : "bg-destructive"
+          }`}
+        />
+      </div>
+
+      <div className="flex items-baseline gap-2 mb-2">
+        <span className="text-2xl font-bold tabular-nums text-foreground">
+          {valor.toFixed(unidade === "%" ? 1 : 2)}
+          {unidade}
+        </span>
+        <span className="text-[11px] text-muted-foreground">
+          meta: {meta.toFixed(unidade === "%" ? 1 : 2)}
+          {unidade}
+        </span>
+        <span
+          className={`text-[10px] font-semibold ${
+            (invertido ? desvio <= 0 : desvio >= 0) ? "text-emerald-600 dark:text-emerald-400" : "text-destructive"
+          }`}
+        >
+          {desvio >= 0 ? "+" : ""}
+          {desvio.toFixed(2)}
+        </span>
+      </div>
+
+      <Progress value={Math.min(percentualMeta, 120)} className="h-1.5 mb-2" />
+
+      <div className="space-y-1">
+        <p className="text-[9px] text-muted-foreground font-mono">{formula}</p>
+        <p className="text-[10px] text-foreground">{interpretacao}</p>
+      </div>
+    </div>
+  )
+}
+
+// ============================================================================
+// COMPONENTE: CARD KPI SIMPLES
 // ============================================================================
 
 interface CardKpiProps {
@@ -246,7 +351,7 @@ interface CardKpiProps {
   onClick?: () => void
 }
 
-function CardKpiHibrido({ titulo, valor, meta, unidade = "", icone, status, onClick }: CardKpiProps) {
+function CardKpiSimples({ titulo, valor, meta, unidade = "", icone, status, onClick }: CardKpiProps) {
   const numValor = typeof valor === "number" ? valor : Number.parseFloat(valor)
   const numMeta = typeof meta === "number" ? meta : meta ? Number.parseFloat(meta) : numValor
   const percentualMeta = (numValor / numMeta) * 100
@@ -262,7 +367,7 @@ function CardKpiHibrido({ titulo, valor, meta, unidade = "", icone, status, onCl
           <span className="text-[9px] text-muted-foreground uppercase tracking-wider">{titulo}</span>
         </div>
         <div
-          className={`w-2 h-2 rounded-full ${status === "ok" ? "bg-primary" : status === "atencao" ? "bg-amber-500" : "bg-destructive"}`}
+          className={`w-2 h-2 rounded-full ${status === "ok" ? "bg-emerald-500" : status === "atencao" ? "bg-amber-500" : "bg-destructive"}`}
         />
       </div>
       <div className="flex items-baseline gap-1">
@@ -289,12 +394,12 @@ function CardKpiHibrido({ titulo, valor, meta, unidade = "", icone, status, onCl
 function CockpitContent() {
   const router = useRouter()
   const [painelAberto, setPainelAberto] = useState(false)
-  const [painelTipo, setPainelTipo] = useState<"receita" | "custo" | "alerta" | null>(null)
-  const [alertaSelecionado, setAlertaSelecionado] = useState<(typeof alertasCliente)[0] | null>(null)
+  const [painelTipo, setPainelTipo] = useState<"receita" | "kpi" | "alerta" | null>(null)
+  const [itemSelecionado, setItemSelecionado] = useState<any>(null)
 
-  const abrirPainel = (tipo: "receita" | "custo" | "alerta", alerta?: (typeof alertasCliente)[0]) => {
+  const abrirPainel = (tipo: "receita" | "kpi" | "alerta", item?: any) => {
     setPainelTipo(tipo)
-    setAlertaSelecionado(alerta || null)
+    setItemSelecionado(item)
     setPainelAberto(true)
   }
 
@@ -437,7 +542,6 @@ function CockpitContent() {
                 </div>
               </div>
 
-              {/* Barra de Progresso Dupla */}
               <div className="relative h-5 bg-muted/30 rounded overflow-hidden mb-1.5">
                 <div
                   className="absolute top-0 left-0 h-2.5 bg-muted-foreground/40"
@@ -447,7 +551,6 @@ function CockpitContent() {
                   className="absolute top-2.5 left-0 h-2.5 bg-primary/70"
                   style={{ width: `${gestaoCliente.cronograma.percentualRealizado}%` }}
                 />
-                {/* Linha do Hoje */}
                 <div
                   className="absolute top-0 bottom-0 w-0.5 bg-foreground"
                   style={{
@@ -456,7 +559,6 @@ function CockpitContent() {
                 />
               </div>
 
-              {/* Legenda */}
               <div className="flex items-center justify-between text-[9px]">
                 <div className="flex items-center gap-3">
                   <span className="flex items-center gap-1">
@@ -470,7 +572,7 @@ function CockpitContent() {
                   <span
                     className={`font-semibold ${
                       gestaoCliente.cronograma.percentualRealizado >= gestaoCliente.cronograma.percentualPrevisto
-                        ? "text-primary"
+                        ? "text-emerald-600 dark:text-emerald-400"
                         : "text-destructive"
                     }`}
                   >
@@ -525,22 +627,20 @@ function CockpitContent() {
 
             {/* Alertas Cliente */}
             <div className="col-span-3 p-3 rounded-lg border border-border bg-card">
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-2">
-                  <AlertTriangle className="w-4 h-4 text-muted-foreground" />
-                  <span className="text-[10px] font-semibold uppercase tracking-wide">Alertas Cliente</span>
-                </div>
+              <div className="flex items-center gap-2 mb-2">
+                <AlertTriangle className="w-4 h-4 text-muted-foreground" />
+                <span className="text-[10px] font-semibold uppercase tracking-wide">Alertas Cliente</span>
               </div>
-              <div className="space-y-1.5">
-                {alertasCliente.map((alerta) => (
-                  <div
-                    key={alerta.id}
-                    className="flex items-center justify-between p-1.5 rounded bg-muted/30 hover:bg-muted/50 cursor-pointer"
-                    onClick={() => abrirPainel("alerta", alerta)}
-                  >
-                    <div className="flex items-center gap-2">
+              <ScrollArea className="h-[80px]">
+                <div className="space-y-1.5">
+                  {alertasCliente.map((alerta) => (
+                    <div
+                      key={alerta.id}
+                      className="flex items-center gap-2 p-1.5 rounded bg-muted/30 cursor-pointer hover:bg-muted/50"
+                      onClick={() => abrirPainel("alerta", alerta)}
+                    >
                       <div
-                        className={`w-1.5 h-1.5 rounded-full ${
+                        className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${
                           alerta.tipo === "critico"
                             ? "bg-destructive"
                             : alerta.tipo === "atencao"
@@ -548,20 +648,20 @@ function CockpitContent() {
                               : "bg-primary"
                         }`}
                       />
-                      <span className="text-[10px] truncate max-w-[120px]">{alerta.titulo}</span>
+                      <span className="text-[10px] flex-1 truncate">{alerta.titulo}</span>
+                      <span className="text-[9px] text-muted-foreground">{alerta.valor}</span>
                     </div>
-                    <span className="text-[9px] font-semibold text-muted-foreground">{alerta.valor}</span>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              </ScrollArea>
             </div>
           </div>
         </div>
 
         {/* ================================================================== */}
-        {/* BLOCO 2: GERENCIAMENTO INTERNO DA OBRA                             */}
+        {/* BLOCO 2: GERENCIAMENTO INTERNO DA OBRA - KPIs GNESIS               */}
         {/* ================================================================== */}
-        <div className="flex-1 min-h-0">
+        <div className="flex-shrink-0">
           <div className="flex items-center gap-2 mb-3">
             <HardHat className="w-4 h-4 text-muted-foreground" />
             <h2 className="text-xs font-semibold uppercase tracking-wide text-foreground">
@@ -570,368 +670,252 @@ function CockpitContent() {
             <div className="flex-1 h-px bg-border" />
           </div>
 
-          {/* Cards Financeiros Hibridos - Custo */}
           <div className="grid grid-cols-4 gap-2 mb-3">
-            <CardFinanceiroHibrido
-              titulo="Custo Orcado"
-              valor={gerenciamentoInterno.custo.orcado}
-              percentual={100}
-              previstoPercentual={100}
-              icone={<Target className="w-4 h-4" />}
-              subtitulo="meta"
-              onClick={() => abrirPainel("custo")}
+            <CardKpiGnesis
+              codigo="F/CD"
+              nome="Faturamento / Custo Direto"
+              valor={gerenciamentoInterno.kpis.fcd.valor}
+              meta={gerenciamentoInterno.kpis.fcd.meta}
+              formula={gerenciamentoInterno.kpis.fcd.formula}
+              interpretacao={gerenciamentoInterno.kpis.fcd.interpretacao}
+              status={gerenciamentoInterno.kpis.fcd.status}
+              onClick={() => abrirPainel("kpi", gerenciamentoInterno.kpis.fcd)}
             />
-            <CardFinanceiroHibrido
-              titulo="Custo Realizado"
-              valor={gerenciamentoInterno.custo.realizado}
-              percentual={gerenciamentoInterno.custo.percentualRealizado}
-              previstoPercentual={gerenciamentoInterno.custo.previsto}
-              icone={<DollarSign className="w-4 h-4" />}
-              subtitulo="acumulado"
-              onClick={() => abrirPainel("custo")}
+            <CardKpiGnesis
+              codigo="CR/CO"
+              nome="Custo Real / Custo Orcado"
+              valor={gerenciamentoInterno.kpis.crco.valor}
+              meta={gerenciamentoInterno.kpis.crco.meta}
+              formula={gerenciamentoInterno.kpis.crco.formula}
+              interpretacao={gerenciamentoInterno.kpis.crco.interpretacao}
+              status={gerenciamentoInterno.kpis.crco.status}
+              invertido
+              onClick={() => abrirPainel("kpi", gerenciamentoInterno.kpis.crco)}
             />
-            <CardFinanceiroHibrido
-              titulo="Margem Bruta"
-              valor={gerenciamentoInterno.resultado.margemBruta}
-              percentual={gerenciamentoInterno.resultado.margemPercentual}
-              previstoPercentual={gerenciamentoInterno.resultado.metaMargem}
-              icone={<TrendingUp className="w-4 h-4" />}
-              subtitulo={`${gerenciamentoInterno.resultado.margemPercentual}%`}
-              onClick={() => abrirPainel("custo")}
+            <CardKpiGnesis
+              codigo="CI/CD"
+              nome="Custo Indireto / Custo Direto"
+              valor={gerenciamentoInterno.kpis.cicd.valor}
+              meta={gerenciamentoInterno.kpis.cicd.meta}
+              formula={gerenciamentoInterno.kpis.cicd.formula}
+              interpretacao={gerenciamentoInterno.kpis.cicd.interpretacao}
+              status={gerenciamentoInterno.kpis.cicd.status}
+              invertido
+              onClick={() => abrirPainel("kpi", gerenciamentoInterno.kpis.cicd)}
             />
-            <CardFinanceiroHibrido
-              titulo="Lucro Operacional"
-              valor={gerenciamentoInterno.resultado.lucroOperacional}
-              percentual={
-                (gerenciamentoInterno.resultado.lucroOperacional / gerenciamentoInterno.resultado.receitaLiquida) * 100
-              }
-              previstoPercentual={6.5}
-              icone={<BarChart3 className="w-4 h-4" />}
-              subtitulo="apos DAG"
-              onClick={() => abrirPainel("custo")}
+            <CardKpiGnesis
+              codigo="MO"
+              nome="Margem Operacional"
+              valor={gerenciamentoInterno.kpis.mo.valor}
+              meta={gerenciamentoInterno.kpis.mo.meta}
+              formula={gerenciamentoInterno.kpis.mo.formula}
+              interpretacao={gerenciamentoInterno.kpis.mo.interpretacao}
+              status={gerenciamentoInterno.kpis.mo.status}
+              unidade="%"
+              onClick={() => abrirPainel("kpi", gerenciamentoInterno.kpis.mo)}
             />
           </div>
 
-          {/* Performance + Qualidade + SSMA + Juridico + Alertas */}
+          {/* Indicadores Complementares + Alertas */}
           <div className="grid grid-cols-12 gap-2">
-            {/* Performance */}
+            {/* Performance Fisica */}
             <div className="col-span-3 p-3 rounded-lg border border-border bg-card">
               <div className="flex items-center gap-2 mb-2">
                 <Activity className="w-4 h-4 text-muted-foreground" />
-                <span className="text-[10px] font-semibold uppercase tracking-wide">Performance</span>
+                <span className="text-[10px] font-semibold uppercase tracking-wide">Performance Fisica</span>
               </div>
-              <div className="grid grid-cols-2 gap-1.5">
-                <CardKpiHibrido
+              <div className="grid grid-cols-2 gap-2">
+                <CardKpiSimples
                   titulo="SPI"
                   valor={gerenciamentoInterno.performance.spi}
                   meta={1.0}
-                  icone={<Clock className="w-3 h-3" />}
-                  status={gerenciamentoInterno.performance.spi >= 0.95 ? "ok" : "atencao"}
+                  icone={<TrendingUp className="w-3.5 h-3.5" />}
+                  status={gerenciamentoInterno.performance.spi >= 1.0 ? "ok" : "atencao"}
                 />
-                <CardKpiHibrido
+                <CardKpiSimples
                   titulo="CPI"
                   valor={gerenciamentoInterno.performance.cpi}
                   meta={1.0}
-                  icone={<DollarSign className="w-3 h-3" />}
+                  icone={<Target className="w-3.5 h-3.5" />}
                   status={gerenciamentoInterno.performance.cpi >= 1.0 ? "ok" : "atencao"}
                 />
-                <CardKpiHibrido
-                  titulo="Produt."
-                  valor={gerenciamentoInterno.performance.produtividade}
-                  meta={100}
-                  unidade="%"
-                  icone={<TrendingUp className="w-3 h-3" />}
-                  status={gerenciamentoInterno.performance.produtividade >= 90 ? "ok" : "atencao"}
-                />
-                <CardKpiHibrido
-                  titulo="Eficiencia"
-                  valor={gerenciamentoInterno.performance.eficiencia}
-                  meta={100}
-                  unidade="%"
-                  icone={<Target className="w-3 h-3" />}
-                  status={gerenciamentoInterno.performance.eficiencia >= 95 ? "ok" : "atencao"}
-                />
               </div>
             </div>
 
-            {/* Qualidade */}
-            <div className="col-span-2 p-3 rounded-lg border border-border bg-card">
-              <div className="flex items-center gap-2 mb-2">
-                <CheckCircle2 className="w-4 h-4 text-muted-foreground" />
-                <span className="text-[10px] font-semibold uppercase tracking-wide">Qualidade</span>
-              </div>
-              <div className="space-y-1.5">
-                <div className="flex items-center justify-between text-[11px]">
-                  <span className="text-muted-foreground">Inspecoes</span>
-                  <span className="font-medium">
-                    {gerenciamentoInterno.qualidade.inspecoesRealizadas}/
-                    {gerenciamentoInterno.qualidade.inspecoesRealizadas +
-                      gerenciamentoInterno.qualidade.inspecoesPendentes}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between text-[11px]">
-                  <span className="text-muted-foreground">NCs Abertas</span>
-                  <Badge
-                    variant={gerenciamentoInterno.qualidade.ncsAbertas > 5 ? "destructive" : "outline"}
-                    className="h-5 text-[10px]"
-                  >
-                    {gerenciamentoInterno.qualidade.ncsAbertas}
-                  </Badge>
-                </div>
-                <div className="flex items-center justify-between text-[11px]">
-                  <span className="text-muted-foreground">Conformidade</span>
-                  <span className="font-semibold text-primary">{gerenciamentoInterno.qualidade.taxaConformidade}%</span>
-                </div>
-              </div>
-            </div>
-
-            {/* SSMA */}
-            <div className="col-span-2 p-3 rounded-lg border border-border bg-card">
+            {/* Qualidade / SSMA / Juridico */}
+            <div className="col-span-6 p-3 rounded-lg border border-border bg-card">
               <div className="flex items-center gap-2 mb-2">
                 <ShieldAlert className="w-4 h-4 text-muted-foreground" />
-                <span className="text-[10px] font-semibold uppercase tracking-wide">SSMA</span>
+                <span className="text-[10px] font-semibold uppercase tracking-wide">Garantidores</span>
               </div>
-              <div className="space-y-1.5">
-                <div className="flex items-center justify-between text-[11px]">
-                  <span className="text-muted-foreground">Dias s/ Acidente</span>
-                  <span className="font-bold text-primary">{gerenciamentoInterno.ssma.diasSemAcidente}</span>
+              <div className="grid grid-cols-3 gap-3">
+                <div className="space-y-1">
+                  <span className="text-[9px] text-muted-foreground uppercase">Qualidade</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg font-bold">{gerenciamentoInterno.qualidade.taxaConformidade}%</span>
+                    <Badge variant="outline" className="text-[9px] h-4">
+                      {gerenciamentoInterno.qualidade.ncsAbertas} NCs
+                    </Badge>
+                  </div>
                 </div>
-                <div className="flex items-center justify-between text-[11px]">
-                  <span className="text-muted-foreground">Incidentes Mes</span>
-                  <Badge
-                    variant={gerenciamentoInterno.ssma.incidentesMes > 0 ? "outline" : "default"}
-                    className="h-5 text-[10px]"
-                  >
-                    {gerenciamentoInterno.ssma.incidentesMes}
-                  </Badge>
+                <div className="space-y-1">
+                  <span className="text-[9px] text-muted-foreground uppercase">SSMA</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg font-bold">{gerenciamentoInterno.ssma.diasSemAcidente}</span>
+                    <span className="text-[10px] text-muted-foreground">dias s/ acidente</span>
+                  </div>
                 </div>
-                <div className="flex items-center justify-between text-[11px]">
-                  <span className="text-muted-foreground">Taxa Freq.</span>
-                  <span className="font-medium">{gerenciamentoInterno.ssma.taxaFrequencia}</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Juridico */}
-            <div className="col-span-2 p-3 rounded-lg border border-border bg-card">
-              <div className="flex items-center gap-2 mb-2">
-                <Gavel className="w-4 h-4 text-muted-foreground" />
-                <span className="text-[10px] font-semibold uppercase tracking-wide">Juridico</span>
-              </div>
-              <div className="space-y-1.5">
-                <div className="flex items-center justify-between text-[11px]">
-                  <span className="text-muted-foreground">Processos</span>
-                  <Badge
-                    variant={gerenciamentoInterno.juridico.processosAtivos > 0 ? "outline" : "default"}
-                    className="h-5 text-[10px]"
-                  >
-                    {gerenciamentoInterno.juridico.processosAtivos}
-                  </Badge>
-                </div>
-                <div className="flex items-center justify-between text-[11px]">
-                  <span className="text-muted-foreground">Notificacoes</span>
-                  <Badge
-                    variant={gerenciamentoInterno.juridico.notificacoesPendentes > 0 ? "destructive" : "outline"}
-                    className="h-5 text-[10px]"
-                  >
-                    {gerenciamentoInterno.juridico.notificacoesPendentes}
-                  </Badge>
-                </div>
-                <div className="flex items-center justify-between text-[11px]">
-                  <span className="text-muted-foreground">Risco Est.</span>
-                  <span className="font-medium text-destructive">
-                    {formatarMoeda(gerenciamentoInterno.juridico.riscoEstimado)}
-                  </span>
+                <div className="space-y-1">
+                  <span className="text-[9px] text-muted-foreground uppercase">Juridico</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg font-bold">{gerenciamentoInterno.juridico.processosAtivos}</span>
+                    <span className="text-[10px] text-muted-foreground">processos</span>
+                  </div>
                 </div>
               </div>
             </div>
 
             {/* Alertas Internos */}
             <div className="col-span-3 p-3 rounded-lg border border-border bg-card">
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-2">
-                  <AlertCircle className="w-4 h-4 text-muted-foreground" />
-                  <span className="text-[10px] font-semibold uppercase tracking-wide">Alertas Internos</span>
-                </div>
+              <div className="flex items-center gap-2 mb-2">
+                <AlertCircle className="w-4 h-4 text-muted-foreground" />
+                <span className="text-[10px] font-semibold uppercase tracking-wide">Alertas Internos</span>
               </div>
-              <div className="space-y-1.5">
-                {alertasInternos.map((alerta) => (
-                  <div
-                    key={alerta.id}
-                    className="flex items-center justify-between p-1.5 rounded bg-muted/30 hover:bg-muted/50 cursor-pointer"
-                    onClick={() => abrirPainel("alerta", alerta)}
-                  >
-                    <div className="flex items-center gap-2">
+              <ScrollArea className="h-[80px]">
+                <div className="space-y-1.5">
+                  {alertasInternos.map((alerta) => (
+                    <div
+                      key={alerta.id}
+                      className="flex items-center gap-2 p-1.5 rounded bg-muted/30 cursor-pointer hover:bg-muted/50"
+                      onClick={() => abrirPainel("alerta", alerta)}
+                    >
                       <div
-                        className={`w-1.5 h-1.5 rounded-full ${
+                        className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${
                           alerta.tipo === "critico"
                             ? "bg-destructive"
                             : alerta.tipo === "atencao"
                               ? "bg-amber-500"
-                              : "bg-primary"
+                              : "bg-emerald-500"
                         }`}
                       />
-                      <span className="text-[10px] truncate max-w-[140px]">{alerta.titulo}</span>
+                      <span className="text-[10px] flex-1 truncate">{alerta.titulo}</span>
+                      <span className="text-[9px] text-muted-foreground">{alerta.valor}</span>
                     </div>
-                    <span className="text-[9px] font-semibold text-muted-foreground">{alerta.valor}</span>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              </ScrollArea>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* PAINEL LATERAL */}
-      <Sheet open={painelAberto} onOpenChange={setPainelAberto}>
-        <SheetContent className="w-[400px] sm:w-[450px] bg-background border-border">
-          <SheetHeader className="pb-4 border-b border-border">
-            <div className="flex items-center justify-between">
-              <SheetTitle className="text-base font-semibold">
-                {painelTipo === "receita" && "Detalhe de Receita"}
-                {painelTipo === "custo" && "Detalhe de Custo"}
-                {painelTipo === "alerta" && "Detalhe do Alerta"}
+        {/* PAINEL LATERAL */}
+        <Sheet open={painelAberto} onOpenChange={setPainelAberto}>
+          <SheetContent className="w-[400px] sm:w-[500px]">
+            <SheetHeader>
+              <SheetTitle>
+                {painelTipo === "receita" && "Detalhes da Receita"}
+                {painelTipo === "kpi" && `KPI: ${itemSelecionado?.codigo || "Detalhe"}`}
+                {painelTipo === "alerta" && "Detalhes do Alerta"}
               </SheetTitle>
+            </SheetHeader>
+            <div className="mt-4">
+              {painelTipo === "kpi" && itemSelecionado && (
+                <div className="space-y-4">
+                  <div className="p-4 rounded-lg border border-border bg-muted/30">
+                    <h4 className="text-sm font-semibold mb-2">{itemSelecionado.nome || itemSelecionado.codigo}</h4>
+                    <p className="text-2xl font-bold mb-2">
+                      {itemSelecionado.valor?.toFixed(2)}
+                      <span className="text-sm text-muted-foreground ml-2">
+                        meta: {itemSelecionado.meta?.toFixed(2)}
+                      </span>
+                    </p>
+                    <p className="text-sm text-muted-foreground mb-2">{itemSelecionado.formula}</p>
+                    <p className="text-sm">{itemSelecionado.interpretacao}</p>
+                  </div>
+
+                  <div className="p-4 rounded-lg border border-border">
+                    <h4 className="text-sm font-semibold mb-3">Historico (6 meses)</h4>
+                    <div className="flex items-end justify-between gap-2 h-24">
+                      {[1.18, 1.2, 1.19, 1.22, 1.21, 1.23].map((v, i) => (
+                        <div key={i} className="flex-1 flex flex-col items-center gap-1">
+                          <div className="w-full bg-primary rounded-t" style={{ height: `${(v / 1.3) * 100}%` }} />
+                          <span className="text-[9px] text-muted-foreground">
+                            {["Ago", "Set", "Out", "Nov", "Dez", "Jan"][i]}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="p-4 rounded-lg border border-border">
+                    <h4 className="text-sm font-semibold mb-2">Acao Gerencial</h4>
+                    <p className="text-sm text-muted-foreground">
+                      {itemSelecionado.status === "ok"
+                        ? "Indicador dentro da meta. Manter monitoramento."
+                        : "Indicador requer atencao. Avaliar acoes corretivas."}
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {painelTipo === "alerta" && itemSelecionado && (
+                <div className="space-y-4">
+                  <div
+                    className={`p-4 rounded-lg border ${
+                      itemSelecionado.tipo === "critico"
+                        ? "border-destructive bg-destructive/10"
+                        : itemSelecionado.tipo === "atencao"
+                          ? "border-amber-500 bg-amber-500/10"
+                          : "border-primary bg-primary/10"
+                    }`}
+                  >
+                    <h4 className="text-sm font-semibold mb-2">{itemSelecionado.titulo}</h4>
+                    <p className="text-lg font-bold">{itemSelecionado.valor}</p>
+                    {itemSelecionado.dias > 0 && (
+                      <p className="text-sm text-muted-foreground mt-2">Ha {itemSelecionado.dias} dias</p>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {painelTipo === "receita" && (
+                <div className="space-y-4">
+                  <div className="p-4 rounded-lg border border-border bg-muted/30">
+                    <h4 className="text-sm font-semibold mb-3">Composicao da Receita</h4>
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span>Receita Contratada</span>
+                        <span className="font-semibold">{formatarMoeda(gestaoCliente.receita.contratada)}</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span>Medido Acumulado</span>
+                        <span className="font-semibold">{formatarMoeda(gestaoCliente.receita.medidaAcumulada)}</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span>Saldo a Medir</span>
+                        <span className="font-semibold">{formatarMoeda(gestaoCliente.receita.saldo)}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
-          </SheetHeader>
-
-          <ScrollArea className="h-[calc(100vh-120px)] mt-4">
-            {painelTipo === "receita" && (
-              <div className="space-y-4">
-                <div className="p-3 rounded-lg bg-muted/30 border border-border">
-                  <h4 className="text-xs font-semibold mb-3 uppercase tracking-wide">Composicao da Receita</h4>
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">Contrato Original</span>
-                      <span className="font-medium">R$ 245.0 Mi</span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">Aditivos (+)</span>
-                      <span className="font-medium text-primary">R$ 12.5 Mi</span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">Supressoes (-)</span>
-                      <span className="font-medium text-destructive">R$ 3.2 Mi</span>
-                    </div>
-                    <div className="flex justify-between text-sm pt-2 border-t border-border">
-                      <span className="font-semibold">Valor Atual</span>
-                      <span className="font-bold">R$ 254.3 Mi</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="p-3 rounded-lg bg-muted/30 border border-border">
-                  <h4 className="text-xs font-semibold mb-3 uppercase tracking-wide">Fluxo de Receita</h4>
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">Medido Acumulado</span>
-                      <span className="font-medium">R$ 176.0 Mi</span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">Faturado</span>
-                      <span className="font-medium">R$ 163.7 Mi</span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">Recebido</span>
-                      <span className="font-medium text-primary">R$ 140.2 Mi</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {painelTipo === "custo" && (
-              <div className="space-y-4">
-                <div className="p-3 rounded-lg bg-muted/30 border border-border">
-                  <h4 className="text-xs font-semibold mb-3 uppercase tracking-wide">DRE Resumido</h4>
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">Receita Liquida</span>
-                      <span className="font-medium">
-                        {formatarMoeda(gerenciamentoInterno.resultado.receitaLiquida)}
-                      </span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">(-) Custo Direto</span>
-                      <span className="font-medium text-destructive">
-                        {formatarMoeda(gerenciamentoInterno.custo.realizado)}
-                      </span>
-                    </div>
-                    <div className="flex justify-between text-sm pt-2 border-t border-border">
-                      <span className="font-semibold">Margem Bruta</span>
-                      <span className="font-bold text-primary">
-                        {formatarMoeda(gerenciamentoInterno.resultado.margemBruta)}
-                      </span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">(-) DAG</span>
-                      <span className="font-medium">{formatarMoeda(gerenciamentoInterno.resultado.dag)}</span>
-                    </div>
-                    <div className="flex justify-between text-sm pt-2 border-t border-border">
-                      <span className="font-semibold">Lucro Operacional</span>
-                      <span className="font-bold">
-                        {formatarMoeda(gerenciamentoInterno.resultado.lucroOperacional)}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {painelTipo === "alerta" && alertaSelecionado && (
-              <div className="space-y-4">
-                <div className="p-3 rounded-lg bg-muted/30 border border-border">
-                  <div className="flex items-center gap-2 mb-3">
-                    <div
-                      className={`w-2 h-2 rounded-full ${
-                        alertaSelecionado.tipo === "critico"
-                          ? "bg-destructive"
-                          : alertaSelecionado.tipo === "atencao"
-                            ? "bg-amber-500"
-                            : "bg-primary"
-                      }`}
-                    />
-                    <Badge
-                      variant={
-                        alertaSelecionado.tipo === "critico"
-                          ? "destructive"
-                          : alertaSelecionado.tipo === "atencao"
-                            ? "outline"
-                            : "default"
-                      }
-                    >
-                      {alertaSelecionado.tipo.toUpperCase()}
-                    </Badge>
-                  </div>
-                  <h4 className="text-sm font-semibold mb-2">{alertaSelecionado.titulo}</h4>
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-muted-foreground">Valor/Impacto</span>
-                    <span className="font-bold">{alertaSelecionado.valor}</span>
-                  </div>
-                  <div className="flex items-center justify-between text-sm mt-1">
-                    <span className="text-muted-foreground">Dias em aberto</span>
-                    <span className="font-medium">{alertaSelecionado.dias} dias</span>
-                  </div>
-                </div>
-                <div className="flex gap-2">
-                  <Button variant="outline" size="sm" className="flex-1 bg-transparent">
-                    Ver Detalhes
-                  </Button>
-                  <Button size="sm" className="flex-1">
-                    Tomar Acao
-                  </Button>
-                </div>
-              </div>
-            )}
-          </ScrollArea>
-        </SheetContent>
-      </Sheet>
+          </SheetContent>
+        </Sheet>
+      </div>
     </div>
   )
 }
 
-export default function CockpitGovernancaPage() {
+export default function CockpitPage() {
   return (
-    <Suspense fallback={null}>
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center h-full">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+        </div>
+      }
+    >
       <CockpitContent />
     </Suspense>
   )
