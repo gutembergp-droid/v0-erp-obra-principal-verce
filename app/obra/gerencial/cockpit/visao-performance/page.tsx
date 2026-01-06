@@ -26,7 +26,6 @@ import {
   PieChart,
   Scale,
   ShieldCheck,
-  Gavel,
   Users,
   Truck,
   ClipboardCheck,
@@ -483,9 +482,9 @@ function VisaoPerformanceContent() {
             <Scale className="h-4 w-4 text-primary" />
             <h2 className="text-sm font-semibold text-foreground">CUSTO META E RECURSOS</h2>
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-            {/* Tabela de custos por categoria */}
-            <div className="lg:col-span-1 p-4 rounded-lg border border-border bg-card">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-3">
+            {/* Tabela de custos por categoria - AUMENTADO para 2 colunas */}
+            <div className="lg:col-span-2 p-4 rounded-lg border border-border bg-card">
               <div className="flex items-center justify-between mb-3">
                 <h3 className="text-xs font-semibold text-foreground">CUSTO POR CATEGORIA</h3>
                 <div className="flex gap-2 text-[9px]">
@@ -502,7 +501,7 @@ function VisaoPerformanceContent() {
                   <div key={cat.categoria} className="space-y-1">
                     <div className="flex justify-between text-xs">
                       <span className="text-muted-foreground">{cat.categoria}</span>
-                      <div className="flex gap-2">
+                      <div className="flex gap-3">
                         <span className="text-foreground font-medium">{formatarMoeda(cat.realizado)}</span>
                         <span
                           className={`font-medium ${cat.desvio <= 0 ? "text-emerald-600 dark:text-emerald-400" : "text-destructive"}`}
@@ -512,7 +511,7 @@ function VisaoPerformanceContent() {
                         </span>
                       </div>
                     </div>
-                    <div className="relative h-2 bg-muted rounded-full overflow-hidden">
+                    <div className="relative h-2.5 bg-muted rounded-full overflow-hidden">
                       <div
                         className="absolute h-full bg-primary/40 rounded-full"
                         style={{ width: `${(cat.orcado / 60000000) * 100}%` }}
@@ -524,10 +523,10 @@ function VisaoPerformanceContent() {
                     </div>
                   </div>
                 ))}
-                <div className="pt-2 border-t border-border">
+                <div className="pt-3 border-t border-border">
                   <div className="flex justify-between text-xs font-semibold">
                     <span className="text-foreground">TOTAL</span>
-                    <div className="flex gap-2">
+                    <div className="flex gap-3">
                       <span className="text-foreground">{formatarMoeda(160680000)}</span>
                       <span className="text-destructive">+R$ 2.3 Mi</span>
                     </div>
@@ -536,89 +535,90 @@ function VisaoPerformanceContent() {
               </div>
             </div>
 
-            {/* Efetivo e Equipamentos */}
-            <div className="space-y-4">
-              <div className="p-4 rounded-lg border border-border bg-card">
-                <div className="flex items-center gap-2 mb-3">
-                  <Users className="h-4 w-4 text-primary" />
-                  <h3 className="text-xs font-semibold text-foreground">EFETIVO</h3>
+            <div className="lg:col-span-1 space-y-3">
+              <div className="p-3 rounded-lg border border-border bg-card">
+                <div className="flex items-center gap-2 mb-2">
+                  <Users className="h-3.5 w-3.5 text-primary" />
+                  <h3 className="text-[10px] font-semibold text-foreground">EFETIVO</h3>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-2">
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-foreground">{efetivo.presentes}</div>
-                    <div className="text-[10px] text-muted-foreground">Presentes</div>
+                    <div className="text-xl font-bold text-foreground">{efetivo.presentes}</div>
+                    <div className="text-[9px] text-muted-foreground">Presentes</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-foreground">{efetivo.percentualPresenca}%</div>
-                    <div className="text-[10px] text-muted-foreground">Presenca</div>
+                    <div className="text-xl font-bold text-foreground">{efetivo.percentualPresenca}%</div>
+                    <div className="text-[9px] text-muted-foreground">Presenca</div>
                   </div>
                 </div>
-                <div className="grid grid-cols-3 gap-2 mt-3 pt-3 border-t border-border">
+                <div className="grid grid-cols-3 gap-1 mt-2 pt-2 border-t border-border">
                   <div className="text-center">
-                    <div className="text-sm font-semibold text-foreground">{efetivo.proprios}</div>
-                    <div className="text-[9px] text-muted-foreground">Proprios</div>
+                    <div className="text-xs font-semibold text-foreground">{efetivo.proprios}</div>
+                    <div className="text-[8px] text-muted-foreground">Proprios</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-sm font-semibold text-foreground">{efetivo.terceiros}</div>
-                    <div className="text-[9px] text-muted-foreground">Terceiros</div>
+                    <div className="text-xs font-semibold text-foreground">{efetivo.terceiros}</div>
+                    <div className="text-[8px] text-muted-foreground">Terceiros</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-sm font-semibold text-foreground">{efetivo.turnover}%</div>
-                    <div className="text-[9px] text-muted-foreground">Turnover</div>
+                    <div className="text-xs font-semibold text-foreground">{efetivo.turnover}%</div>
+                    <div className="text-[8px] text-muted-foreground">Turnover</div>
                   </div>
                 </div>
               </div>
 
-              <div className="p-4 rounded-lg border border-border bg-card">
-                <div className="flex items-center gap-2 mb-3">
-                  <Truck className="h-4 w-4 text-primary" />
-                  <h3 className="text-xs font-semibold text-foreground">EQUIPAMENTOS</h3>
+              <div className="p-3 rounded-lg border border-border bg-card">
+                <div className="flex items-center gap-2 mb-2">
+                  <Truck className="h-3.5 w-3.5 text-primary" />
+                  <h3 className="text-[10px] font-semibold text-foreground">EQUIPAMENTOS</h3>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-2">
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-foreground">{equipamentos.emOperacao}</div>
-                    <div className="text-[10px] text-muted-foreground">Operando</div>
+                    <div className="text-xl font-bold text-foreground">{equipamentos.emOperacao}</div>
+                    <div className="text-[9px] text-muted-foreground">Operando</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-foreground">{equipamentos.disponibilidade}%</div>
-                    <div className="text-[10px] text-muted-foreground">Disponib.</div>
+                    <div className="text-xl font-bold text-foreground">{equipamentos.disponibilidade}%</div>
+                    <div className="text-[9px] text-muted-foreground">Disponib.</div>
                   </div>
                 </div>
-                <div className="grid grid-cols-3 gap-2 mt-3 pt-3 border-t border-border">
+                <div className="grid grid-cols-3 gap-1 mt-2 pt-2 border-t border-border">
                   <div className="text-center">
-                    <div className="text-sm font-semibold text-foreground">{equipamentos.emManutencao}</div>
-                    <div className="text-[9px] text-muted-foreground">Em Manutencao</div>
+                    <div className="text-xs font-semibold text-foreground">{equipamentos.emManutencao}</div>
+                    <div className="text-[8px] text-muted-foreground">Manut.</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-sm font-semibold text-foreground">{equipamentos.parados}</div>
-                    <div className="text-[9px] text-muted-foreground">Parados</div>
+                    <div className="text-xs font-semibold text-foreground">{equipamentos.parados}</div>
+                    <div className="text-[8px] text-muted-foreground">Parados</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-sm font-semibold text-foreground">{equipamentos.utilizacao}%</div>
-                    <div className="text-[9px] text-muted-foreground">Utilizacao</div>
+                    <div className="text-xs font-semibold text-foreground">{equipamentos.utilizacao}%</div>
+                    <div className="text-[8px] text-muted-foreground">Utiliz.</div>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Qualidade, SSMA, Juridico */}
-            <div className="space-y-4">
-              <div className="p-4 rounded-lg border border-border bg-card">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-2">
-                    <ClipboardCheck className="h-4 w-4 text-primary" />
-                    <h3 className="text-xs font-semibold text-foreground">QUALIDADE</h3>
+            <div className="lg:col-span-1 space-y-3">
+              <div className="p-3 rounded-lg border border-border bg-card">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-1.5">
+                    <ClipboardCheck className="h-3.5 w-3.5 text-primary" />
+                    <h3 className="text-[10px] font-semibold text-foreground">QUALIDADE</h3>
                   </div>
-                  <Badge variant="outline" className="text-[9px] bg-amber-500/10 text-amber-600 dark:text-amber-400">
+                  <Badge
+                    variant="outline"
+                    className="text-[8px] px-1.5 py-0 bg-amber-500/10 text-amber-600 dark:text-amber-400"
+                  >
                     {qualidade.ncsAbertas} NCs
                   </Badge>
                 </div>
-                <div className="space-y-2">
-                  <div className="flex justify-between text-xs">
+                <div className="space-y-1.5">
+                  <div className="flex justify-between text-[10px]">
                     <span className="text-muted-foreground">Conformidade</span>
                     <span className="font-semibold text-foreground">{qualidade.conformidade}%</span>
                   </div>
-                  <div className="flex justify-between text-xs">
+                  <div className="flex justify-between text-[10px]">
                     <span className="text-muted-foreground">Inspecoes</span>
                     <span className="font-semibold text-foreground">
                       {qualidade.inspecoesRealizadas}/{qualidade.inspecoesProgramadas}
@@ -627,25 +627,25 @@ function VisaoPerformanceContent() {
                 </div>
               </div>
 
-              <div className="p-4 rounded-lg border border-border bg-card">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-2">
-                    <ShieldCheck className="h-4 w-4 text-primary" />
-                    <h3 className="text-xs font-semibold text-foreground">SSMA</h3>
+              <div className="p-3 rounded-lg border border-border bg-card">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-1.5">
+                    <ShieldCheck className="h-3.5 w-3.5 text-primary" />
+                    <h3 className="text-[10px] font-semibold text-foreground">SSMA</h3>
                   </div>
                   <Badge
                     variant="outline"
-                    className="text-[9px] bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                    className="text-[8px] px-1.5 py-0 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
                   >
                     {ssma.diasSemAcidente} dias s/ acid.
                   </Badge>
                 </div>
-                <div className="space-y-2">
-                  <div className="flex justify-between text-xs">
+                <div className="space-y-1.5">
+                  <div className="flex justify-between text-[10px]">
                     <span className="text-muted-foreground">Taxa Frequencia</span>
                     <span className="font-semibold text-foreground">{ssma.taxaFrequencia}</span>
                   </div>
-                  <div className="flex justify-between text-xs">
+                  <div className="flex justify-between text-[10px]">
                     <span className="text-muted-foreground">DDS Realizados</span>
                     <span className="font-semibold text-foreground">
                       {ssma.ddsRealizados}/{ssma.ddsProgramados}
@@ -654,22 +654,25 @@ function VisaoPerformanceContent() {
                 </div>
               </div>
 
-              <div className="p-4 rounded-lg border border-border bg-card">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-2">
-                    <Gavel className="h-4 w-4 text-primary" />
-                    <h3 className="text-xs font-semibold text-foreground">JURIDICO</h3>
+              <div className="p-3 rounded-lg border border-border bg-card">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-1.5">
+                    <Scale className="h-3.5 w-3.5 text-primary" />
+                    <h3 className="text-[10px] font-semibold text-foreground">JURIDICO</h3>
                   </div>
-                  <Badge variant="outline" className="text-[9px] bg-amber-500/10 text-amber-600 dark:text-amber-400">
+                  <Badge
+                    variant="outline"
+                    className="text-[8px] px-1.5 py-0 bg-blue-500/10 text-blue-600 dark:text-blue-400"
+                  >
                     {juridico.processosAtivos} ativos
                   </Badge>
                 </div>
-                <div className="space-y-2">
-                  <div className="flex justify-between text-xs">
+                <div className="space-y-1.5">
+                  <div className="flex justify-between text-[10px]">
                     <span className="text-muted-foreground">Risco Estimado</span>
                     <span className="font-semibold text-foreground">{formatarMoeda(juridico.riscoEstimado)}</span>
                   </div>
-                  <div className="flex justify-between text-xs">
+                  <div className="flex justify-between text-[10px]">
                     <span className="text-muted-foreground">Contratos a Vencer</span>
                     <span className="font-semibold text-foreground">{juridico.contratosVencer}</span>
                   </div>

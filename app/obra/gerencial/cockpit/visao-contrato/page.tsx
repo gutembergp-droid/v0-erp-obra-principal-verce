@@ -335,34 +335,38 @@ function VisaoContratoContent() {
         {/* HEADER */}
         <div className="flex items-center justify-between mb-4 flex-shrink-0">
           <div className="flex items-center gap-3">
-            <div className="flex items-center justify-center w-9 h-9 rounded-lg border border-border">
+            <div className="flex items-center justify-center w-9 h-9 rounded-lg border border-border bg-muted/30">
               <Gauge className="w-4 h-4 text-muted-foreground" />
             </div>
             <div>
               <div className="flex items-center gap-2">
                 <h1 className="text-lg font-bold text-foreground">Cockpit de Governanca</h1>
                 <InfoTooltip title="Visao Contrato" description="100% focada na relacao com o cliente" />
-                <Badge variant="outline" className="text-[9px] h-5 border-primary/50 text-primary bg-primary/10">
+                <Badge
+                  variant="outline"
+                  className="text-[9px] h-5 px-2 border-foreground/30 text-foreground font-medium"
+                >
                   CONTRATO
                 </Badge>
               </div>
               <p className="text-[11px] text-muted-foreground">BR-101 LOTE 2 | Compor 90</p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="flex items-center gap-1 p-1 rounded-lg border border-border bg-muted/30">
+          <div className="flex items-center gap-3">
+            {/* Navegacao sem container - botoes individuais */}
+            <div className="flex items-center gap-1">
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-7 px-3 text-xs hover:bg-muted/50"
+                className="h-8 px-4 text-xs text-muted-foreground hover:text-foreground hover:bg-muted/50"
                 onClick={() => router.push("/obra/gerencial/cockpit")}
               >
                 Geral
               </Button>
               <Button
-                variant="ghost"
+                variant="outline"
                 size="sm"
-                className="h-7 px-3 text-xs bg-muted/50 border border-primary/30"
+                className="h-8 px-4 text-xs bg-muted/50 border-foreground/20 text-foreground font-medium"
                 disabled
               >
                 Contrato
@@ -370,7 +374,7 @@ function VisaoContratoContent() {
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-7 px-3 text-xs hover:bg-muted/50"
+                className="h-8 px-4 text-xs text-muted-foreground hover:text-foreground hover:bg-muted/50"
                 onClick={() => router.push("/obra/gerencial/cockpit/visao-performance")}
               >
                 Performance
@@ -378,16 +382,21 @@ function VisaoContratoContent() {
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-7 px-3 text-xs hover:bg-muted/50"
+                className="h-8 px-4 text-xs text-muted-foreground hover:text-foreground hover:bg-muted/50"
                 onClick={() => router.push("/obra/gerencial/cockpit/visao-financeiro")}
               >
                 Financeiro
               </Button>
             </div>
-            <Badge variant="outline" className="text-[10px] h-6 px-2">
+            <Badge variant="outline" className="text-[10px] h-8 px-3 border-foreground/20 font-medium">
               Janeiro 2025
             </Badge>
-            <Button variant="outline" size="sm" className="h-8 w-8 p-0 bg-transparent" title="Gerar Relatorio">
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-8 w-8 p-0 border-foreground/20 bg-transparent"
+              title="Gerar Relatorio"
+            >
               <FileText className="w-4 h-4" />
             </Button>
           </div>

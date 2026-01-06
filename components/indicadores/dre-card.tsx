@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -10,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Calculator, BarChart3, CalendarIcon, PieChart, ArrowUpRight, ArrowDownRight } from "lucide-react"
+import { Calculator, BarChart3, CalendarIcon, TrendingUp, TrendingDown, Info } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { format } from "date-fns"
 import { ptBR } from "date-fns/locale"
@@ -40,7 +39,6 @@ const formatarMoeda = (valor: number) => {
   return `R$ ${valor.toFixed(0)}`
 }
 
-// Card individual do DRE
 function DREItemCard({ item, onOpenPopup }: { item: DREItemProps; onOpenPopup: () => void }) {
   const realizado = item.valor
   const previsto = item.previsto
@@ -55,10 +53,11 @@ function DREItemCard({ item, onOpenPopup }: { item: DREItemProps; onOpenPopup: (
 
   return (
     <Card
-      className="p-4 cursor-pointer hover:shadow-md transition-shadow border-l-4"
+      className="p-4 cursor-pointer hover:shadow-md transition-all duration-200 border-l-4 group"
       style={{ borderLeftColor: item.cor }}
       onClick={onOpenPopup}
     >
+      {/* Header com icone e botao */}
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-center gap-2">
           <div className="p-2 rounded-lg" style={{ backgroundColor: `${item.cor}15` }}>
@@ -69,7 +68,7 @@ function DREItemCard({ item, onOpenPopup }: { item: DREItemProps; onOpenPopup: (
         <Button
           variant="ghost"
           size="sm"
-          className="h-6 w-6 p-0"
+          className="h-7 w-7 p-0 opacity-60 group-hover:opacity-100 transition-opacity"
           onClick={(e) => {
             e.stopPropagation()
             onOpenPopup()
@@ -87,35 +86,42 @@ function DREItemCard({ item, onOpenPopup }: { item: DREItemProps; onOpenPopup: (
       {/* Previsto vs Realizado */}
       <div className="grid grid-cols-2 gap-2 mb-3 text-xs">
         <div className="bg-muted/50 rounded p-2">
-          <div className="text-muted-foreground">Previsto</div>
-          <div className="font-semibold">{formatarMoeda(previsto)}</div>
+          <div className="text-muted-foreground mb-0.5">Previsto</div>
+          <div className="font-semibold text-foreground">{formatarMoeda(previsto)}</div>
         </div>
         <div className="bg-muted/50 rounded p-2">
-          <div className="text-muted-foreground">Realizado</div>
-          <div className="font-semibold">{formatarMoeda(realizado)}</div>
+          <div className="text-muted-foreground mb-0.5">Realizado</div>
+          <div className="font-semibold text-foreground">{formatarMoeda(realizado)}</div>
         </div>
       </div>
 
-      {/* Barra de Progresso */}
+      {/* Barra de Progresso com indicador visual */}
       <div className="mb-3">
         <div className="flex justify-between text-xs mb-1">
           <span className="text-muted-foreground">Consumido</span>
-          <span className={cn("font-medium", isPositivo ? "text-emerald-600" : "text-red-600")}>
+          <span
+            className={cn(
+              "font-medium",
+              isPositivo ? "text-emerald-600 dark:text-emerald-400" : "text-red-600 dark:text-red-400",
+            )}
+          >
             {percentualConsumido.toFixed(1)}%
           </span>
         </div>
-        <div className="h-2 bg-muted rounded-full overflow-hidden">
+        <div className="h-2.5 bg-muted rounded-full overflow-hidden relative">
           <div
-            className="h-full rounded-full transition-all"
+            className="h-full rounded-full transition-all duration-500"
             style={{
               width: `${Math.min(percentualConsumido, 100)}%`,
               backgroundColor: isPositivo ? "#10b981" : percentualConsumido > 100 ? "#ef4444" : item.cor,
             }}
           />
+          {/* Marcador de meta 100% */}
+          <div className="absolute top-0 right-0 w-0.5 h-full bg-foreground/30" />
         </div>
       </div>
 
-      {/* Desvio */}
+      {/* Desvio com indicador de tendencia */}
       <div
         className={cn(
           "flex items-center justify-between text-xs p-2 rounded",
@@ -125,11 +131,16 @@ function DREItemCard({ item, onOpenPopup }: { item: DREItemProps; onOpenPopup: (
         <span className="text-muted-foreground">Desvio:</span>
         <div className="flex items-center gap-1">
           {isPositivo ? (
-            <ArrowUpRight className="h-3 w-3 text-emerald-600" />
+            <TrendingUp className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
           ) : (
-            <ArrowDownRight className="h-3 w-3 text-red-600" />
+            <TrendingDown className="h-3.5 w-3.5 text-red-600 dark:text-red-400" />
           )}
-          <span className={cn("font-medium", isPositivo ? "text-emerald-600" : "text-red-600")}>
+          <span
+            className={cn(
+              "font-medium",
+              isPositivo ? "text-emerald-600 dark:text-emerald-400" : "text-red-600 dark:text-red-400",
+            )}
+          >
             {desvio >= 0 ? "+" : ""}
             {formatarMoeda(Math.abs(desvio))} ({desvioPercentual >= 0 ? "+" : ""}
             {desvioPercentual.toFixed(1)}%)
@@ -140,7 +151,7 @@ function DREItemCard({ item, onOpenPopup }: { item: DREItemProps; onOpenPopup: (
   )
 }
 
-// Popup com graficos
+// Popup com graficos detalhados
 function DREPopup({
   item,
   allItens,
@@ -152,7 +163,6 @@ function DREPopup({
   open: boolean
   onClose: () => void
 }) {
-  const [tipoGrafico, setTipoGrafico] = useState<"ranking" | "pizza">("ranking")
   const [periodo, setPeriodo] = useState<"mes" | "trimestre" | "ano">("mes")
   const [dateRange, setDateRange] = useState<{ from: Date; to: Date }>({
     from: new Date(2024, 0, 1),
@@ -229,7 +239,7 @@ function DREPopup({
             </PopoverContent>
           </Popover>
 
-          <Select value={periodo} onValueChange={(v) => setPeriodo(v as any)}>
+          <Select value={periodo} onValueChange={(v) => setPeriodo(v as typeof periodo)}>
             <SelectTrigger className="w-[130px]">
               <SelectValue />
             </SelectTrigger>
@@ -239,25 +249,6 @@ function DREPopup({
               <SelectItem value="ano">Anual</SelectItem>
             </SelectContent>
           </Select>
-
-          <div className="flex gap-1 ml-auto">
-            <Button
-              variant={tipoGrafico === "ranking" ? "default" : "outline"}
-              size="sm"
-              onClick={() => setTipoGrafico("ranking")}
-            >
-              <BarChart3 className="h-4 w-4 mr-1" />
-              Ranking
-            </Button>
-            <Button
-              variant={tipoGrafico === "pizza" ? "default" : "outline"}
-              size="sm"
-              onClick={() => setTipoGrafico("pizza")}
-            >
-              <PieChart className="h-4 w-4 mr-1" />
-              Composicao
-            </Button>
-          </div>
         </div>
 
         <Tabs defaultValue="comparativo" className="w-full">
@@ -318,18 +309,18 @@ function DREPopup({
                   </thead>
                   <tbody>
                     {historicoMensal.map((h, idx) => {
-                      const desvio = h.realizado - h.previsto
+                      const desvioVal = h.realizado - h.previsto
                       const desvioPerc = ((h.realizado - h.previsto) / h.previsto) * 100
                       return (
                         <tr key={idx} className="border-b">
                           <td className="py-2">{h.mes}</td>
                           <td className="text-right py-2">{formatarMoeda(h.previsto)}</td>
                           <td className="text-right py-2">{formatarMoeda(h.realizado)}</td>
-                          <td className={cn("text-right py-2", desvio >= 0 ? "text-emerald-600" : "text-red-600")}>
-                            {desvio >= 0 ? "+" : ""}
-                            {formatarMoeda(Math.abs(desvio))}
+                          <td className={cn("text-right py-2", desvioVal >= 0 ? "text-emerald-600" : "text-red-600")}>
+                            {desvioVal >= 0 ? "+" : ""}
+                            {formatarMoeda(Math.abs(desvioVal))}
                           </td>
-                          <td className={cn("text-right py-2", desvio >= 0 ? "text-emerald-600" : "text-red-600")}>
+                          <td className={cn("text-right py-2", desvioVal >= 0 ? "text-emerald-600" : "text-red-600")}>
                             {desvioPerc >= 0 ? "+" : ""}
                             {desvioPerc.toFixed(1)}%
                           </td>
@@ -406,7 +397,7 @@ function DREPopup({
             <Card className="p-4">
               <h4 className="font-medium mb-4">Composicao de Custos</h4>
 
-              {/* Grafico de Pizza Simulado */}
+              {/* Grafico de Pizza */}
               <div className="flex items-center gap-8 mb-6">
                 <div className="relative w-48 h-48">
                   <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90">
@@ -486,6 +477,16 @@ function DREPopup({
                       )
                     })}
                   </tbody>
+                  <tfoot>
+                    <tr className="font-medium bg-muted/50">
+                      <td className="py-2">TOTAL CUSTOS</td>
+                      <td className="text-right py-2">{formatarMoeda(totalCustos)}</td>
+                      <td className="text-right py-2">100%</td>
+                      <td className="text-right py-2">
+                        {((totalCustos / (allItens.find((i) => i.tipo === "receita")?.valor || 1)) * 100).toFixed(1)}%
+                      </td>
+                    </tr>
+                  </tfoot>
                 </table>
               </div>
             </Card>
@@ -496,32 +497,33 @@ function DREPopup({
   )
 }
 
-// Componente Principal
 export function DRECard({ titulo = "RESULTADO ECONOMICO (DRE)", itens, onItemClick }: DRECardProps) {
-  const [selectedItem, setSelectedItem] = useState<DREItemProps | null>(null)
+  const [popupItem, setPopupItem] = useState<DREItemProps | null>(null)
   const [popupOpen, setPopupOpen] = useState(false)
 
   const handleOpenPopup = (item: DREItemProps) => {
-    setSelectedItem(item)
+    setPopupItem(item)
     setPopupOpen(true)
+    onItemClick?.(item)
   }
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center gap-2">
-        <Calculator className="h-5 w-5 text-muted-foreground" />
-        <h3 className="font-semibold text-foreground">{titulo}</h3>
-      </div>
+    <>
+      <Card className="p-4">
+        <div className="flex items-center gap-2 mb-4">
+          <Calculator className="h-5 w-5 text-muted-foreground" />
+          <h2 className="text-sm font-semibold text-foreground">{titulo}</h2>
+          <Info className="h-4 w-4 text-muted-foreground cursor-help" />
+        </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {itens.map((item, idx) => (
-          <DREItemCard key={idx} item={item} onOpenPopup={() => handleOpenPopup(item)} />
-        ))}
-      </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {itens.map((item, idx) => (
+            <DREItemCard key={idx} item={item} onOpenPopup={() => handleOpenPopup(item)} />
+          ))}
+        </div>
+      </Card>
 
-      <DREPopup item={selectedItem} allItens={itens} open={popupOpen} onClose={() => setPopupOpen(false)} />
-    </div>
+      <DREPopup item={popupItem} allItens={itens} open={popupOpen} onClose={() => setPopupOpen(false)} />
+    </>
   )
 }
-
-export default DRECard
