@@ -54,6 +54,7 @@ import {
   ClipboardList,
   Calculator,
   PackageSearch,
+  Building2,
 } from "lucide-react"
 import { useCallback, useReducer } from "react"
 
@@ -140,6 +141,7 @@ const obraNavigation = [
       { name: "EST-02 Medicao", href: "/obra/comercial/estruturacao-medicao", icon: ClipboardList },
       { name: "EST-03 Custo", href: "/obra/comercial/estruturacao-custo", icon: Calculator },
       { name: "EST-04 Suprimentos", href: "/obra/comercial/estruturacao-suprimentos", icon: PackageSearch },
+      { name: "EST-05 Indireto", href: "/obra/comercial/estruturacao-indireto", icon: Building2 }, // Nova rota EST-05
       { name: "Estrutura (EAP)", href: "/obra/comercial/estrutura", icon: FileStack },
       { name: "Receita & Medicao", href: "/obra/comercial/receita", icon: TrendingUp },
       { name: "Custo & Meta 0.9", href: "/obra/comercial/custo", icon: DollarSign },
