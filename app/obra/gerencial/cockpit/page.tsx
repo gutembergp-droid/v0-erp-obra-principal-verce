@@ -3,6 +3,7 @@
 import type React from "react"
 
 import { Suspense, useState } from "react"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
@@ -286,6 +287,7 @@ function CardKpiHibrido({ titulo, valor, meta, unidade = "", icone, status, onCl
 // ============================================================================
 
 function CockpitContent() {
+  const router = useRouter()
   const [painelAberto, setPainelAberto] = useState(false)
   const [painelTipo, setPainelTipo] = useState<"receita" | "custo" | "alerta" | null>(null)
   const [alertaSelecionado, setAlertaSelecionado] = useState<(typeof alertasCliente)[0] | null>(null)
@@ -319,7 +321,42 @@ function CockpitContent() {
               <p className="text-[11px] text-muted-foreground">BR-101 LOTE 2 | Compor 90</p>
             </div>
           </div>
-          <div className="flex gap-1.5">
+
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1 p-1 rounded-lg border border-border bg-muted/30">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-7 px-3 text-xs bg-muted/50 border border-primary/30"
+                disabled
+              >
+                Geral
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-7 px-3 text-xs hover:bg-muted/50"
+                onClick={() => router.push("/obra/gerencial/cockpit/visao-contrato")}
+              >
+                Contrato
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-7 px-3 text-xs hover:bg-muted/50"
+                onClick={() => router.push("/obra/gerencial/cockpit/visao-performance")}
+              >
+                Performance
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-7 px-3 text-xs hover:bg-muted/50"
+                onClick={() => router.push("/obra/gerencial/cockpit/visao-financeiro")}
+              >
+                Financeiro
+              </Button>
+            </div>
             <Badge variant="outline" className="text-[10px] h-6 px-2">
               Janeiro 2025
             </Badge>
