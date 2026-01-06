@@ -1,6 +1,6 @@
 "use client"
 
-import { AppLayout } from "@/components/layout/app-layout"
+import { Suspense } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -56,45 +56,40 @@ const metricas = [
   { label: "Precisao Media", valor: "94.2%", icon: TrendingUp },
 ]
 
-export default function FeedbackPage() {
+function FeedbackContent() {
   return (
-    <AppLayout>
-      <div className="flex flex-col h-[calc(100vh-80px)] overflow-hidden">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-6 flex-shrink-0">
+    <div className="flex flex-col h-full overflow-auto">
+      {/* Header */}
+      <div className="px-6 pt-6 pb-2">
+        <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500/20 to-purple-500/5 border border-purple-500/20">
-              <Cog className="w-6 h-6 text-purple-500" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h1 className="text-2xl font-bold text-foreground">Feedback & Calibragem</h1>
-                <InfoTooltip
-                  title="Feedback & Calibragem"
-                  description="Sistema de feedback para aprimoramento dos agentes de IA. Avalie decisoes e solicite ajustes de parametros."
-                />
-              </div>
-              <p className="text-sm text-muted-foreground">Aprimoramento continuo dos agentes da obra</p>
-            </div>
+            <h1 className="text-2xl font-bold">Feedback & Calibragem</h1>
+            <InfoTooltip
+              title="Feedback & Calibragem"
+              description="Sistema de feedback para aprimoramento dos agentes de IA. Avalie decisoes e solicite ajustes de parametros."
+            />
           </div>
           <Button>
             <MessageSquare className="w-4 h-4 mr-2" />
             Enviar Feedback
           </Button>
         </div>
+        <p className="text-sm text-muted-foreground mt-1">Aprimoramento continuo dos agentes da obra</p>
+      </div>
 
+      <div className="p-6 space-y-6 flex-1">
         {/* Metricas */}
-        <div className="grid grid-cols-3 gap-4 mb-6 flex-shrink-0">
+        <div className="grid grid-cols-3 gap-4">
           {metricas.map((metrica) => (
-            <Card key={metrica.label} className="border-border/50">
+            <Card key={metrica.label}>
               <CardContent className="p-4">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-xs text-muted-foreground">{metrica.label}</p>
                     <p className="text-2xl font-bold">{metrica.valor}</p>
                   </div>
-                  <div className="w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center">
-                    <metrica.icon className="w-5 h-5 text-purple-500" />
+                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <metrica.icon className="w-5 h-5 text-primary" />
                   </div>
                 </div>
               </CardContent>
@@ -103,32 +98,32 @@ export default function FeedbackPage() {
         </div>
 
         {/* Conteudo */}
-        <div className="flex-1 min-h-0 grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-2 gap-6">
           {/* Feedbacks Recentes */}
-          <Card className="flex flex-col border-border/50 min-h-0">
+          <Card className="flex flex-col">
             <CardHeader className="py-3 flex-shrink-0">
               <CardTitle className="text-base">Feedbacks Recentes</CardTitle>
               <CardDescription>Avaliacoes de decisoes dos agentes</CardDescription>
             </CardHeader>
-            <CardContent className="flex-1 min-h-0">
-              <ScrollArea className="h-full">
+            <CardContent className="flex-1">
+              <ScrollArea className="h-[300px]">
                 <div className="space-y-3">
                   {feedbacksRecentes.map((feedback) => (
                     <div
                       key={feedback.id}
                       className={`p-3 rounded-lg border ${
                         feedback.feedback === "positivo"
-                          ? "border-green-500/30 bg-green-500/5"
-                          : "border-red-500/30 bg-red-500/5"
+                          ? "border-primary/30 bg-primary/5"
+                          : "border-destructive/30 bg-destructive/5"
                       }`}
                     >
                       <div className="flex items-start justify-between mb-2">
                         <div className="flex items-center gap-2">
                           <Badge variant="outline">{feedback.agente}</Badge>
                           {feedback.feedback === "positivo" ? (
-                            <ThumbsUp className="w-4 h-4 text-green-500" />
+                            <ThumbsUp className="w-4 h-4 text-primary" />
                           ) : (
-                            <ThumbsDown className="w-4 h-4 text-red-500" />
+                            <ThumbsDown className="w-4 h-4 text-destructive" />
                           )}
                         </div>
                         <span className="text-xs text-muted-foreground">{feedback.data}</span>
@@ -144,19 +139,22 @@ export default function FeedbackPage() {
           </Card>
 
           {/* Calibragens */}
-          <Card className="flex flex-col border-border/50 min-h-0">
+          <Card className="flex flex-col">
             <CardHeader className="py-3 flex-shrink-0">
               <CardTitle className="text-base">Calibragens de Parametros</CardTitle>
               <CardDescription>Ajustes solicitados nos agentes</CardDescription>
             </CardHeader>
-            <CardContent className="flex-1 min-h-0">
-              <ScrollArea className="h-full">
+            <CardContent className="flex-1">
+              <ScrollArea className="h-[300px]">
                 <div className="space-y-3">
                   {calibragens.map((calibragem, index) => (
-                    <div key={index} className="p-3 rounded-lg border border-border/50">
+                    <div key={index} className="p-3 rounded-lg border">
                       <div className="flex items-center justify-between mb-2">
                         <Badge variant="outline">{calibragem.agente}</Badge>
-                        <Badge variant={calibragem.status === "aplicado" ? "default" : "secondary"}>
+                        <Badge
+                          variant={calibragem.status === "aplicado" ? "default" : "secondary"}
+                          className={calibragem.status === "aplicado" ? "bg-primary/20 text-primary" : ""}
+                        >
                           {calibragem.status === "aplicado" ? (
                             <>
                               <CheckCircle className="w-3 h-3 mr-1" /> Aplicado
@@ -182,6 +180,14 @@ export default function FeedbackPage() {
           </Card>
         </div>
       </div>
-    </AppLayout>
+    </div>
+  )
+}
+
+export default function FeedbackPage() {
+  return (
+    <Suspense fallback={null}>
+      <FeedbackContent />
+    </Suspense>
   )
 }

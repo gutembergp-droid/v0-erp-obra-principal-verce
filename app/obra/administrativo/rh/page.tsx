@@ -1,8 +1,6 @@
 "use client"
 
-import { useState } from "react"
-import { AppLayout } from "@/components/layout/app-layout"
-import { Header } from "@/components/layout/header"
+import { useState, Suspense } from "react"
 import { InfoTooltip } from "@/components/ui/info-tooltip"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -11,6 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet"
 import {
   Plus,
   Search,
@@ -22,6 +21,9 @@ import {
   FileText,
   CheckCircle2,
   AlertTriangle,
+  Briefcase,
+  Phone,
+  Mail,
 } from "lucide-react"
 
 // Dados mockados de Colaboradores
@@ -35,6 +37,9 @@ const colaboradoresMock = [
     status: "ativo",
     turno: "Diurno",
     ctps: "123456",
+    telefone: "(21) 99999-1111",
+    email: "jose.silva@obra.com",
+    salario: 4500,
   },
   {
     id: "COL-002",
@@ -45,6 +50,9 @@ const colaboradoresMock = [
     status: "ativo",
     turno: "Comercial",
     ctps: "234567",
+    telefone: "(21) 99999-2222",
+    email: "maria.costa@obra.com",
+    salario: 12000,
   },
   {
     id: "COL-003",
@@ -55,6 +63,9 @@ const colaboradoresMock = [
     status: "ferias",
     turno: "Diurno",
     ctps: "345678",
+    telefone: "(21) 99999-3333",
+    email: "carlos.lima@obra.com",
+    salario: 6500,
   },
   {
     id: "COL-004",
@@ -65,6 +76,9 @@ const colaboradoresMock = [
     status: "ativo",
     turno: "Diurno",
     ctps: "456789",
+    telefone: "(21) 99999-4444",
+    email: "ana.ferreira@obra.com",
+    salario: 5200,
   },
 ]
 
@@ -117,39 +131,50 @@ const afastamentosMock = [
   },
 ]
 
-export default function RHPage() {
+function formatCurrency(value: number) {
+  return new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+    minimumFractionDigits: 0,
+  }).format(value)
+}
+
+function RHContent() {
   const [searchTerm, setSearchTerm] = useState("")
   const [tab, setTab] = useState("colaboradores")
+  const [selectedColab, setSelectedColab] = useState<(typeof colaboradoresMock)[0] | null>(null)
 
   const totalColaboradores = colaboradoresMock.length
   const colaboradoresAtivos = colaboradoresMock.filter((c) => c.status === "ativo").length
   const colaboradoresFerias = colaboradoresMock.filter((c) => c.status === "ferias").length
+  const horasExtrasMes = pontoMock.reduce((acc, p) => acc + p.horasExtras, 0)
 
   return (
-    <AppLayout>
-      <Header
-        title="RH - Recursos Humanos"
-        description="Gestao de Pessoal, Controle de Ponto e Afastamentos"
-        rightContent={
+    <div className="flex flex-col h-full overflow-auto">
+      <div className="px-6 pt-6 pb-2">
+        <div className="flex items-center gap-3">
+          <h1 className="text-2xl font-bold">RH - Recursos Humanos</h1>
           <InfoTooltip
             title="Setor de RH"
             description="Gerencia o cadastro de colaboradores, controle de ponto (entradas, saidas, horas extras) e afastamentos (ferias, licencas, atestados)."
           />
-        }
-      />
+        </div>
+        <p className="text-sm text-muted-foreground mt-1">Gestao de Pessoal, Controle de Ponto e Afastamentos</p>
+      </div>
 
-      <div className="p-6 space-y-6">
+      <div className="p-6 space-y-6 flex-1">
         {/* Metricas */}
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
           <Card>
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
                 <Users className="w-4 h-4" />
-                Total Colaboradores
+                Total
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{totalColaboradores}</div>
+              <p className="text-xs text-muted-foreground">colaboradores</p>
             </CardContent>
           </Card>
           <Card>
@@ -160,7 +185,10 @@ export default function RHPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-green-500">{colaboradoresAtivos}</div>
+              <div className="text-2xl font-bold text-primary">{colaboradoresAtivos}</div>
+              <p className="text-xs text-muted-foreground">
+                {((colaboradoresAtivos / totalColaboradores) * 100).toFixed(0)}%
+              </p>
             </CardContent>
           </Card>
           <Card>
@@ -171,18 +199,20 @@ export default function RHPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-blue-500">{colaboradoresFerias}</div>
+              <div className="text-2xl font-bold text-chart-1">{colaboradoresFerias}</div>
+              <p className="text-xs text-muted-foreground">colaboradores</p>
             </CardContent>
           </Card>
           <Card>
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
                 <Clock className="w-4 h-4" />
-                Horas Extras Mes
+                Horas Extras
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-amber-500">245h</div>
+              <div className="text-2xl font-bold text-chart-4">{horasExtrasMes}h</div>
+              <p className="text-xs text-muted-foreground">no mes</p>
             </CardContent>
           </Card>
           <Card>
@@ -194,6 +224,21 @@ export default function RHPage() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">0</div>
+              <p className="text-xs text-muted-foreground">atestados</p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+                <AlertTriangle className="w-4 h-4" />
+                Atrasos
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-chart-4">
+                {pontoMock.filter((p) => p.status === "atraso").length}
+              </div>
+              <p className="text-xs text-muted-foreground">hoje</p>
             </CardContent>
           </Card>
         </div>
@@ -255,7 +300,11 @@ export default function RHPage() {
                   </TableHeader>
                   <TableBody>
                     {colaboradoresMock.map((col) => (
-                      <TableRow key={col.id}>
+                      <TableRow
+                        key={col.id}
+                        className="cursor-pointer hover:bg-muted/50"
+                        onClick={() => setSelectedColab(col)}
+                      >
                         <TableCell>
                           <div className="flex items-center gap-3">
                             <Avatar className="h-8 w-8">
@@ -280,14 +329,13 @@ export default function RHPage() {
                         <TableCell>{col.turno}</TableCell>
                         <TableCell>{new Date(col.admissao).toLocaleDateString("pt-BR")}</TableCell>
                         <TableCell>
-                          {col.status === "ativo" && (
-                            <Badge className="bg-green-500">
+                          {col.status === "ativo" ? (
+                            <Badge className="bg-primary/20 text-primary">
                               <UserCheck className="w-3 h-3 mr-1" />
                               Ativo
                             </Badge>
-                          )}
-                          {col.status === "ferias" && (
-                            <Badge variant="outline" className="text-blue-500">
+                          ) : (
+                            <Badge variant="outline" className="text-chart-1">
                               <Calendar className="w-3 h-3 mr-1" />
                               Ferias
                             </Badge>
@@ -341,20 +389,19 @@ export default function RHPage() {
                         <TableCell className="text-center font-mono">{ponto.horasTrabalhadas}h</TableCell>
                         <TableCell className="text-center">
                           {ponto.horasExtras > 0 ? (
-                            <Badge className="bg-amber-500">{ponto.horasExtras}h</Badge>
+                            <Badge className="bg-chart-4/20 text-chart-4">{ponto.horasExtras}h</Badge>
                           ) : (
                             <span className="text-muted-foreground">-</span>
                           )}
                         </TableCell>
                         <TableCell>
-                          {ponto.status === "regular" && (
-                            <Badge className="bg-green-500">
+                          {ponto.status === "regular" ? (
+                            <Badge className="bg-primary/20 text-primary">
                               <CheckCircle2 className="w-3 h-3 mr-1" />
                               Regular
                             </Badge>
-                          )}
-                          {ponto.status === "atraso" && (
-                            <Badge variant="outline" className="text-amber-500">
+                          ) : (
+                            <Badge variant="outline" className="text-chart-4">
                               <AlertTriangle className="w-3 h-3 mr-1" />
                               Atraso
                             </Badge>
@@ -408,7 +455,7 @@ export default function RHPage() {
                         <TableCell>{new Date(af.dataFim).toLocaleDateString("pt-BR")}</TableCell>
                         <TableCell className="text-center font-mono">{af.dias}</TableCell>
                         <TableCell>
-                          <Badge variant="outline" className="text-blue-500">
+                          <Badge variant="outline" className="text-chart-1">
                             <Calendar className="w-3 h-3 mr-1" />
                             Em Gozo
                           </Badge>
@@ -422,6 +469,106 @@ export default function RHPage() {
           </TabsContent>
         </Tabs>
       </div>
-    </AppLayout>
+
+      {/* Painel lateral para colaborador selecionado */}
+      <Sheet open={!!selectedColab} onOpenChange={() => setSelectedColab(null)}>
+        <SheetContent className="w-[400px] sm:w-[500px] overflow-auto">
+          {selectedColab && (
+            <>
+              <SheetHeader>
+                <SheetTitle className="flex items-center gap-3">
+                  <Avatar className="h-10 w-10">
+                    <AvatarFallback className="bg-primary/10 text-primary">
+                      {selectedColab.nome
+                        .split(" ")
+                        .map((n) => n[0])
+                        .slice(0, 2)
+                        .join("")}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <span>{selectedColab.nome}</span>
+                    <p className="text-sm font-normal text-muted-foreground">{selectedColab.id}</p>
+                  </div>
+                </SheetTitle>
+                <SheetDescription>{selectedColab.funcao}</SheetDescription>
+              </SheetHeader>
+              <div className="mt-6 space-y-6">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-sm text-muted-foreground">Setor</p>
+                    <Badge variant="outline" className="mt-1">
+                      {selectedColab.setor}
+                    </Badge>
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Status</p>
+                    <div className="mt-1">
+                      {selectedColab.status === "ativo" ? (
+                        <Badge className="bg-primary/20 text-primary">Ativo</Badge>
+                      ) : (
+                        <Badge variant="outline" className="text-chart-1">
+                          Ferias
+                        </Badge>
+                      )}
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Turno</p>
+                    <p className="text-sm font-medium mt-1">{selectedColab.turno}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Admissao</p>
+                    <p className="text-sm font-medium mt-1">
+                      {new Date(selectedColab.admissao).toLocaleDateString("pt-BR")}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="space-y-3 pt-4 border-t">
+                  <div className="flex items-center gap-3">
+                    <Phone className="w-4 h-4 text-muted-foreground" />
+                    <span className="text-sm">{selectedColab.telefone}</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Mail className="w-4 h-4 text-muted-foreground" />
+                    <span className="text-sm">{selectedColab.email}</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Briefcase className="w-4 h-4 text-muted-foreground" />
+                    <span className="text-sm">CTPS: {selectedColab.ctps}</span>
+                  </div>
+                </div>
+
+                <Card>
+                  <CardContent className="pt-4">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-muted-foreground">Salario Base</span>
+                      <span className="text-xl font-bold">{formatCurrency(selectedColab.salario)}</span>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <div className="flex gap-2 pt-4 border-t">
+                  <Button variant="outline" className="flex-1 bg-transparent">
+                    <FileText className="w-4 h-4 mr-2" />
+                    Documentos
+                  </Button>
+                  <Button className="flex-1">Editar Cadastro</Button>
+                </div>
+              </div>
+            </>
+          )}
+        </SheetContent>
+      </Sheet>
+    </div>
+  )
+}
+
+export default function RHPage() {
+  return (
+    <Suspense fallback={null}>
+      <RHContent />
+    </Suspense>
   )
 }

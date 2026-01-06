@@ -1,8 +1,6 @@
 "use client"
 
-import { useState } from "react"
-import { AppLayout } from "@/components/layout/app-layout"
-import { Header } from "@/components/layout/header"
+import { useState, Suspense } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -10,6 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Progress } from "@/components/ui/progress"
 import { InfoTooltip } from "@/components/ui/info-tooltip"
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet"
 import {
   Plus,
   CheckCircle2,
@@ -23,6 +22,8 @@ import {
   Package,
   Zap,
   Flag,
+  Users,
+  Truck,
 } from "lucide-react"
 
 // Dados mockados de Cronograma
@@ -35,7 +36,10 @@ const cronogramaMock = [
     duracaoPlanejada: 30,
     duracaoReal: 28,
     avancoFisico: 100,
+    avancoPlanejado: 100,
     status: "concluido",
+    responsavel: "Eng. Carlos Lima",
+    recursos: 45,
   },
   {
     id: "FASE-02",
@@ -45,7 +49,10 @@ const cronogramaMock = [
     duracaoPlanejada: 880,
     duracaoReal: 730,
     avancoFisico: 85,
+    avancoPlanejado: 82,
     status: "em_andamento",
+    responsavel: "Eng. Roberto Santos",
+    recursos: 120,
   },
   {
     id: "FASE-03",
@@ -55,7 +62,10 @@ const cronogramaMock = [
     duracaoPlanejada: 940,
     duracaoReal: 235,
     avancoFisico: 25,
+    avancoPlanejado: 28,
     status: "em_andamento",
+    responsavel: "Eng. Ana Paula",
+    recursos: 85,
   },
   {
     id: "FASE-04",
@@ -65,7 +75,10 @@ const cronogramaMock = [
     duracaoPlanejada: 910,
     duracaoReal: 365,
     avancoFisico: 30,
+    avancoPlanejado: 35,
     status: "em_andamento",
+    responsavel: "Eng. Marcos Silva",
+    recursos: 65,
   },
   {
     id: "FASE-05",
@@ -75,7 +88,10 @@ const cronogramaMock = [
     duracaoPlanejada: 210,
     duracaoReal: 0,
     avancoFisico: 0,
+    avancoPlanejado: 0,
     status: "nao_iniciado",
+    responsavel: "Eng. Julia Costa",
+    recursos: 0,
   },
 ]
 
@@ -92,6 +108,8 @@ const pacotesMock = [
     volumeRealizado: 18500,
     unidade: "m3",
     status: "em_andamento",
+    efetivo: 25,
+    equipamentos: 8,
   },
   {
     id: "PT-002",
@@ -104,6 +122,8 @@ const pacotesMock = [
     volumeRealizado: 15000,
     unidade: "m3",
     status: "concluido",
+    efetivo: 18,
+    equipamentos: 5,
   },
   {
     id: "PT-003",
@@ -116,6 +136,8 @@ const pacotesMock = [
     volumeRealizado: 2,
     unidade: "un",
     status: "em_andamento",
+    efetivo: 32,
+    equipamentos: 12,
   },
 ]
 
@@ -151,50 +173,69 @@ function formatNumber(value: number) {
   return new Intl.NumberFormat("pt-BR").format(value)
 }
 
-export default function PlanejamentoPage() {
+function PlanejamentoContent() {
   const [tab, setTab] = useState("cronograma")
+  const [selectedFase, setSelectedFase] = useState<(typeof cronogramaMock)[0] | null>(null)
+  const [selectedPacote, setSelectedPacote] = useState<(typeof pacotesMock)[0] | null>(null)
 
   const avancoGeral = cronogramaMock.reduce((acc, f) => acc + f.avancoFisico, 0) / cronogramaMock.length
+  const avancoPlanejado = cronogramaMock.reduce((acc, f) => acc + f.avancoPlanejado, 0) / cronogramaMock.length
   const atividadesCriticas = caminhoCriticoMock.filter((c) => c.criticidade === "critica").length
+  const pacotesAtivos = pacotesMock.filter((p) => p.status === "em_andamento").length
+  const spi = (avancoGeral / avancoPlanejado).toFixed(2)
 
   return (
-    <AppLayout>
-      <Header
-        title="Planejamento e Controle"
-        description="Cronograma, Pacotes de Trabalho, Caminho Critico e Avanco Fisico"
-        rightContent={
+    <div className="flex flex-col h-full overflow-auto">
+      <div className="px-6 pt-6 pb-2">
+        <div className="flex items-center gap-3">
+          <h1 className="text-2xl font-bold">Planejamento e Controle</h1>
           <InfoTooltip
             title="Setor de Planejamento e Controle"
             description="Gerencia o Cronograma geral da obra, Pacotes de Trabalho (Work Packages), Caminho Critico (CPM) e Avanco Fisico por item da EAP."
           />
-        }
-      />
+        </div>
+        <p className="text-sm text-muted-foreground mt-1">
+          Cronograma, Pacotes de Trabalho, Caminho Critico e Avanco Fisico
+        </p>
+      </div>
 
-      <div className="p-6 space-y-6">
+      <div className="p-6 space-y-6 flex-1">
         {/* Metricas */}
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
           <Card>
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
                 <Target className="w-4 h-4" />
-                Avanco Geral
+                Avanco Real
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-green-500">{avancoGeral.toFixed(0)}%</div>
+              <div className="text-2xl font-bold text-primary">{avancoGeral.toFixed(0)}%</div>
               <Progress value={avancoGeral} className="mt-2 h-2" />
             </CardContent>
           </Card>
           <Card>
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+                <BarChart3 className="w-4 h-4" />
+                Avanco Planejado
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{avancoPlanejado.toFixed(0)}%</div>
+              <Progress value={avancoPlanejado} className="mt-2 h-2 bg-muted" />
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
                 <Calendar className="w-4 h-4" />
-                Prazo
+                Prazo Final
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">Dez/2027</div>
-              <p className="text-xs text-green-500">No prazo</p>
+              <p className="text-xs text-primary">No prazo</p>
             </CardContent>
           </Card>
           <Card>
@@ -205,10 +246,11 @@ export default function PlanejamentoPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{pacotesMock.filter((p) => p.status === "em_andamento").length}</div>
+              <div className="text-2xl font-bold">{pacotesAtivos}</div>
+              <p className="text-xs text-muted-foreground">em execucao</p>
             </CardContent>
           </Card>
-          <Card>
+          <Card className={atividadesCriticas > 0 ? "border-destructive/50" : ""}>
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
                 <Zap className="w-4 h-4" />
@@ -216,7 +258,9 @@ export default function PlanejamentoPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-red-500">{atividadesCriticas}</div>
+              <div className={`text-2xl font-bold ${atividadesCriticas > 0 ? "text-destructive" : "text-primary"}`}>
+                {atividadesCriticas}
+              </div>
               <p className="text-xs text-muted-foreground">no caminho critico</p>
             </CardContent>
           </Card>
@@ -228,8 +272,10 @@ export default function PlanejamentoPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-green-500">1.02</div>
-              <p className="text-xs text-muted-foreground">adiantado</p>
+              <div className={`text-2xl font-bold ${Number(spi) >= 1 ? "text-primary" : "text-destructive"}`}>
+                {spi}
+              </div>
+              <p className="text-xs text-muted-foreground">{Number(spi) >= 1 ? "adiantado" : "atrasado"}</p>
             </CardContent>
           </Card>
         </div>
@@ -279,48 +325,61 @@ export default function PlanejamentoPage() {
                       <TableHead>Inicio</TableHead>
                       <TableHead>Fim</TableHead>
                       <TableHead className="text-center">Duracao</TableHead>
-                      <TableHead className="text-center">Avanco</TableHead>
+                      <TableHead className="text-center">Real vs Plan</TableHead>
                       <TableHead>Status</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {cronogramaMock.map((fase) => (
-                      <TableRow key={fase.id}>
-                        <TableCell className="font-mono font-bold">{fase.id}</TableCell>
-                        <TableCell className="font-semibold">{fase.descricao}</TableCell>
-                        <TableCell>{new Date(fase.dataInicio).toLocaleDateString("pt-BR")}</TableCell>
-                        <TableCell>{new Date(fase.dataFim).toLocaleDateString("pt-BR")}</TableCell>
-                        <TableCell className="text-center">
-                          <span className="font-mono">{fase.duracaoPlanejada}d</span>
-                        </TableCell>
-                        <TableCell className="text-center">
-                          <div className="flex items-center gap-2 justify-center">
-                            <Progress value={fase.avancoFisico} className="w-16 h-2" />
-                            <span className="text-sm font-mono">{fase.avancoFisico}%</span>
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          {fase.status === "concluido" && (
-                            <Badge className="bg-green-500">
-                              <CheckCircle2 className="w-3 h-3 mr-1" />
-                              Concluido
-                            </Badge>
-                          )}
-                          {fase.status === "em_andamento" && (
-                            <Badge variant="outline" className="text-blue-500">
-                              <ArrowRight className="w-3 h-3 mr-1" />
-                              Em Andamento
-                            </Badge>
-                          )}
-                          {fase.status === "nao_iniciado" && (
-                            <Badge variant="secondary">
-                              <Clock className="w-3 h-3 mr-1" />
-                              Nao Iniciado
-                            </Badge>
-                          )}
-                        </TableCell>
-                      </TableRow>
-                    ))}
+                    {cronogramaMock.map((fase) => {
+                      const desvio = fase.avancoFisico - fase.avancoPlanejado
+                      return (
+                        <TableRow
+                          key={fase.id}
+                          className="cursor-pointer hover:bg-muted/50"
+                          onClick={() => setSelectedFase(fase)}
+                        >
+                          <TableCell className="font-mono font-bold">{fase.id}</TableCell>
+                          <TableCell className="font-semibold">{fase.descricao}</TableCell>
+                          <TableCell>{new Date(fase.dataInicio).toLocaleDateString("pt-BR")}</TableCell>
+                          <TableCell>{new Date(fase.dataFim).toLocaleDateString("pt-BR")}</TableCell>
+                          <TableCell className="text-center">
+                            <span className="font-mono">{fase.duracaoPlanejada}d</span>
+                          </TableCell>
+                          <TableCell className="text-center">
+                            <div className="flex flex-col items-center gap-1">
+                              <div className="flex items-center gap-2">
+                                <Progress value={fase.avancoFisico} className="w-16 h-2" />
+                                <span className="text-sm font-mono">{fase.avancoFisico}%</span>
+                              </div>
+                              <span className={`text-xs ${desvio >= 0 ? "text-primary" : "text-destructive"}`}>
+                                {desvio >= 0 ? "+" : ""}
+                                {desvio}% vs plan
+                              </span>
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            {fase.status === "concluido" && (
+                              <Badge className="bg-primary/20 text-primary">
+                                <CheckCircle2 className="w-3 h-3 mr-1" />
+                                Concluido
+                              </Badge>
+                            )}
+                            {fase.status === "em_andamento" && (
+                              <Badge variant="outline" className="text-chart-1">
+                                <ArrowRight className="w-3 h-3 mr-1" />
+                                Em Andamento
+                              </Badge>
+                            )}
+                            {fase.status === "nao_iniciado" && (
+                              <Badge variant="secondary">
+                                <Clock className="w-3 h-3 mr-1" />
+                                Nao Iniciado
+                              </Badge>
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      )
+                    })}
                   </TableBody>
                 </Table>
               </CardContent>
@@ -358,7 +417,11 @@ export default function PlanejamentoPage() {
                   </TableHeader>
                   <TableBody>
                     {pacotesMock.map((pt) => (
-                      <TableRow key={pt.id}>
+                      <TableRow
+                        key={pt.id}
+                        className="cursor-pointer hover:bg-muted/50"
+                        onClick={() => setSelectedPacote(pt)}
+                      >
                         <TableCell className="font-mono font-bold">{pt.id}</TableCell>
                         <TableCell>{pt.descricao}</TableCell>
                         <TableCell className="text-sm text-muted-foreground">{pt.itemEAP}</TableCell>
@@ -380,14 +443,13 @@ export default function PlanejamentoPage() {
                           </div>
                         </TableCell>
                         <TableCell>
-                          {pt.status === "concluido" && (
-                            <Badge className="bg-green-500">
+                          {pt.status === "concluido" ? (
+                            <Badge className="bg-primary/20 text-primary">
                               <CheckCircle2 className="w-3 h-3 mr-1" />
                               Concluido
                             </Badge>
-                          )}
-                          {pt.status === "em_andamento" && (
-                            <Badge variant="outline" className="text-blue-500">
+                          ) : (
+                            <Badge variant="outline" className="text-chart-1">
                               <ArrowRight className="w-3 h-3 mr-1" />
                               Em Andamento
                             </Badge>
@@ -422,7 +484,7 @@ export default function PlanejamentoPage() {
                   </TableHeader>
                   <TableBody>
                     {caminhoCriticoMock.map((cc, idx) => (
-                      <TableRow key={idx} className={cc.criticidade === "critica" ? "bg-red-500/5" : ""}>
+                      <TableRow key={idx} className={cc.criticidade === "critica" ? "bg-destructive/5" : ""}>
                         <TableCell className="font-semibold">{cc.atividade}</TableCell>
                         <TableCell className="text-muted-foreground">{cc.predecessora}</TableCell>
                         <TableCell className="text-center font-mono">{cc.duracao}d</TableCell>
@@ -431,14 +493,13 @@ export default function PlanejamentoPage() {
                         </TableCell>
                         <TableCell className="text-sm">{cc.impacto}</TableCell>
                         <TableCell>
-                          {cc.criticidade === "critica" && (
+                          {cc.criticidade === "critica" ? (
                             <Badge variant="destructive">
                               <Flag className="w-3 h-3 mr-1" />
                               Critica
                             </Badge>
-                          )}
-                          {cc.criticidade === "atencao" && (
-                            <Badge variant="outline" className="text-amber-500">
+                          ) : (
+                            <Badge variant="outline" className="text-chart-4">
                               <AlertTriangle className="w-3 h-3 mr-1" />
                               Atencao
                             </Badge>
@@ -456,29 +517,228 @@ export default function PlanejamentoPage() {
           <TabsContent value="avanco">
             <Card>
               <CardHeader>
-                <CardTitle className="text-base">Avanco Fisico por Item da EAP</CardTitle>
-                <CardDescription>Progresso fisico consolidado</CardDescription>
+                <CardTitle className="text-base">Avanco Fisico por Fase</CardTitle>
+                <CardDescription>Comparativo Real vs Planejado</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-6">
-                  {cronogramaMock.map((fase) => (
-                    <div key={fase.id} className="space-y-2">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <span className="font-mono text-sm text-muted-foreground">{fase.id}</span>
-                          <span className="ml-2 font-semibold">{fase.descricao}</span>
+                  {cronogramaMock.map((fase) => {
+                    const desvio = fase.avancoFisico - fase.avancoPlanejado
+                    return (
+                      <div key={fase.id} className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <span className="font-mono text-sm text-muted-foreground">{fase.id}</span>
+                            <span className="ml-2 font-semibold">{fase.descricao}</span>
+                          </div>
+                          <div className="text-right">
+                            <span className="font-mono font-bold">{fase.avancoFisico}%</span>
+                            <span className={`ml-2 text-sm ${desvio >= 0 ? "text-primary" : "text-destructive"}`}>
+                              ({desvio >= 0 ? "+" : ""}
+                              {desvio}%)
+                            </span>
+                          </div>
                         </div>
-                        <span className="font-mono font-bold">{fase.avancoFisico}%</span>
+                        <div className="relative">
+                          <Progress value={fase.avancoFisico} className="h-3" />
+                          <div
+                            className="absolute top-0 h-3 border-r-2 border-chart-4"
+                            style={{ left: `${fase.avancoPlanejado}%` }}
+                            title={`Planejado: ${fase.avancoPlanejado}%`}
+                          />
+                        </div>
+                        <div className="flex justify-between text-xs text-muted-foreground">
+                          <span>Real: {fase.avancoFisico}%</span>
+                          <span>Planejado: {fase.avancoPlanejado}%</span>
+                        </div>
                       </div>
-                      <Progress value={fase.avancoFisico} className="h-3" />
-                    </div>
-                  ))}
+                    )
+                  })}
                 </div>
               </CardContent>
             </Card>
           </TabsContent>
         </Tabs>
       </div>
-    </AppLayout>
+
+      {/* Painel lateral para fase selecionada */}
+      <Sheet open={!!selectedFase} onOpenChange={() => setSelectedFase(null)}>
+        <SheetContent className="w-[400px] sm:w-[500px] overflow-auto">
+          {selectedFase && (
+            <>
+              <SheetHeader>
+                <SheetTitle className="flex items-center gap-2">
+                  <Calendar className="w-5 h-5" />
+                  {selectedFase.id} - {selectedFase.descricao}
+                </SheetTitle>
+                <SheetDescription>Detalhes da fase do cronograma</SheetDescription>
+              </SheetHeader>
+              <div className="mt-6 space-y-6">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-sm text-muted-foreground">Inicio</p>
+                    <p className="text-sm font-medium">
+                      {new Date(selectedFase.dataInicio).toLocaleDateString("pt-BR")}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Fim Previsto</p>
+                    <p className="text-sm font-medium">{new Date(selectedFase.dataFim).toLocaleDateString("pt-BR")}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Duracao</p>
+                    <p className="text-sm font-medium">{selectedFase.duracaoPlanejada} dias</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Responsavel</p>
+                    <p className="text-sm font-medium">{selectedFase.responsavel}</p>
+                  </div>
+                </div>
+
+                <div>
+                  <p className="text-sm text-muted-foreground mb-2">Avanco</p>
+                  <div className="space-y-2">
+                    <div className="flex justify-between">
+                      <span className="text-sm">Real</span>
+                      <span className="font-mono font-bold text-primary">{selectedFase.avancoFisico}%</span>
+                    </div>
+                    <Progress value={selectedFase.avancoFisico} className="h-3" />
+                    <div className="flex justify-between">
+                      <span className="text-sm">Planejado</span>
+                      <span className="font-mono">{selectedFase.avancoPlanejado}%</span>
+                    </div>
+                    <Progress value={selectedFase.avancoPlanejado} className="h-3 bg-muted" />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <Card>
+                    <CardContent className="pt-4">
+                      <div className="flex items-center gap-2">
+                        <Users className="w-4 h-4 text-muted-foreground" />
+                        <span className="text-sm text-muted-foreground">Recursos</span>
+                      </div>
+                      <p className="text-xl font-bold mt-1">{selectedFase.recursos}</p>
+                      <p className="text-xs text-muted-foreground">colaboradores</p>
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardContent className="pt-4">
+                      <div className="flex items-center gap-2">
+                        <TrendingUp className="w-4 h-4 text-muted-foreground" />
+                        <span className="text-sm text-muted-foreground">Desvio</span>
+                      </div>
+                      <p
+                        className={`text-xl font-bold mt-1 ${selectedFase.avancoFisico - selectedFase.avancoPlanejado >= 0 ? "text-primary" : "text-destructive"}`}
+                      >
+                        {selectedFase.avancoFisico - selectedFase.avancoPlanejado >= 0 ? "+" : ""}
+                        {selectedFase.avancoFisico - selectedFase.avancoPlanejado}%
+                      </p>
+                      <p className="text-xs text-muted-foreground">vs planejado</p>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
+            </>
+          )}
+        </SheetContent>
+      </Sheet>
+
+      {/* Painel lateral para pacote selecionado */}
+      <Sheet open={!!selectedPacote} onOpenChange={() => setSelectedPacote(null)}>
+        <SheetContent className="w-[400px] sm:w-[500px] overflow-auto">
+          {selectedPacote && (
+            <>
+              <SheetHeader>
+                <SheetTitle className="flex items-center gap-2">
+                  <Package className="w-5 h-5" />
+                  {selectedPacote.id}
+                </SheetTitle>
+                <SheetDescription>{selectedPacote.descricao}</SheetDescription>
+              </SheetHeader>
+              <div className="mt-6 space-y-6">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-sm text-muted-foreground">Item EAP</p>
+                    <p className="text-sm font-medium">{selectedPacote.itemEAP}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Equipe</p>
+                    <Badge variant="secondary">{selectedPacote.responsavel}</Badge>
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Inicio</p>
+                    <p className="text-sm font-medium">
+                      {new Date(selectedPacote.dataInicio).toLocaleDateString("pt-BR")}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Fim</p>
+                    <p className="text-sm font-medium">
+                      {new Date(selectedPacote.dataFim).toLocaleDateString("pt-BR")}
+                    </p>
+                  </div>
+                </div>
+
+                <div>
+                  <p className="text-sm text-muted-foreground mb-2">Progresso</p>
+                  <div className="space-y-2">
+                    <div className="flex justify-between">
+                      <span className="text-sm">Realizado</span>
+                      <span className="font-mono font-bold">
+                        {formatNumber(selectedPacote.volumeRealizado)} {selectedPacote.unidade}
+                      </span>
+                    </div>
+                    <Progress
+                      value={(selectedPacote.volumeRealizado / selectedPacote.volumePlanejado) * 100}
+                      className="h-3"
+                    />
+                    <div className="flex justify-between text-sm text-muted-foreground">
+                      <span>
+                        Meta: {formatNumber(selectedPacote.volumePlanejado)} {selectedPacote.unidade}
+                      </span>
+                      <span>
+                        {((selectedPacote.volumeRealizado / selectedPacote.volumePlanejado) * 100).toFixed(0)}%
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <Card>
+                    <CardContent className="pt-4">
+                      <div className="flex items-center gap-2">
+                        <Users className="w-4 h-4 text-muted-foreground" />
+                        <span className="text-sm text-muted-foreground">Efetivo</span>
+                      </div>
+                      <p className="text-xl font-bold mt-1">{selectedPacote.efetivo}</p>
+                      <p className="text-xs text-muted-foreground">pessoas</p>
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardContent className="pt-4">
+                      <div className="flex items-center gap-2">
+                        <Truck className="w-4 h-4 text-muted-foreground" />
+                        <span className="text-sm text-muted-foreground">Equipamentos</span>
+                      </div>
+                      <p className="text-xl font-bold mt-1">{selectedPacote.equipamentos}</p>
+                      <p className="text-xs text-muted-foreground">mobilizados</p>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
+            </>
+          )}
+        </SheetContent>
+      </Sheet>
+    </div>
+  )
+}
+
+export default function PlanejamentoPage() {
+  return (
+    <Suspense fallback={null}>
+      <PlanejamentoContent />
+    </Suspense>
   )
 }

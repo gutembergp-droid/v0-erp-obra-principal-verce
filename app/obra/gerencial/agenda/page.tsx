@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { AppLayout } from "@/components/layout/app-layout"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Badge } from "@/components/ui/badge"
@@ -199,8 +198,8 @@ export default function AgendaGerencialPage() {
   }
 
   return (
-    <AppLayout>
-      <div className="flex flex-col h-[calc(100vh-80px)] overflow-hidden">
+    <div className="overflow-auto h-full">
+      <div className="flex flex-col h-full p-4 overflow-hidden">
         {/* Header */}
         <div className="flex items-center justify-between pb-4 border-b border-border/50 flex-shrink-0">
           <div className="flex items-center gap-3">
@@ -513,6 +512,6 @@ export default function AgendaGerencialPage() {
           )}
         </div>
       </div>
-    </AppLayout>
+    </div>
   )
 }

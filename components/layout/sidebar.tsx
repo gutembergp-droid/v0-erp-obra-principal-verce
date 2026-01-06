@@ -1,6 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import type React from "react"
+
+import { useState, useCallback, useEffect } from "react"
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -12,6 +14,7 @@ import {
   Briefcase,
   HardHat,
   ChevronDown,
+  ChevronRight,
   Ruler,
   Calendar,
   Factory,
@@ -55,10 +58,30 @@ import {
   Calculator,
   PackageSearch,
   Building2,
+  Settings,
+  AlertTriangle,
 } from "lucide-react"
-import { useCallback, useReducer } from "react"
 
-const corporativoNavigation = [
+interface SubMenuItem {
+  name: string
+  href: string
+  icon: React.ComponentType<{ className?: string }>
+}
+
+interface MenuItem {
+  name: string
+  href?: string
+  icon: React.ComponentType<{ className?: string }>
+  children?: SubMenuItem[] // Netos
+}
+
+interface Section {
+  name: string
+  icon: React.ComponentType<{ className?: string }>
+  submenu: MenuItem[]
+}
+
+const corporativoNavigation: Section[] = [
   {
     name: "Estrategico",
     icon: Target,
@@ -121,7 +144,7 @@ const corporativoNavigation = [
   },
 ]
 
-const obraNavigation = [
+const obraNavigation: Section[] = [
   {
     name: "Gerencial do Contrato",
     icon: Gauge,
@@ -136,17 +159,49 @@ const obraNavigation = [
     name: "Comercial",
     icon: Briefcase,
     submenu: [
-      { name: "Estruturacao Geral", href: "/obra/comercial/estruturacao-geral", icon: LayoutList },
+      { name: "EST-00 Estruturacao Geral", href: "/obra/comercial/estruturacao-geral", icon: LayoutList },
       { name: "EST-01 Contrato", href: "/obra/comercial/estruturacao-contrato", icon: FileSignature },
       { name: "EST-02 Medicao", href: "/obra/comercial/estruturacao-medicao", icon: ClipboardList },
       { name: "EST-03 Custo", href: "/obra/comercial/estruturacao-custo", icon: Calculator },
       { name: "EST-04 Suprimentos", href: "/obra/comercial/estruturacao-suprimentos", icon: PackageSearch },
-      { name: "EST-05 Indireto", href: "/obra/comercial/estruturacao-indireto", icon: Building2 }, // Nova rota EST-05
+      { name: "EST-05 Indireto", href: "/obra/comercial/estruturacao-indireto", icon: Building2 },
+      {
+        name: "Receita & Medicao",
+        icon: Receipt,
+        children: [
+          { name: "RM-01 Visao Geral", href: "/obra/comercial/receita-medicao", icon: Receipt },
+          { name: "RM-02 Medicao Producao", href: "/obra/comercial/medicao-producao", icon: Factory },
+          { name: "RM-03 Medicao Cliente", href: "/obra/comercial/medicao-cliente", icon: Users },
+          { name: "RM-04 Faturamento", href: "/obra/comercial/faturamento", icon: DollarSign },
+          { name: "RM-05 Change Control", href: "/obra/comercial/change-control", icon: FileStack },
+        ],
+      },
+      {
+        name: "Custo & Meta",
+        icon: TrendingUp,
+        children: [
+          { name: "CM-01 Visao Geral", href: "/obra/comercial/custo-meta", icon: TrendingUp },
+          { name: "CM-02 Detalhe por Servico", href: "/obra/comercial/custo-detalhe", icon: FileText },
+          { name: "CM-03 Metas Economicas", href: "/obra/comercial/metas-economicas", icon: Target },
+          { name: "CM-04 Analise Desvios", href: "/obra/comercial/analise-desvios", icon: AlertTriangle },
+        ],
+      },
+      {
+        name: "Suprimentos",
+        icon: ShoppingCart,
+        children: [
+          { name: "SP-01 Visao Geral", href: "/obra/comercial/suprimentos-visao", icon: ShoppingCart },
+          { name: "SP-02 Pedidos", href: "/obra/comercial/suprimentos-pedidos", icon: Package },
+          { name: "SP-03 Fornecedores", href: "/obra/comercial/suprimentos-fornecedores", icon: Users },
+          { name: "SP-04 Contratos", href: "/obra/comercial/suprimentos-contratos", icon: FileSignature },
+        ],
+      },
+      {
+        name: "Analytics",
+        icon: BarChart3,
+        children: [{ name: "AC-01 Analytics Comercial", href: "/obra/comercial/analytics-comercial", icon: BarChart3 }],
+      },
       { name: "Estrutura (EAP)", href: "/obra/comercial/estrutura", icon: FileStack },
-      { name: "Receita & Medicao", href: "/obra/comercial/receita", icon: TrendingUp },
-      { name: "Custo & Meta 0.9", href: "/obra/comercial/custo", icon: DollarSign },
-      { name: "Suprimento & Compor 90", href: "/obra/comercial/suprimento", icon: ShoppingCart },
-      { name: "Analytics Comercial", href: "/obra/comercial/analytics", icon: BarChart3 },
     ],
   },
   {
@@ -174,6 +229,7 @@ const obraNavigation = [
       { name: "Financeiro Obra", href: "/obra/administrativo/financeiro", icon: DollarSign },
       { name: "Patrimonio", href: "/obra/administrativo/patrimonio", icon: Package },
       { name: "Comunicacao", href: "/obra/administrativo/comunicacao", icon: Megaphone },
+      { name: "Configuracoes", href: "/obra/administrativo/configuracoes", icon: Settings },
     ],
   },
   {
@@ -201,32 +257,28 @@ const obrasDisponiveis = [
   { id: "br-116-lote-1", nome: "BR-116-LOTE 1", descricao: "Manutencao BR-116", status: "Ativo" },
 ]
 
-const initialExpandedState: Record<string, boolean> = {
-  // Corporativo
-  Estrategico: false,
-  "Comercial-corp": false,
-  "Administrativo-corp": false,
-  "Auditoria e Controle": false,
-  QSMS: false,
-  "Gestao Inteligente-corp": false,
-  // Obra
-  "Gerencial do Contrato": false,
-  "Comercial-obra": false,
-  Engenharia: false,
-  Producao: false,
-  "Administrativo-obra": false,
-  Garantidores: false,
-  "Gestao Inteligente-obra": false,
+const STORAGE_KEY = "genesis-sidebar-menus"
+
+function getStoredMenus(): string[] {
+  if (typeof window === "undefined") return []
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY)
+    if (stored) {
+      const parsed = JSON.parse(stored)
+      if (Array.isArray(parsed)) return parsed
+    }
+  } catch {
+    // Ignora erro de parse
+  }
+  return []
 }
 
-type MenuAction = { type: "TOGGLE"; name: string }
-
-function menuReducer(state: Record<string, boolean>, action: MenuAction): Record<string, boolean> {
-  switch (action.type) {
-    case "TOGGLE":
-      return { ...state, [action.name]: !state[action.name] }
-    default:
-      return state
+function saveMenus(menus: string[]) {
+  if (typeof window === "undefined") return
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(menus))
+  } catch {
+    // Ignora erro de storage
   }
 }
 
@@ -234,11 +286,38 @@ export function Sidebar() {
   const pathname = usePathname()
   const [obraAtual] = useState(obrasDisponiveis[0])
 
-  const [expandedMenus, dispatch] = useReducer(menuReducer, initialExpandedState)
+  const [mounted, setMounted] = useState(false)
 
-  const handleToggle = useCallback((menuKey: string) => {
-    dispatch({ type: "TOGGLE", name: menuKey })
+  const [expandedMenus, setExpandedMenus] = useState<string[]>([])
+
+  useEffect(() => {
+    const stored = getStoredMenus()
+    setExpandedMenus(stored)
+    setMounted(true)
   }, [])
+
+  const handleToggle = useCallback((menuKey: string, e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+
+    setExpandedMenus((prev) => {
+      let next: string[]
+      if (prev.includes(menuKey)) {
+        next = prev.filter((k) => k !== menuKey)
+      } else {
+        next = [...prev, menuKey]
+      }
+      saveMenus(next)
+      return next
+    })
+  }, [])
+
+  const isMenuOpen = useCallback(
+    (menuKey: string) => {
+      return expandedMenus.includes(menuKey)
+    },
+    [expandedMenus],
+  )
 
   const isActive = (href: string) => pathname === href
 
@@ -248,6 +327,112 @@ export function Sidebar() {
     }
     return name
   }, [])
+
+  const getSectorKey = useCallback((deptName: string, sectorName: string, module: "corp" | "obra") => {
+    return `${module}-${deptName}-${sectorName}`
+  }, [])
+
+  if (!mounted) {
+    return (
+      <aside className="flex flex-col h-screen w-64 bg-sidebar border-r border-sidebar-border">
+        <div className="border-b border-sidebar-border flex-shrink-0">
+          <div className="flex items-center gap-2 px-4 py-3">
+            <div className="flex items-center justify-center w-8 h-8 rounded bg-primary">
+              <HardHat className="w-5 h-5 text-primary-foreground" />
+            </div>
+            <span className="font-bold text-sidebar-foreground">GENESIS</span>
+          </div>
+          <div className="px-3 pb-3">
+            <div className="flex items-center gap-2 px-3 py-2 bg-sidebar-accent rounded-lg border border-sidebar-border">
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-semibold text-primary">{obrasDisponiveis[0].nome}</span>
+                  <span className="text-xs px-1.5 py-0.5 bg-green-500/20 text-green-400 rounded">Ativo</span>
+                </div>
+                <p className="text-xs text-sidebar-foreground/60 truncate">{obrasDisponiveis[0].descricao}</p>
+              </div>
+              <ChevronDown className="w-4 h-4 text-sidebar-foreground/50 flex-shrink-0" />
+            </div>
+          </div>
+        </div>
+        <nav className="flex-1 overflow-y-auto py-2">
+          <div className="px-3 mb-1">
+            <span className="text-xs font-semibold text-sidebar-foreground/50 uppercase tracking-wider">
+              Carregando...
+            </span>
+          </div>
+        </nav>
+      </aside>
+    )
+  }
+
+  const renderMenuItem = (item: MenuItem, deptName: string, module: "corp" | "obra") => {
+    // Se tem children, é um setor com netos
+    if (item.children && item.children.length > 0) {
+      const sectorKey = getSectorKey(deptName, item.name, module)
+      const isSectorOpen = isMenuOpen(sectorKey)
+
+      return (
+        <div key={item.name}>
+          {/* Setor (Filho) - expansível */}
+          <button
+            type="button"
+            onClick={(e) => handleToggle(sectorKey, e)}
+            className="flex items-center justify-between w-full px-3 py-1.5 pl-9 text-sm text-sidebar-foreground/80 hover:bg-sidebar-accent"
+          >
+            <div className="flex items-center gap-2">
+              <item.icon className="w-4 h-4" />
+              <span>{item.name}</span>
+            </div>
+            <ChevronRight
+              className={cn(
+                "w-3 h-3 text-sidebar-foreground/50 transition-transform duration-200",
+                isSectorOpen && "rotate-90",
+              )}
+            />
+          </button>
+
+          {/* Netos */}
+          {isSectorOpen && (
+            <div className="pb-1">
+              {item.children.map((child) => (
+                <Link
+                  key={child.href}
+                  href={child.href}
+                  className={cn(
+                    "flex items-center gap-2 px-3 py-1.5 pl-14 text-xs transition-colors",
+                    isActive(child.href)
+                      ? "text-primary bg-primary/10 font-medium"
+                      : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground",
+                  )}
+                >
+                  <child.icon className="w-3 h-3" />
+                  <span>{child.name}</span>
+                </Link>
+              ))}
+            </div>
+          )}
+        </div>
+      )
+    }
+
+    // Item simples (sem netos) - link direto
+    return (
+      <Link
+        key={item.href}
+        href={item.href!}
+        className={cn(
+          "flex items-center gap-2 px-3 py-1.5 pl-9 text-sm transition-colors",
+          isActive(item.href!)
+            ? "text-primary bg-primary/10 font-medium"
+            : "text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-foreground",
+        )}
+      >
+        <item.icon className="w-4 h-4" />
+        <span>{item.name}</span>
+      </Link>
+    )
+  }
 
   return (
     <aside className="flex flex-col h-screen w-64 bg-sidebar border-r border-sidebar-border">
@@ -276,7 +461,7 @@ export function Sidebar() {
         </div>
       </div>
 
-      {/* Navigation - overflow-y-auto para scroll quando necessario */}
+      {/* Navigation */}
       <nav className="flex-1 overflow-y-auto py-2">
         {/* Modulo Corporativo */}
         <div className="px-3 mb-1">
@@ -287,13 +472,13 @@ export function Sidebar() {
 
         {corporativoNavigation.map((section) => {
           const menuKey = getMenuKey(section.name, "corp")
-          const isOpen = expandedMenus[menuKey]
+          const isOpen = isMenuOpen(menuKey)
 
           return (
             <div key={menuKey}>
               <button
                 type="button"
-                onClick={() => handleToggle(menuKey)}
+                onClick={(e) => handleToggle(menuKey, e)}
                 className="flex items-center justify-between w-full px-3 py-1.5 text-sm font-medium text-sidebar-foreground hover:bg-sidebar-accent"
               >
                 <div className="flex items-center gap-2">
@@ -308,28 +493,9 @@ export function Sidebar() {
                 />
               </button>
 
-              <div
-                className={cn(
-                  "overflow-hidden transition-all duration-200",
-                  isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0",
-                )}
-              >
-                {section.submenu.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className={cn(
-                      "flex items-center gap-2 px-3 py-1.5 pl-9 text-sm transition-colors",
-                      isActive(item.href)
-                        ? "text-primary bg-primary/10 font-medium"
-                        : "text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-foreground",
-                    )}
-                  >
-                    <item.icon className="w-4 h-4" />
-                    <span>{item.name}</span>
-                  </Link>
-                ))}
-              </div>
+              {isOpen && (
+                <div className="pb-1">{section.submenu.map((item) => renderMenuItem(item, section.name, "corp"))}</div>
+              )}
             </div>
           )
         })}
@@ -343,13 +509,13 @@ export function Sidebar() {
 
         {obraNavigation.map((dept) => {
           const menuKey = getMenuKey(dept.name, "obra")
-          const isOpen = expandedMenus[menuKey]
+          const isOpen = isMenuOpen(menuKey)
 
           return (
             <div key={menuKey}>
               <button
                 type="button"
-                onClick={() => handleToggle(menuKey)}
+                onClick={(e) => handleToggle(menuKey, e)}
                 className="flex items-center justify-between w-full px-3 py-1.5 text-sm font-medium text-sidebar-foreground hover:bg-sidebar-accent"
               >
                 <div className="flex items-center gap-2">
@@ -364,28 +530,9 @@ export function Sidebar() {
                 />
               </button>
 
-              <div
-                className={cn(
-                  "overflow-hidden transition-all duration-200",
-                  isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0",
-                )}
-              >
-                {dept.submenu.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className={cn(
-                      "flex items-center gap-2 px-3 py-1.5 pl-9 text-sm transition-colors",
-                      isActive(item.href)
-                        ? "text-primary bg-primary/10 font-medium"
-                        : "text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-foreground",
-                    )}
-                  >
-                    <item.icon className="w-4 h-4" />
-                    <span>{item.name}</span>
-                  </Link>
-                ))}
-              </div>
+              {isOpen && (
+                <div className="pb-1">{dept.submenu.map((item) => renderMenuItem(item, dept.name, "obra"))}</div>
+              )}
             </div>
           )
         })}

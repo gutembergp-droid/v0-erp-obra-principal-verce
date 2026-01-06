@@ -1,6 +1,5 @@
 "use client"
 
-import { AppLayout } from "@/components/layout/app-layout"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -136,8 +135,8 @@ export default function EncerramentoPage() {
   const progressoGeral = Math.round((etapasConcluidas / totalEtapas) * 100)
 
   return (
-    <AppLayout>
-      <div className="flex flex-col h-[calc(100vh-80px)] overflow-hidden">
+    <div className="overflow-auto h-full">
+      <div className="flex flex-col h-full p-4 overflow-hidden">
         {/* ================================================================ */}
         {/* CABECALHO DO DOCUMENTO */}
         {/* ================================================================ */}
@@ -581,6 +580,6 @@ export default function EncerramentoPage() {
           </div>
         </ScrollArea>
       </div>
-    </AppLayout>
+    </div>
   )
 }

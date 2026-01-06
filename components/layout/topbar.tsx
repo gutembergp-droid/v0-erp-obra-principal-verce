@@ -29,7 +29,6 @@ import {
   Check,
   Monitor,
   Cloud,
-  Search,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
@@ -50,7 +49,6 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { useTheme } from "@/contexts/theme-context"
-import { Input } from "@/components/ui/input"
 
 const acoesRapidas = [
   { icon: Star, label: "Favoritos", href: "/favoritos" },
@@ -65,33 +63,60 @@ const acoesRapidas = [
 ]
 
 const statusOptions = [
-  { label: "Disponivel", icon: Circle, color: "text-green-500", bg: "bg-green-500" },
-  { label: "Ocupado", icon: MinusCircle, color: "text-red-500", bg: "bg-red-500" },
-  { label: "Ausente", icon: Clock, color: "text-amber-500", bg: "bg-amber-500" },
-  { label: "Nao Perturbe", icon: XCircle, color: "text-gray-500", bg: "bg-gray-500" },
+  { label: "Disponivel", icon: Circle, color: "text-primary", bg: "bg-primary" },
+  { label: "Ocupado", icon: MinusCircle, color: "text-destructive", bg: "bg-destructive" },
+  { label: "Ausente", icon: Clock, color: "text-accent-foreground", bg: "bg-accent-foreground" },
+  { label: "Nao Perturbe", icon: XCircle, color: "text-muted-foreground", bg: "bg-muted-foreground" },
 ]
 
-const themeOptions = [
+const displayOptions = [
   {
     value: "light" as const,
     label: "Claro",
-    description: "Tema claro",
+    description: "Fundo claro",
     icon: Sun,
-    color: "bg-amber-400",
   },
   {
     value: "dark" as const,
     label: "Escuro",
-    description: "Tema escuro",
+    description: "Fundo escuro",
     icon: Moon,
-    color: "bg-slate-700",
+  },
+]
+
+type ColorTheme = "aahbrant" | "mono" | "acro" | "dourado"
+
+const themeColorOptions: { value: ColorTheme; label: string; description: string; colors: string[] }[] = [
+  {
+    value: "aahbrant",
+    label: "Aahbrant",
+    description: "Vermelho institucional",
+    colors: ["#8B2635", "#1F1614", "#F5F0EB"],
+  },
+  {
+    value: "mono",
+    label: "Monocromatico",
+    description: "Cinzas frios",
+    colors: ["#3A4555", "#1E2530", "#E8ECF0"],
+  },
+  {
+    value: "acro",
+    label: "Acromatico",
+    description: "Preto e branco puro",
+    colors: ["#000000", "#1A1A1A", "#FFFFFF"],
+  },
+  {
+    value: "dourado",
+    label: "Aahbrant Dourado",
+    description: "Vermelho com dourado",
+    colors: ["#8B2635", "#D4AF37", "#2A1F1A"],
   },
 ]
 
 export function Topbar() {
   const pathname = usePathname()
   const [currentStatus, setCurrentStatus] = useState(statusOptions[0])
-  const { theme, setTheme, toggleTheme } = useTheme()
+  const { theme, colorTheme, setTheme, setColorTheme, toggleTheme } = useTheme()
 
   const getBreadcrumb = () => {
     const parts = pathname.split("/").filter(Boolean)
@@ -144,14 +169,6 @@ export function Topbar() {
         </div>
 
         <div className="flex items-center gap-3">
-          <div className="relative hidden lg:block">
-            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground/70" />
-            <Input
-              placeholder="Buscar..."
-              className="pl-8 h-8 w-40 text-xs bg-accent/30 border-border/50 text-foreground placeholder:text-muted-foreground/60 rounded-lg focus:bg-accent/50 transition-colors"
-            />
-          </div>
-
           <div className="flex items-center gap-1 text-muted-foreground">
             <Cloud className="w-3.5 h-3.5" />
             <span className="font-medium text-[10px]">28°C</span>
@@ -167,7 +184,7 @@ export function Topbar() {
                 <div
                   className={cn(
                     "flex items-center justify-center w-5 h-5 rounded-full transition-all duration-300",
-                    theme === "light" ? "bg-amber-400 text-white shadow-sm" : "text-muted-foreground/60",
+                    theme === "light" ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground/60",
                   )}
                 >
                   <Sun className="w-3 h-3" />
@@ -178,7 +195,7 @@ export function Topbar() {
                 <div
                   className={cn(
                     "flex items-center justify-center w-5 h-5 rounded-full transition-all duration-300",
-                    theme === "dark" ? "bg-slate-600 text-white shadow-sm" : "text-muted-foreground/60",
+                    theme === "dark" ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground/60",
                   )}
                 >
                   <Moon className="w-3 h-3" />
@@ -285,9 +302,7 @@ export function Topbar() {
               <DropdownMenuGroup>
                 <DropdownMenuSub>
                   <DropdownMenuSubTrigger className="py-2.5 cursor-pointer">
-                    {currentStatus.icon.className && (
-                      <currentStatus.icon className={cn("w-4 h-4 mr-2", currentStatus.color)} />
-                    )}
+                    <currentStatus.icon className={cn("w-4 h-4 mr-2", currentStatus.color)} />
                     <span>Status: {currentStatus.label}</span>
                   </DropdownMenuSubTrigger>
                   <DropdownMenuPortal>
@@ -298,7 +313,7 @@ export function Topbar() {
                           onClick={() => setCurrentStatus(status)}
                           className="py-2 cursor-pointer"
                         >
-                          {status.icon.className && <status.icon className={cn("w-4 h-4 mr-2", status.color)} />}
+                          <status.icon className={cn("w-4 h-4 mr-2", status.color)} />
                           <span>{status.label}</span>
                           {currentStatus.label === status.label && <Check className="w-4 h-4 ml-auto text-primary" />}
                         </DropdownMenuItem>
@@ -330,19 +345,19 @@ export function Topbar() {
               <DropdownMenuGroup>
                 <DropdownMenuSub>
                   <DropdownMenuSubTrigger className="py-2.5 cursor-pointer">
-                    <Palette className="w-4 h-4 mr-2" />
-                    <span>Tema</span>
+                    <Monitor className="w-4 h-4 mr-2" />
+                    <span>Display</span>
                   </DropdownMenuSubTrigger>
                   <DropdownMenuPortal>
                     <DropdownMenuSubContent className="w-52">
-                      {themeOptions.map((option) => (
+                      {displayOptions.map((option) => (
                         <DropdownMenuItem
                           key={option.value}
                           onClick={() => setTheme(option.value)}
                           className="py-3 cursor-pointer flex items-center gap-3"
                         >
-                          <div className={cn("w-6 h-6 rounded-full flex items-center justify-center", option.color)}>
-                            {option.icon.className && <option.icon className="w-3.5 h-3.5 text-white" />}
+                          <div className="w-6 h-6 rounded-full flex items-center justify-center bg-primary">
+                            <option.icon className="w-3.5 h-3.5 text-primary-foreground" />
                           </div>
                           <div className="flex flex-col">
                             <span className="font-medium">{option.label}</span>
@@ -354,6 +369,40 @@ export function Topbar() {
                     </DropdownMenuSubContent>
                   </DropdownMenuPortal>
                 </DropdownMenuSub>
+
+                <DropdownMenuSub>
+                  <DropdownMenuSubTrigger className="py-2.5 cursor-pointer">
+                    <Palette className="w-4 h-4 mr-2" />
+                    <span>Tema</span>
+                  </DropdownMenuSubTrigger>
+                  <DropdownMenuPortal>
+                    <DropdownMenuSubContent className="w-56">
+                      {themeColorOptions.map((option) => (
+                        <DropdownMenuItem
+                          key={option.value}
+                          onClick={() => setColorTheme(option.value)}
+                          className="py-3 cursor-pointer flex items-center gap-3"
+                        >
+                          <div className="flex -space-x-1">
+                            {option.colors.map((color, i) => (
+                              <div
+                                key={i}
+                                className="w-4 h-4 rounded-full border border-background"
+                                style={{ backgroundColor: color }}
+                              />
+                            ))}
+                          </div>
+                          <div className="flex flex-col">
+                            <span className="font-medium">{option.label}</span>
+                            <span className="text-xs text-muted-foreground">{option.description}</span>
+                          </div>
+                          {colorTheme === option.value && <Check className="w-4 h-4 ml-auto text-primary" />}
+                        </DropdownMenuItem>
+                      ))}
+                    </DropdownMenuSubContent>
+                  </DropdownMenuPortal>
+                </DropdownMenuSub>
+
                 <DropdownMenuSub>
                   <DropdownMenuSubTrigger className="py-2.5 cursor-pointer">
                     <Languages className="w-4 h-4 mr-2" />

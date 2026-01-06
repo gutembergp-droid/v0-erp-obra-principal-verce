@@ -1,12 +1,11 @@
 "use client"
 
-import { AppLayout } from "@/components/layout/app-layout"
+import { useState, Suspense } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Bot, Activity, Send, Sparkles } from "lucide-react"
 import { InfoTooltip } from "@/components/ui/info-tooltip"
-import { useState } from "react"
 
 const agentesObra = [
   {
@@ -38,43 +37,38 @@ const agentesObra = [
   },
 ]
 
-export default function AgentesObraPage() {
+function AgentesContent() {
   const [mensagem, setMensagem] = useState("")
   const [agenteSelecionado, setAgenteSelecionado] = useState(agentesObra[0])
 
   return (
-    <AppLayout>
-      <div className="flex flex-col h-[calc(100vh-80px)] overflow-hidden">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-6 flex-shrink-0">
+    <div className="flex flex-col h-full overflow-auto">
+      {/* Header */}
+      <div className="px-6 pt-6 pb-2">
+        <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/20">
-              <Bot className="w-6 h-6 text-primary" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h1 className="text-2xl font-bold text-foreground">Agentes da Obra</h1>
-                <InfoTooltip
-                  title="Agentes da Obra"
-                  description="Instancias locais dos agentes de IA dedicadas a esta obra. Interaja diretamente com PLUTO, HEFESTO e TEMIS."
-                />
-              </div>
-              <p className="text-sm text-muted-foreground">BR-101 LOTE 2 - Agentes dedicados</p>
-            </div>
+            <h1 className="text-2xl font-bold">Agentes da Obra</h1>
+            <InfoTooltip
+              title="Agentes da Obra"
+              description="Instancias locais dos agentes de IA dedicadas a esta obra. Interaja diretamente com PLUTO, HEFESTO e TEMIS."
+            />
           </div>
-          <Badge variant="outline" className="bg-green-500/10 text-green-500 border-green-500/20">
+          <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20">
             <Activity className="w-3 h-3 mr-1 animate-pulse" />3 Agentes Online
           </Badge>
         </div>
+        <p className="text-sm text-muted-foreground mt-1">BR-101 LOTE 2 - Agentes dedicados</p>
+      </div>
 
+      <div className="p-6 flex-1">
         {/* Conteudo */}
-        <div className="flex-1 min-h-0 grid grid-cols-3 gap-6">
+        <div className="grid grid-cols-3 gap-6 h-full">
           {/* Lista de Agentes */}
           <div className="space-y-4">
             {agentesObra.map((agente) => (
               <Card
                 key={agente.id}
-                className={`border-border/50 cursor-pointer transition-all ${
+                className={`cursor-pointer transition-all ${
                   agenteSelecionado.id === agente.id
                     ? "border-primary ring-1 ring-primary/20"
                     : "hover:border-primary/30"
@@ -90,7 +84,7 @@ export default function AgentesObraPage() {
                       <h3 className="font-medium">{agente.nome}</h3>
                       <p className="text-xs text-muted-foreground">{agente.funcao}</p>
                     </div>
-                    <div className="w-2 h-2 rounded-full bg-green-500" />
+                    <div className="w-2 h-2 rounded-full bg-primary" />
                   </div>
                   <div className="grid grid-cols-2 gap-2 text-center">
                     <div className="p-2 rounded bg-muted/50">
@@ -109,8 +103,8 @@ export default function AgentesObraPage() {
 
           {/* Chat com Agente */}
           <div className="col-span-2">
-            <Card className="h-full flex flex-col border-border/50">
-              <CardHeader className="py-3 flex-shrink-0 border-b border-border/50">
+            <Card className="h-full flex flex-col">
+              <CardHeader className="py-3 flex-shrink-0 border-b">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
                     <Sparkles className="w-5 h-5 text-primary" />
@@ -146,6 +140,14 @@ export default function AgentesObraPage() {
           </div>
         </div>
       </div>
-    </AppLayout>
+    </div>
+  )
+}
+
+export default function AgentesObraPage() {
+  return (
+    <Suspense fallback={null}>
+      <AgentesContent />
+    </Suspense>
   )
 }

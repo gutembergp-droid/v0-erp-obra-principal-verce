@@ -1,4 +1,3 @@
-import { AppLayout } from "@/components/layout/app-layout"
 import { Header } from "@/components/layout/header"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -20,7 +19,7 @@ import {
 // Dashboard do Módulo Obra - "EXECUTAR, MEDIR, COMPARAR, CORRIGIR"
 export default function ObraDashboard() {
   return (
-    <AppLayout>
+    <div className="overflow-auto h-full">
       <Header title="Módulo Obra" description="Execução e Controle - Executar, Medir, Comparar, Corrigir" />
 
       <div className="p-6 space-y-6">
@@ -70,7 +69,7 @@ export default function ObraDashboard() {
               <DollarSign className="w-4 h-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-green-500">R$ 191M</div>
+              <div className="text-2xl font-bold text-primary">R$ 191M</div>
               <Progress value={42.4} className="mt-2 h-2" />
               <p className="text-xs text-muted-foreground mt-1">42.4% do valor contratado</p>
             </CardContent>
@@ -96,7 +95,7 @@ export default function ObraDashboard() {
               <CheckCircle2 className="w-4 h-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-amber-500">4/9</div>
+              <div className="text-2xl font-bold text-accent-foreground">4/9</div>
               <p className="text-xs text-muted-foreground mt-1">5 gates concluídos este mês</p>
             </CardContent>
           </Card>
@@ -125,18 +124,18 @@ export default function ObraDashboard() {
                   key={gate.num}
                   className={`flex flex-col items-center p-3 rounded-lg border ${
                     gate.status === "done"
-                      ? "bg-green-500/10 border-green-500/30"
+                      ? "bg-primary/10 border-primary/30"
                       : gate.status === "pending"
-                        ? "bg-amber-500/10 border-amber-500/30"
+                        ? "bg-accent-foreground/10 border-accent-foreground/30"
                         : "bg-muted border-border"
                   }`}
                 >
                   <div
                     className={`text-lg font-bold ${
                       gate.status === "done"
-                        ? "text-green-500"
+                        ? "text-primary"
                         : gate.status === "pending"
-                          ? "text-amber-500"
+                          ? "text-accent-foreground"
                           : "text-muted-foreground"
                     }`}
                   >
@@ -160,8 +159,8 @@ export default function ObraDashboard() {
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-lg bg-blue-500/10">
-                    <DollarSign className="w-5 h-5 text-blue-500" />
+                  <div className="p-2 rounded-lg bg-primary/10">
+                    <DollarSign className="w-5 h-5 text-primary" />
                   </div>
                   <CardTitle className="text-base">Comercial</CardTitle>
                 </div>
@@ -172,13 +171,13 @@ export default function ObraDashboard() {
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Medição Produção (MP)</span>
-                  <Badge variant="outline" className="text-green-500">
+                  <Badge variant="outline" className="text-primary">
                     Fechada
                   </Badge>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Medição Cliente (MC)</span>
-                  <Badge variant="outline" className="text-amber-500">
+                  <Badge variant="outline" className="text-accent-foreground">
                     Pendente
                   </Badge>
                 </div>
@@ -190,8 +189,8 @@ export default function ObraDashboard() {
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-lg bg-green-500/10">
-                    <Factory className="w-5 h-5 text-green-500" />
+                  <div className="p-2 rounded-lg bg-primary/10">
+                    <Factory className="w-5 h-5 text-primary" />
                   </div>
                   <CardTitle className="text-base">Produção</CardTitle>
                 </div>
@@ -206,22 +205,22 @@ export default function ObraDashboard() {
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Produtividade Média</span>
-                  <Badge className="bg-green-500">98%</Badge>
+                  <Badge className="bg-primary">98%</Badge>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="hover:border-primary/50 transition-colors cursor-pointer border-red-500/30">
+          <Card className="hover:border-primary/50 transition-colors cursor-pointer border-destructive/30">
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-lg bg-red-500/10">
-                    <ClipboardCheck className="w-5 h-5 text-red-500" />
+                  <div className="p-2 rounded-lg bg-destructive/10">
+                    <ClipboardCheck className="w-5 h-5 text-destructive" />
                   </div>
                   <CardTitle className="text-base">Qualidade</CardTitle>
                 </div>
-                <AlertTriangle className="w-4 h-4 text-red-500" />
+                <AlertTriangle className="w-4 h-4 text-destructive" />
               </div>
             </CardHeader>
             <CardContent>
@@ -232,7 +231,7 @@ export default function ObraDashboard() {
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Gate 5</span>
-                  <Badge variant="outline" className="text-red-500 border-red-500">
+                  <Badge variant="outline" className="text-destructive border-destructive">
                     BLOQUEADO
                   </Badge>
                 </div>
@@ -244,12 +243,12 @@ export default function ObraDashboard() {
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-lg bg-orange-500/10">
-                    <Shield className="w-5 h-5 text-orange-500" />
+                  <div className="p-2 rounded-lg bg-primary/10">
+                    <Shield className="w-5 h-5 text-primary" />
                   </div>
                   <CardTitle className="text-base">SST</CardTitle>
                 </div>
-                <CheckCircle2 className="w-4 h-4 text-green-500" />
+                <CheckCircle2 className="w-4 h-4 text-primary" />
               </div>
             </CardHeader>
             <CardContent>
@@ -260,7 +259,7 @@ export default function ObraDashboard() {
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Gate 6</span>
-                  <Badge className="bg-green-500">APROVADO</Badge>
+                  <Badge className="bg-primary">APROVADO</Badge>
                 </div>
               </div>
             </CardContent>
@@ -270,8 +269,8 @@ export default function ObraDashboard() {
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-lg bg-purple-500/10">
-                    <DollarSign className="w-5 h-5 text-purple-500" />
+                  <div className="p-2 rounded-lg bg-primary/10">
+                    <DollarSign className="w-5 h-5 text-primary" />
                   </div>
                   <CardTitle className="text-base">Custos</CardTitle>
                 </div>
@@ -282,13 +281,13 @@ export default function ObraDashboard() {
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Apropriações</span>
-                  <Badge variant="outline" className="text-green-500">
+                  <Badge variant="outline" className="text-primary">
                     100%
                   </Badge>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">CR/CO</span>
-                  <span className="font-medium text-green-500">0.94</span>
+                  <span className="font-medium text-primary">0.94</span>
                 </div>
               </div>
             </CardContent>
@@ -298,8 +297,8 @@ export default function ObraDashboard() {
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-lg bg-cyan-500/10">
-                    <Calendar className="w-5 h-5 text-cyan-500" />
+                  <div className="p-2 rounded-lg bg-primary/10">
+                    <Calendar className="w-5 h-5 text-primary" />
                   </div>
                   <CardTitle className="text-base">Planejamento</CardTitle>
                 </div>
@@ -321,6 +320,6 @@ export default function ObraDashboard() {
           </Card>
         </div>
       </div>
-    </AppLayout>
+    </div>
   )
 }

@@ -109,15 +109,15 @@ const getTipoIcon = (tipo: string) => {
 const getMarcoCor = (tipo: string) => {
   switch (tipo) {
     case "marco":
-      return "bg-orange-500"
+      return "bg-primary"
     case "medicao":
-      return "bg-green-500"
+      return "bg-primary/70"
     case "entrega":
-      return "bg-blue-500"
+      return "bg-primary/50"
     case "reuniao":
-      return "bg-purple-500"
+      return "bg-primary/30"
     default:
-      return "bg-muted"
+      return "bg-muted-foreground"
   }
 }
 
@@ -144,7 +144,7 @@ export default function IntranetPage() {
 
   return (
     <AppLayout>
-      <div className="p-4 md:p-6 space-y-5 min-h-screen bg-background">
+      <div className="flex-1 overflow-auto p-4 md:p-6 space-y-5 bg-background">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
           <div>
@@ -161,15 +161,15 @@ export default function IntranetPage() {
             <Card className="shadow-sm border-border bg-card">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 border-b border-border">
                 <div className="flex items-center gap-3">
-                  <div className="p-2.5 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 shadow-sm">
-                    <MessageSquare className="w-4 h-4 text-white" />
+                  <div className="p-2.5 rounded-xl bg-primary shadow-sm">
+                    <MessageSquare className="w-4 h-4 text-primary-foreground" />
                   </div>
                   <CardTitle className="text-base font-semibold text-card-foreground">Comunicados</CardTitle>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
-                  <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/20">
-                    <Bell className="w-3.5 h-3.5 text-amber-500" />
-                    <span className="text-amber-500 font-medium">{naoLidos} nao lidos</span>
+                  <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/10 border border-primary/20">
+                    <Bell className="w-3.5 h-3.5 text-primary" />
+                    <span className="text-primary font-medium">{naoLidos} nao lidos</span>
                   </div>
                   <span className="text-muted-foreground hidden sm:inline">|</span>
                   <span className="text-muted-foreground hidden sm:inline">{comunicados.length} total</span>
@@ -189,19 +189,19 @@ export default function IntranetPage() {
             <Card className="shadow-sm border-border bg-card overflow-hidden">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 border-b border-border">
                 <div className="flex items-center gap-3">
-                  <div className="p-2.5 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 shadow-sm">
-                    <Clock className="w-4 h-4 text-white" />
+                  <div className="p-2.5 rounded-xl bg-primary shadow-sm">
+                    <Clock className="w-4 h-4 text-primary-foreground" />
                   </div>
                   <CardTitle className="text-base font-semibold text-card-foreground">Fila de Trabalho</CardTitle>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
-                  <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/20">
-                    <Clock className="w-3.5 h-3.5 text-amber-500" />
-                    <span className="text-amber-500 font-medium">{pendentes} pendentes</span>
+                  <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/10 border border-primary/20">
+                    <Clock className="w-3.5 h-3.5 text-primary" />
+                    <span className="text-primary font-medium">{pendentes} pendentes</span>
                   </div>
-                  <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20">
-                    <Check className="w-3.5 h-3.5 text-emerald-500" />
-                    <span className="text-emerald-500 font-medium">{concluidas} concluidas</span>
+                  <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-muted border border-border">
+                    <Check className="w-3.5 h-3.5 text-muted-foreground" />
+                    <span className="text-muted-foreground font-medium">{concluidas} concluidas</span>
                   </div>
                 </div>
               </CardHeader>
@@ -263,11 +263,10 @@ export default function IntranetPage() {
                                 className={cn(
                                   "text-xs px-2.5 py-1 rounded-full font-semibold capitalize inline-block",
                                   tarefa.prioridade === "urgente" &&
-                                    "bg-red-500/10 text-red-500 border border-red-500/20",
-                                  tarefa.prioridade === "alta" &&
-                                    "bg-orange-500/10 text-orange-500 border border-orange-500/20",
+                                    "bg-destructive/10 text-destructive border border-destructive/20",
+                                  tarefa.prioridade === "alta" && "bg-primary/10 text-primary border border-primary/20",
                                   tarefa.prioridade === "media" &&
-                                    "bg-yellow-500/10 text-yellow-500 border border-yellow-500/20",
+                                    "bg-muted text-muted-foreground border border-border",
                                 )}
                               >
                                 {tarefa.prioridade}
@@ -281,16 +280,16 @@ export default function IntranetPage() {
                                 <Button
                                   variant="ghost"
                                   size="sm"
-                                  className="h-8 w-8 p-0 rounded-lg hover:bg-emerald-500/10"
+                                  className="h-8 w-8 p-0 rounded-lg hover:bg-primary/10"
                                 >
-                                  <Check className="w-4 h-4 text-emerald-500" />
+                                  <Check className="w-4 h-4 text-primary" />
                                 </Button>
                                 <Button
                                   variant="ghost"
                                   size="sm"
-                                  className="h-8 w-8 p-0 rounded-lg hover:bg-red-500/10"
+                                  className="h-8 w-8 p-0 rounded-lg hover:bg-destructive/10"
                                 >
-                                  <X className="w-4 h-4 text-red-500" />
+                                  <X className="w-4 h-4 text-destructive" />
                                 </Button>
                               </div>
                             </td>
@@ -310,17 +309,17 @@ export default function IntranetPage() {
               <CardHeader className="pb-3 border-b border-border">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="p-2.5 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 shadow-sm">
-                      <Calendar className="w-4 h-4 text-white" />
+                    <div className="p-2.5 rounded-xl bg-primary shadow-sm">
+                      <Calendar className="w-4 h-4 text-primary-foreground" />
                     </div>
                     <CardTitle className="text-base font-semibold text-card-foreground">Marcos e eventos</CardTitle>
                   </div>
-                  <div className="flex items-center gap-2 px-3 py-1.5 bg-red-500/10 border border-red-500/20 rounded-full">
+                  <div className="flex items-center gap-2 px-3 py-1.5 bg-destructive/10 border border-destructive/20 rounded-full">
                     <span className="relative flex h-2 w-2">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-destructive opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-destructive"></span>
                     </span>
-                    <span className="text-sm font-semibold text-red-500">{pendentes} pendentes</span>
+                    <span className="text-sm font-semibold text-destructive">{pendentes} pendentes</span>
                   </div>
                 </div>
               </CardHeader>
@@ -358,7 +357,7 @@ export default function IntranetPage() {
                       key={index}
                       className={cn(
                         "text-sm h-9 flex items-center justify-center rounded-lg transition-all cursor-pointer",
-                        dia === 14 && "bg-gradient-to-br from-amber-500 to-orange-500 text-white font-bold shadow-md",
+                        dia === 14 && "bg-primary text-primary-foreground font-bold shadow-md",
                         dia && dia !== 14 && "hover:bg-muted text-foreground",
                         !dia && "invisible",
                       )}
@@ -373,10 +372,10 @@ export default function IntranetPage() {
                   <h4 className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider mb-3">
                     Marcos do Mes
                   </h4>
-                  <div className="p-3 bg-amber-500/10 rounded-xl border border-amber-500/20">
+                  <div className="p-3 bg-primary/10 rounded-xl border border-primary/20">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2.5">
-                        <div className="w-3 h-3 rounded-full bg-gradient-to-br from-amber-500 to-orange-500 shadow-sm" />
+                        <div className="w-3 h-3 rounded-full bg-primary shadow-sm" />
                         <span className="text-sm font-semibold text-foreground">Inicio da Mobilizacao</span>
                       </div>
                       <div className="flex items-center gap-2">
@@ -415,19 +414,19 @@ export default function IntranetPage() {
                   <h4 className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider mb-3">Legenda</h4>
                   <div className="grid grid-cols-2 gap-2">
                     <div className="flex items-center gap-2 px-2 py-1.5 rounded-md bg-muted/50">
-                      <div className="w-2.5 h-2.5 rounded-full bg-orange-500" />
+                      <div className="w-2.5 h-2.5 rounded-full bg-primary" />
                       <span className="text-xs text-muted-foreground">Marco</span>
                     </div>
                     <div className="flex items-center gap-2 px-2 py-1.5 rounded-md bg-muted/50">
-                      <div className="w-2.5 h-2.5 rounded-full bg-green-500" />
+                      <div className="w-2.5 h-2.5 rounded-full bg-primary/70" />
                       <span className="text-xs text-muted-foreground">Medicao</span>
                     </div>
                     <div className="flex items-center gap-2 px-2 py-1.5 rounded-md bg-muted/50">
-                      <div className="w-2.5 h-2.5 rounded-full bg-blue-500" />
+                      <div className="w-2.5 h-2.5 rounded-full bg-primary/50" />
                       <span className="text-xs text-muted-foreground">Entrega</span>
                     </div>
                     <div className="flex items-center gap-2 px-2 py-1.5 rounded-md bg-muted/50">
-                      <div className="w-2.5 h-2.5 rounded-full bg-purple-500" />
+                      <div className="w-2.5 h-2.5 rounded-full bg-primary/30" />
                       <span className="text-xs text-muted-foreground">Reuniao</span>
                     </div>
                   </div>

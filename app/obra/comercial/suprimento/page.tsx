@@ -1,6 +1,5 @@
 "use client"
 
-import { AppLayout } from "@/components/layout/app-layout"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -16,8 +15,8 @@ const compras = [
 
 export default function SuprimentoPage() {
   return (
-    <AppLayout>
-      <div className="space-y-6">
+    <div className="overflow-auto h-full">
+      <div className="space-y-6 p-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Badge variant="outline" className="gap-1">
@@ -54,7 +53,7 @@ export default function SuprimentoPage() {
               <CardTitle className="text-sm font-medium text-muted-foreground">Em Cotacao</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-3xl font-bold text-amber-500">5</p>
+              <p className="text-3xl font-bold text-accent-foreground">5</p>
             </CardContent>
           </Card>
           <Card>
@@ -63,8 +62,8 @@ export default function SuprimentoPage() {
             </CardHeader>
             <CardContent>
               <div className="flex items-center gap-2">
-                <Truck className="w-5 h-5 text-blue-500" />
-                <p className="text-3xl font-bold text-blue-500">8</p>
+                <Truck className="w-5 h-5 text-primary" />
+                <p className="text-3xl font-bold text-primary">8</p>
               </div>
             </CardContent>
           </Card>
@@ -166,6 +165,6 @@ export default function SuprimentoPage() {
           </TabsContent>
         </Tabs>
       </div>
-    </AppLayout>
+    </div>
   )
 }
