@@ -4,6 +4,7 @@ import { Montserrat, Bebas_Neue } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { AuthProvider } from "@/contexts/auth-context"
 import { ThemeProvider } from "@/contexts/theme-context"
+import { LanguageProvider } from "@/contexts/language-context"
 import "./globals.css"
 
 const montserrat = Montserrat({
@@ -51,7 +52,9 @@ export default function RootLayout({
         className={`${montserrat.variable} ${bebasNeue.variable} font-sans antialiased bg-background text-foreground min-h-screen`}
       >
         <ThemeProvider>
-          <AuthProvider>{children}</AuthProvider>
+          <LanguageProvider>
+            <AuthProvider>{children}</AuthProvider>
+          </LanguageProvider>
         </ThemeProvider>
         <Analytics />
       </body>

@@ -1,5 +1,6 @@
 "use client"
 
+import { Suspense } from "react"
 import { AppLayout } from "@/components/layout/app-layout"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -9,7 +10,6 @@ import {
   Send,
   CheckCircle2,
   AlertTriangle,
-  ChevronLeft,
   Link2,
   Package,
   Users,
@@ -17,8 +17,13 @@ import {
   Shield,
   Wrench,
   XCircle,
+  FileSignature,
+  Ruler,
+  Calculator,
+  Building2,
 } from "lucide-react"
 import Link from "next/link"
+import { useRouter, usePathname } from "next/navigation"
 
 // Dados mockados - Classificação de Recursos
 const recursos = [
@@ -103,90 +108,55 @@ const recursos = [
     status: "Vinculado",
   },
   {
-    codigo: "EQP-005",
-    descricao: "Usina de Asfalto 80t/h",
-    tipo: "Equipamento",
-    categoria: "Pesados",
-    unidade: "h",
-    status: "Pendente",
-  },
-  {
     codigo: "MO-001",
-    descricao: "Equipe de Armadores",
+    descricao: "Operador de Escavadeira",
     tipo: "Mão de Obra",
-    categoria: "Empreitada",
-    unidade: "kg",
+    categoria: "Operação",
+    unidade: "h",
     status: "Vinculado",
   },
   {
     codigo: "MO-002",
-    descricao: "Equipe de Carpinteiros",
+    descricao: "Encarregado de Terraplenagem",
     tipo: "Mão de Obra",
-    categoria: "Empreitada",
-    unidade: "m²",
+    categoria: "Supervisão",
+    unidade: "h",
     status: "Vinculado",
   },
   {
     codigo: "MO-003",
-    descricao: "Operadores de Equipamentos",
+    descricao: "Servente de Obras",
     tipo: "Mão de Obra",
-    categoria: "Hora-homem",
-    unidade: "hh",
+    categoria: "Apoio",
+    unidade: "h",
     status: "Vinculado",
   },
   {
-    codigo: "SRV-001",
-    descricao: "Terraplenagem Terceirizada",
-    tipo: "Serviço",
-    categoria: "Terraplenagem",
-    unidade: "m³",
-    status: "Vinculado",
-  },
-  {
-    codigo: "SRV-002",
-    descricao: "Sondagem SPT",
-    tipo: "Serviço",
-    categoria: "Sondagem",
-    unidade: "m",
-    status: "Vinculado",
-  },
-  {
-    codigo: "SRV-003",
-    descricao: "Levantamento Topográfico",
-    tipo: "Serviço",
-    categoria: "Topografia",
-    unidade: "ha",
-    status: "Vinculado",
-  },
-  {
-    codigo: "SEG-001",
-    descricao: "EPI - Kit Completo",
-    tipo: "Segurança",
-    categoria: "EPI",
-    unidade: "kit",
-    status: "Vinculado",
-  },
-  {
-    codigo: "SEG-002",
-    descricao: "Sinalização de Obra",
-    tipo: "Segurança",
-    categoria: "EPC",
-    unidade: "vb",
+    codigo: "MO-004",
+    descricao: "Armador de Ferragem",
+    tipo: "Mão de Obra",
+    categoria: "Especializado",
+    unidade: "h",
     status: "Pendente",
   },
 ]
 
-// Dados mockados - Vínculo com EAP de Custo
-const vinculosEAP = [
-  { servico: "1.1.1 Escavação e Carga", recursos: ["EQP-001", "MO-003", "SRV-001"], qtdRecursos: 3 },
-  { servico: "1.1.2 Transporte de Material", recursos: ["EQP-002", "MO-003"], qtdRecursos: 2 },
-  { servico: "1.1.3 Compactação", recursos: ["EQP-003", "MO-003"], qtdRecursos: 2 },
-  { servico: "1.2.1 Base Granular", recursos: ["MAT-003", "EQP-003", "MO-003"], qtdRecursos: 3 },
-  { servico: "1.2.2 Imprimação", recursos: ["MAT-005", "EQP-004"], qtdRecursos: 2 },
-  { servico: "1.2.3 CBUQ - Binder", recursos: ["MAT-004", "EQP-004", "EQP-005"], qtdRecursos: 3 },
-  { servico: "1.2.4 CBUQ - Capa", recursos: ["MAT-004", "EQP-004"], qtdRecursos: 2 },
-  { servico: "1.4.1 Ponte Km 12", recursos: ["MAT-001", "MAT-002", "MO-001", "MO-002"], qtdRecursos: 4 },
+// Dados mockados - Fornecedores Homologados
+const fornecedoresHomologados = [
+  { nome: "Concreteira XYZ", categoria: "Concreto", status: "Homologado", validade: "2026-06-30" },
+  { nome: "Gerdau Aços", categoria: "Aço", status: "Homologado", validade: "2026-12-31" },
+  { nome: "Pedreira ABC", categoria: "Agregados", status: "Homologado", validade: "2026-08-15" },
+  { nome: "Usina Asfalto SC", categoria: "Asfalto", status: "Homologado", validade: "2026-09-30" },
+  { nome: "Locadora Pesados", categoria: "Equipamentos", status: "Homologado", validade: "2026-07-31" },
+  { nome: "Empreiteira Regional", categoria: "Mão de Obra", status: "Em Análise", validade: "-" },
 ]
+
+// Dados mockados - Vínculo com EAP de Custo
+const vinculacaoEAP = {
+  itensVinculados: 11,
+  itensSemVinculo: 3,
+  totalItens: 14,
+}
 
 // Dados mockados - Parâmetros de Suprimentos
 const parametros = [
@@ -234,322 +204,262 @@ const parametros = [
 
 // Validações
 const validacoes = [
-  { item: "Todos os recursos classificados por tipo", status: true },
-  { item: "Todos os recursos possuem categoria definida", status: true },
-  { item: "Todos os recursos vinculados a serviços da EAP", status: false },
-  { item: "Parâmetros de contratação definidos por tipo", status: true },
-  { item: "Critérios de medição estabelecidos", status: true },
-  { item: "Critérios de aceite definidos", status: true },
-  { item: "Indicadores de controle configurados", status: true },
+  { item: "Todos os recursos classificados", status: true },
+  { item: "Recursos vinculados à EAP de Custo", status: false },
+  { item: "Fornecedores homologados por categoria", status: false },
   { item: "Unidades de medida padronizadas", status: true },
+  { item: "Códigos únicos atribuídos", status: true },
 ]
 
-const getTipoIcon = (tipo: string) => {
+const getIconByType = (tipo: string) => {
   switch (tipo) {
     case "Material":
-      return <Package className="h-3.5 w-3.5" />
+      return Package
     case "Equipamento":
-      return <Truck className="h-3.5 w-3.5" />
+      return Truck
     case "Mão de Obra":
-      return <Users className="h-3.5 w-3.5" />
-    case "Serviço":
-      return <Wrench className="h-3.5 w-3.5" />
-    case "Segurança":
-      return <Shield className="h-3.5 w-3.5" />
+      return Users
     default:
-      return <Package className="h-3.5 w-3.5" />
+      return Wrench
   }
 }
 
-const getTipoBadgeColor = (tipo: string) => {
-  switch (tipo) {
-    case "Material":
-      return "bg-blue-500/10 text-blue-600 dark:text-blue-400"
-    case "Equipamento":
-      return "bg-amber-500/10 text-amber-600 dark:text-amber-400"
-    case "Mão de Obra":
-      return "bg-purple-500/10 text-purple-600 dark:text-purple-400"
-    case "Serviço":
-      return "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
-    case "Segurança":
-      return "bg-red-500/10 text-red-600 dark:text-red-400"
-    default:
-      return "bg-muted text-muted-foreground"
-  }
-}
+const EstruturacaoSuprimentosContent = () => {
+  const router = useRouter()
+  const pathname = usePathname()
 
-export default function EstruturacaoSuprimentosPage() {
-  const recursosPendentes = recursos.filter((r) => r.status === "Pendente").length
-  const recursosVinculados = recursos.filter((r) => r.status === "Vinculado").length
-  const validacoesOk = validacoes.filter((v) => v.status).length
-  const prontoParaUso = validacoesOk === validacoes.length
+  const navegacaoSetor = [
+    { codigo: "EST-00", nome: "Visao Geral", rota: "/obra/comercial/estruturacao-geral", icon: FileText },
+    { codigo: "EST-01", nome: "Contrato", rota: "/obra/comercial/estruturacao-contrato", icon: FileSignature },
+    { codigo: "EST-02", nome: "Medicao", rota: "/obra/comercial/estruturacao-medicao", icon: Ruler },
+    { codigo: "EST-03", nome: "Custo", rota: "/obra/comercial/estruturacao-custo", icon: Calculator },
+    { codigo: "EST-04", nome: "Suprimentos", rota: "/obra/comercial/estruturacao-suprimentos", icon: Package },
+    { codigo: "EST-05", nome: "Indireto", rota: "/obra/comercial/estruturacao-indireto", icon: Building2 },
+  ]
+
+  const materiais = recursos.filter((r) => r.tipo === "Material")
+  const equipamentos = recursos.filter((r) => r.tipo === "Equipamento")
+  const maoDeObra = recursos.filter((r) => r.tipo === "Mão de Obra")
+  const vinculados = recursos.filter((r) => r.status === "Vinculado").length
+  const pendentes = recursos.filter((r) => r.status === "Pendente").length
+
+  const prontoParaUso = validacoes.every((v) => v.status)
 
   return (
-    <AppLayout>
-      <div className="flex flex-col h-full">
-        {/* Header */}
-        <div className="flex-none border-b border-border bg-card px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Link href="/obra/comercial/estruturacao-geral">
-                <Button variant="ghost" size="sm" className="gap-1">
-                  <ChevronLeft className="h-4 w-4" />
-                  Voltar
-                </Button>
-              </Link>
-              <div>
-                <div className="flex items-center gap-3">
-                  <h1 className="text-xl font-semibold">Estruturação de Suprimentos</h1>
-                  <Badge variant="outline" className="font-mono text-xs">
-                    EST-04
-                  </Badge>
-                  <Badge className="bg-amber-500/10 text-amber-600 dark:text-amber-400 text-xs">Em estruturação</Badge>
-                </div>
-                <p className="text-sm text-muted-foreground mt-0.5">Arquitetura de recursos da obra</p>
+    <div className="h-full flex flex-col bg-background overflow-auto">
+      {/* Header */}
+      <div className="border-b border-border bg-muted/30 px-6 py-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <Link href="/obra/comercial/estruturacao-geral">
+              <Button variant="ghost" size="sm" className="gap-1">
+                <Package className="h-4 w-4" />
+                Voltar
+              </Button>
+            </Link>
+            <div>
+              <div className="flex items-center gap-3">
+                <h1 className="text-xl font-semibold text-foreground">Estruturação de Suprimentos</h1>
+                <Badge variant="outline" className="text-[10px] font-mono">
+                  EST-04
+                </Badge>
+                <Badge className="bg-accent-foreground/10 text-accent-foreground text-[10px]">Em Estruturação</Badge>
               </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm" className="gap-2 bg-transparent">
-                <Send className="h-4 w-4" />
-                Enviar para Revisão
-              </Button>
-              <Button size="sm" className="gap-2" disabled={!prontoParaUso}>
-                <CheckCircle2 className="h-4 w-4" />
-                Homologar
-              </Button>
+              <p className="text-xs text-muted-foreground mt-1">Recursos, fornecedores e vínculos com EAP</p>
             </div>
           </div>
+          <div className="flex items-center gap-2">
+            <Button variant="outline" size="sm" className="gap-1.5 text-xs bg-transparent">
+              <Send className="h-3.5 w-3.5" />
+              Enviar para Revisão
+            </Button>
+            <Button size="sm" className="gap-1.5 text-xs" disabled={!prontoParaUso}>
+              <Shield className="h-3.5 w-3.5" />
+              Homologar Estrutura
+            </Button>
+          </div>
         </div>
+      </div>
 
-        {/* Content */}
-        <ScrollArea className="flex-1">
-          <div className="p-6 space-y-6">
-            {/* Bloco 1 - Classificação de Recursos */}
-            <div className="border border-border rounded-lg overflow-hidden">
-              <div className="bg-muted/30 px-4 py-2.5 border-b border-border">
-                <div className="flex items-center justify-between">
-                  <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                    1. Classificação de Recursos
-                  </h2>
-                  <div className="flex items-center gap-3 text-xs">
-                    <span className="text-muted-foreground">{recursos.length} recursos</span>
-                    <span className="text-emerald-600">{recursosVinculados} vinculados</span>
-                    {recursosPendentes > 0 && <span className="text-amber-600">{recursosPendentes} pendentes</span>}
-                  </div>
-                </div>
+      {/* Content */}
+      <ScrollArea className="flex-1">
+        <div className="p-6 space-y-6">
+          <div className="flex items-center gap-2 pb-2 border-b border-border">
+            {navegacaoSetor.map((item) => {
+              const Icon = item.icon
+              const isActive = pathname === item.rota
+              return (
+                <Button
+                  key={item.codigo}
+                  variant="outline"
+                  size="sm"
+                  className={`h-8 gap-1.5 text-xs ${isActive ? "bg-muted/50 border-primary/30" : "bg-transparent"}`}
+                  onClick={() => router.push(item.rota)}
+                >
+                  <Icon className="w-3.5 h-3.5" />
+                  {item.nome}
+                </Button>
+              )
+            })}
+          </div>
+
+          {/* Resumo */}
+          <div className="grid grid-cols-4 gap-4">
+            <div className="border border-border rounded-lg p-4 bg-card">
+              <div className="flex items-center gap-2 mb-2">
+                <Package className="h-4 w-4 text-muted-foreground" />
+                <span className="text-xs text-muted-foreground uppercase">Materiais</span>
               </div>
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="border-b border-border bg-muted/20">
-                      <th className="text-left py-2.5 px-4 font-medium text-xs uppercase tracking-wider text-muted-foreground">
-                        Código
-                      </th>
-                      <th className="text-left py-2.5 px-4 font-medium text-xs uppercase tracking-wider text-muted-foreground">
-                        Descrição
-                      </th>
-                      <th className="text-left py-2.5 px-4 font-medium text-xs uppercase tracking-wider text-muted-foreground">
-                        Tipo
-                      </th>
-                      <th className="text-left py-2.5 px-4 font-medium text-xs uppercase tracking-wider text-muted-foreground">
-                        Categoria
-                      </th>
-                      <th className="text-center py-2.5 px-4 font-medium text-xs uppercase tracking-wider text-muted-foreground">
-                        Unidade
-                      </th>
-                      <th className="text-center py-2.5 px-4 font-medium text-xs uppercase tracking-wider text-muted-foreground">
-                        Status
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {recursos.map((recurso, idx) => (
+              <p className="text-2xl font-bold">{materiais.length}</p>
+              <p className="text-xs text-muted-foreground">itens cadastrados</p>
+            </div>
+            <div className="border border-border rounded-lg p-4 bg-card">
+              <div className="flex items-center gap-2 mb-2">
+                <Truck className="h-4 w-4 text-muted-foreground" />
+                <span className="text-xs text-muted-foreground uppercase">Equipamentos</span>
+              </div>
+              <p className="text-2xl font-bold">{equipamentos.length}</p>
+              <p className="text-xs text-muted-foreground">itens cadastrados</p>
+            </div>
+            <div className="border border-border rounded-lg p-4 bg-card">
+              <div className="flex items-center gap-2 mb-2">
+                <Users className="h-4 w-4 text-muted-foreground" />
+                <span className="text-xs text-muted-foreground uppercase">Mão de Obra</span>
+              </div>
+              <p className="text-2xl font-bold">{maoDeObra.length}</p>
+              <p className="text-xs text-muted-foreground">funções cadastradas</p>
+            </div>
+            <div className="border border-border rounded-lg p-4 bg-card">
+              <div className="flex items-center gap-2 mb-2">
+                <Link2 className="h-4 w-4 text-muted-foreground" />
+                <span className="text-xs text-muted-foreground uppercase">Vinculação</span>
+              </div>
+              <p className="text-2xl font-bold">
+                {vinculados}/{recursos.length}
+              </p>
+              <p className="text-xs text-muted-foreground">vinculados à EAP</p>
+            </div>
+          </div>
+
+          {/* BLOCO 1 - Recursos */}
+          <div>
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="text-sm font-semibold text-foreground uppercase tracking-wide">
+                1. Classificação de Recursos (COMPOR 90)
+              </h2>
+              <span className="text-xs text-muted-foreground">
+                {vinculados} vinculados | {pendentes} pendentes
+              </span>
+            </div>
+            <div className="border border-border rounded-md overflow-hidden">
+              <table className="w-full text-xs">
+                <thead>
+                  <tr className="bg-muted/50 border-b border-border">
+                    <th className="text-left py-2.5 px-3 font-medium text-muted-foreground uppercase tracking-wider text-[10px]">
+                      Código
+                    </th>
+                    <th className="text-left py-2.5 px-3 font-medium text-muted-foreground uppercase tracking-wider text-[10px]">
+                      Descrição
+                    </th>
+                    <th className="text-center py-2.5 px-3 font-medium text-muted-foreground uppercase tracking-wider text-[10px]">
+                      Tipo
+                    </th>
+                    <th className="text-left py-2.5 px-3 font-medium text-muted-foreground uppercase tracking-wider text-[10px]">
+                      Categoria
+                    </th>
+                    <th className="text-center py-2.5 px-3 font-medium text-muted-foreground uppercase tracking-wider text-[10px]">
+                      Unidade
+                    </th>
+                    <th className="text-center py-2.5 px-3 font-medium text-muted-foreground uppercase tracking-wider text-[10px]">
+                      Status
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {recursos.map((recurso, index) => {
+                    const Icon = getIconByType(recurso.tipo)
+                    return (
                       <tr
                         key={recurso.codigo}
-                        className={`border-b border-border/50 hover:bg-muted/30 ${idx % 2 === 0 ? "bg-background" : "bg-muted/10"}`}
+                        className={`border-b border-border/50 hover:bg-muted/30 transition-colors ${index % 2 === 0 ? "bg-background" : "bg-muted/20"}`}
                       >
-                        <td className="py-2 px-4 font-mono text-xs">{recurso.codigo}</td>
-                        <td className="py-2 px-4">{recurso.descricao}</td>
-                        <td className="py-2 px-4">
-                          <Badge variant="secondary" className={`gap-1 text-xs ${getTipoBadgeColor(recurso.tipo)}`}>
-                            {getTipoIcon(recurso.tipo)}
-                            {recurso.tipo}
-                          </Badge>
+                        <td className="py-2.5 px-3 font-mono text-[11px]">{recurso.codigo}</td>
+                        <td className="py-2.5 px-3 text-foreground">{recurso.descricao}</td>
+                        <td className="py-2.5 px-3 text-center">
+                          <div className="flex items-center justify-center gap-1">
+                            <Icon className="h-3.5 w-3.5 text-muted-foreground" />
+                            <span className="text-muted-foreground">{recurso.tipo}</span>
+                          </div>
                         </td>
-                        <td className="py-2 px-4 text-muted-foreground">{recurso.categoria}</td>
-                        <td className="py-2 px-4 text-center font-mono text-xs">{recurso.unidade}</td>
-                        <td className="py-2 px-4 text-center">
+                        <td className="py-2.5 px-3 text-muted-foreground">{recurso.categoria}</td>
+                        <td className="py-2.5 px-3 text-center font-mono text-muted-foreground">{recurso.unidade}</td>
+                        <td className="py-2.5 px-3 text-center">
                           {recurso.status === "Vinculado" ? (
-                            <Badge
-                              variant="secondary"
-                              className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs gap-1"
-                            >
-                              <Link2 className="h-3 w-3" />
+                            <Badge className="bg-primary/10 text-primary text-[10px]">
+                              <CheckCircle2 className="h-3 w-3 mr-1" />
                               Vinculado
                             </Badge>
                           ) : (
-                            <Badge
-                              variant="secondary"
-                              className="bg-amber-500/10 text-amber-600 dark:text-amber-400 text-xs"
-                            >
+                            <Badge className="bg-amber-500/10 text-amber-600 text-[10px]">
+                              <AlertTriangle className="h-3 w-3 mr-1" />
                               Pendente
                             </Badge>
                           )}
                         </td>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                    )
+                  })}
+                </tbody>
+              </table>
             </div>
+          </div>
 
-            {/* Bloco 2 - Vínculo com EAP de Custo */}
-            <div className="border border-border rounded-lg overflow-hidden">
-              <div className="bg-muted/30 px-4 py-2.5 border-b border-border">
-                <div className="flex items-center justify-between">
-                  <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                    2. Vínculo com EAP de Custo (Serviços)
-                  </h2>
-                  <Link href="/obra/comercial/estruturacao-custo">
-                    <Button variant="ghost" size="sm" className="gap-1 text-xs h-7">
-                      <FileText className="h-3.5 w-3.5" />
-                      Ver EST-03
-                    </Button>
-                  </Link>
-                </div>
-              </div>
-              <div className="p-4">
-                <div className="grid grid-cols-12 gap-4">
-                  {/* Tabela de Vínculos */}
-                  <div className="col-span-8">
-                    <table className="w-full text-sm">
-                      <thead>
-                        <tr className="border-b border-border">
-                          <th className="text-left py-2 px-3 font-medium text-xs uppercase tracking-wider text-muted-foreground">
-                            Serviço (EAP)
-                          </th>
-                          <th className="text-left py-2 px-3 font-medium text-xs uppercase tracking-wider text-muted-foreground">
-                            Recursos Vinculados
-                          </th>
-                          <th className="text-center py-2 px-3 font-medium text-xs uppercase tracking-wider text-muted-foreground">
-                            Qtd
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {vinculosEAP.map((vinculo, idx) => (
-                          <tr key={idx} className="border-b border-border/50 hover:bg-muted/30">
-                            <td className="py-2 px-3 font-medium">{vinculo.servico}</td>
-                            <td className="py-2 px-3">
-                              <div className="flex flex-wrap gap-1">
-                                {vinculo.recursos.map((r) => (
-                                  <Badge key={r} variant="outline" className="text-xs font-mono">
-                                    {r}
-                                  </Badge>
-                                ))}
-                              </div>
-                            </td>
-                            <td className="py-2 px-3 text-center font-mono">{vinculo.qtdRecursos}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-
-                  {/* Resumo */}
-                  <div className="col-span-4 space-y-3">
-                    <div className="border border-border rounded-lg p-3 bg-muted/20">
-                      <p className="text-xs uppercase tracking-wider text-muted-foreground mb-2">
-                        Resumo de Rastreabilidade
-                      </p>
-                      <div className="space-y-2 text-sm">
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">Total de recursos</span>
-                          <span className="font-mono font-medium">{recursos.length}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">Vinculados a serviços</span>
-                          <span className="font-mono font-medium text-emerald-600">{recursosVinculados}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">Sem vínculo</span>
-                          <span className="font-mono font-medium text-amber-600">{recursosPendentes}</span>
-                        </div>
-                        <div className="flex justify-between pt-2 border-t border-border">
-                          <span className="text-muted-foreground">Cobertura</span>
-                          <span className="font-mono font-medium">
-                            {((recursosVinculados / recursos.length) * 100).toFixed(0)}%
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {recursosPendentes > 0 && (
-                      <div className="border border-amber-500/30 rounded-lg p-3 bg-amber-500/5">
-                        <div className="flex items-start gap-2">
-                          <AlertTriangle className="h-4 w-4 text-amber-600 mt-0.5" />
-                          <div>
-                            <p className="text-xs font-medium text-amber-600">Recursos sem vínculo</p>
-                            <p className="text-xs text-muted-foreground mt-1">
-                              {recursosPendentes} recurso(s) não vinculado(s) a serviços da EAP
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Bloco 3 - Parâmetros de Suprimentos */}
-            <div className="border border-border rounded-lg overflow-hidden">
-              <div className="bg-muted/30 px-4 py-2.5 border-b border-border">
-                <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                  3. Parâmetros de Suprimentos
+          {/* Grid 2 colunas */}
+          <div className="grid grid-cols-12 gap-6">
+            {/* BLOCO 2 - Fornecedores */}
+            <div className="col-span-7">
+              <div className="flex items-center justify-between mb-3">
+                <h2 className="text-sm font-semibold text-foreground uppercase tracking-wide">
+                  2. Fornecedores Homologados
                 </h2>
+                <Button variant="outline" size="sm" className="h-7 text-xs bg-transparent">
+                  + Adicionar Fornecedor
+                </Button>
               </div>
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
+              <div className="border border-border rounded-md overflow-hidden">
+                <table className="w-full text-xs">
                   <thead>
-                    <tr className="border-b border-border bg-muted/20">
-                      <th className="text-left py-2.5 px-4 font-medium text-xs uppercase tracking-wider text-muted-foreground">
-                        Tipo de Recurso
+                    <tr className="bg-muted/50 border-b border-border">
+                      <th className="text-left py-2 px-3 font-medium text-muted-foreground uppercase tracking-wider text-[10px]">
+                        Fornecedor
                       </th>
-                      <th className="text-left py-2.5 px-4 font-medium text-xs uppercase tracking-wider text-muted-foreground">
-                        Contratação
+                      <th className="text-left py-2 px-3 font-medium text-muted-foreground uppercase tracking-wider text-[10px]">
+                        Categoria
                       </th>
-                      <th className="text-left py-2.5 px-4 font-medium text-xs uppercase tracking-wider text-muted-foreground">
-                        Medição
+                      <th className="text-center py-2 px-3 font-medium text-muted-foreground uppercase tracking-wider text-[10px]">
+                        Status
                       </th>
-                      <th className="text-left py-2.5 px-4 font-medium text-xs uppercase tracking-wider text-muted-foreground">
-                        Aceite
-                      </th>
-                      <th className="text-left py-2.5 px-4 font-medium text-xs uppercase tracking-wider text-muted-foreground">
-                        Frequência
-                      </th>
-                      <th className="text-left py-2.5 px-4 font-medium text-xs uppercase tracking-wider text-muted-foreground">
-                        Indicadores
+                      <th className="text-center py-2 px-3 font-medium text-muted-foreground uppercase tracking-wider text-[10px]">
+                        Validade
                       </th>
                     </tr>
                   </thead>
                   <tbody>
-                    {parametros.map((param, idx) => (
+                    {fornecedoresHomologados.map((fornecedor, index) => (
                       <tr
-                        key={idx}
-                        className={`border-b border-border/50 hover:bg-muted/30 ${idx % 2 === 0 ? "bg-background" : "bg-muted/10"}`}
+                        key={fornecedor.nome}
+                        className={`border-b border-border/50 ${index % 2 === 0 ? "bg-background" : "bg-muted/20"}`}
                       >
-                        <td className="py-2.5 px-4">
-                          <Badge variant="secondary" className={`gap-1 text-xs ${getTipoBadgeColor(param.tipo)}`}>
-                            {getTipoIcon(param.tipo)}
-                            {param.tipo}
-                          </Badge>
+                        <td className="py-2 px-3 font-medium">{fornecedor.nome}</td>
+                        <td className="py-2 px-3 text-muted-foreground">{fornecedor.categoria}</td>
+                        <td className="py-2 px-3 text-center">
+                          {fornecedor.status === "Homologado" ? (
+                            <Badge className="bg-primary/10 text-primary text-[10px]">Homologado</Badge>
+                          ) : (
+                            <Badge className="bg-amber-500/10 text-amber-600 text-[10px]">Em Análise</Badge>
+                          )}
                         </td>
-                        <td className="py-2.5 px-4">{param.contratacao}</td>
-                        <td className="py-2.5 px-4">{param.medicao}</td>
-                        <td className="py-2.5 px-4">{param.aceite}</td>
-                        <td className="py-2.5 px-4">{param.frequencia}</td>
-                        <td className="py-2.5 px-4 text-muted-foreground text-xs">{param.indicadores}</td>
+                        <td className="py-2 px-3 text-center font-mono text-muted-foreground">{fornecedor.validade}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -557,88 +467,73 @@ export default function EstruturacaoSuprimentosPage() {
               </div>
             </div>
 
-            {/* Grid: Validações + Governança */}
-            <div className="grid grid-cols-12 gap-4">
-              {/* Bloco 4 - Validações */}
-              <div className="col-span-8 border border-border rounded-lg overflow-hidden">
-                <div className="bg-muted/30 px-4 py-2.5 border-b border-border">
-                  <div className="flex items-center justify-between">
-                    <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                      4. Validações da Estrutura de Suprimentos
-                    </h2>
-                    <span className="text-xs text-muted-foreground">
-                      {validacoesOk}/{validacoes.length} ok
-                    </span>
-                  </div>
-                </div>
-                <div className="p-4">
-                  <div className="space-y-2">
-                    {validacoes.map((val, idx) => (
-                      <div key={idx} className="flex items-center gap-3 py-1.5">
-                        {val.status ? (
-                          <CheckCircle2 className="h-4 w-4 text-emerald-600" />
-                        ) : (
-                          <XCircle className="h-4 w-4 text-red-500" />
-                        )}
-                        <span className={`text-sm ${val.status ? "" : "text-muted-foreground"}`}>{val.item}</span>
-                      </div>
+            {/* BLOCO 3 - Validações */}
+            <div className="col-span-5">
+              <div className="flex items-center gap-2 mb-3">
+                <h2 className="text-sm font-semibold text-foreground uppercase tracking-wide">3. Validações</h2>
+              </div>
+              <div className="border border-border rounded-md overflow-hidden">
+                <table className="w-full text-xs">
+                  <tbody>
+                    {validacoes.map((val, index) => (
+                      <tr
+                        key={val.item}
+                        className={`border-b border-border/50 ${index % 2 === 0 ? "bg-background" : "bg-muted/20"}`}
+                      >
+                        <td className="py-2.5 px-3 w-6">
+                          {val.status ? (
+                            <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+                          ) : (
+                            <XCircle className="h-4 w-4 text-red-500" />
+                          )}
+                        </td>
+                        <td className="py-2.5 px-3 text-muted-foreground">{val.item}</td>
+                      </tr>
                     ))}
-                  </div>
-                  <div className="mt-4 pt-4 border-t border-border">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium">Estrutura de suprimentos pronta para execução?</span>
-                      {prontoParaUso ? (
-                        <Badge className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">Sim</Badge>
-                      ) : (
-                        <Badge className="bg-red-500/10 text-red-600 dark:text-red-400">Não</Badge>
-                      )}
-                    </div>
-                  </div>
-                </div>
+                  </tbody>
+                </table>
               </div>
 
-              {/* Bloco 5 - Governança */}
-              <div className="col-span-4 border border-border rounded-lg overflow-hidden">
-                <div className="bg-muted/30 px-4 py-2.5 border-b border-border">
-                  <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                    5. Governança
-                  </h2>
-                </div>
-                <div className="p-4 space-y-4">
-                  <div className="border border-amber-500/30 rounded-lg p-3 bg-amber-500/5">
-                    <div className="flex items-start gap-2">
-                      <AlertTriangle className="h-4 w-4 text-amber-600 mt-0.5" />
-                      <p className="text-xs text-muted-foreground">
-                        Após homologação, suprimentos apenas executa dentro da estrutura definida. Alterações requerem
-                        revisão formal.
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Button variant="outline" className="w-full gap-2 bg-transparent" size="sm">
-                      <Send className="h-4 w-4" />
-                      Enviar para Revisão
-                    </Button>
-                    <Button className="w-full gap-2" size="sm" disabled={!prontoParaUso}>
-                      <CheckCircle2 className="h-4 w-4" />
-                      Homologar Estrutura
-                    </Button>
-                  </div>
-
-                  <div className="pt-3 border-t border-border">
-                    <p className="text-xs text-muted-foreground">
-                      <strong>Última revisão:</strong> —<br />
-                      <strong>Homologado em:</strong> —<br />
-                      <strong>Responsável:</strong> —
-                    </p>
-                  </div>
+              {/* Indicador de prontidão */}
+              <div
+                className={`mt-3 p-3 rounded border ${prontoParaUso ? "bg-emerald-500/10 border-emerald-500/20" : "bg-amber-500/10 border-amber-500/20"}`}
+              >
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-medium">Estrutura pronta para uso?</span>
+                  <Badge
+                    variant={prontoParaUso ? "default" : "secondary"}
+                    className={`text-[10px] ${prontoParaUso ? "bg-emerald-500" : "bg-amber-500"}`}
+                  >
+                    {prontoParaUso ? "SIM" : "NÃO"}
+                  </Badge>
                 </div>
               </div>
             </div>
           </div>
-        </ScrollArea>
-      </div>
+
+          {/* Aviso de governança */}
+          <div className="flex items-start gap-3 p-4 bg-muted/30 border border-border rounded-md">
+            <Shield className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-0.5" />
+            <div>
+              <p className="text-xs font-medium text-foreground">Governança de Suprimentos</p>
+              <p className="text-[11px] text-muted-foreground mt-1">
+                Após homologação, a estrutura de suprimentos será a base para pedidos de compra e contratos. Qualquer
+                compra de item fora da estrutura gerará ALERTA CRÍTICO e exigirá aprovação do Gerente de Contrato.
+              </p>
+            </div>
+          </div>
+        </div>
+      </ScrollArea>
+    </div>
+  )
+}
+
+export default function EstruturacaoSuprimentosPage() {
+  return (
+    <AppLayout>
+      <Suspense fallback={null}>
+        <EstruturacaoSuprimentosContent />
+      </Suspense>
     </AppLayout>
   )
 }

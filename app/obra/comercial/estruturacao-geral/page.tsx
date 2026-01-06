@@ -19,8 +19,14 @@ import {
   Calendar,
   User,
   History,
+  FileSignature,
+  Ruler,
+  Calculator,
+  Package,
+  Building2,
 } from "lucide-react"
 import Link from "next/link"
+import { useRouter, usePathname } from "next/navigation"
 
 // Dados mockados
 const estruturas = [
@@ -126,6 +132,8 @@ function getLiberacao(tipo: string) {
 function EstruturacaoGeralContent() {
   const [painelAberto, setPainelAberto] = useState(false)
   const [estruturaSelecionada, setEstruturaSelecionada] = useState<(typeof estruturas)[0] | null>(null)
+  const router = useRouter()
+  const pathname = usePathname()
 
   const statusGeral = getStatusGeral()
   const homologadas = estruturas.filter((e) => e.status === "homologado").length
@@ -135,6 +143,15 @@ function EstruturacaoGeralContent() {
     setEstruturaSelecionada(estrutura)
     setPainelAberto(true)
   }
+
+  const navegacaoSetor = [
+    { codigo: "EST-00", nome: "Visao Geral", rota: "/obra/comercial/estruturacao-geral", icon: FileText },
+    { codigo: "EST-01", nome: "Contrato", rota: "/obra/comercial/estruturacao-contrato", icon: FileSignature },
+    { codigo: "EST-02", nome: "Medicao", rota: "/obra/comercial/estruturacao-medicao", icon: Ruler },
+    { codigo: "EST-03", nome: "Custo", rota: "/obra/comercial/estruturacao-custo", icon: Calculator },
+    { codigo: "EST-04", nome: "Suprimentos", rota: "/obra/comercial/estruturacao-suprimentos", icon: Package },
+    { codigo: "EST-05", nome: "Indireto", rota: "/obra/comercial/estruturacao-indireto", icon: Building2 },
+  ]
 
   return (
     <div className="overflow-auto h-full">
@@ -168,6 +185,25 @@ function EstruturacaoGeralContent() {
 
         {/* Subtitulo */}
         <p className="text-sm text-muted-foreground -mt-4">Base economica e operacional do contrato</p>
+
+        <div className="flex items-center gap-2 pb-2 border-b border-border">
+          {navegacaoSetor.map((item) => {
+            const Icon = item.icon
+            const isActive = pathname === item.rota
+            return (
+              <Button
+                key={item.codigo}
+                variant="outline"
+                size="sm"
+                className={`h-8 gap-1.5 text-xs ${isActive ? "bg-muted/50 border-primary/30" : "bg-transparent"}`}
+                onClick={() => router.push(item.rota)}
+              >
+                <Icon className="w-3.5 h-3.5" />
+                {item.nome}
+              </Button>
+            )
+          })}
+        </div>
 
         {/* Grid Principal */}
         <div className="grid grid-cols-12 gap-4">

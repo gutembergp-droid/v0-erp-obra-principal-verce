@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { Suspense } from "react"
+import { useRouter } from "next/navigation"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -28,6 +29,9 @@ import {
   ShieldCheck,
   XCircle,
   AlertCircle,
+  BarChart3,
+  Truck,
+  FileSignature,
 } from "lucide-react"
 
 // Dados mockados - Fornecedores
@@ -203,6 +207,7 @@ const historicoFornecedor = [
 ]
 
 function SuprimentosFornecedoresContent() {
+  const router = useRouter()
   const [filtroStatus, setFiltroStatus] = useState<string>("todos")
   const [filtroCategoria, setFiltroCategoria] = useState<string>("todos")
   const [busca, setBusca] = useState("")
@@ -276,24 +281,66 @@ function SuprimentosFornecedoresContent() {
     <div className="overflow-auto h-full">
       <div className="p-6 space-y-6">
         {/* Header */}
-        <div className="flex items-center justify-between">
-          <div>
-            <div className="flex items-center gap-3">
-              <h1 className="text-2xl font-bold text-foreground">Fornecedores</h1>
-              <Badge variant="outline" className="text-xs">
-                SP-03
-              </Badge>
+        <div className="flex flex-col gap-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="flex items-center gap-3">
+                <h1 className="text-2xl font-bold text-foreground">Fornecedores</h1>
+                <Badge variant="outline" className="text-xs">
+                  SP-03
+                </Badge>
+              </div>
+              <p className="text-muted-foreground mt-1">Cadastro e avaliacao de fornecedores da obra</p>
             </div>
-            <p className="text-muted-foreground mt-1">Cadastro e avaliacao de fornecedores da obra</p>
+            <div className="flex items-center gap-2">
+              <Button variant="outline" className="bg-transparent">
+                <FileText className="w-4 h-4 mr-2" />
+                Exportar
+              </Button>
+              <Button className="bg-primary text-primary-foreground">
+                <Plus className="w-4 h-4 mr-2" />
+                Novo Fornecedor
+              </Button>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <Button variant="outline" className="bg-transparent">
-              <FileText className="w-4 h-4 mr-2" />
-              Exportar
+
+          {/* Navegacao do Setor */}
+          <div className="flex items-center gap-2 flex-wrap">
+            <Button
+              variant="outline"
+              size="sm"
+              className="text-xs bg-transparent"
+              onClick={() => router.push("/obra/comercial/suprimentos-visao")}
+            >
+              <BarChart3 className="w-3 h-3 mr-2" />
+              SP-01 Visao Geral
             </Button>
-            <Button className="bg-primary text-primary-foreground">
-              <Plus className="w-4 h-4 mr-2" />
-              Novo Fornecedor
+            <Button
+              variant="outline"
+              size="sm"
+              className="text-xs bg-transparent"
+              onClick={() => router.push("/obra/comercial/suprimentos-pedidos")}
+            >
+              <Truck className="w-3 h-3 mr-2" />
+              SP-02 Pedidos
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              className="text-xs bg-muted/50"
+              onClick={() => router.push("/obra/comercial/suprimentos-fornecedores")}
+            >
+              <Users className="w-3 h-3 mr-2" />
+              SP-03 Fornecedores
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              className="text-xs bg-transparent"
+              onClick={() => router.push("/obra/comercial/suprimentos-contratos")}
+            >
+              <FileSignature className="w-3 h-3 mr-2" />
+              SP-04 Contratos
             </Button>
           </div>
         </div>

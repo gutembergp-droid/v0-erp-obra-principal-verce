@@ -49,6 +49,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { useTheme } from "@/contexts/theme-context"
+import { useLanguage } from "@/contexts/language-context"
 
 const acoesRapidas = [
   { icon: Star, label: "Favoritos", href: "/favoritos" },
@@ -117,6 +118,7 @@ export function Topbar() {
   const pathname = usePathname()
   const [currentStatus, setCurrentStatus] = useState(statusOptions[0])
   const { theme, colorTheme, setTheme, setColorTheme, toggleTheme } = useTheme()
+  const { language, setLanguage, t } = useLanguage()
 
   const getBreadcrumb = () => {
     const parts = pathname.split("/").filter(Boolean)
@@ -328,15 +330,15 @@ export function Topbar() {
               <DropdownMenuGroup>
                 <DropdownMenuItem className="py-2.5 cursor-pointer hover:bg-accent">
                   <User className="w-4 h-4 mr-2" />
-                  <span>Meu Perfil</span>
+                  <span>{t("menu.profile")}</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem className="py-2.5 cursor-pointer hover:bg-accent">
                   <Settings className="w-4 h-4 mr-2" />
-                  <span>Configuracoes</span>
+                  <span>{t("menu.settings")}</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem className="py-2.5 cursor-pointer hover:bg-accent">
                   <Shield className="w-4 h-4 mr-2" />
-                  <span>Privacidade e Seguranca</span>
+                  <span>{t("menu.privacy")}</span>
                 </DropdownMenuItem>
               </DropdownMenuGroup>
 
@@ -346,7 +348,7 @@ export function Topbar() {
                 <DropdownMenuSub>
                   <DropdownMenuSubTrigger className="py-2.5 cursor-pointer">
                     <Monitor className="w-4 h-4 mr-2" />
-                    <span>Display</span>
+                    <span>{t("menu.display")}</span>
                   </DropdownMenuSubTrigger>
                   <DropdownMenuPortal>
                     <DropdownMenuSubContent className="w-52">
@@ -373,7 +375,7 @@ export function Topbar() {
                 <DropdownMenuSub>
                   <DropdownMenuSubTrigger className="py-2.5 cursor-pointer">
                     <Palette className="w-4 h-4 mr-2" />
-                    <span>Tema</span>
+                    <span>{t("menu.theme")}</span>
                   </DropdownMenuSubTrigger>
                   <DropdownMenuPortal>
                     <DropdownMenuSubContent className="w-56">
@@ -406,19 +408,21 @@ export function Topbar() {
                 <DropdownMenuSub>
                   <DropdownMenuSubTrigger className="py-2.5 cursor-pointer">
                     <Languages className="w-4 h-4 mr-2" />
-                    <span>Idioma</span>
+                    <span>{t("menu.language")}</span>
                   </DropdownMenuSubTrigger>
                   <DropdownMenuPortal>
                     <DropdownMenuSubContent>
-                      <DropdownMenuItem className="cursor-pointer">
-                        <span>Portugues (Brasil)</span>
-                        <Check className="w-4 h-4 ml-auto text-primary" />
+                      <DropdownMenuItem className="cursor-pointer" onClick={() => setLanguage("pt-BR")}>
+                        <span>{t("language.pt")}</span>
+                        {language === "pt-BR" && <Check className="w-4 h-4 ml-auto text-primary" />}
                       </DropdownMenuItem>
-                      <DropdownMenuItem className="cursor-pointer">
-                        <span>Ingles</span>
+                      <DropdownMenuItem className="cursor-pointer" onClick={() => setLanguage("en")}>
+                        <span>{t("language.en")}</span>
+                        {language === "en" && <Check className="w-4 h-4 ml-auto text-primary" />}
                       </DropdownMenuItem>
-                      <DropdownMenuItem className="cursor-pointer">
-                        <span>Espanhol</span>
+                      <DropdownMenuItem className="cursor-pointer" onClick={() => setLanguage("es")}>
+                        <span>{t("language.es")}</span>
+                        {language === "es" && <Check className="w-4 h-4 ml-auto text-primary" />}
                       </DropdownMenuItem>
                     </DropdownMenuSubContent>
                   </DropdownMenuPortal>
@@ -429,7 +433,7 @@ export function Topbar() {
 
               <DropdownMenuItem className="py-2.5 text-destructive focus:text-destructive focus:bg-destructive/10 cursor-pointer">
                 <LogOut className="w-4 h-4 mr-2" />
-                <span>Sair do Sistema</span>
+                <span>{t("menu.logout")}</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
