@@ -52,6 +52,7 @@ import {
   LayoutList,
   FileSignature,
   ClipboardList,
+  Calculator,
 } from "lucide-react"
 import { useCallback, useReducer } from "react"
 
@@ -136,6 +137,7 @@ const obraNavigation = [
       { name: "Estruturacao Geral", href: "/obra/comercial/estruturacao-geral", icon: LayoutList },
       { name: "EST-01 Contrato", href: "/obra/comercial/estruturacao-contrato", icon: FileSignature },
       { name: "EST-02 Medicao", href: "/obra/comercial/estruturacao-medicao", icon: ClipboardList },
+      { name: "EST-03 Custo", href: "/obra/comercial/estruturacao-custo", icon: Calculator },
       { name: "Estrutura (EAP)", href: "/obra/comercial/estrutura", icon: FileStack },
       { name: "Receita & Medicao", href: "/obra/comercial/receita", icon: TrendingUp },
       { name: "Custo & Meta 0.9", href: "/obra/comercial/custo", icon: DollarSign },
