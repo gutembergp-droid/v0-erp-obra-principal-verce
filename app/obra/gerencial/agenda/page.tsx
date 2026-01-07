@@ -8,7 +8,6 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Textarea } from "@/components/ui/textarea"
-import { Progress } from "@/components/ui/progress"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Label } from "@/components/ui/label"
@@ -53,6 +52,7 @@ import {
   FileImage,
   FilePlus,
   Info,
+  ChevronDown,
 } from "lucide-react"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip" // Added Tooltip components
 import {
@@ -69,6 +69,58 @@ import {
   LineChart,
   Line,
 } from "recharts"
+
+const CircularProgress = ({
+  value,
+  size = 36,
+  strokeWidth = 3,
+  className = "",
+}: { value: number; size?: number; strokeWidth?: number; className?: string }) => {
+  const radius = (size - strokeWidth) / 2
+  const circumference = radius * 2 * Math.PI
+  const offset = circumference - (value / 100) * circumference
+
+  const getColor = () => {
+    if (value >= 80) return "text-success"
+    if (value >= 50) return "text-info"
+    if (value >= 30) return "text-warning"
+    return "text-destructive"
+  }
+
+  return (
+    <div
+      className={`relative inline-flex items-center justify-center ${className}`}
+      style={{ width: size, height: size }}
+    >
+      <svg width={size} height={size} className="transform -rotate-90">
+        {/* Background circle */}
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={strokeWidth}
+          className="text-muted/30"
+        />
+        {/* Progress circle */}
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={strokeWidth}
+          strokeDasharray={circumference}
+          strokeDashoffset={offset}
+          strokeLinecap="round"
+          className={getColor()}
+        />
+      </svg>
+      <span className="absolute text-[9px] font-bold">{value}%</span>
+    </div>
+  )
+}
 
 type Tipo = "reuniao" | "cobranca" | "aprovacao" | "auditoria" | "comunicacao" | "planejamento" | "financeiro"
 type Origem = "contrato" | "obra" | "corporativo" | "auditoria"
@@ -585,6 +637,7 @@ export default function AgendaGerencialPage() {
   const [modoVisualizacao, setModoVisualizacao] = useState<"lista" | "calendario" | "graficos" | "painel">("lista")
   const [selectedDay, setSelectedDay] = useState<number | null>(null)
   const [mesCalendario, setMesCalendario] = useState({ mes: 0, ano: 2026 })
+  const [dataAtual, setDataAtual] = useState(new Date()) // Added dataAtual
 
   const [dataPainel, setDataPainel] = useState("07/01/2026")
   const [selectedAtividade, setSelectedAtividade] = useState<AtividadeExecucao | null>(null)
@@ -595,6 +648,7 @@ export default function AgendaGerencialPage() {
   const [demandaDepartamento, setDemandaDepartamento] = useState("")
   const [demandaAssunto, setDemandaAssunto] = useState("")
   // const [searchTerm, setSearchTerm] = useState("") // Added searchTerm and setSearchTerm - REMOVED
+  const [showCalendarOptions, setShowCalendarOptions] = useState(false) // Added showCalendarOptions
 
   const acoesFiltradas = acoes.filter((acao) => {
     if (filtroOrigem !== "todos" && acao.origem !== filtroOrigem) return false
@@ -672,7 +726,10 @@ export default function AgendaGerencialPage() {
 
     for (let dia = 1; dia <= diasNoMes; dia++) {
       const acoesDia = getAcoesPorDia(dia)
-      const isHoje = dia === 7 && mesCalendario.mes === 0
+      const isHoje =
+        dia === dataAtual.getDate() &&
+        mesCalendario.mes === dataAtual.getMonth() &&
+        mesCalendario.ano === dataAtual.getFullYear() // Updated isHoje check
       const isSelected = selectedDay === dia
 
       dias.push(
@@ -890,29 +947,22 @@ export default function AgendaGerencialPage() {
                       : "bg-card"
                   } ${atividade.ritmo === "atrasado" ? "border-destructive/30 bg-destructive/5" : "border-border/50"}`}
                 >
-                  {/* Linha 1: Nome, Frente, Progresso, Status */}
                   <div className="flex items-center gap-3">
+                    {/* Progresso Circular */}
+                    <CircularProgress value={atividade.progresso} size={40} strokeWidth={4} />
+
                     {/* Nome e Frente */}
-                    <div className="flex items-center gap-2 min-w-[200px]">
+                    <div className="flex items-center gap-2 min-w-[180px]">
                       <span className="font-medium text-sm truncate">{atividade.nome}</span>
                       <Badge variant="outline" className="text-[9px] px-1.5 py-0 h-4 flex-shrink-0">
                         {atividade.frente}
                       </Badge>
                     </div>
 
-                    {/* Barra de Progresso */}
-                    <div className="flex-1 flex items-center gap-2 min-w-[150px]">
-                      <Progress
-                        value={atividade.progresso}
-                        className={`h-1.5 flex-1 ${atividade.ritmo === "atrasado" ? "[&>div]:bg-destructive" : ""}`}
-                      />
-                      <span className="text-xs font-semibold w-9 text-right">{atividade.progresso}%</span>
-                    </div>
-
                     {/* Efetivo */}
-                    <div className="flex items-center gap-1 text-[10px] text-muted-foreground min-w-[80px]">
+                    <div className="flex items-center gap-1 text-[10px] text-muted-foreground min-w-[70px]">
                       <HardHat className="h-3 w-3" />
-                      <span>{atividade.efetivo}</span>
+                      <span>{atividade.efetivo} colab</span>
                     </div>
 
                     {/* Previsao Termino */}
@@ -1384,15 +1434,30 @@ export default function AgendaGerencialPage() {
   )
 
   const getDataLabel = () => {
-    if (modoVisualizacao === "calendario") {
+    if (modoVisualizacao === "calendario" || visaoTemporal === "mes") {
       return `${mesesNomes[mesCalendario.mes]} ${mesCalendario.ano}`
     }
     if (modoVisualizacao === "painel") {
       return dataPainel
     }
     // Lista e Graficos
-    if (visaoTemporal === "dia") return "07 Jan 2026"
-    if (visaoTemporal === "semana") return "05-11 Jan"
+    if (visaoTemporal === "dia") {
+      const dia = dataAtual.getDate().toString().padStart(2, "0")
+      const mes = mesesNomes[dataAtual.getMonth()]
+      const ano = dataAtual.getFullYear()
+      return `${dia} ${mes} ${ano}`
+    }
+    if (visaoTemporal === "semana") {
+      const startOfWeek = new Date(dataAtual)
+      startOfWeek.setDate(dataAtual.getDay()) // Sunday
+      const endOfWeek = new Date(dataAtual)
+      endOfWeek.setDate(dataAtual.getDate() + (6 - dataAtual.getDay())) // Saturday
+
+      const formatDay = (date: Date) => date.getDate().toString().padStart(2, "0")
+      const formatMonth = (date: Date) => mesesNomes[date.getMonth()]
+
+      return `${formatDay(startOfWeek)} ${formatMonth(startOfWeek)} - ${formatDay(endOfWeek)} ${formatMonth(endOfWeek)}`
+    }
     return `${mesesNomes[mesCalendario.mes]} ${mesCalendario.ano}`
   }
 
@@ -1404,8 +1469,17 @@ export default function AgendaGerencialPage() {
         }
         return { mes: prev.mes === 11 ? 0 : prev.mes + 1, ano: prev.mes === 11 ? prev.ano + 1 : prev.ano }
       })
+    } else if (visaoTemporal === "dia" || visaoTemporal === "semana") {
+      setDataAtual((prevDate) => {
+        const newDate = new Date(prevDate)
+        if (direcao === "anterior") {
+          newDate.setDate(newDate.getDate() - (visaoTemporal === "dia" ? 1 : 7))
+        } else {
+          newDate.setDate(newDate.getDate() + (visaoTemporal === "dia" ? 1 : 7))
+        }
+        return newDate
+      })
     }
-    // Para dia e semana, apenas placeholder por enquanto
   }
 
   return (
@@ -1476,52 +1550,92 @@ export default function AgendaGerencialPage() {
             </Button>
           </div>
 
-          <div className="flex items-center border border-border/50 rounded-lg p-1 gap-1">
-            <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => navegarData("anterior")}>
-              <ChevronLeft className="h-4 w-4" />
+          <div className="relative">
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-8 text-xs gap-1.5 px-2 bg-transparent"
+              onClick={() => setShowCalendarOptions(!showCalendarOptions)}
+            >
+              <ChevronLeft
+                className="h-3.5 w-3.5 cursor-pointer hover:text-primary"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  navegarData("anterior")
+                }}
+              />
+              <span className="font-medium min-w-[70px] text-center">{getDataLabel()}</span>
+              <ChevronRight
+                className="h-3.5 w-3.5 cursor-pointer hover:text-primary"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  navegarData("proximo")
+                }}
+              />
+              <ChevronDown className={`h-3 w-3 ml-1 transition-transform ${showCalendarOptions ? "rotate-180" : ""}`} />
             </Button>
-            <span className="text-sm font-medium px-2 min-w-[100px] text-center">{getDataLabel()}</span>
-            <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => navegarData("proximo")}>
-              <ChevronRight className="h-4 w-4" />
-            </Button>
-            <div className="h-5 w-px bg-border/30 mx-1" />
-            {/* Toggle Dia/Semana/Mes - visivel apenas em Lista e Graficos */}
-            {(modoVisualizacao === "lista" || modoVisualizacao === "graficos") && (
-              <>
-                <Button
-                  variant={visaoTemporal === "dia" ? "secondary" : "ghost"}
-                  size="sm"
-                  className="h-6 text-xs px-2"
-                  onClick={() => setVisaoTemporal("dia")}
-                >
-                  Dia
-                </Button>
-                <Button
-                  variant={visaoTemporal === "semana" ? "secondary" : "ghost"}
-                  size="sm"
-                  className="h-6 text-xs px-2"
-                  onClick={() => setVisaoTemporal("semana")}
-                >
-                  Semana
-                </Button>
-                <Button
-                  variant={visaoTemporal === "mes" ? "secondary" : "ghost"}
-                  size="sm"
-                  className="h-6 text-xs px-2"
-                  onClick={() => setVisaoTemporal("mes")}
-                >
-                  Mes
-                </Button>
-                <div className="h-5 w-px bg-border/30 mx-1" />
-              </>
-            )}
-            <Button variant="ghost" size="sm" className="h-6 text-xs px-2">
-              Hoje
-            </Button>
-          </div>
 
-          <Button size="sm" className="h-8">
-            <Plus className="h-4 w-4 mr-1" />
+            {showCalendarOptions && (
+              <div className="absolute top-full right-0 mt-1 bg-card border border-border rounded-lg shadow-lg p-2 z-50 min-w-[140px]">
+                <div className="flex flex-col gap-1">
+                  <span className="text-[10px] text-muted-foreground px-2 pb-1 border-b border-border/50">
+                    Visualizar por
+                  </span>
+                  <Button
+                    variant={visaoTemporal === "dia" ? "secondary" : "ghost"}
+                    size="sm"
+                    className="h-7 text-xs justify-start"
+                    onClick={() => {
+                      setVisaoTemporal("dia")
+                      setShowCalendarOptions(false)
+                    }}
+                  >
+                    Dia
+                  </Button>
+                  <Button
+                    variant={visaoTemporal === "semana" ? "secondary" : "ghost"}
+                    size="sm"
+                    className="h-7 text-xs justify-start"
+                    onClick={() => {
+                      setVisaoTemporal("semana")
+                      setShowCalendarOptions(false)
+                    }}
+                  >
+                    Semana
+                  </Button>
+                  <Button
+                    variant={visaoTemporal === "mes" ? "secondary" : "ghost"}
+                    size="sm"
+                    className="h-7 text-xs justify-start"
+                    onClick={() => {
+                      setVisaoTemporal("mes")
+                      setShowCalendarOptions(false)
+                    }}
+                  >
+                    Mes
+                  </Button>
+                  <div className="border-t border-border/50 pt-1 mt-1">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-7 text-xs justify-start w-full"
+                      onClick={() => {
+                        setDataAtual(new Date())
+                        setMesCalendario({ mes: new Date().getMonth(), ano: new Date().getFullYear() })
+                        setShowCalendarOptions(false)
+                      }}
+                    >
+                      Hoje
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+          {/* Fim card calendario compacto */}
+
+          <Button size="sm" className="h-8 text-xs gap-1">
+            <Plus className="h-3.5 w-3.5" />
             Criar Acao
           </Button>
         </div>
