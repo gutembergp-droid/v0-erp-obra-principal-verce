@@ -10,6 +10,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import {
   Plus,
   Search,
@@ -24,9 +25,43 @@ import {
   Briefcase,
   Phone,
   Mail,
+  Download,
+  BarChart3,
+  TableIcon,
+  Eye,
+  Edit,
+  Shield,
+  GraduationCap,
+  HeartPulse,
+  AlertCircle,
+  XCircle,
+  Hourglass,
+  ChevronRight,
+  MoreHorizontal,
+  Filter,
+  TrendingUp,
+  TrendingDown,
+  Minus,
+  ClipboardCheck,
+  Ban,
+  RefreshCw,
 } from "lucide-react"
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  LineChart,
+  Line,
+} from "recharts"
 
-// Dados mockados de Colaboradores
+// Dados mockados de Colaboradores (expandido)
 const colaboradoresMock = [
   {
     id: "COL-001",
@@ -34,12 +69,16 @@ const colaboradoresMock = [
     funcao: "Operador de Escavadeira",
     setor: "Producao",
     admissao: "2024-02-15",
-    status: "ativo",
+    statusRH: "ativo",
+    statusSST: "regular",
     turno: "Diurno",
     ctps: "123456",
     telefone: "(21) 99999-1111",
     email: "jose.silva@obra.com",
     salario: 4500,
+    asoValidade: "2026-06-15",
+    nrPendentes: 0,
+    docsPendentes: 0,
   },
   {
     id: "COL-002",
@@ -47,12 +86,16 @@ const colaboradoresMock = [
     funcao: "Engenheira Civil",
     setor: "Engenharia",
     admissao: "2024-01-10",
-    status: "ativo",
+    statusRH: "ativo",
+    statusSST: "regular",
     turno: "Comercial",
     ctps: "234567",
     telefone: "(21) 99999-2222",
     email: "maria.costa@obra.com",
     salario: 12000,
+    asoValidade: "2026-08-20",
+    nrPendentes: 0,
+    docsPendentes: 0,
   },
   {
     id: "COL-003",
@@ -60,12 +103,16 @@ const colaboradoresMock = [
     funcao: "Encarregado de Terraplenagem",
     setor: "Producao",
     admissao: "2024-03-01",
-    status: "ferias",
+    statusRH: "ferias",
+    statusSST: "regular",
     turno: "Diurno",
     ctps: "345678",
     telefone: "(21) 99999-3333",
     email: "carlos.lima@obra.com",
     salario: 6500,
+    asoValidade: "2026-05-10",
+    nrPendentes: 1,
+    docsPendentes: 0,
   },
   {
     id: "COL-004",
@@ -73,12 +120,314 @@ const colaboradoresMock = [
     funcao: "Tecnica de Seguranca",
     setor: "SSMA",
     admissao: "2024-04-20",
-    status: "ativo",
+    statusRH: "ativo",
+    statusSST: "pendencia",
     turno: "Diurno",
     ctps: "456789",
     telefone: "(21) 99999-4444",
     email: "ana.ferreira@obra.com",
     salario: 5200,
+    asoValidade: "2026-02-01",
+    nrPendentes: 2,
+    docsPendentes: 1,
+  },
+  {
+    id: "COL-005",
+    nome: "Roberto Mendes Filho",
+    funcao: "Motorista de Caminhao",
+    setor: "Producao",
+    admissao: "2024-05-15",
+    statusRH: "afastado",
+    statusSST: "bloqueado",
+    turno: "Diurno",
+    ctps: "567890",
+    telefone: "(21) 99999-5555",
+    email: "roberto.mendes@obra.com",
+    salario: 3800,
+    asoValidade: "2025-12-20",
+    nrPendentes: 3,
+    docsPendentes: 2,
+  },
+  {
+    id: "COL-006",
+    nome: "Fernanda Oliveira",
+    funcao: "Almoxarife",
+    setor: "Suprimentos",
+    admissao: "2024-06-01",
+    statusRH: "ativo",
+    statusSST: "regular",
+    turno: "Comercial",
+    ctps: "678901",
+    telefone: "(21) 99999-6666",
+    email: "fernanda.oliveira@obra.com",
+    salario: 3200,
+    asoValidade: "2026-09-15",
+    nrPendentes: 0,
+    docsPendentes: 0,
+  },
+]
+
+// Dados mockados de Documentos
+const documentosMock = [
+  { id: "DOC-001", colaborador: "COL-001", tipo: "RG", validade: null, status: "valido", arquivo: "rg_jose.pdf" },
+  { id: "DOC-002", colaborador: "COL-001", tipo: "CPF", validade: null, status: "valido", arquivo: "cpf_jose.pdf" },
+  {
+    id: "DOC-003",
+    colaborador: "COL-001",
+    tipo: "CNH",
+    validade: "2027-05-20",
+    status: "valido",
+    arquivo: "cnh_jose.pdf",
+  },
+  {
+    id: "DOC-004",
+    colaborador: "COL-004",
+    tipo: "CNH",
+    validade: "2026-01-15",
+    status: "vencendo",
+    arquivo: "cnh_ana.pdf",
+  },
+  {
+    id: "DOC-005",
+    colaborador: "COL-005",
+    tipo: "CNH",
+    validade: "2025-11-10",
+    status: "vencido",
+    arquivo: "cnh_roberto.pdf",
+  },
+  {
+    id: "DOC-006",
+    colaborador: "COL-005",
+    tipo: "MOPP",
+    validade: "2025-10-05",
+    status: "vencido",
+    arquivo: "mopp_roberto.pdf",
+  },
+]
+
+// Dados mockados de Exames (ASO)
+const examesMock = [
+  {
+    id: "EXA-001",
+    colaborador: "COL-001",
+    tipo: "Periodico",
+    data: "2025-06-15",
+    validade: "2026-06-15",
+    resultado: "Apto",
+    restricao: null,
+    status: "valido",
+  },
+  {
+    id: "EXA-002",
+    colaborador: "COL-002",
+    tipo: "Periodico",
+    data: "2025-08-20",
+    validade: "2026-08-20",
+    resultado: "Apto",
+    restricao: null,
+    status: "valido",
+  },
+  {
+    id: "EXA-003",
+    colaborador: "COL-003",
+    tipo: "Periodico",
+    data: "2025-05-10",
+    validade: "2026-05-10",
+    resultado: "Apto",
+    restricao: null,
+    status: "valido",
+  },
+  {
+    id: "EXA-004",
+    colaborador: "COL-004",
+    tipo: "Periodico",
+    data: "2025-02-01",
+    validade: "2026-02-01",
+    resultado: "Apto",
+    restricao: "Altura",
+    status: "vencendo",
+  },
+  {
+    id: "EXA-005",
+    colaborador: "COL-005",
+    tipo: "Periodico",
+    data: "2024-12-20",
+    validade: "2025-12-20",
+    resultado: "Inapto Temporario",
+    restricao: "Afastado",
+    status: "vencido",
+  },
+  {
+    id: "EXA-006",
+    colaborador: "COL-006",
+    tipo: "Admissional",
+    data: "2024-06-01",
+    validade: "2026-09-15",
+    resultado: "Apto",
+    restricao: null,
+    status: "valido",
+  },
+]
+
+// Dados mockados de Treinamentos
+const treinamentosMock = [
+  {
+    id: "TRE-001",
+    colaborador: "COL-001",
+    nr: "NR-11",
+    descricao: "Operador de Empilhadeira",
+    validade: "2026-08-15",
+    status: "valido",
+    cargaHoraria: 8,
+  },
+  {
+    id: "TRE-002",
+    colaborador: "COL-001",
+    nr: "NR-12",
+    descricao: "Seguranca em Maquinas",
+    validade: "2026-10-20",
+    status: "valido",
+    cargaHoraria: 16,
+  },
+  {
+    id: "TRE-003",
+    colaborador: "COL-003",
+    nr: "NR-35",
+    descricao: "Trabalho em Altura",
+    validade: "2026-01-20",
+    status: "vencendo",
+    cargaHoraria: 8,
+  },
+  {
+    id: "TRE-004",
+    colaborador: "COL-004",
+    nr: "NR-10",
+    descricao: "Seguranca em Eletricidade",
+    validade: "2025-12-15",
+    status: "vencido",
+    cargaHoraria: 40,
+  },
+  {
+    id: "TRE-005",
+    colaborador: "COL-004",
+    nr: "NR-33",
+    descricao: "Espaco Confinado",
+    validade: "2025-11-30",
+    status: "vencido",
+    cargaHoraria: 16,
+  },
+  {
+    id: "TRE-006",
+    colaborador: "COL-005",
+    nr: "NR-11",
+    descricao: "Operador de Empilhadeira",
+    validade: "2025-10-10",
+    status: "vencido",
+    cargaHoraria: 8,
+  },
+  {
+    id: "TRE-007",
+    colaborador: "COL-005",
+    nr: "MOPP",
+    descricao: "Produtos Perigosos",
+    validade: "2025-09-05",
+    status: "vencido",
+    cargaHoraria: 50,
+  },
+  {
+    id: "TRE-008",
+    colaborador: "COL-005",
+    nr: "NR-20",
+    descricao: "Inflamaveis e Combustiveis",
+    validade: "2025-08-20",
+    status: "vencido",
+    cargaHoraria: 8,
+  },
+]
+
+// Dados mockados de Ferias
+const feriasMock = [
+  {
+    id: "FER-001",
+    colaborador: "COL-003",
+    periodoAquisitivo: "2024-03-01 a 2025-02-28",
+    saldoDias: 0,
+    dataInicio: "2026-01-02",
+    dataFim: "2026-01-31",
+    status: "em_gozo",
+  },
+  {
+    id: "FER-002",
+    colaborador: "COL-001",
+    periodoAquisitivo: "2024-02-15 a 2025-02-14",
+    saldoDias: 30,
+    dataInicio: null,
+    dataFim: null,
+    status: "pendente",
+  },
+  {
+    id: "FER-003",
+    colaborador: "COL-002",
+    periodoAquisitivo: "2024-01-10 a 2025-01-09",
+    saldoDias: 20,
+    dataInicio: "2026-03-01",
+    dataFim: "2026-03-20",
+    status: "programada",
+  },
+  {
+    id: "FER-004",
+    colaborador: "COL-006",
+    periodoAquisitivo: "2024-06-01 a 2025-05-31",
+    saldoDias: 30,
+    dataInicio: null,
+    dataFim: null,
+    status: "pendente",
+  },
+]
+
+// Dados mockados de Afastamentos
+const afastamentosMock = [
+  {
+    id: "AFA-001",
+    colaborador: "COL-003",
+    tipo: "Ferias",
+    dataInicio: "2026-01-02",
+    dataFim: "2026-01-31",
+    dias: 30,
+    cid: null,
+    status: "ativo",
+  },
+  {
+    id: "AFA-002",
+    colaborador: "COL-005",
+    tipo: "Atestado Medico",
+    dataInicio: "2025-12-15",
+    dataFim: "2026-02-15",
+    dias: 62,
+    cid: "M54.5",
+    status: "ativo",
+  },
+]
+
+// Dados mockados de Ocorrencias
+const ocorrenciasMock = [
+  {
+    id: "OCO-001",
+    colaborador: "COL-005",
+    tipo: "Advertencia",
+    data: "2025-11-10",
+    descricao: "Falta injustificada",
+    status: "registrada",
+    ciencia: true,
+  },
+  {
+    id: "OCO-002",
+    colaborador: "COL-005",
+    tipo: "Advertencia",
+    data: "2025-11-25",
+    descricao: "Atraso reincidente",
+    status: "registrada",
+    ciencia: true,
   },
 ]
 
@@ -117,151 +466,666 @@ const pontoMock = [
     horasExtras: 0,
     status: "atraso",
   },
-]
-
-// Dados mockados de Ferias/Afastamentos
-const afastamentosMock = [
   {
-    colaborador: "Carlos Eduardo Lima",
-    tipo: "ferias",
-    dataInicio: "2026-01-02",
-    dataFim: "2026-01-31",
-    dias: 30,
-    status: "em_gozo",
+    colaborador: "Fernanda Oliveira",
+    data: "2026-01-03",
+    entrada: "08:00",
+    intervaloInicio: "12:00",
+    intervaloFim: "13:00",
+    saida: "17:00",
+    horasTrabalhadas: 8,
+    horasExtras: 0,
+    status: "regular",
   },
 ]
 
+// Dados mockados de Banco de Horas
+const bancoHorasMock = [
+  { colaborador: "COL-001", saldo: 12, creditos: 24, debitos: 12 },
+  { colaborador: "COL-002", saldo: 8, creditos: 16, debitos: 8 },
+  { colaborador: "COL-004", saldo: -4, creditos: 8, debitos: 12 },
+  { colaborador: "COL-006", saldo: 2, creditos: 10, debitos: 8 },
+]
+
+// Dados para graficos
+const evolucaoQuadroData = [
+  { mes: "Ago", ativos: 38, admissoes: 4, demissoes: 1 },
+  { mes: "Set", ativos: 40, admissoes: 3, demissoes: 1 },
+  { mes: "Out", ativos: 42, admissoes: 4, demissoes: 2 },
+  { mes: "Nov", ativos: 44, admissoes: 3, demissoes: 1 },
+  { mes: "Dez", ativos: 45, admissoes: 2, demissoes: 1 },
+  { mes: "Jan", ativos: 46, admissoes: 2, demissoes: 1 },
+]
+
+const distribuicaoSetorData = [
+  { name: "Producao", value: 28, color: "hsl(var(--chart-1))" },
+  { name: "Engenharia", value: 8, color: "hsl(var(--chart-2))" },
+  { name: "SSMA", value: 4, color: "hsl(var(--chart-3))" },
+  { name: "Administrativo", value: 4, color: "hsl(var(--chart-4))" },
+  { name: "Suprimentos", value: 2, color: "hsl(var(--chart-5))" },
+]
+
+const horasExtrasData = [
+  { mes: "Ago", horas: 180 },
+  { mes: "Set", horas: 220 },
+  { mes: "Out", horas: 195 },
+  { mes: "Nov", horas: 240 },
+  { mes: "Dez", horas: 160 },
+  { mes: "Jan", horas: 85 },
+]
+
+const conformidadeData = [
+  { categoria: "ASO", conformes: 42, pendentes: 3, vencidos: 1 },
+  { categoria: "NRs", conformes: 38, pendentes: 5, vencidos: 3 },
+  { categoria: "Documentos", conformes: 44, pendentes: 1, vencidos: 1 },
+]
+
 function formatCurrency(value: number) {
-  return new Intl.NumberFormat("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-    minimumFractionDigits: 0,
-  }).format(value)
+  return new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL", minimumFractionDigits: 0 }).format(value)
+}
+
+function getColaboradorNome(id: string) {
+  const col = colaboradoresMock.find((c) => c.id === id)
+  return col?.nome || id
+}
+
+// Tooltip customizado para graficos
+function CustomTooltip({
+  active,
+  payload,
+  label,
+}: { active?: boolean; payload?: Array<{ name: string; value: number; color: string }>; label?: string }) {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-popover border rounded-lg shadow-lg p-3">
+        <p className="font-medium text-sm mb-1">{label}</p>
+        {payload.map((entry, index) => (
+          <p key={index} className="text-sm" style={{ color: entry.color }}>
+            {entry.name}: {entry.value}
+          </p>
+        ))}
+      </div>
+    )
+  }
+  return null
 }
 
 function RHContent() {
   const [searchTerm, setSearchTerm] = useState("")
-  const [tab, setTab] = useState("colaboradores")
+  const [tab, setTab] = useState("visao-geral")
   const [selectedColab, setSelectedColab] = useState<(typeof colaboradoresMock)[0] | null>(null)
+  const [viewMode, setViewMode] = useState<Record<string, "grafico" | "tabela">>({
+    quadro: "grafico",
+    setor: "grafico",
+    horas: "grafico",
+    conformidade: "grafico",
+  })
 
+  // Calculos
   const totalColaboradores = colaboradoresMock.length
-  const colaboradoresAtivos = colaboradoresMock.filter((c) => c.status === "ativo").length
-  const colaboradoresFerias = colaboradoresMock.filter((c) => c.status === "ferias").length
+  const colaboradoresAtivos = colaboradoresMock.filter((c) => c.statusRH === "ativo").length
+  const colaboradoresFerias = colaboradoresMock.filter((c) => c.statusRH === "ferias").length
+  const colaboradoresAfastados = colaboradoresMock.filter((c) => c.statusRH === "afastado").length
   const horasExtrasMes = pontoMock.reduce((acc, p) => acc + p.horasExtras, 0)
+  const docsPendentes = documentosMock.filter((d) => d.status === "vencendo" || d.status === "vencido").length
+  const asosPendentes = examesMock.filter((e) => e.status === "vencendo" || e.status === "vencido").length
+  const nrsPendentes = treinamentosMock.filter((t) => t.status === "vencendo" || t.status === "vencido").length
+  const colaboradoresBloqueados = colaboradoresMock.filter((c) => c.statusSST === "bloqueado").length
+
+  const toggleView = (card: string) => {
+    setViewMode((prev) => ({ ...prev, [card]: prev[card] === "grafico" ? "tabela" : "grafico" }))
+  }
 
   return (
     <div className="flex flex-col h-full overflow-auto">
+      {/* Header */}
       <div className="px-6 pt-6 pb-2">
-        <div className="flex items-center gap-3">
-          <h1 className="text-2xl font-bold">RH - Recursos Humanos</h1>
-          <InfoTooltip
-            title="Setor de RH"
-            description="Gerencia o cadastro de colaboradores, controle de ponto (entradas, saidas, horas extras) e afastamentos (ferias, licencas, atestados)."
-          />
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-primary/10 rounded-lg">
+              <Users className="w-6 h-6 text-primary" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h1 className="text-2xl font-bold">RH - Recursos Humanos</h1>
+                <Badge variant="outline" className="font-mono text-xs">
+                  AD-03
+                </Badge>
+                <InfoTooltip
+                  title="Setor de RH"
+                  description="Gestao completa de pessoal, documentos, exames ocupacionais, treinamentos, ferias, afastamentos, ponto e conformidade SST."
+                />
+              </div>
+              <p className="text-sm text-muted-foreground">BR-101 LOTE 2 - Janeiro/2026</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <Button variant="outline" size="sm">
+              <Download className="w-4 h-4 mr-2" />
+              Exportar
+            </Button>
+            <Button size="sm">
+              <Plus className="w-4 h-4 mr-2" />
+              Novo Colaborador
+            </Button>
+          </div>
         </div>
-        <p className="text-sm text-muted-foreground mt-1">Gestao de Pessoal, Controle de Ponto e Afastamentos</p>
       </div>
 
       <div className="p-6 space-y-6 flex-1">
-        {/* Metricas */}
-        <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+        {/* KPIs */}
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
+          <Card className="bg-card">
+            <CardContent className="p-3">
+              <div className="flex items-center gap-2 text-muted-foreground mb-1">
                 <Users className="w-4 h-4" />
-                Total
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{totalColaboradores}</div>
+                <span className="text-xs">Total</span>
+              </div>
+              <p className="text-2xl font-bold">{totalColaboradores}</p>
               <p className="text-xs text-muted-foreground">colaboradores</p>
             </CardContent>
           </Card>
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+          <Card className="bg-card">
+            <CardContent className="p-3">
+              <div className="flex items-center gap-2 text-primary mb-1">
                 <UserCheck className="w-4 h-4" />
-                Ativos
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-primary">{colaboradoresAtivos}</div>
+                <span className="text-xs">Ativos</span>
+              </div>
+              <p className="text-2xl font-bold text-primary">{colaboradoresAtivos}</p>
               <p className="text-xs text-muted-foreground">
-                {((colaboradoresAtivos / totalColaboradores) * 100).toFixed(0)}%
+                {((colaboradoresAtivos / totalColaboradores) * 100).toFixed(0)}% do quadro
               </p>
             </CardContent>
           </Card>
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+          <Card className="bg-card">
+            <CardContent className="p-3">
+              <div className="flex items-center gap-2 text-chart-1 mb-1">
                 <Calendar className="w-4 h-4" />
-                Em Ferias
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-chart-1">{colaboradoresFerias}</div>
-              <p className="text-xs text-muted-foreground">colaboradores</p>
+                <span className="text-xs">Ferias</span>
+              </div>
+              <p className="text-2xl font-bold text-chart-1">{colaboradoresFerias}</p>
+              <p className="text-xs text-muted-foreground">em gozo</p>
             </CardContent>
           </Card>
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-                <Clock className="w-4 h-4" />
-                Horas Extras
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-chart-4">{horasExtrasMes}h</div>
-              <p className="text-xs text-muted-foreground">no mes</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+          <Card className="bg-card">
+            <CardContent className="p-3">
+              <div className="flex items-center gap-2 text-chart-4 mb-1">
                 <UserX className="w-4 h-4" />
-                Afastados
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">0</div>
+                <span className="text-xs">Afastados</span>
+              </div>
+              <p className="text-2xl font-bold text-chart-4">{colaboradoresAfastados}</p>
               <p className="text-xs text-muted-foreground">atestados</p>
             </CardContent>
           </Card>
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-                <AlertTriangle className="w-4 h-4" />
-                Atrasos
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-chart-4">
-                {pontoMock.filter((p) => p.status === "atraso").length}
+          <Card className="bg-card">
+            <CardContent className="p-3">
+              <div className="flex items-center gap-2 text-chart-3 mb-1">
+                <Clock className="w-4 h-4" />
+                <span className="text-xs">Horas Extras</span>
               </div>
-              <p className="text-xs text-muted-foreground">hoje</p>
+              <p className="text-2xl font-bold text-chart-3">{horasExtrasMes}h</p>
+              <p className="text-xs text-muted-foreground">no mes</p>
+            </CardContent>
+          </Card>
+          <Card className="bg-card">
+            <CardContent className="p-3">
+              <div className="flex items-center gap-2 text-destructive mb-1">
+                <HeartPulse className="w-4 h-4" />
+                <span className="text-xs">ASO Pend.</span>
+              </div>
+              <p className="text-2xl font-bold text-destructive">{asosPendentes}</p>
+              <p className="text-xs text-muted-foreground">vencendo/vencidos</p>
+            </CardContent>
+          </Card>
+          <Card className="bg-card">
+            <CardContent className="p-3">
+              <div className="flex items-center gap-2 text-chart-4 mb-1">
+                <GraduationCap className="w-4 h-4" />
+                <span className="text-xs">NRs Pend.</span>
+              </div>
+              <p className="text-2xl font-bold text-chart-4">{nrsPendentes}</p>
+              <p className="text-xs text-muted-foreground">treinamentos</p>
+            </CardContent>
+          </Card>
+          <Card className={colaboradoresBloqueados > 0 ? "bg-destructive/10 border-destructive/30" : "bg-card"}>
+            <CardContent className="p-3">
+              <div className="flex items-center gap-2 text-destructive mb-1">
+                <Ban className="w-4 h-4" />
+                <span className="text-xs">Bloqueados</span>
+              </div>
+              <p className="text-2xl font-bold text-destructive">{colaboradoresBloqueados}</p>
+              <p className="text-xs text-muted-foreground">SST irregular</p>
             </CardContent>
           </Card>
         </div>
 
         {/* Tabs */}
         <Tabs value={tab} onValueChange={setTab}>
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="colaboradores">
-              <Users className="w-4 h-4 mr-2" />
+          <TabsList className="flex flex-wrap h-auto gap-1 bg-muted/50 p-1">
+            <TabsTrigger value="visao-geral" className="text-xs">
+              Visao Geral
+            </TabsTrigger>
+            <TabsTrigger value="colaboradores" className="text-xs">
               Colaboradores
             </TabsTrigger>
-            <TabsTrigger value="ponto">
-              <Clock className="w-4 h-4 mr-2" />
-              Controle de Ponto
+            <TabsTrigger value="documentos" className="text-xs">
+              Documentos
             </TabsTrigger>
-            <TabsTrigger value="afastamentos">
-              <Calendar className="w-4 h-4 mr-2" />
+            <TabsTrigger value="exames" className="text-xs">
+              Exames/ASO
+            </TabsTrigger>
+            <TabsTrigger value="treinamentos" className="text-xs">
+              Treinamentos/NRs
+            </TabsTrigger>
+            <TabsTrigger value="ferias" className="text-xs">
+              Ferias
+            </TabsTrigger>
+            <TabsTrigger value="afastamentos" className="text-xs">
               Afastamentos
+            </TabsTrigger>
+            <TabsTrigger value="ocorrencias" className="text-xs">
+              Ocorrencias
+            </TabsTrigger>
+            <TabsTrigger value="ponto" className="text-xs">
+              Ponto
+            </TabsTrigger>
+            <TabsTrigger value="banco-horas" className="text-xs">
+              Banco Horas
+            </TabsTrigger>
+            <TabsTrigger value="conformidade" className="text-xs">
+              Conformidade
             </TabsTrigger>
           </TabsList>
 
-          {/* Colaboradores */}
-          <TabsContent value="colaboradores">
+          {/* VISAO GERAL */}
+          <TabsContent value="visao-geral" className="space-y-4 mt-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              {/* Evolucao do Quadro */}
+              <Card>
+                <CardHeader className="pb-2">
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-base">Evolucao do Quadro</CardTitle>
+                    <div className="flex items-center gap-1">
+                      <Button
+                        variant={viewMode.quadro === "grafico" ? "secondary" : "ghost"}
+                        size="sm"
+                        className="h-7 px-2"
+                        onClick={() => toggleView("quadro")}
+                      >
+                        <BarChart3 className="w-4 h-4" />
+                      </Button>
+                      <Button
+                        variant={viewMode.quadro === "tabela" ? "secondary" : "ghost"}
+                        size="sm"
+                        className="h-7 px-2"
+                        onClick={() => toggleView("quadro")}
+                      >
+                        <TableIcon className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  {viewMode.quadro === "grafico" ? (
+                    <ResponsiveContainer width="100%" height={200}>
+                      <LineChart data={evolucaoQuadroData}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                        <XAxis dataKey="mes" tick={{ fontSize: 12 }} stroke="hsl(var(--muted-foreground))" />
+                        <YAxis tick={{ fontSize: 12 }} stroke="hsl(var(--muted-foreground))" />
+                        <Tooltip content={<CustomTooltip />} />
+                        <Line
+                          type="monotone"
+                          dataKey="ativos"
+                          stroke="hsl(var(--primary))"
+                          strokeWidth={2}
+                          name="Ativos"
+                          dot={{ fill: "hsl(var(--primary))" }}
+                        />
+                        <Line
+                          type="monotone"
+                          dataKey="admissoes"
+                          stroke="hsl(var(--chart-1))"
+                          strokeWidth={2}
+                          name="Admissoes"
+                          dot={{ fill: "hsl(var(--chart-1))" }}
+                        />
+                        <Line
+                          type="monotone"
+                          dataKey="demissoes"
+                          stroke="hsl(var(--destructive))"
+                          strokeWidth={2}
+                          name="Demissoes"
+                          dot={{ fill: "hsl(var(--destructive))" }}
+                        />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  ) : (
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Mes</TableHead>
+                          <TableHead className="text-center">Ativos</TableHead>
+                          <TableHead className="text-center">Admissoes</TableHead>
+                          <TableHead className="text-center">Demissoes</TableHead>
+                          <TableHead>Tendencia</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {evolucaoQuadroData.map((row, idx) => (
+                          <TableRow key={idx}>
+                            <TableCell className="font-medium">{row.mes}</TableCell>
+                            <TableCell className="text-center">{row.ativos}</TableCell>
+                            <TableCell className="text-center text-chart-1">+{row.admissoes}</TableCell>
+                            <TableCell className="text-center text-destructive">-{row.demissoes}</TableCell>
+                            <TableCell>
+                              {row.admissoes > row.demissoes ? (
+                                <TrendingUp className="w-4 h-4 text-chart-1" />
+                              ) : row.admissoes < row.demissoes ? (
+                                <TrendingDown className="w-4 h-4 text-destructive" />
+                              ) : (
+                                <Minus className="w-4 h-4 text-muted-foreground" />
+                              )}
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  )}
+                </CardContent>
+              </Card>
+
+              {/* Distribuicao por Setor */}
+              <Card>
+                <CardHeader className="pb-2">
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-base">Distribuicao por Setor</CardTitle>
+                    <div className="flex items-center gap-1">
+                      <Button
+                        variant={viewMode.setor === "grafico" ? "secondary" : "ghost"}
+                        size="sm"
+                        className="h-7 px-2"
+                        onClick={() => toggleView("setor")}
+                      >
+                        <BarChart3 className="w-4 h-4" />
+                      </Button>
+                      <Button
+                        variant={viewMode.setor === "tabela" ? "secondary" : "ghost"}
+                        size="sm"
+                        className="h-7 px-2"
+                        onClick={() => toggleView("setor")}
+                      >
+                        <TableIcon className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  {viewMode.setor === "grafico" ? (
+                    <ResponsiveContainer width="100%" height={200}>
+                      <PieChart>
+                        <Pie
+                          data={distribuicaoSetorData}
+                          cx="50%"
+                          cy="50%"
+                          innerRadius={50}
+                          outerRadius={80}
+                          paddingAngle={2}
+                          dataKey="value"
+                          label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                          labelLine={false}
+                        >
+                          {distribuicaoSetorData.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={entry.color} />
+                          ))}
+                        </Pie>
+                        <Tooltip />
+                      </PieChart>
+                    </ResponsiveContainer>
+                  ) : (
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Setor</TableHead>
+                          <TableHead className="text-center">Qtd</TableHead>
+                          <TableHead className="text-center">%</TableHead>
+                          <TableHead>Acoes</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {distribuicaoSetorData.map((row, idx) => (
+                          <TableRow key={idx}>
+                            <TableCell className="font-medium">
+                              <div className="flex items-center gap-2">
+                                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: row.color }} />
+                                {row.name}
+                              </div>
+                            </TableCell>
+                            <TableCell className="text-center">{row.value}</TableCell>
+                            <TableCell className="text-center">
+                              {((row.value / totalColaboradores) * 100).toFixed(0)}%
+                            </TableCell>
+                            <TableCell>
+                              <Button variant="ghost" size="sm" className="h-7 px-2">
+                                <Eye className="w-4 h-4" />
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  )}
+                </CardContent>
+              </Card>
+
+              {/* Horas Extras */}
+              <Card>
+                <CardHeader className="pb-2">
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-base">Horas Extras por Mes</CardTitle>
+                    <div className="flex items-center gap-1">
+                      <Button
+                        variant={viewMode.horas === "grafico" ? "secondary" : "ghost"}
+                        size="sm"
+                        className="h-7 px-2"
+                        onClick={() => toggleView("horas")}
+                      >
+                        <BarChart3 className="w-4 h-4" />
+                      </Button>
+                      <Button
+                        variant={viewMode.horas === "tabela" ? "secondary" : "ghost"}
+                        size="sm"
+                        className="h-7 px-2"
+                        onClick={() => toggleView("horas")}
+                      >
+                        <TableIcon className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  {viewMode.horas === "grafico" ? (
+                    <ResponsiveContainer width="100%" height={200}>
+                      <BarChart data={horasExtrasData}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                        <XAxis dataKey="mes" tick={{ fontSize: 12 }} stroke="hsl(var(--muted-foreground))" />
+                        <YAxis tick={{ fontSize: 12 }} stroke="hsl(var(--muted-foreground))" />
+                        <Tooltip content={<CustomTooltip />} />
+                        <Bar dataKey="horas" fill="hsl(var(--chart-3))" radius={[4, 4, 0, 0]} name="Horas" />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  ) : (
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Mes</TableHead>
+                          <TableHead className="text-center">Horas</TableHead>
+                          <TableHead>Status</TableHead>
+                          <TableHead>Acoes</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {horasExtrasData.map((row, idx) => (
+                          <TableRow key={idx}>
+                            <TableCell className="font-medium">{row.mes}</TableCell>
+                            <TableCell className="text-center font-mono">{row.horas}h</TableCell>
+                            <TableCell>
+                              <Badge
+                                variant={row.horas > 200 ? "destructive" : "outline"}
+                                className={row.horas > 200 ? "" : "text-primary"}
+                              >
+                                {row.horas > 200 ? "Alto" : "Normal"}
+                              </Badge>
+                            </TableCell>
+                            <TableCell>
+                              <Button variant="ghost" size="sm" className="h-7 px-2">
+                                <Eye className="w-4 h-4" />
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  )}
+                </CardContent>
+              </Card>
+
+              {/* Conformidade SST */}
+              <Card>
+                <CardHeader className="pb-2">
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-base">Conformidade SST</CardTitle>
+                    <div className="flex items-center gap-1">
+                      <Button
+                        variant={viewMode.conformidade === "grafico" ? "secondary" : "ghost"}
+                        size="sm"
+                        className="h-7 px-2"
+                        onClick={() => toggleView("conformidade")}
+                      >
+                        <BarChart3 className="w-4 h-4" />
+                      </Button>
+                      <Button
+                        variant={viewMode.conformidade === "tabela" ? "secondary" : "ghost"}
+                        size="sm"
+                        className="h-7 px-2"
+                        onClick={() => toggleView("conformidade")}
+                      >
+                        <TableIcon className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  {viewMode.conformidade === "grafico" ? (
+                    <ResponsiveContainer width="100%" height={200}>
+                      <BarChart data={conformidadeData} layout="vertical">
+                        <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                        <XAxis type="number" tick={{ fontSize: 12 }} stroke="hsl(var(--muted-foreground))" />
+                        <YAxis
+                          dataKey="categoria"
+                          type="category"
+                          tick={{ fontSize: 12 }}
+                          stroke="hsl(var(--muted-foreground))"
+                          width={80}
+                        />
+                        <Tooltip content={<CustomTooltip />} />
+                        <Bar dataKey="conformes" stackId="a" fill="hsl(var(--primary))" name="Conformes" />
+                        <Bar dataKey="pendentes" stackId="a" fill="hsl(var(--chart-4))" name="Pendentes" />
+                        <Bar dataKey="vencidos" stackId="a" fill="hsl(var(--destructive))" name="Vencidos" />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  ) : (
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Categoria</TableHead>
+                          <TableHead className="text-center">Conformes</TableHead>
+                          <TableHead className="text-center">Pendentes</TableHead>
+                          <TableHead className="text-center">Vencidos</TableHead>
+                          <TableHead>Acoes</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {conformidadeData.map((row, idx) => (
+                          <TableRow key={idx}>
+                            <TableCell className="font-medium">{row.categoria}</TableCell>
+                            <TableCell className="text-center text-primary">{row.conformes}</TableCell>
+                            <TableCell className="text-center text-chart-4">{row.pendentes}</TableCell>
+                            <TableCell className="text-center text-destructive">{row.vencidos}</TableCell>
+                            <TableCell>
+                              <Button variant="ghost" size="sm" className="h-7 px-2">
+                                <Eye className="w-4 h-4" />
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Alertas */}
+            {(asosPendentes > 0 || nrsPendentes > 0 || colaboradoresBloqueados > 0) && (
+              <Card className="border-destructive/30 bg-destructive/5">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-base flex items-center gap-2 text-destructive">
+                    <AlertTriangle className="w-5 h-5" />
+                    Alertas de Conformidade
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {asosPendentes > 0 && (
+                      <div className="flex items-center justify-between p-3 bg-background rounded-lg border">
+                        <div className="flex items-center gap-3">
+                          <HeartPulse className="w-5 h-5 text-destructive" />
+                          <div>
+                            <p className="font-medium">ASO Vencendo/Vencido</p>
+                            <p className="text-sm text-muted-foreground">{asosPendentes} colaborador(es)</p>
+                          </div>
+                        </div>
+                        <Button variant="outline" size="sm" onClick={() => setTab("exames")}>
+                          Ver <ChevronRight className="w-4 h-4 ml-1" />
+                        </Button>
+                      </div>
+                    )}
+                    {nrsPendentes > 0 && (
+                      <div className="flex items-center justify-between p-3 bg-background rounded-lg border">
+                        <div className="flex items-center gap-3">
+                          <GraduationCap className="w-5 h-5 text-chart-4" />
+                          <div>
+                            <p className="font-medium">NRs Vencendo/Vencido</p>
+                            <p className="text-sm text-muted-foreground">{nrsPendentes} treinamento(s)</p>
+                          </div>
+                        </div>
+                        <Button variant="outline" size="sm" onClick={() => setTab("treinamentos")}>
+                          Ver <ChevronRight className="w-4 h-4 ml-1" />
+                        </Button>
+                      </div>
+                    )}
+                    {colaboradoresBloqueados > 0 && (
+                      <div className="flex items-center justify-between p-3 bg-background rounded-lg border">
+                        <div className="flex items-center gap-3">
+                          <Ban className="w-5 h-5 text-destructive" />
+                          <div>
+                            <p className="font-medium">Colaboradores Bloqueados</p>
+                            <p className="text-sm text-muted-foreground">{colaboradoresBloqueados} pessoa(s)</p>
+                          </div>
+                        </div>
+                        <Button variant="outline" size="sm" onClick={() => setTab("colaboradores")}>
+                          Ver <ChevronRight className="w-4 h-4 ml-1" />
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+          </TabsContent>
+
+          {/* COLABORADORES */}
+          <TabsContent value="colaboradores" className="mt-4">
             <Card>
               <CardHeader>
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -279,10 +1143,18 @@ function RHContent() {
                         onChange={(e) => setSearchTerm(e.target.value)}
                       />
                     </div>
-                    <Button>
-                      <Plus className="w-4 h-4 mr-2" />
-                      Novo Colaborador
-                    </Button>
+                    <Select defaultValue="todos">
+                      <SelectTrigger className="w-32">
+                        <SelectValue placeholder="Status" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="todos">Todos</SelectItem>
+                        <SelectItem value="ativo">Ativos</SelectItem>
+                        <SelectItem value="ferias">Ferias</SelectItem>
+                        <SelectItem value="afastado">Afastados</SelectItem>
+                        <SelectItem value="bloqueado">Bloqueados</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
                 </div>
               </CardHeader>
@@ -293,53 +1165,214 @@ function RHContent() {
                       <TableHead>Colaborador</TableHead>
                       <TableHead>Funcao</TableHead>
                       <TableHead>Setor</TableHead>
-                      <TableHead>Turno</TableHead>
-                      <TableHead>Admissao</TableHead>
-                      <TableHead>Status</TableHead>
+                      <TableHead>Status RH</TableHead>
+                      <TableHead>Status SST</TableHead>
+                      <TableHead>ASO</TableHead>
+                      <TableHead>NRs</TableHead>
+                      <TableHead>Acoes</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {colaboradoresMock.map((col) => (
-                      <TableRow
-                        key={col.id}
-                        className="cursor-pointer hover:bg-muted/50"
-                        onClick={() => setSelectedColab(col)}
-                      >
-                        <TableCell>
-                          <div className="flex items-center gap-3">
-                            <Avatar className="h-8 w-8">
-                              <AvatarFallback className="bg-primary/10 text-primary text-xs">
-                                {col.nome
-                                  .split(" ")
-                                  .map((n) => n[0])
-                                  .slice(0, 2)
-                                  .join("")}
-                              </AvatarFallback>
-                            </Avatar>
-                            <div>
-                              <p className="font-medium">{col.nome}</p>
-                              <p className="text-xs text-muted-foreground font-mono">{col.id}</p>
+                    {colaboradoresMock
+                      .filter((c) => c.nome.toLowerCase().includes(searchTerm.toLowerCase()))
+                      .map((col) => (
+                        <TableRow key={col.id} className="cursor-pointer hover:bg-muted/50">
+                          <TableCell>
+                            <div className="flex items-center gap-3">
+                              <Avatar className="h-8 w-8">
+                                <AvatarFallback className="bg-primary/10 text-primary text-xs">
+                                  {col.nome
+                                    .split(" ")
+                                    .map((n) => n[0])
+                                    .slice(0, 2)
+                                    .join("")}
+                                </AvatarFallback>
+                              </Avatar>
+                              <div>
+                                <p className="font-medium">{col.nome}</p>
+                                <p className="text-xs text-muted-foreground font-mono">{col.id}</p>
+                              </div>
                             </div>
-                          </div>
-                        </TableCell>
-                        <TableCell>{col.funcao}</TableCell>
+                          </TableCell>
+                          <TableCell>{col.funcao}</TableCell>
+                          <TableCell>
+                            <Badge variant="outline">{col.setor}</Badge>
+                          </TableCell>
+                          <TableCell>
+                            {col.statusRH === "ativo" && (
+                              <Badge className="bg-primary/20 text-primary">
+                                <UserCheck className="w-3 h-3 mr-1" />
+                                Ativo
+                              </Badge>
+                            )}
+                            {col.statusRH === "ferias" && (
+                              <Badge variant="outline" className="text-chart-1">
+                                <Calendar className="w-3 h-3 mr-1" />
+                                Ferias
+                              </Badge>
+                            )}
+                            {col.statusRH === "afastado" && (
+                              <Badge variant="outline" className="text-chart-4">
+                                <UserX className="w-3 h-3 mr-1" />
+                                Afastado
+                              </Badge>
+                            )}
+                          </TableCell>
+                          <TableCell>
+                            {col.statusSST === "regular" && (
+                              <Badge className="bg-primary/20 text-primary">
+                                <CheckCircle2 className="w-3 h-3 mr-1" />
+                                Regular
+                              </Badge>
+                            )}
+                            {col.statusSST === "pendencia" && (
+                              <Badge variant="outline" className="text-chart-4">
+                                <AlertTriangle className="w-3 h-3 mr-1" />
+                                Pendencia
+                              </Badge>
+                            )}
+                            {col.statusSST === "bloqueado" && (
+                              <Badge variant="destructive">
+                                <Ban className="w-3 h-3 mr-1" />
+                                Bloqueado
+                              </Badge>
+                            )}
+                          </TableCell>
+                          <TableCell>
+                            {new Date(col.asoValidade) < new Date() ? (
+                              <Badge variant="destructive">Vencido</Badge>
+                            ) : new Date(col.asoValidade) < new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) ? (
+                              <Badge variant="outline" className="text-chart-4">
+                                Vencendo
+                              </Badge>
+                            ) : (
+                              <Badge variant="outline" className="text-primary">
+                                OK
+                              </Badge>
+                            )}
+                          </TableCell>
+                          <TableCell>
+                            {col.nrPendentes > 0 ? (
+                              <Badge variant="outline" className="text-destructive">
+                                {col.nrPendentes} pend.
+                              </Badge>
+                            ) : (
+                              <Badge variant="outline" className="text-primary">
+                                OK
+                              </Badge>
+                            )}
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex items-center gap-1">
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-7 w-7 p-0"
+                                onClick={() => setSelectedColab(col)}
+                              >
+                                <Eye className="w-4 h-4" />
+                              </Button>
+                              <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+                                <Edit className="w-4 h-4" />
+                              </Button>
+                              <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+                                <MoreHorizontal className="w-4 h-4" />
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* DOCUMENTOS */}
+          <TabsContent value="documentos" className="mt-4">
+            <Card>
+              <CardHeader>
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                  <div>
+                    <CardTitle className="text-base">Controle Documental</CardTitle>
+                    <CardDescription>Documentos dos colaboradores (RG, CPF, CNH, MOPP, etc.)</CardDescription>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Select defaultValue="todos">
+                      <SelectTrigger className="w-32">
+                        <SelectValue placeholder="Status" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="todos">Todos</SelectItem>
+                        <SelectItem value="valido">Validos</SelectItem>
+                        <SelectItem value="vencendo">Vencendo</SelectItem>
+                        <SelectItem value="vencido">Vencidos</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <Button size="sm">
+                      <Plus className="w-4 h-4 mr-2" />
+                      Novo Documento
+                    </Button>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Colaborador</TableHead>
+                      <TableHead>Tipo</TableHead>
+                      <TableHead>Validade</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Arquivo</TableHead>
+                      <TableHead>Acoes</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {documentosMock.map((doc) => (
+                      <TableRow key={doc.id}>
+                        <TableCell className="font-medium">{getColaboradorNome(doc.colaborador)}</TableCell>
                         <TableCell>
-                          <Badge variant="outline">{col.setor}</Badge>
+                          <Badge variant="secondary">{doc.tipo}</Badge>
                         </TableCell>
-                        <TableCell>{col.turno}</TableCell>
-                        <TableCell>{new Date(col.admissao).toLocaleDateString("pt-BR")}</TableCell>
                         <TableCell>
-                          {col.status === "ativo" ? (
+                          {doc.validade ? new Date(doc.validade).toLocaleDateString("pt-BR") : "N/A"}
+                        </TableCell>
+                        <TableCell>
+                          {doc.status === "valido" && (
                             <Badge className="bg-primary/20 text-primary">
-                              <UserCheck className="w-3 h-3 mr-1" />
-                              Ativo
-                            </Badge>
-                          ) : (
-                            <Badge variant="outline" className="text-chart-1">
-                              <Calendar className="w-3 h-3 mr-1" />
-                              Ferias
+                              <CheckCircle2 className="w-3 h-3 mr-1" />
+                              Valido
                             </Badge>
                           )}
+                          {doc.status === "vencendo" && (
+                            <Badge variant="outline" className="text-chart-4">
+                              <Hourglass className="w-3 h-3 mr-1" />
+                              Vencendo
+                            </Badge>
+                          )}
+                          {doc.status === "vencido" && (
+                            <Badge variant="destructive">
+                              <XCircle className="w-3 h-3 mr-1" />
+                              Vencido
+                            </Badge>
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          <span className="text-xs font-mono text-muted-foreground">{doc.arquivo}</span>
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-1">
+                            <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+                              <Eye className="w-4 h-4" />
+                            </Button>
+                            <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+                              <Download className="w-4 h-4" />
+                            </Button>
+                            <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+                              <RefreshCw className="w-4 h-4" />
+                            </Button>
+                          </div>
                         </TableCell>
                       </TableRow>
                     ))}
@@ -349,8 +1382,420 @@ function RHContent() {
             </Card>
           </TabsContent>
 
-          {/* Controle de Ponto */}
-          <TabsContent value="ponto">
+          {/* EXAMES/ASO */}
+          <TabsContent value="exames" className="mt-4">
+            <Card>
+              <CardHeader>
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                  <div>
+                    <CardTitle className="text-base">Exames Ocupacionais (ASO)</CardTitle>
+                    <CardDescription>Controle de exames admissionais, periodicos, demissionais</CardDescription>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Select defaultValue="todos">
+                      <SelectTrigger className="w-32">
+                        <SelectValue placeholder="Status" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="todos">Todos</SelectItem>
+                        <SelectItem value="valido">Validos</SelectItem>
+                        <SelectItem value="vencendo">Vencendo</SelectItem>
+                        <SelectItem value="vencido">Vencidos</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <Button size="sm">
+                      <Plus className="w-4 h-4 mr-2" />
+                      Novo Exame
+                    </Button>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Colaborador</TableHead>
+                      <TableHead>Tipo</TableHead>
+                      <TableHead>Data</TableHead>
+                      <TableHead>Validade</TableHead>
+                      <TableHead>Resultado</TableHead>
+                      <TableHead>Restricao</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Acoes</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {examesMock.map((exame) => (
+                      <TableRow key={exame.id}>
+                        <TableCell className="font-medium">{getColaboradorNome(exame.colaborador)}</TableCell>
+                        <TableCell>
+                          <Badge variant="secondary">{exame.tipo}</Badge>
+                        </TableCell>
+                        <TableCell>{new Date(exame.data).toLocaleDateString("pt-BR")}</TableCell>
+                        <TableCell>{new Date(exame.validade).toLocaleDateString("pt-BR")}</TableCell>
+                        <TableCell>
+                          {exame.resultado === "Apto" && <Badge className="bg-primary/20 text-primary">Apto</Badge>}
+                          {exame.resultado === "Inapto Temporario" && <Badge variant="destructive">Inapto Temp.</Badge>}
+                        </TableCell>
+                        <TableCell>{exame.restricao || <span className="text-muted-foreground">-</span>}</TableCell>
+                        <TableCell>
+                          {exame.status === "valido" && (
+                            <Badge className="bg-primary/20 text-primary">
+                              <CheckCircle2 className="w-3 h-3 mr-1" />
+                              Valido
+                            </Badge>
+                          )}
+                          {exame.status === "vencendo" && (
+                            <Badge variant="outline" className="text-chart-4">
+                              <Hourglass className="w-3 h-3 mr-1" />
+                              Vencendo
+                            </Badge>
+                          )}
+                          {exame.status === "vencido" && (
+                            <Badge variant="destructive">
+                              <XCircle className="w-3 h-3 mr-1" />
+                              Vencido
+                            </Badge>
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-1">
+                            <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+                              <Eye className="w-4 h-4" />
+                            </Button>
+                            <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+                              <RefreshCw className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* TREINAMENTOS/NRs */}
+          <TabsContent value="treinamentos" className="mt-4">
+            <Card>
+              <CardHeader>
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                  <div>
+                    <CardTitle className="text-base">Treinamentos e NRs</CardTitle>
+                    <CardDescription>
+                      Controle de treinamentos obrigatorios (NR-10, NR-11, NR-33, NR-35, etc.)
+                    </CardDescription>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Select defaultValue="todos">
+                      <SelectTrigger className="w-32">
+                        <SelectValue placeholder="Status" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="todos">Todos</SelectItem>
+                        <SelectItem value="valido">Validos</SelectItem>
+                        <SelectItem value="vencendo">Vencendo</SelectItem>
+                        <SelectItem value="vencido">Vencidos</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <Button size="sm">
+                      <Plus className="w-4 h-4 mr-2" />
+                      Novo Treinamento
+                    </Button>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Colaborador</TableHead>
+                      <TableHead>NR/Curso</TableHead>
+                      <TableHead>Descricao</TableHead>
+                      <TableHead>Carga Horaria</TableHead>
+                      <TableHead>Validade</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Acoes</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {treinamentosMock.map((tre) => (
+                      <TableRow key={tre.id}>
+                        <TableCell className="font-medium">{getColaboradorNome(tre.colaborador)}</TableCell>
+                        <TableCell>
+                          <Badge variant="secondary">{tre.nr}</Badge>
+                        </TableCell>
+                        <TableCell>{tre.descricao}</TableCell>
+                        <TableCell>{tre.cargaHoraria}h</TableCell>
+                        <TableCell>{new Date(tre.validade).toLocaleDateString("pt-BR")}</TableCell>
+                        <TableCell>
+                          {tre.status === "valido" && (
+                            <Badge className="bg-primary/20 text-primary">
+                              <CheckCircle2 className="w-3 h-3 mr-1" />
+                              Valido
+                            </Badge>
+                          )}
+                          {tre.status === "vencendo" && (
+                            <Badge variant="outline" className="text-chart-4">
+                              <Hourglass className="w-3 h-3 mr-1" />
+                              Vencendo
+                            </Badge>
+                          )}
+                          {tre.status === "vencido" && (
+                            <Badge variant="destructive">
+                              <XCircle className="w-3 h-3 mr-1" />
+                              Vencido
+                            </Badge>
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-1">
+                            <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+                              <Eye className="w-4 h-4" />
+                            </Button>
+                            <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+                              <Download className="w-4 h-4" />
+                            </Button>
+                            <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+                              <RefreshCw className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* FERIAS */}
+          <TabsContent value="ferias" className="mt-4">
+            <Card>
+              <CardHeader>
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                  <div>
+                    <CardTitle className="text-base">Gestao de Ferias</CardTitle>
+                    <CardDescription>Periodos aquisitivos, saldos e programacao de ferias</CardDescription>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Select defaultValue="todos">
+                      <SelectTrigger className="w-32">
+                        <SelectValue placeholder="Status" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="todos">Todos</SelectItem>
+                        <SelectItem value="pendente">Pendentes</SelectItem>
+                        <SelectItem value="programada">Programadas</SelectItem>
+                        <SelectItem value="em_gozo">Em Gozo</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <Button size="sm">
+                      <Plus className="w-4 h-4 mr-2" />
+                      Programar Ferias
+                    </Button>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Colaborador</TableHead>
+                      <TableHead>Periodo Aquisitivo</TableHead>
+                      <TableHead className="text-center">Saldo (dias)</TableHead>
+                      <TableHead>Inicio</TableHead>
+                      <TableHead>Fim</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Acoes</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {feriasMock.map((fer) => (
+                      <TableRow key={fer.id}>
+                        <TableCell className="font-medium">{getColaboradorNome(fer.colaborador)}</TableCell>
+                        <TableCell className="text-xs">{fer.periodoAquisitivo}</TableCell>
+                        <TableCell className="text-center font-mono">{fer.saldoDias}</TableCell>
+                        <TableCell>
+                          {fer.dataInicio ? new Date(fer.dataInicio).toLocaleDateString("pt-BR") : "-"}
+                        </TableCell>
+                        <TableCell>{fer.dataFim ? new Date(fer.dataFim).toLocaleDateString("pt-BR") : "-"}</TableCell>
+                        <TableCell>
+                          {fer.status === "pendente" && (
+                            <Badge variant="outline">
+                              <Hourglass className="w-3 h-3 mr-1" />
+                              Pendente
+                            </Badge>
+                          )}
+                          {fer.status === "programada" && (
+                            <Badge className="bg-chart-1/20 text-chart-1">
+                              <Calendar className="w-3 h-3 mr-1" />
+                              Programada
+                            </Badge>
+                          )}
+                          {fer.status === "em_gozo" && (
+                            <Badge className="bg-primary/20 text-primary">
+                              <CheckCircle2 className="w-3 h-3 mr-1" />
+                              Em Gozo
+                            </Badge>
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-1">
+                            <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+                              <Eye className="w-4 h-4" />
+                            </Button>
+                            <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+                              <Edit className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* AFASTAMENTOS */}
+          <TabsContent value="afastamentos" className="mt-4">
+            <Card>
+              <CardHeader>
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                  <div>
+                    <CardTitle className="text-base">Afastamentos</CardTitle>
+                    <CardDescription>Ferias, licencas, atestados e afastamentos INSS</CardDescription>
+                  </div>
+                  <Button size="sm">
+                    <Plus className="w-4 h-4 mr-2" />
+                    Registrar Afastamento
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Colaborador</TableHead>
+                      <TableHead>Tipo</TableHead>
+                      <TableHead>Inicio</TableHead>
+                      <TableHead>Fim</TableHead>
+                      <TableHead className="text-center">Dias</TableHead>
+                      <TableHead>CID</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Acoes</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {afastamentosMock.map((af) => (
+                      <TableRow key={af.id}>
+                        <TableCell className="font-medium">{getColaboradorNome(af.colaborador)}</TableCell>
+                        <TableCell>
+                          <Badge variant="secondary">{af.tipo}</Badge>
+                        </TableCell>
+                        <TableCell>{new Date(af.dataInicio).toLocaleDateString("pt-BR")}</TableCell>
+                        <TableCell>{new Date(af.dataFim).toLocaleDateString("pt-BR")}</TableCell>
+                        <TableCell className="text-center font-mono">{af.dias}</TableCell>
+                        <TableCell>{af.cid || <span className="text-muted-foreground">-</span>}</TableCell>
+                        <TableCell>
+                          <Badge className="bg-chart-4/20 text-chart-4">
+                            <Clock className="w-3 h-3 mr-1" />
+                            Ativo
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-1">
+                            <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+                              <Eye className="w-4 h-4" />
+                            </Button>
+                            <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+                              <Edit className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* OCORRENCIAS */}
+          <TabsContent value="ocorrencias" className="mt-4">
+            <Card>
+              <CardHeader>
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                  <div>
+                    <CardTitle className="text-base">Ocorrencias</CardTitle>
+                    <CardDescription>Advertencias, suspensoes e incidentes</CardDescription>
+                  </div>
+                  <Button size="sm">
+                    <Plus className="w-4 h-4 mr-2" />
+                    Nova Ocorrencia
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Colaborador</TableHead>
+                      <TableHead>Tipo</TableHead>
+                      <TableHead>Data</TableHead>
+                      <TableHead>Descricao</TableHead>
+                      <TableHead>Ciencia</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Acoes</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {ocorrenciasMock.map((oco) => (
+                      <TableRow key={oco.id}>
+                        <TableCell className="font-medium">{getColaboradorNome(oco.colaborador)}</TableCell>
+                        <TableCell>
+                          <Badge variant="destructive">{oco.tipo}</Badge>
+                        </TableCell>
+                        <TableCell>{new Date(oco.data).toLocaleDateString("pt-BR")}</TableCell>
+                        <TableCell>{oco.descricao}</TableCell>
+                        <TableCell>
+                          {oco.ciencia ? (
+                            <Badge className="bg-primary/20 text-primary">
+                              <CheckCircle2 className="w-3 h-3 mr-1" />
+                              Sim
+                            </Badge>
+                          ) : (
+                            <Badge variant="outline">
+                              <AlertCircle className="w-3 h-3 mr-1" />
+                              Pendente
+                            </Badge>
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant="secondary">Registrada</Badge>
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-1">
+                            <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+                              <Eye className="w-4 h-4" />
+                            </Button>
+                            <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+                              <Download className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* PONTO */}
+          <TabsContent value="ponto" className="mt-4">
             <Card>
               <CardHeader>
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -358,10 +1803,20 @@ function RHContent() {
                     <CardTitle className="text-base">Controle de Ponto</CardTitle>
                     <CardDescription>Registros de entrada e saida do dia</CardDescription>
                   </div>
-                  <Button variant="outline">
-                    <FileText className="w-4 h-4 mr-2" />
-                    Exportar Espelho
-                  </Button>
+                  <div className="flex items-center gap-2">
+                    <Button variant="outline" size="sm">
+                      <Filter className="w-4 h-4 mr-2" />
+                      Filtrar
+                    </Button>
+                    <Button variant="outline" size="sm">
+                      <FileText className="w-4 h-4 mr-2" />
+                      Espelho de Ponto
+                    </Button>
+                    <Button size="sm">
+                      <ClipboardCheck className="w-4 h-4 mr-2" />
+                      Fechar Periodo
+                    </Button>
+                  </div>
                 </div>
               </CardHeader>
               <CardContent>
@@ -375,6 +1830,7 @@ function RHContent() {
                       <TableHead className="text-center">Trabalhadas</TableHead>
                       <TableHead className="text-center">Extras</TableHead>
                       <TableHead>Status</TableHead>
+                      <TableHead>Acoes</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -389,7 +1845,7 @@ function RHContent() {
                         <TableCell className="text-center font-mono">{ponto.horasTrabalhadas}h</TableCell>
                         <TableCell className="text-center">
                           {ponto.horasExtras > 0 ? (
-                            <Badge className="bg-chart-4/20 text-chart-4">{ponto.horasExtras}h</Badge>
+                            <Badge className="bg-chart-3/20 text-chart-3">{ponto.horasExtras}h</Badge>
                           ) : (
                             <span className="text-muted-foreground">-</span>
                           )}
@@ -407,6 +1863,16 @@ function RHContent() {
                             </Badge>
                           )}
                         </TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-1">
+                            <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+                              <Eye className="w-4 h-4" />
+                            </Button>
+                            <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+                              <Edit className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -415,18 +1881,18 @@ function RHContent() {
             </Card>
           </TabsContent>
 
-          {/* Afastamentos */}
-          <TabsContent value="afastamentos">
+          {/* BANCO DE HORAS */}
+          <TabsContent value="banco-horas" className="mt-4">
             <Card>
               <CardHeader>
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                   <div>
-                    <CardTitle className="text-base">Afastamentos</CardTitle>
-                    <CardDescription>Ferias, licencas e atestados</CardDescription>
+                    <CardTitle className="text-base">Banco de Horas</CardTitle>
+                    <CardDescription>Saldos, creditos e debitos de horas</CardDescription>
                   </div>
-                  <Button>
-                    <Plus className="w-4 h-4 mr-2" />
-                    Registrar Afastamento
+                  <Button variant="outline" size="sm">
+                    <Download className="w-4 h-4 mr-2" />
+                    Exportar
                   </Button>
                 </div>
               </CardHeader>
@@ -435,33 +1901,142 @@ function RHContent() {
                   <TableHeader>
                     <TableRow>
                       <TableHead>Colaborador</TableHead>
-                      <TableHead>Tipo</TableHead>
-                      <TableHead>Inicio</TableHead>
-                      <TableHead>Fim</TableHead>
-                      <TableHead className="text-center">Dias</TableHead>
+                      <TableHead className="text-center">Creditos</TableHead>
+                      <TableHead className="text-center">Debitos</TableHead>
+                      <TableHead className="text-center">Saldo</TableHead>
                       <TableHead>Status</TableHead>
+                      <TableHead>Acoes</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {afastamentosMock.map((af, idx) => (
+                    {bancoHorasMock.map((bh, idx) => (
                       <TableRow key={idx}>
-                        <TableCell className="font-medium">{af.colaborador}</TableCell>
-                        <TableCell>
-                          <Badge variant="secondary" className="capitalize">
-                            {af.tipo}
-                          </Badge>
+                        <TableCell className="font-medium">{getColaboradorNome(bh.colaborador)}</TableCell>
+                        <TableCell className="text-center font-mono text-chart-1">+{bh.creditos}h</TableCell>
+                        <TableCell className="text-center font-mono text-destructive">-{bh.debitos}h</TableCell>
+                        <TableCell className="text-center">
+                          <span
+                            className={`font-mono font-bold ${bh.saldo >= 0 ? "text-primary" : "text-destructive"}`}
+                          >
+                            {bh.saldo >= 0 ? "+" : ""}
+                            {bh.saldo}h
+                          </span>
                         </TableCell>
-                        <TableCell>{new Date(af.dataInicio).toLocaleDateString("pt-BR")}</TableCell>
-                        <TableCell>{new Date(af.dataFim).toLocaleDateString("pt-BR")}</TableCell>
-                        <TableCell className="text-center font-mono">{af.dias}</TableCell>
                         <TableCell>
-                          <Badge variant="outline" className="text-chart-1">
-                            <Calendar className="w-3 h-3 mr-1" />
-                            Em Gozo
-                          </Badge>
+                          {bh.saldo >= 0 ? (
+                            <Badge className="bg-primary/20 text-primary">Credito</Badge>
+                          ) : (
+                            <Badge variant="destructive">Debito</Badge>
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-1">
+                            <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+                              <Eye className="w-4 h-4" />
+                            </Button>
+                            <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+                              <Edit className="w-4 h-4" />
+                            </Button>
+                          </div>
                         </TableCell>
                       </TableRow>
                     ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* CONFORMIDADE */}
+          <TabsContent value="conformidade" className="mt-4">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">Conformidade RH + SST</CardTitle>
+                <CardDescription>Visao unificada de habilitacao operacional dos colaboradores</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Colaborador</TableHead>
+                      <TableHead>Funcao</TableHead>
+                      <TableHead>ASO</TableHead>
+                      <TableHead>NRs</TableHead>
+                      <TableHead>Documentos</TableHead>
+                      <TableHead>Status Geral</TableHead>
+                      <TableHead>Acoes</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {colaboradoresMock.map((col) => {
+                      const asoOk = new Date(col.asoValidade) > new Date()
+                      const nrsOk = col.nrPendentes === 0
+                      const docsOk = col.docsPendentes === 0
+                      const geralOk = asoOk && nrsOk && docsOk
+                      return (
+                        <TableRow key={col.id}>
+                          <TableCell className="font-medium">{col.nome}</TableCell>
+                          <TableCell>{col.funcao}</TableCell>
+                          <TableCell>
+                            {asoOk ? (
+                              <Badge className="bg-primary/20 text-primary">
+                                <CheckCircle2 className="w-3 h-3 mr-1" />
+                                OK
+                              </Badge>
+                            ) : (
+                              <Badge variant="destructive">
+                                <XCircle className="w-3 h-3 mr-1" />
+                                Pendente
+                              </Badge>
+                            )}
+                          </TableCell>
+                          <TableCell>
+                            {nrsOk ? (
+                              <Badge className="bg-primary/20 text-primary">
+                                <CheckCircle2 className="w-3 h-3 mr-1" />
+                                OK
+                              </Badge>
+                            ) : (
+                              <Badge variant="destructive">
+                                <XCircle className="w-3 h-3 mr-1" />
+                                {col.nrPendentes} pend.
+                              </Badge>
+                            )}
+                          </TableCell>
+                          <TableCell>
+                            {docsOk ? (
+                              <Badge className="bg-primary/20 text-primary">
+                                <CheckCircle2 className="w-3 h-3 mr-1" />
+                                OK
+                              </Badge>
+                            ) : (
+                              <Badge variant="destructive">
+                                <XCircle className="w-3 h-3 mr-1" />
+                                {col.docsPendentes} pend.
+                              </Badge>
+                            )}
+                          </TableCell>
+                          <TableCell>
+                            {geralOk ? (
+                              <Badge className="bg-primary/20 text-primary">
+                                <Shield className="w-3 h-3 mr-1" />
+                                Habilitado
+                              </Badge>
+                            ) : (
+                              <Badge variant="destructive">
+                                <Ban className="w-3 h-3 mr-1" />
+                                Bloqueado
+                              </Badge>
+                            )}
+                          </TableCell>
+                          <TableCell>
+                            <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+                              <Eye className="w-4 h-4" />
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      )
+                    })}
                   </TableBody>
                 </Table>
               </CardContent>
@@ -472,7 +2047,7 @@ function RHContent() {
 
       {/* Painel lateral para colaborador selecionado */}
       <Sheet open={!!selectedColab} onOpenChange={() => setSelectedColab(null)}>
-        <SheetContent className="w-[400px] sm:w-[500px] overflow-auto">
+        <SheetContent className="w-[400px] sm:w-[540px] overflow-auto">
           {selectedColab && (
             <>
               <SheetHeader>
@@ -502,15 +2077,35 @@ function RHContent() {
                     </Badge>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Status</p>
+                    <p className="text-sm text-muted-foreground">Status RH</p>
                     <div className="mt-1">
-                      {selectedColab.status === "ativo" ? (
+                      {selectedColab.statusRH === "ativo" && (
                         <Badge className="bg-primary/20 text-primary">Ativo</Badge>
-                      ) : (
+                      )}
+                      {selectedColab.statusRH === "ferias" && (
                         <Badge variant="outline" className="text-chart-1">
                           Ferias
                         </Badge>
                       )}
+                      {selectedColab.statusRH === "afastado" && (
+                        <Badge variant="outline" className="text-chart-4">
+                          Afastado
+                        </Badge>
+                      )}
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Status SST</p>
+                    <div className="mt-1">
+                      {selectedColab.statusSST === "regular" && (
+                        <Badge className="bg-primary/20 text-primary">Regular</Badge>
+                      )}
+                      {selectedColab.statusSST === "pendencia" && (
+                        <Badge variant="outline" className="text-chart-4">
+                          Pendencia
+                        </Badge>
+                      )}
+                      {selectedColab.statusSST === "bloqueado" && <Badge variant="destructive">Bloqueado</Badge>}
                     </div>
                   </div>
                   <div>
@@ -521,6 +2116,12 @@ function RHContent() {
                     <p className="text-sm text-muted-foreground">Admissao</p>
                     <p className="text-sm font-medium mt-1">
                       {new Date(selectedColab.admissao).toLocaleDateString("pt-BR")}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">ASO Validade</p>
+                    <p className="text-sm font-medium mt-1">
+                      {new Date(selectedColab.asoValidade).toLocaleDateString("pt-BR")}
                     </p>
                   </div>
                 </div>

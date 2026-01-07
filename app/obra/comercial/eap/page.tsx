@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { AppLayout } from "@/components/layout/app-layout"
 import { Header } from "@/components/layout/header"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -183,7 +182,7 @@ export default function EAPPage() {
   const valorTotalEAP = eapMock.reduce((acc, item) => acc + item.valorTotal, 0)
 
   return (
-    <AppLayout>
+    <>
       <Header
         title="EAP - Estrutura Analítica do Projeto"
         description="A EAP é criada no Módulo Obra pelo Comercial, com visão dual: Comercial e Operacional"
@@ -381,6 +380,6 @@ export default function EAPPage() {
           </CardContent>
         </Card>
       </div>
-    </AppLayout>
+    </>
   )
 }

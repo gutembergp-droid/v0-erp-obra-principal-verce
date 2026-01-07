@@ -1,6 +1,5 @@
 "use client"
 
-import { AppLayout } from "@/components/layout/app-layout"
 import { Header } from "@/components/layout/header"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -65,16 +64,12 @@ function formatCurrency(value: number) {
   }).format(value)
 }
 
-function formatNumber(value: number) {
-  return new Intl.NumberFormat("pt-BR").format(value)
-}
-
 export default function ComparativoPage() {
   const totalDiferencaValor = comparativoMock.reduce((acc, item) => acc + item.diferencaValor, 0)
   const itensDivergentes = comparativoMock.filter((i) => i.diferencaQtd !== 0).length
 
   return (
-    <AppLayout>
+    <>
       <Header
         title="Comparativo MP x MC"
         description="Análise de divergências entre Produção e Cliente - ACESSO RESTRITO"
@@ -262,6 +257,6 @@ export default function ComparativoPage() {
           </CardContent>
         </Card>
       </div>
-    </AppLayout>
+    </>
   )
 }

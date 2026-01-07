@@ -73,14 +73,21 @@ import {
 const CircularProgress = ({
   value,
   size = 36,
-  strokeWidth = 3,
+  strokeWidth = 4,
   className = "",
 }: { value: number; size?: number; strokeWidth?: number; className?: string }) => {
   const radius = (size - strokeWidth) / 2
   const circumference = radius * 2 * Math.PI
   const offset = circumference - (value / 100) * circumference
 
-  const getColor = () => {
+  const getColorClass = () => {
+    if (value >= 80) return "stroke-success"
+    if (value >= 50) return "stroke-info"
+    if (value >= 30) return "stroke-warning"
+    return "stroke-destructive"
+  }
+
+  const getBgClass = () => {
     if (value >= 80) return "text-success"
     if (value >= 50) return "text-info"
     if (value >= 30) return "text-warning"
@@ -92,16 +99,15 @@ const CircularProgress = ({
       className={`relative inline-flex items-center justify-center ${className}`}
       style={{ width: size, height: size }}
     >
-      <svg width={size} height={size} className="transform -rotate-90">
+      <svg width={size} height={size} className="transform -rotate-90 drop-shadow-sm">
         {/* Background circle */}
         <circle
           cx={size / 2}
           cy={size / 2}
           r={radius}
           fill="none"
-          stroke="currentColor"
           strokeWidth={strokeWidth}
-          className="text-muted/30"
+          className="stroke-muted/20"
         />
         {/* Progress circle */}
         <circle
@@ -109,15 +115,16 @@ const CircularProgress = ({
           cy={size / 2}
           r={radius}
           fill="none"
-          stroke="currentColor"
           strokeWidth={strokeWidth}
           strokeDasharray={circumference}
           strokeDashoffset={offset}
           strokeLinecap="round"
-          className={getColor()}
+          className={`${getColorClass()} transition-all duration-500 ease-out`}
         />
       </svg>
-      <span className="absolute text-[9px] font-bold">{value}%</span>
+      <div className="absolute flex flex-col items-center justify-center">
+        <span className={`text-sm font-bold ${getBgClass()}`}>{value}%</span>
+      </div>
     </div>
   )
 }
@@ -936,70 +943,63 @@ export default function AgendaGerencialPage() {
           </div>
 
           <ScrollArea className="flex-1">
-            <div className="space-y-1 pr-2">
+            <div className="grid grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-2 pr-2">
               {atividadesExecucao.map((atividade) => (
-                <div
+                <Card
                   key={atividade.id}
                   onClick={() => setSelectedAtividade(atividade.id === selectedAtividade?.id ? null : atividade)}
-                  className={`cursor-pointer transition-all rounded-lg border p-2 hover:border-primary/50 ${
-                    selectedAtividade?.id === atividade.id
-                      ? "ring-2 ring-primary border-primary bg-primary/5"
-                      : "bg-card"
-                  } ${atividade.ritmo === "atrasado" ? "border-destructive/30 bg-destructive/5" : "border-border/50"}`}
+                  className={`cursor-pointer transition-all hover:border-primary/50 hover:shadow-lg hover:scale-[1.02] ${
+                    selectedAtividade?.id === atividade.id ? "ring-2 ring-primary border-primary bg-primary/5" : ""
+                  } ${atividade.ritmo === "atrasado" ? "border-destructive/40" : ""} ${atividade.ritmo === "paralisado" ? "border-warning/40" : ""}`}
                 >
-                  <div className="flex items-center gap-3">
-                    {/* Progresso Circular */}
-                    <CircularProgress value={atividade.progresso} size={40} strokeWidth={4} />
+                  <CardContent className="p-2">
+                    {/* Grafico Circular em Destaque Total */}
+                    <div className="flex justify-center py-2">
+                      <CircularProgress value={atividade.progresso} size={72} strokeWidth={6} />
+                    </div>
 
-                    {/* Nome e Frente */}
-                    <div className="flex items-center gap-2 min-w-[180px]">
-                      <span className="font-medium text-sm truncate">{atividade.nome}</span>
-                      <Badge variant="outline" className="text-[9px] px-1.5 py-0 h-4 flex-shrink-0">
-                        {atividade.frente}
+                    {/* Nome da Atividade - Compacto */}
+                    <h4 className="text-xs font-semibold text-center truncate mb-1.5" title={atividade.nome}>
+                      {atividade.nome}
+                    </h4>
+
+                    {/* Status Badge Centralizado */}
+                    <div className="flex justify-center mb-1.5">
+                      <Badge
+                        variant="outline"
+                        className={`text-[8px] px-1.5 py-0 h-4 ${
+                          atividade.ritmo === "adiantado"
+                            ? "text-success border-success/50 bg-success/10"
+                            : atividade.ritmo === "atrasado"
+                              ? "text-destructive border-destructive/50 bg-destructive/10"
+                              : atividade.ritmo === "paralisado"
+                                ? "text-warning border-warning/50 bg-warning/10"
+                                : "text-info border-info/50 bg-info/10"
+                        }`}
+                      >
+                        {atividade.ritmo === "adiantado"
+                          ? "Adiantado"
+                          : atividade.ritmo === "atrasado"
+                            ? "Atrasado"
+                            : atividade.ritmo === "paralisado"
+                              ? "Paralisado"
+                              : "No Prazo"}
                       </Badge>
                     </div>
 
-                    {/* Efetivo */}
-                    <div className="flex items-center gap-1 text-[10px] text-muted-foreground min-w-[70px]">
-                      <HardHat className="h-3 w-3" />
-                      <span>{atividade.efetivo} colab</span>
+                    {/* Info Compacta - Icones + Dados */}
+                    <div className="flex items-center justify-center gap-3 text-[9px] text-muted-foreground border-t pt-1.5">
+                      <div className="flex items-center gap-0.5" title="Colaboradores">
+                        <HardHat className="h-2.5 w-2.5" />
+                        <span className="font-medium">{atividade.efetivo}</span>
+                      </div>
+                      <div className="flex items-center gap-0.5" title={`Termino: ${atividade.previsaoTermino}`}>
+                        <Clock className="h-2.5 w-2.5" />
+                        <span className="font-medium">{atividade.diasRestantes}d</span>
+                      </div>
                     </div>
-
-                    {/* Previsao Termino */}
-                    <div className="flex items-center gap-1 text-[10px] text-muted-foreground min-w-[130px]">
-                      <Clock className="h-3 w-3" />
-                      <span>{atividade.previsaoTermino}</span>
-                      <span className="text-muted-foreground/70">({atividade.diasRestantes}d)</span>
-                    </div>
-
-                    {/* Status */}
-                    <Badge
-                      variant="outline"
-                      className={`text-[9px] px-2 py-0 h-5 flex-shrink-0 ${
-                        atividade.ritmo === "adiantado"
-                          ? "text-success border-success/30 bg-success/10"
-                          : atividade.ritmo === "atrasado"
-                            ? "text-destructive border-destructive/30 bg-destructive/10"
-                            : atividade.ritmo === "paralisado"
-                              ? "text-warning border-warning/30 bg-warning/10"
-                              : "text-info border-info/30 bg-info/10"
-                      }`}
-                    >
-                      {atividade.ritmo === "adiantado"
-                        ? "No Prazo"
-                        : atividade.ritmo === "atrasado"
-                          ? "Atrasada"
-                          : atividade.ritmo === "paralisado"
-                            ? "Paralisada"
-                            : "Normal"}
-                    </Badge>
-
-                    {/* Responsavel */}
-                    <span className="text-[10px] text-muted-foreground truncate min-w-[80px] text-right">
-                      {atividade.responsavel}
-                    </span>
-                  </div>
-                </div>
+                  </CardContent>
+                </Card>
               ))}
             </div>
           </ScrollArea>

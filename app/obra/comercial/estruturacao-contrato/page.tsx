@@ -21,7 +21,6 @@ import {
   Building2,
 } from "lucide-react"
 import { useRouter, usePathname } from "next/navigation"
-import { AppLayout } from "@/components/layout/app-layout"
 
 // Dados mockados
 const dadosContrato = {
@@ -594,10 +593,8 @@ function EstruturacaoContratoContent() {
 
 export default function EstruturacaoContratoPage() {
   return (
-    <AppLayout>
-      <Suspense fallback={null}>
-        <EstruturacaoContratoContent />
-      </Suspense>
-    </AppLayout>
+    <Suspense fallback={null}>
+      <EstruturacaoContratoContent />
+    </Suspense>
   )
 }

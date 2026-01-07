@@ -1,6 +1,5 @@
 "use client"
 
-import { AppLayout } from "@/components/layout/app-layout"
 import { Header } from "@/components/layout/header"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -61,7 +60,7 @@ export default function BaselinePage() {
   const baselinePendente = baselinesMock.find((b) => b.status === "proposta")
 
   return (
-    <AppLayout>
+    <>
       <Header
         title="Baseline Comercial"
         description="A obra propõe, o corporativo homologa. Verdade econômica oficial da obra."
@@ -266,6 +265,6 @@ export default function BaselinePage() {
           </Button>
         </div>
       </div>
-    </AppLayout>
+    </>
   )
 }
