@@ -119,7 +119,7 @@ interface AtividadeExecucao {
   frente: string
   progresso: number
   efetivo: number
-  ritmo: "adiantado" | "normal" | "atrasado"
+  ritmo: "adiantado" | "normal" | "atrasado" | "paralisado"
   previsaoTermino: string
   diasRestantes: number
   responsavel: string
@@ -884,70 +884,77 @@ export default function AgendaGerencialPage() {
           </div>
 
           <ScrollArea className="flex-1">
-            <div className="space-y-2 pr-2">
+            <div className="space-y-1 pr-2">
               {atividadesExecucao.map((atividade) => (
-                <Card
+                <div
                   key={atividade.id}
                   onClick={() => setSelectedAtividade(atividade.id === selectedAtividade?.id ? null : atividade)}
-                  className={`cursor-pointer transition-all hover:border-primary/50 ${
-                    selectedAtividade?.id === atividade.id ? "ring-2 ring-primary border-primary" : ""
-                  } ${atividade.ritmo === "atrasado" ? "border-destructive/30 bg-destructive/5" : ""}`}
+                  className={`cursor-pointer transition-all rounded-lg border p-2 hover:border-primary/50 ${
+                    selectedAtividade?.id === atividade.id
+                      ? "ring-2 ring-primary border-primary bg-primary/5"
+                      : "bg-card"
+                  } ${atividade.ritmo === "atrasado" ? "border-destructive/30 bg-destructive/5" : "border-border/50"}`}
                 >
-                  <CardContent className="p-3">
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center gap-2">
-                        <span className="font-medium text-sm">{atividade.nome}</span>
-                        <Badge variant="outline" className="text-[10px]">
-                          {atividade.frente}
-                        </Badge>
-                      </div>
-                      <Badge
-                        variant="outline"
-                        className={`text-[10px] ${
-                          atividade.ritmo === "adiantado"
-                            ? "text-success border-success/30 bg-success/10"
-                            : atividade.ritmo === "atrasado"
-                              ? "text-destructive border-destructive/30 bg-destructive/10"
-                              : "text-info border-info/30 bg-info/10"
-                        }`}
-                      >
-                        {atividade.ritmo === "adiantado"
-                          ? "Adiantado"
-                          : atividade.ritmo === "atrasado"
-                            ? "Atrasado"
-                            : "Normal"}
+                  {/* Linha 1: Nome, Frente, Progresso, Status */}
+                  <div className="flex items-center gap-3">
+                    {/* Nome e Frente */}
+                    <div className="flex items-center gap-2 min-w-[200px]">
+                      <span className="font-medium text-sm truncate">{atividade.nome}</span>
+                      <Badge variant="outline" className="text-[9px] px-1.5 py-0 h-4 flex-shrink-0">
+                        {atividade.frente}
                       </Badge>
                     </div>
 
-                    <div className="flex items-center gap-4 mb-2">
-                      <div className="flex-1">
-                        <div className="flex items-center justify-between mb-1">
-                          <span className="text-[10px] text-muted-foreground">Progresso</span>
-                          <span className="text-xs font-medium">{atividade.progresso}%</span>
-                        </div>
-                        <Progress
-                          value={atividade.progresso}
-                          className={`h-2 ${atividade.ritmo === "atrasado" ? "[&>div]:bg-destructive" : ""}`}
-                        />
-                      </div>
+                    {/* Barra de Progresso */}
+                    <div className="flex-1 flex items-center gap-2 min-w-[150px]">
+                      <Progress
+                        value={atividade.progresso}
+                        className={`h-1.5 flex-1 ${atividade.ritmo === "atrasado" ? "[&>div]:bg-destructive" : ""}`}
+                      />
+                      <span className="text-xs font-semibold w-9 text-right">{atividade.progresso}%</span>
                     </div>
 
-                    <div className="flex items-center justify-between text-[10px] text-muted-foreground">
-                      <div className="flex items-center gap-3">
-                        <span className="flex items-center gap-1">
-                          <HardHat className="h-3 w-3" />
-                          {atividade.efetivo} colaboradores
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Clock className="h-3 w-3" />
-                          Termino: {atividade.previsaoTermino}
-                        </span>
-                        <span>({atividade.diasRestantes} dias)</span>
-                      </div>
-                      <span>{atividade.responsavel}</span>
+                    {/* Efetivo */}
+                    <div className="flex items-center gap-1 text-[10px] text-muted-foreground min-w-[80px]">
+                      <HardHat className="h-3 w-3" />
+                      <span>{atividade.efetivo}</span>
                     </div>
-                  </CardContent>
-                </Card>
+
+                    {/* Previsao Termino */}
+                    <div className="flex items-center gap-1 text-[10px] text-muted-foreground min-w-[130px]">
+                      <Clock className="h-3 w-3" />
+                      <span>{atividade.previsaoTermino}</span>
+                      <span className="text-muted-foreground/70">({atividade.diasRestantes}d)</span>
+                    </div>
+
+                    {/* Status */}
+                    <Badge
+                      variant="outline"
+                      className={`text-[9px] px-2 py-0 h-5 flex-shrink-0 ${
+                        atividade.ritmo === "adiantado"
+                          ? "text-success border-success/30 bg-success/10"
+                          : atividade.ritmo === "atrasado"
+                            ? "text-destructive border-destructive/30 bg-destructive/10"
+                            : atividade.ritmo === "paralisado"
+                              ? "text-warning border-warning/30 bg-warning/10"
+                              : "text-info border-info/30 bg-info/10"
+                      }`}
+                    >
+                      {atividade.ritmo === "adiantado"
+                        ? "No Prazo"
+                        : atividade.ritmo === "atrasado"
+                          ? "Atrasada"
+                          : atividade.ritmo === "paralisado"
+                            ? "Paralisada"
+                            : "Normal"}
+                    </Badge>
+
+                    {/* Responsavel */}
+                    <span className="text-[10px] text-muted-foreground truncate min-w-[80px] text-right">
+                      {atividade.responsavel}
+                    </span>
+                  </div>
+                </div>
               ))}
             </div>
           </ScrollArea>
@@ -1038,7 +1045,7 @@ export default function AgendaGerencialPage() {
                     <Button
                       variant="outline"
                       size="sm"
-                      className="h-8 text-xs justify-start text-destructive hover:text-destructive bg-transparent"
+                      className="h-8 text-xs justify-start text-destructive bg-transparent"
                       onClick={() => setShowNCDialog(true)}
                     >
                       <AlertTriangle className="h-3 w-3 mr-1.5" />
@@ -2048,7 +2055,7 @@ export default function AgendaGerencialPage() {
                       <div className="h-[200px]">
                         <ResponsiveContainer width="100%" height="100%">
                           <BarChart data={dadosPorResponsavel} layout="vertical">
-                            <XAxis type="number" tick={{ fontSize: 10 }} />
+                            <XAxis tick={{ fontSize: 10 }} />
                             <YAxis dataKey="name" type="category" width={100} tick={{ fontSize: 10 }} />
                             <Tooltip />
                             <Bar dataKey="pendentes" stackId="a" fill="var(--warning)" name="Pendentes" />
