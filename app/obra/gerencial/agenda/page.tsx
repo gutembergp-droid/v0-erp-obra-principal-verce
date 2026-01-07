@@ -534,47 +534,47 @@ const acoes: AcaoGerencial[] = [
 ]
 
 const tipoConfig: Record<Tipo, { label: string; color: string }> = {
-  reuniao: { label: "Reuniao", color: "bg-blue-500/10 text-blue-600 border-blue-500/20" },
-  cobranca: { label: "Cobranca", color: "bg-orange-500/10 text-orange-600 border-orange-500/20" },
-  aprovacao: { label: "Aprovacao", color: "bg-emerald-500/10 text-emerald-600 border-emerald-500/20" },
-  auditoria: { label: "Auditoria", color: "bg-red-500/10 text-red-600 border-red-500/20" },
-  comunicacao: { label: "Comunicacao", color: "bg-cyan-500/10 text-cyan-600 border-cyan-500/20" },
-  planejamento: { label: "Planejamento", color: "bg-purple-500/10 text-purple-600 border-purple-500/20" },
-  financeiro: { label: "Financeiro", color: "bg-yellow-500/10 text-yellow-600 border-yellow-500/20" },
+  reuniao: { label: "Reuniao", color: "bg-info/10 text-info border-info/20" },
+  cobranca: { label: "Cobranca", color: "bg-warning/10 text-warning border-warning/20" },
+  aprovacao: { label: "Aprovacao", color: "bg-success/10 text-success border-success/20" },
+  auditoria: { label: "Auditoria", color: "bg-destructive/10 text-destructive border-destructive/20" },
+  comunicacao: { label: "Comunicacao", color: "bg-primary/10 text-primary border-primary/20" },
+  planejamento: { label: "Planejamento", color: "bg-accent text-accent-foreground border-accent" },
+  financeiro: { label: "Financeiro", color: "bg-warning/10 text-warning border-warning/20" },
 }
 
-const origemConfig: Record<Origem, { label: string; color: string; icon: typeof Building2 }> = {
-  corporativo: {
-    label: "Corporativo",
-    color: "bg-purple-500/10 text-purple-600 border-purple-500/20",
-    icon: Building2,
+const origemConfig: Record<Origem, { label: string; color: string; icon: typeof FileText }> = {
+  contrato: { label: "Contrato", color: "bg-info/10 text-info border-info/20", icon: FileText },
+  obra: { label: "Obra", color: "bg-warning/10 text-warning border-warning/20", icon: Building2 },
+  corporativo: { label: "Corporativo", color: "bg-primary/10 text-primary border-primary/20", icon: Users },
+  auditoria: {
+    label: "Auditoria",
+    color: "bg-destructive/10 text-destructive border-destructive/20",
+    icon: AlertTriangle,
   },
-  contrato: { label: "Contrato", color: "bg-blue-500/10 text-blue-600 border-blue-500/20", icon: FileText },
-  obra: { label: "Obra", color: "bg-orange-500/10 text-orange-600 border-orange-500/20", icon: Building2 },
-  auditoria: { label: "Auditoria", color: "bg-red-500/10 text-red-600 border-red-500/20", icon: AlertTriangle },
 }
 
 const statusConfig: Record<Status, { label: string; color: string; icon: typeof Circle }> = {
-  pendente: { label: "Pendente", color: "text-yellow-600 bg-yellow-500/10", icon: Circle },
-  em_andamento: { label: "Em Andamento", color: "text-blue-600 bg-blue-500/10", icon: Clock },
-  concluido: { label: "Concluido", color: "text-green-600 bg-green-500/10", icon: CheckCircle2 },
-  atrasado: { label: "Atrasado", color: "text-red-600 bg-red-500/10", icon: AlertTriangle },
+  pendente: { label: "Pendente", color: "text-warning bg-warning/10", icon: Circle },
+  em_andamento: { label: "Em Andamento", color: "text-info bg-info/10", icon: Clock },
+  concluido: { label: "Concluido", color: "text-success bg-success/10", icon: CheckCircle2 },
+  atrasado: { label: "Atrasado", color: "text-destructive bg-destructive/10", icon: AlertTriangle },
 }
 
 const prioridadeConfig: Record<Prioridade, { label: string; color: string }> = {
-  critica: { label: "Critica", color: "bg-red-600 text-white border-red-600" },
-  alta: { label: "Alta", color: "bg-orange-500/10 text-orange-600 border-orange-500/30" },
-  media: { label: "Media", color: "bg-yellow-500/10 text-yellow-600 border-yellow-500/30" },
-  baixa: { label: "Baixa", color: "bg-gray-500/10 text-gray-600 border-gray-500/30" },
+  critica: { label: "Critica", color: "bg-destructive text-destructive-foreground border-destructive" },
+  alta: { label: "Alta", color: "bg-warning/10 text-warning border-warning/30" },
+  media: { label: "Media", color: "bg-muted text-muted-foreground border-muted" },
+  baixa: { label: "Baixa", color: "bg-secondary text-secondary-foreground border-secondary" },
 }
 
-const origemNeuralConfig: Record<string, { icon: typeof Target; color: string }> = {
-  kpi: { icon: Gauge, color: "text-blue-600" },
-  medicao: { icon: FileCheck, color: "text-emerald-600" },
-  change_control: { icon: FileText, color: "text-purple-600" },
-  qsms: { icon: Shield, color: "text-red-600" },
-  governanca: { icon: Target, color: "text-orange-600" },
-  financeiro: { icon: BarChart3, color: "text-yellow-600" },
+const origemNeuralConfig: Record<string, { icon: typeof Gauge; color: string }> = {
+  kpi: { icon: Gauge, color: "text-info" },
+  medicao: { icon: FileCheck, color: "text-success" },
+  change_control: { icon: FileText, color: "text-primary" },
+  qsms: { icon: Shield, color: "text-destructive" },
+  governanca: { icon: Target, color: "text-warning" },
+  financeiro: { icon: BarChart3, color: "text-warning" },
 }
 
 export default function AgendaGerencialPage() {
@@ -725,10 +725,10 @@ export default function AgendaGerencialPage() {
   }
 
   const dadosStatusPizza = [
-    { name: "Pendentes", value: contadores.pendentes, color: "#eab308" },
-    { name: "Em Andamento", value: contadores.emAndamento, color: "#3b82f6" },
-    { name: "Atrasadas", value: contadores.atrasadas, color: "#ef4444" },
-    { name: "Concluidas", value: contadores.concluidas, color: "#22c55e" },
+    { name: "Pendentes", value: contadores.pendentes, color: "var(--warning)" },
+    { name: "Em Andamento", value: contadores.emAndamento, color: "var(--info)" },
+    { name: "Atrasadas", value: contadores.atrasadas, color: "var(--destructive)" },
+    { name: "Concluidas", value: contadores.concluidas, color: "var(--success)" },
   ]
 
   const dadosPorResponsavel = [
@@ -793,73 +793,73 @@ export default function AgendaGerencialPage() {
 
       {/* Cards de Resumo do Dia */}
       <div className="grid grid-cols-5 gap-3 flex-shrink-0">
-        <Card className="border-blue-500/30 bg-blue-500/5">
+        <Card className="border-info/30 bg-info/5">
           <CardContent className="p-3">
             <div className="flex items-center justify-between">
               <span className="text-xs text-muted-foreground">Efetivo</span>
-              <HardHat className="h-4 w-4 text-blue-600" />
+              <HardHat className="h-4 w-4 text-info" />
             </div>
             <div className="flex items-baseline gap-2 mt-1">
-              <span className="text-2xl font-bold text-blue-600">{contadoresPainel.efetivo}</span>
+              <span className="text-2xl font-bold text-info">{contadoresPainel.efetivo}</span>
               <span className="text-xs text-muted-foreground">colaboradores</span>
             </div>
             <div className="flex items-center gap-1 mt-1">
-              <TrendingUp className="h-3 w-3 text-green-600" />
-              <span className="text-[10px] text-green-600">+5% vs ontem</span>
+              <TrendingUp className="h-3 w-3 text-success" />
+              <span className="text-[10px] text-success">+5% vs ontem</span>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-emerald-500/30 bg-emerald-500/5">
+        <Card className="border-success/30 bg-success/5">
           <CardContent className="p-3">
             <div className="flex items-center justify-between">
               <span className="text-xs text-muted-foreground">Atividades</span>
-              <Play className="h-4 w-4 text-emerald-600" />
+              <Play className="h-4 w-4 text-success" />
             </div>
             <div className="flex items-baseline gap-2 mt-1">
-              <span className="text-2xl font-bold text-emerald-600">{contadoresPainel.atividades}</span>
+              <span className="text-2xl font-bold text-success">{contadoresPainel.atividades}</span>
               <span className="text-xs text-muted-foreground">em execucao</span>
             </div>
             <div className="text-[10px] text-muted-foreground mt-1">3 proximas de concluir</div>
           </CardContent>
         </Card>
 
-        <Card className="border-red-500/30 bg-red-500/5">
+        <Card className="border-destructive/30 bg-destructive/5">
           <CardContent className="p-3">
             <div className="flex items-center justify-between">
               <span className="text-xs text-muted-foreground">Atrasadas</span>
-              <AlertTriangle className="h-4 w-4 text-red-600" />
+              <AlertTriangle className="h-4 w-4 text-destructive" />
             </div>
             <div className="flex items-baseline gap-2 mt-1">
-              <span className="text-2xl font-bold text-red-600">{contadoresPainel.atrasadas}</span>
+              <span className="text-2xl font-bold text-destructive">{contadoresPainel.atrasadas}</span>
               <span className="text-xs text-muted-foreground">atividades</span>
             </div>
-            <div className="text-[10px] text-red-600 mt-1">Requer atencao</div>
+            <div className="text-[10px] text-destructive mt-1">Requer atencao</div>
           </CardContent>
         </Card>
 
-        <Card className="border-yellow-500/30 bg-yellow-500/5">
+        <Card className="border-warning/30 bg-warning/5">
           <CardContent className="p-3">
             <div className="flex items-center justify-between">
               <span className="text-xs text-muted-foreground">Ocorrencias</span>
-              <AlertCircle className="h-4 w-4 text-yellow-600" />
+              <AlertCircle className="h-4 w-4 text-warning" />
             </div>
             <div className="flex items-baseline gap-2 mt-1">
-              <span className="text-2xl font-bold text-yellow-600">{contadoresPainel.ocorrencias}</span>
+              <span className="text-2xl font-bold text-warning">{contadoresPainel.ocorrencias}</span>
               <span className="text-xs text-muted-foreground">hoje</span>
             </div>
             <div className="text-[10px] text-muted-foreground mt-1">1 parada registrada</div>
           </CardContent>
         </Card>
 
-        <Card className="border-orange-500/30 bg-orange-500/5">
+        <Card className="border-warning/30 bg-warning/5">
           <CardContent className="p-3">
             <div className="flex items-center justify-between">
               <span className="text-xs text-muted-foreground">NCs Abertas</span>
-              <Shield className="h-4 w-4 text-orange-600" />
+              <Shield className="h-4 w-4 text-warning" />
             </div>
             <div className="flex items-baseline gap-2 mt-1">
-              <span className="text-2xl font-bold text-orange-600">{contadoresPainel.ncs}</span>
+              <span className="text-2xl font-bold text-warning">{contadoresPainel.ncs}</span>
               <span className="text-xs text-muted-foreground">pendentes</span>
             </div>
             <div className="text-[10px] text-muted-foreground mt-1">1 em tratamento</div>
@@ -891,7 +891,7 @@ export default function AgendaGerencialPage() {
                   onClick={() => setSelectedAtividade(atividade.id === selectedAtividade?.id ? null : atividade)}
                   className={`cursor-pointer transition-all hover:border-primary/50 ${
                     selectedAtividade?.id === atividade.id ? "ring-2 ring-primary border-primary" : ""
-                  } ${atividade.ritmo === "atrasado" ? "border-red-500/30 bg-red-500/5" : ""}`}
+                  } ${atividade.ritmo === "atrasado" ? "border-destructive/30 bg-destructive/5" : ""}`}
                 >
                   <CardContent className="p-3">
                     <div className="flex items-center justify-between mb-2">
@@ -905,10 +905,10 @@ export default function AgendaGerencialPage() {
                         variant="outline"
                         className={`text-[10px] ${
                           atividade.ritmo === "adiantado"
-                            ? "text-green-600 border-green-500/30 bg-green-500/10"
+                            ? "text-success border-success/30 bg-success/10"
                             : atividade.ritmo === "atrasado"
-                              ? "text-red-600 border-red-500/30 bg-red-500/10"
-                              : "text-blue-600 border-blue-500/30 bg-blue-500/10"
+                              ? "text-destructive border-destructive/30 bg-destructive/10"
+                              : "text-info border-info/30 bg-info/10"
                         }`}
                       >
                         {atividade.ritmo === "adiantado"
@@ -927,7 +927,7 @@ export default function AgendaGerencialPage() {
                         </div>
                         <Progress
                           value={atividade.progresso}
-                          className={`h-2 ${atividade.ritmo === "atrasado" ? "[&>div]:bg-red-500" : ""}`}
+                          className={`h-2 ${atividade.ritmo === "atrasado" ? "[&>div]:bg-destructive" : ""}`}
                         />
                       </div>
                     </div>
@@ -1038,7 +1038,7 @@ export default function AgendaGerencialPage() {
                     <Button
                       variant="outline"
                       size="sm"
-                      className="h-8 text-xs justify-start text-red-600 hover:text-red-600 bg-transparent"
+                      className="h-8 text-xs justify-start text-destructive hover:text-destructive bg-transparent"
                       onClick={() => setShowNCDialog(true)}
                     >
                       <AlertTriangle className="h-3 w-3 mr-1.5" />
@@ -1060,11 +1060,11 @@ export default function AgendaGerencialPage() {
                       >
                         <div className="flex items-center gap-2">
                           {ev.tipo === "foto" ? (
-                            <FileImage className="h-3.5 w-3.5 text-blue-600" />
+                            <FileImage className="h-3.5 w-3.5 text-info" />
                           ) : ev.tipo === "rdo" ? (
-                            <FileText className="h-3.5 w-3.5 text-orange-600" />
+                            <FileText className="h-3.5 w-3.5 text-warning" />
                           ) : (
-                            <FileText className="h-3.5 w-3.5 text-gray-600" />
+                            <FileText className="h-3.5 w-3.5 text-muted-foreground" />
                           )}
                           <span>{ev.nome}</span>
                         </div>
@@ -1085,7 +1085,7 @@ export default function AgendaGerencialPage() {
                         <div className="flex items-center gap-2">
                           <Badge
                             variant="outline"
-                            className={`text-[9px] ${dm.status === "concluida" ? "text-green-600 border-green-500/30" : "text-yellow-600 border-yellow-500/30"}`}
+                            className={`text-[9px] ${dm.status === "concluida" ? "text-success border-success/30" : "text-warning border-warning/30"}`}
                           >
                             {dm.status === "concluida" ? "Concluida" : "Pendente"}
                           </Badge>
@@ -1107,7 +1107,7 @@ export default function AgendaGerencialPage() {
         <Card>
           <CardHeader className="p-3 pb-2">
             <CardTitle className="text-sm font-semibold flex items-center gap-2">
-              <AlertCircle className="h-4 w-4 text-yellow-600" />
+              <AlertCircle className="h-4 w-4 text-warning" />
               Ocorrencias do Dia
             </CardTitle>
           </CardHeader>
@@ -1121,10 +1121,10 @@ export default function AgendaGerencialPage() {
                     key={oc.id}
                     className={`p-2 rounded border text-xs ${
                       oc.tipo === "parada"
-                        ? "border-red-500/30 bg-red-500/5"
+                        ? "border-destructive/30 bg-destructive/5"
                         : oc.tipo === "alerta"
-                          ? "border-yellow-500/30 bg-yellow-500/5"
-                          : "border-blue-500/30 bg-blue-500/5"
+                          ? "border-warning/30 bg-warning/5"
+                          : "border-info/30 bg-info/5"
                     }`}
                   >
                     <div className="flex items-center justify-between mb-1">
@@ -1145,7 +1145,7 @@ export default function AgendaGerencialPage() {
         <Card>
           <CardHeader className="p-3 pb-2">
             <CardTitle className="text-sm font-semibold flex items-center gap-2">
-              <Shield className="h-4 w-4 text-orange-600" />
+              <Shield className="h-4 w-4 text-warning" />
               NCs Abertas
             </CardTitle>
           </CardHeader>
@@ -1155,12 +1155,12 @@ export default function AgendaGerencialPage() {
             ) : (
               <div className="space-y-2">
                 {ncsDia.map((nc) => (
-                  <div key={nc.id} className="p-2 rounded border border-orange-500/30 bg-orange-500/5 text-xs">
+                  <div key={nc.id} className="p-2 rounded border border-warning/30 bg-warning/5 text-xs">
                     <div className="flex items-center justify-between mb-1">
                       <span className="font-medium">{nc.id}</span>
                       <Badge
                         variant="outline"
-                        className={`text-[9px] ${nc.status === "em_tratamento" ? "text-yellow-600 border-yellow-500/30" : "text-red-600 border-red-500/30"}`}
+                        className={`text-[9px] ${nc.status === "em_tratamento" ? "text-warning border-warning/30" : "text-destructive border-destructive/30"}`}
                       >
                         {nc.status === "em_tratamento" ? "Em Tratamento" : "Aberta"}
                       </Badge>
@@ -1400,9 +1400,6 @@ export default function AgendaGerencialPage() {
             </div>
             <div className="h-4 w-px bg-border/50" />
             <span className="text-sm text-muted-foreground">BR-101 LOTE 2</span>
-            <Badge variant="secondary" className="text-[10px]">
-              Janeiro 2026
-            </Badge>
           </div>
           <div className="flex items-center gap-2">
             <div className="flex items-center border border-border/50 rounded-lg p-1">
@@ -1559,23 +1556,23 @@ export default function AgendaGerencialPage() {
           <>
             {/* Cards de resumo - mostrar para lista, calendario e graficos */}
             <div className="grid grid-cols-5 gap-3 py-4 flex-shrink-0">
-              <Card className="border-yellow-500/30 bg-yellow-500/5">
+              <Card className="border-warning/30 bg-warning/5">
                 <CardContent className="p-3">
                   <div className="flex items-center justify-between">
                     <span className="text-xs text-muted-foreground">Pendentes</span>
-                    <Circle className="h-4 w-4 text-yellow-600 fill-yellow-600" />
+                    <Circle className="h-4 w-4 text-warning fill-warning" />
                   </div>
                   <div className="flex items-baseline gap-2 mt-1">
-                    <span className="text-2xl font-bold text-yellow-600">{contadores.pendentes}</span>
+                    <span className="text-2xl font-bold text-warning">{contadores.pendentes}</span>
                     <span className="text-xs text-muted-foreground">acoes</span>
                   </div>
                   <div className="flex items-center gap-1 mt-1">
                     {tendencias.pendentes < 0 ? (
-                      <TrendingDown className="h-3 w-3 text-green-600" />
+                      <TrendingDown className="h-3 w-3 text-success" />
                     ) : (
-                      <TrendingUp className="h-3 w-3 text-red-600" />
+                      <TrendingUp className="h-3 w-3 text-destructive" />
                     )}
-                    <span className={`text-[10px] ${tendencias.pendentes < 0 ? "text-green-600" : "text-red-600"}`}>
+                    <span className={`text-[10px] ${tendencias.pendentes < 0 ? "text-success" : "text-destructive"}`}>
                       {tendencias.pendentes > 0 ? "+" : ""}
                       {tendencias.pendentes}% vs sem. ant.
                     </span>
@@ -1583,65 +1580,65 @@ export default function AgendaGerencialPage() {
                 </CardContent>
               </Card>
 
-              <Card className="border-red-500/30 bg-red-500/5">
+              <Card className="border-destructive/30 bg-destructive/5">
                 <CardContent className="p-3">
                   <div className="flex items-center justify-between">
                     <span className="text-xs text-muted-foreground">Atrasadas</span>
-                    <AlertTriangle className="h-4 w-4 text-red-600" />
+                    <AlertTriangle className="h-4 w-4 text-destructive" />
                   </div>
                   <div className="flex items-baseline gap-2 mt-1">
-                    <span className="text-2xl font-bold text-red-600">{contadores.atrasadas}</span>
+                    <span className="text-2xl font-bold text-destructive">{contadores.atrasadas}</span>
                     <span className="text-xs text-muted-foreground">acoes</span>
                   </div>
                   <div className="flex items-center gap-1 mt-1">
-                    <TrendingUp className="h-3 w-3 text-red-600" />
-                    <span className="text-[10px] text-red-600">+{tendencias.atrasadas}% vs sem. ant.</span>
+                    <TrendingUp className="h-3 w-3 text-destructive" />
+                    <span className="text-[10px] text-destructive">+{tendencias.atrasadas}% vs sem. ant.</span>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="border-red-600/30 bg-red-600/5">
+              <Card className="border-destructive/30 bg-destructive/5">
                 <CardContent className="p-3">
                   <div className="flex items-center justify-between">
                     <span className="text-xs text-muted-foreground">Criticas</span>
-                    <AlertTriangle className="h-4 w-4 text-red-700 fill-red-700" />
+                    <AlertTriangle className="h-4 w-4 text-destructive fill-destructive" />
                   </div>
                   <div className="flex items-baseline gap-2 mt-1">
-                    <span className="text-2xl font-bold text-red-700">{contadores.criticas}</span>
+                    <span className="text-2xl font-bold text-destructive">{contadores.criticas}</span>
                     <span className="text-xs text-muted-foreground">risco</span>
                   </div>
                   <div className="flex items-center gap-1 mt-1">
-                    <TrendingUp className="h-3 w-3 text-red-600" />
-                    <span className="text-[10px] text-red-600">+{tendencias.criticas} esta semana</span>
+                    <TrendingUp className="h-3 w-3 text-destructive" />
+                    <span className="text-[10px] text-destructive">+{tendencias.criticas} esta semana</span>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="border-gray-500/30">
+              <Card className="border-muted">
                 <CardContent className="p-3">
                   <div className="flex items-center justify-between">
                     <span className="text-xs text-muted-foreground">Sem Responsavel</span>
-                    <Users className="h-4 w-4 text-gray-500" />
+                    <Users className="h-4 w-4 text-muted-foreground" />
                   </div>
                   <div className="flex items-baseline gap-2 mt-1">
-                    <span className="text-2xl font-bold text-gray-600">{contadores.semResponsavel}</span>
+                    <span className="text-2xl font-bold text-muted-foreground">{contadores.semResponsavel}</span>
                     <span className="text-xs text-muted-foreground">acoes</span>
                   </div>
                   <div className="text-[10px] text-muted-foreground mt-1">Necessitam atribuicao</div>
                 </CardContent>
               </Card>
 
-              <Card className="border-blue-500/30 bg-blue-500/5">
+              <Card className="border-info/30 bg-info/5">
                 <CardContent className="p-3">
                   <div className="flex items-center justify-between">
                     <span className="text-xs text-muted-foreground">Eventos Hoje</span>
-                    <Calendar className="h-4 w-4 text-blue-600" />
+                    <Calendar className="h-4 w-4 text-info" />
                   </div>
                   <div className="flex items-baseline gap-2 mt-1">
-                    <span className="text-2xl font-bold text-blue-600">{contadores.eventosHoje}</span>
+                    <span className="text-2xl font-bold text-info">{contadores.eventosHoje}</span>
                     <span className="text-xs text-muted-foreground">agendados</span>
                   </div>
-                  <div className="text-[10px] text-blue-600 mt-1">07 de Janeiro</div>
+                  <div className="text-[10px] text-info mt-1">07 de Janeiro</div>
                 </CardContent>
               </Card>
             </div>
@@ -1660,7 +1657,7 @@ export default function AgendaGerencialPage() {
                   <button
                     key={origem}
                     onClick={() => setFiltroOrigem(origem)}
-                    className={`text-xs px-2 py-1 rounded border ${filtroOrigem === origem ? origemConfig[origem].color : "border-transparent"}`}
+                    className={`text-xs px-2 py-1 rounded ${filtroOrigem === origem ? origemConfig[origem].color : ""}`}
                   >
                     {origemConfig[origem].label}
                   </button>
@@ -1734,12 +1731,12 @@ export default function AgendaGerencialPage() {
                             <tr
                               key={acao.id}
                               onClick={() => setSelectedAcao(acao)}
-                              className={`border-b border-border/30 hover:bg-muted/30 cursor-pointer transition-colors ${selectedAcao?.id === acao.id ? "bg-muted/50" : ""} ${acao.status === "atrasado" ? "bg-red-500/5" : ""}`}
+                              className={`border-b border-border/30 hover:bg-muted/30 cursor-pointer transition-colors ${selectedAcao?.id === acao.id ? "bg-muted/50" : ""} ${acao.status === "atrasado" ? "bg-destructive/5" : ""}`}
                             >
                               <td className="py-2 px-2 font-mono text-xs text-muted-foreground">{acao.id}</td>
                               <td className="py-2 px-2">
                                 <span
-                                  className={`text-xs font-medium tabular-nums ${acao.status === "atrasado" ? "text-red-600" : ""}`}
+                                  className={`text-xs font-medium tabular-nums ${acao.status === "atrasado" ? "text-destructive" : ""}`}
                                 >
                                   {acao.prazo}
                                 </span>
@@ -1825,7 +1822,7 @@ export default function AgendaGerencialPage() {
                             </div>
                             <a
                               href={selectedAcao.origemNeural.link}
-                              className="flex items-center gap-2 text-xs text-primary hover:underline"
+                              className="flex items-center gap-2 text-primary hover:underline"
                             >
                               {(() => {
                                 const config = origemNeuralConfig[selectedAcao.origemNeural.tipo]
@@ -1944,7 +1941,9 @@ export default function AgendaGerencialPage() {
                                 key={acao.id}
                                 onClick={() => setSelectedAcao(acao)}
                                 className={`p-2 rounded border cursor-pointer hover:border-primary/50 ${
-                                  acao.status === "atrasado" ? "border-red-500/30 bg-red-500/5" : "border-border/50"
+                                  acao.status === "atrasado"
+                                    ? "border-destructive/30 bg-destructive/5"
+                                    : "border-border/50"
                                 }`}
                               >
                                 <div className="flex items-center justify-between mb-1">
@@ -1980,25 +1979,25 @@ export default function AgendaGerencialPage() {
                   </Card>
                   <Card>
                     <CardContent className="p-3 text-center">
-                      <span className="text-2xl font-bold text-blue-600">{contadores.emAndamento}</span>
+                      <span className="text-2xl font-bold text-info">{contadores.emAndamento}</span>
                       <p className="text-xs text-muted-foreground">Em Andamento</p>
                     </CardContent>
                   </Card>
                   <Card>
                     <CardContent className="p-3 text-center">
-                      <span className="text-2xl font-bold text-red-600">{contadores.atrasadas}</span>
+                      <span className="text-2xl font-bold text-destructive">{contadores.atrasadas}</span>
                       <p className="text-xs text-muted-foreground">Atrasadas</p>
                     </CardContent>
                   </Card>
                   <Card>
                     <CardContent className="p-3 text-center">
-                      <span className="text-2xl font-bold text-green-600">{contadores.concluidas}</span>
+                      <span className="text-2xl font-bold text-success">{contadores.concluidas}</span>
                       <p className="text-xs text-muted-foreground">Concluidas</p>
                     </CardContent>
                   </Card>
                   <Card>
                     <CardContent className="p-3 text-center">
-                      <span className="text-2xl font-bold text-yellow-600">{contadores.pendentes}</span>
+                      <span className="text-2xl font-bold text-warning">{contadores.pendentes}</span>
                       <p className="text-xs text-muted-foreground">Pendentes</p>
                     </CardContent>
                   </Card>
@@ -2052,9 +2051,9 @@ export default function AgendaGerencialPage() {
                             <XAxis type="number" tick={{ fontSize: 10 }} />
                             <YAxis dataKey="name" type="category" width={100} tick={{ fontSize: 10 }} />
                             <Tooltip />
-                            <Bar dataKey="pendentes" stackId="a" fill="#eab308" name="Pendentes" />
-                            <Bar dataKey="concluidas" stackId="a" fill="#22c55e" name="Concluidas" />
-                            <Bar dataKey="atrasadas" stackId="a" fill="#ef4444" name="Atrasadas" />
+                            <Bar dataKey="pendentes" stackId="a" fill="var(--warning)" name="Pendentes" />
+                            <Bar dataKey="concluidas" stackId="a" fill="var(--success)" name="Concluidas" />
+                            <Bar dataKey="atrasadas" stackId="a" fill="var(--destructive)" name="Atrasadas" />
                           </BarChart>
                         </ResponsiveContainer>
                       </div>
@@ -2074,18 +2073,24 @@ export default function AgendaGerencialPage() {
                             <YAxis tick={{ fontSize: 10 }} />
                             <Tooltip />
                             <Legend formatter={(value) => <span className="text-xs">{value}</span>} />
-                            <Line type="monotone" dataKey="criadas" stroke="#3b82f6" name="Criadas" strokeWidth={2} />
+                            <Line
+                              type="monotone"
+                              dataKey="criadas"
+                              stroke="var(--info)"
+                              name="Criadas"
+                              strokeWidth={2}
+                            />
                             <Line
                               type="monotone"
                               dataKey="concluidas"
-                              stroke="#22c55e"
+                              stroke="var(--success)"
                               name="Concluidas"
                               strokeWidth={2}
                             />
                             <Line
                               type="monotone"
                               dataKey="atrasadas"
-                              stroke="#ef4444"
+                              stroke="var(--destructive)"
                               name="Atrasadas"
                               strokeWidth={2}
                             />
@@ -2107,7 +2112,7 @@ export default function AgendaGerencialPage() {
                             <XAxis dataKey="tipo" tick={{ fontSize: 10 }} />
                             <YAxis tick={{ fontSize: 10 }} />
                             <Tooltip />
-                            <Bar dataKey="qtd" fill="#6366f1" name="Quantidade" />
+                            <Bar dataKey="qtd" fill="var(--primary)" name="Quantidade" />
                           </BarChart>
                         </ResponsiveContainer>
                       </div>
