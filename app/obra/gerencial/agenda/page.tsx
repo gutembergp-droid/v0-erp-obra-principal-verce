@@ -25,7 +25,6 @@ import {
   MessageSquare,
   Paperclip,
   History,
-  Search,
   Plus,
   Calendar,
   Users,
@@ -38,7 +37,6 @@ import {
   Shield,
   BarChart3,
   ExternalLink,
-  CalendarDays,
   List,
   PieChart,
   Play,
@@ -54,8 +52,9 @@ import {
   Eye,
   FileImage,
   FilePlus,
+  Info,
 } from "lucide-react"
-import { InfoTooltip } from "@/components/ui/info-tooltip"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip" // Added Tooltip components
 import {
   PieChart as RechartsPieChart,
   Pie,
@@ -65,7 +64,7 @@ import {
   Bar,
   XAxis,
   YAxis,
-  Tooltip,
+  Tooltip as RechartsTooltip, // Renamed Tooltip to avoid conflict
   Legend,
   LineChart,
   Line,
@@ -582,7 +581,6 @@ export default function AgendaGerencialPage() {
   const [visaoTemporal, setVisaoTemporal] = useState<"dia" | "semana" | "mes">("semana")
   const [filtroOrigem, setFiltroOrigem] = useState<Origem | "todos">("todos")
   const [filtroStatus, setFiltroStatus] = useState<Status | "todos">("todos")
-  const [searchTerm, setSearchTerm] = useState("")
   const [novoComentario, setNovoComentario] = useState("")
   const [modoVisualizacao, setModoVisualizacao] = useState<"lista" | "calendario" | "graficos" | "painel">("lista")
   const [selectedDay, setSelectedDay] = useState<number | null>(null)
@@ -596,16 +594,13 @@ export default function AgendaGerencialPage() {
   const [showNCDialog, setShowNCDialog] = useState(false)
   const [demandaDepartamento, setDemandaDepartamento] = useState("")
   const [demandaAssunto, setDemandaAssunto] = useState("")
+  // const [searchTerm, setSearchTerm] = useState("") // Added searchTerm and setSearchTerm - REMOVED
 
   const acoesFiltradas = acoes.filter((acao) => {
     if (filtroOrigem !== "todos" && acao.origem !== filtroOrigem) return false
     if (filtroStatus !== "todos" && acao.status !== filtroStatus) return false
-    if (
-      searchTerm &&
-      !acao.titulo.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      !acao.id.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-      return false
+    // Add search term filtering
+    // if (searchTerm && !acao.titulo.toLowerCase().includes(searchTerm.toLowerCase())) return false // REMOVED
     return true
   })
 
@@ -1388,749 +1383,716 @@ export default function AgendaGerencialPage() {
     </div>
   )
 
+  const getDataLabel = () => {
+    if (modoVisualizacao === "calendario") {
+      return `${mesesNomes[mesCalendario.mes]} ${mesCalendario.ano}`
+    }
+    if (modoVisualizacao === "painel") {
+      return dataPainel
+    }
+    // Lista e Graficos
+    if (visaoTemporal === "dia") return "07 Jan 2026"
+    if (visaoTemporal === "semana") return "05-11 Jan"
+    return `${mesesNomes[mesCalendario.mes]} ${mesCalendario.ano}`
+  }
+
+  const navegarData = (direcao: "anterior" | "proximo") => {
+    if (modoVisualizacao === "calendario" || visaoTemporal === "mes") {
+      setMesCalendario((prev) => {
+        if (direcao === "anterior") {
+          return { mes: prev.mes === 0 ? 11 : prev.mes - 1, ano: prev.mes === 0 ? prev.ano - 1 : prev.ano }
+        }
+        return { mes: prev.mes === 11 ? 0 : prev.mes + 1, ano: prev.mes === 11 ? prev.ano + 1 : prev.ano }
+      })
+    }
+    // Para dia e semana, apenas placeholder por enquanto
+  }
+
   return (
-    <div className="overflow-auto h-full">
-      <div className="flex flex-col h-full p-4 overflow-hidden">
-        {/* Header */}
-        <div className="flex items-center justify-between pb-4 border-b border-border/50 flex-shrink-0">
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2">
-              <CalendarDays className="h-5 w-5 text-primary" />
-              <h1 className="text-xl font-semibold text-foreground">Agenda Gerencial</h1>
-              <Badge variant="outline" className="text-[10px] font-mono">
-                GC-02
-              </Badge>
-              <InfoTooltip
-                title="Agenda Gerencial de Governanca"
-                description="Centraliza todas as acoes gerenciais: reunioes, cobrancas, aprovacoes, auditorias, comunicacoes, planejamento e financeiro. Inclui Painel do Dia para visao em tempo real da obra."
-              />
-            </div>
-            <div className="h-4 w-px bg-border/50" />
-            <span className="text-sm text-muted-foreground">BR-101 LOTE 2</span>
-          </div>
+    <div className="flex flex-col h-full">
+      {/* Header */}
+      <div className="flex items-center justify-between p-4 border-b border-border/50 bg-card">
+        <div className="flex items-center gap-3">
           <div className="flex items-center gap-2">
-            <div className="flex items-center border border-border/50 rounded-lg p-1">
-              <Button
-                variant={modoVisualizacao === "lista" ? "secondary" : "ghost"}
-                size="sm"
-                className="h-7 text-xs gap-1"
-                onClick={() => setModoVisualizacao("lista")}
-              >
-                <List className="h-3.5 w-3.5" />
-                Lista
-              </Button>
-              <Button
-                variant={modoVisualizacao === "calendario" ? "secondary" : "ghost"}
-                size="sm"
-                className="h-7 text-xs gap-1"
-                onClick={() => setModoVisualizacao("calendario")}
-              >
-                <Calendar className="h-3.5 w-3.5" />
-                Calendario
-              </Button>
-              <Button
-                variant={modoVisualizacao === "graficos" ? "secondary" : "ghost"}
-                size="sm"
-                className="h-7 text-xs gap-1"
-                onClick={() => setModoVisualizacao("graficos")}
-              >
-                <PieChart className="h-3.5 w-3.5" />
-                Graficos
-              </Button>
-              <Button
-                variant={modoVisualizacao === "painel" ? "secondary" : "ghost"}
-                size="sm"
-                className="h-7 text-xs gap-1"
-                onClick={() => setModoVisualizacao("painel")}
-              >
-                <Eye className="h-3.5 w-3.5" />
-                Painel do Dia
-              </Button>
-            </div>
-            <div className="h-4 w-px bg-border/50" />
-            {/* Busca rapida */}
-            <div className="relative">
-              <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Buscar acao..."
-                className="h-8 w-[180px] pl-8 text-sm"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
-            {/* Navegacao temporal */}
-            {modoVisualizacao === "calendario" ? (
-              <div className="flex items-center gap-1 border border-border/50 rounded-lg p-1">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-7 w-7"
-                  onClick={() =>
-                    setMesCalendario((prev) => ({
-                      mes: prev.mes === 0 ? 11 : prev.mes - 1,
-                      ano: prev.mes === 0 ? prev.ano - 1 : prev.ano,
-                    }))
-                  }
-                >
-                  <ChevronLeft className="h-4 w-4" />
-                </Button>
-                <span className="text-sm font-medium px-2 min-w-[140px] text-center">
-                  {mesesNomes[mesCalendario.mes]} {mesCalendario.ano}
-                </span>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-7 w-7"
-                  onClick={() =>
-                    setMesCalendario((prev) => ({
-                      mes: prev.mes === 11 ? 0 : prev.mes + 1,
-                      ano: prev.mes === 11 ? prev.ano + 1 : prev.ano,
-                    }))
-                  }
-                >
-                  <ChevronRight className="h-4 w-4" />
-                </Button>
-              </div>
-            ) : modoVisualizacao === "painel" ? (
-              <div className="flex items-center gap-1 border border-border/50 rounded-lg p-1">
-                <Button variant="ghost" size="icon" className="h-7 w-7">
-                  <ChevronLeft className="h-4 w-4" />
-                </Button>
-                <span className="text-sm font-medium px-2 min-w-[120px] text-center">{dataPainel}</span>
-                <Button variant="ghost" size="icon" className="h-7 w-7">
-                  <ChevronRight className="h-4 w-4" />
-                </Button>
-              </div>
-            ) : (
+            <Calendar className="h-5 w-5 text-primary" />
+            <h1 className="text-lg font-semibold">Agenda Gerencial</h1>
+            <Badge variant="outline" className="text-xs">
+              GC-02
+            </Badge>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <Info className="h-4 w-4 text-muted-foreground" />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="max-w-xs text-xs">
+                    Centraliza todas as acoes gerenciais: reunioes, cobrancas, aprovacoes, auditorias, comunicacoes,
+                    planejamento e financeiro. Inclui Painel do Dia para visao em tempo real da obra.
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+          <div className="h-4 w-px bg-border/50" />
+          <span className="text-sm text-muted-foreground">BR-101 LOTE 2</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="flex items-center border border-border/50 rounded-lg p-1">
+            <Button
+              variant={modoVisualizacao === "lista" ? "secondary" : "ghost"}
+              size="sm"
+              className="h-7 text-xs gap-1"
+              onClick={() => setModoVisualizacao("lista")}
+            >
+              <List className="h-3.5 w-3.5" />
+              Lista
+            </Button>
+            <Button
+              variant={modoVisualizacao === "calendario" ? "secondary" : "ghost"}
+              size="sm"
+              className="h-7 text-xs gap-1"
+              onClick={() => setModoVisualizacao("calendario")}
+            >
+              <Calendar className="h-3.5 w-3.5" />
+              Calendario
+            </Button>
+            <Button
+              variant={modoVisualizacao === "graficos" ? "secondary" : "ghost"}
+              size="sm"
+              className="h-7 text-xs gap-1"
+              onClick={() => setModoVisualizacao("graficos")}
+            >
+              <PieChart className="h-3.5 w-3.5" />
+              Graficos
+            </Button>
+            <Button
+              variant={modoVisualizacao === "painel" ? "secondary" : "ghost"}
+              size="sm"
+              className="h-7 text-xs gap-1"
+              onClick={() => setModoVisualizacao("painel")}
+            >
+              <Eye className="h-3.5 w-3.5" />
+              Painel do Dia
+            </Button>
+          </div>
+
+          <div className="flex items-center border border-border/50 rounded-lg p-1 gap-1">
+            <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => navegarData("anterior")}>
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            <span className="text-sm font-medium px-2 min-w-[100px] text-center">{getDataLabel()}</span>
+            <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => navegarData("proximo")}>
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+            <div className="h-5 w-px bg-border/30 mx-1" />
+            {/* Toggle Dia/Semana/Mes - visivel apenas em Lista e Graficos */}
+            {(modoVisualizacao === "lista" || modoVisualizacao === "graficos") && (
               <>
-                <div className="flex items-center gap-1 border border-border/50 rounded-lg p-1">
-                  <Button variant="ghost" size="icon" className="h-7 w-7">
-                    <ChevronLeft className="h-4 w-4" />
-                  </Button>
-                  <span className="text-sm font-medium px-2 min-w-[120px] text-center">
-                    {visaoTemporal === "dia"
-                      ? "07 Jan 2026"
-                      : visaoTemporal === "semana"
-                        ? "05-11 Jan"
-                        : "Janeiro 2026"}
-                  </span>
-                  <Button variant="ghost" size="icon" className="h-7 w-7">
-                    <ChevronRight className="h-4 w-4" />
-                  </Button>
-                </div>
-                {/* Toggle dia/semana/mes */}
-                <div className="flex items-center border border-border/50 rounded-lg p-1">
-                  <Button
-                    variant={visaoTemporal === "dia" ? "secondary" : "ghost"}
-                    size="sm"
-                    className="h-7 text-xs"
-                    onClick={() => setVisaoTemporal("dia")}
-                  >
-                    Dia
-                  </Button>
-                  <Button
-                    variant={visaoTemporal === "semana" ? "secondary" : "ghost"}
-                    size="sm"
-                    className="h-7 text-xs"
-                    onClick={() => setVisaoTemporal("semana")}
-                  >
-                    Semana
-                  </Button>
-                  <Button
-                    variant={visaoTemporal === "mes" ? "secondary" : "ghost"}
-                    size="sm"
-                    className="h-7 text-xs"
-                    onClick={() => setVisaoTemporal("mes")}
-                  >
-                    Mes
-                  </Button>
-                </div>
+                <Button
+                  variant={visaoTemporal === "dia" ? "secondary" : "ghost"}
+                  size="sm"
+                  className="h-6 text-xs px-2"
+                  onClick={() => setVisaoTemporal("dia")}
+                >
+                  Dia
+                </Button>
+                <Button
+                  variant={visaoTemporal === "semana" ? "secondary" : "ghost"}
+                  size="sm"
+                  className="h-6 text-xs px-2"
+                  onClick={() => setVisaoTemporal("semana")}
+                >
+                  Semana
+                </Button>
+                <Button
+                  variant={visaoTemporal === "mes" ? "secondary" : "ghost"}
+                  size="sm"
+                  className="h-6 text-xs px-2"
+                  onClick={() => setVisaoTemporal("mes")}
+                >
+                  Mes
+                </Button>
+                <div className="h-5 w-px bg-border/30 mx-1" />
               </>
             )}
-            <Button variant="ghost" size="sm" className="h-8 text-xs">
+            <Button variant="ghost" size="sm" className="h-6 text-xs px-2">
               Hoje
             </Button>
-            <Button size="sm" className="h-8">
-              <Plus className="h-4 w-4 mr-1" />
-              Criar Acao
-            </Button>
           </div>
+
+          <Button size="sm" className="h-8">
+            <Plus className="h-4 w-4 mr-1" />
+            Criar Acao
+          </Button>
         </div>
+      </div>
 
-        {modoVisualizacao === "painel" ? (
-          <div className="flex-1 mt-4 overflow-hidden">{renderPainelDia()}</div>
-        ) : (
-          <>
-            {/* Cards de resumo - mostrar para lista, calendario e graficos */}
-            <div className="grid grid-cols-5 gap-3 py-4 flex-shrink-0">
-              <Card className="border-warning/30 bg-warning/5">
-                <CardContent className="p-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs text-muted-foreground">Pendentes</span>
-                    <Circle className="h-4 w-4 text-warning fill-warning" />
-                  </div>
-                  <div className="flex items-baseline gap-2 mt-1">
-                    <span className="text-2xl font-bold text-warning">{contadores.pendentes}</span>
-                    <span className="text-xs text-muted-foreground">acoes</span>
-                  </div>
-                  <div className="flex items-center gap-1 mt-1">
-                    {tendencias.pendentes < 0 ? (
-                      <TrendingDown className="h-3 w-3 text-success" />
-                    ) : (
-                      <TrendingUp className="h-3 w-3 text-destructive" />
-                    )}
-                    <span className={`text-[10px] ${tendencias.pendentes < 0 ? "text-success" : "text-destructive"}`}>
-                      {tendencias.pendentes > 0 ? "+" : ""}
-                      {tendencias.pendentes}% vs sem. ant.
-                    </span>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="border-destructive/30 bg-destructive/5">
-                <CardContent className="p-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs text-muted-foreground">Atrasadas</span>
-                    <AlertTriangle className="h-4 w-4 text-destructive" />
-                  </div>
-                  <div className="flex items-baseline gap-2 mt-1">
-                    <span className="text-2xl font-bold text-destructive">{contadores.atrasadas}</span>
-                    <span className="text-xs text-muted-foreground">acoes</span>
-                  </div>
-                  <div className="flex items-center gap-1 mt-1">
-                    <TrendingUp className="h-3 w-3 text-destructive" />
-                    <span className="text-[10px] text-destructive">+{tendencias.atrasadas}% vs sem. ant.</span>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="border-destructive/30 bg-destructive/5">
-                <CardContent className="p-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs text-muted-foreground">Criticas</span>
-                    <AlertTriangle className="h-4 w-4 text-destructive fill-destructive" />
-                  </div>
-                  <div className="flex items-baseline gap-2 mt-1">
-                    <span className="text-2xl font-bold text-destructive">{contadores.criticas}</span>
-                    <span className="text-xs text-muted-foreground">risco</span>
-                  </div>
-                  <div className="flex items-center gap-1 mt-1">
-                    <TrendingUp className="h-3 w-3 text-destructive" />
-                    <span className="text-[10px] text-destructive">+{tendencias.criticas} esta semana</span>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="border-muted">
-                <CardContent className="p-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs text-muted-foreground">Sem Responsavel</span>
-                    <Users className="h-4 w-4 text-muted-foreground" />
-                  </div>
-                  <div className="flex items-baseline gap-2 mt-1">
-                    <span className="text-2xl font-bold text-muted-foreground">{contadores.semResponsavel}</span>
-                    <span className="text-xs text-muted-foreground">acoes</span>
-                  </div>
-                  <div className="text-[10px] text-muted-foreground mt-1">Necessitam atribuicao</div>
-                </CardContent>
-              </Card>
-
-              <Card className="border-info/30 bg-info/5">
-                <CardContent className="p-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs text-muted-foreground">Eventos Hoje</span>
-                    <Calendar className="h-4 w-4 text-info" />
-                  </div>
-                  <div className="flex items-baseline gap-2 mt-1">
-                    <span className="text-2xl font-bold text-info">{contadores.eventosHoje}</span>
-                    <span className="text-xs text-muted-foreground">agendados</span>
-                  </div>
-                  <div className="text-[10px] text-info mt-1">07 de Janeiro</div>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Filtros de origem - apenas para lista */}
-            {modoVisualizacao === "lista" && (
-              <div className="flex items-center gap-2 pb-3 border-b border-border/30 flex-shrink-0">
-                <span className="text-[10px] text-muted-foreground uppercase tracking-wide">Origem:</span>
-                <button
-                  onClick={() => setFiltroOrigem("todos")}
-                  className={`text-xs px-2 py-1 rounded ${filtroOrigem === "todos" ? "bg-muted font-medium" : ""}`}
-                >
-                  Todos
-                </button>
-                {(Object.keys(origemConfig) as Origem[]).map((origem) => (
-                  <button
-                    key={origem}
-                    onClick={() => setFiltroOrigem(origem)}
-                    className={`text-xs px-2 py-1 rounded ${filtroOrigem === origem ? origemConfig[origem].color : ""}`}
-                  >
-                    {origemConfig[origem].label}
-                  </button>
-                ))}
-                <div className="flex-1" />
-                <span className="text-[10px] text-muted-foreground uppercase tracking-wide">Status:</span>
-                <button
-                  onClick={() => setFiltroStatus("todos")}
-                  className={`text-xs px-2 py-1 rounded ${filtroStatus === "todos" ? "bg-muted font-medium" : ""}`}
-                >
-                  Todos
-                </button>
-                {(Object.keys(statusConfig) as Status[]).map((status) => {
-                  const StatusIcon = statusConfig[status].icon
-                  return (
-                    <button
-                      key={status}
-                      onClick={() => setFiltroStatus(status)}
-                      className={`flex items-center gap-1 text-xs px-2 py-1 rounded ${filtroStatus === status ? statusConfig[status].color : ""}`}
-                    >
-                      <StatusIcon className="h-3 w-3" />
-                      {statusConfig[status].label}
-                    </button>
-                  )
-                })}
-              </div>
-            )}
-
-            {/* Conteudo baseado no modo de visualizacao */}
-            {modoVisualizacao === "lista" && (
-              <div className="flex-1 flex gap-0 min-h-0 mt-3">
-                {/* Tabela de Acoes */}
-                <div className={`flex-1 flex flex-col min-h-0 ${selectedAcao ? "pr-4" : ""}`}>
-                  <ScrollArea className="flex-1">
-                    <table className="w-full text-sm">
-                      <thead className="sticky top-0 bg-background z-10">
-                        <tr className="border-b border-border/50">
-                          <th className="text-left py-2 px-2 text-[10px] font-medium text-muted-foreground uppercase tracking-wide w-[70px]">
-                            ID
-                          </th>
-                          <th className="text-left py-2 px-2 text-[10px] font-medium text-muted-foreground uppercase tracking-wide w-[80px]">
-                            Prazo
-                          </th>
-                          <th className="text-left py-2 px-2 text-[10px] font-medium text-muted-foreground uppercase tracking-wide w-[90px]">
-                            Tipo
-                          </th>
-                          <th className="text-left py-2 px-2 text-[10px] font-medium text-muted-foreground uppercase tracking-wide w-[85px]">
-                            Origem
-                          </th>
-                          <th className="text-left py-2 px-2 text-[10px] font-medium text-muted-foreground uppercase tracking-wide">
-                            Assunto
-                          </th>
-                          <th className="text-left py-2 px-2 text-[10px] font-medium text-muted-foreground uppercase tracking-wide w-[120px]">
-                            Responsavel
-                          </th>
-                          <th className="text-left py-2 px-2 text-[10px] font-medium text-muted-foreground uppercase tracking-wide w-[100px]">
-                            Status
-                          </th>
-                          <th className="text-left py-2 px-2 text-[10px] font-medium text-muted-foreground uppercase tracking-wide w-[60px]">
-                            Prior.
-                          </th>
-                          <th className="text-center py-2 px-2 text-[10px] font-medium text-muted-foreground uppercase tracking-wide w-[70px]">
-                            Links
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {acoesFiltradas.map((acao) => {
-                          const StatusIcon = statusConfig[acao.status].icon
-                          return (
-                            <tr
-                              key={acao.id}
-                              onClick={() => setSelectedAcao(acao)}
-                              className={`border-b border-border/30 hover:bg-muted/30 cursor-pointer transition-colors ${selectedAcao?.id === acao.id ? "bg-muted/50" : ""} ${acao.status === "atrasado" ? "bg-destructive/5" : ""}`}
-                            >
-                              <td className="py-2 px-2 font-mono text-xs text-muted-foreground">{acao.id}</td>
-                              <td className="py-2 px-2">
-                                <span
-                                  className={`text-xs font-medium tabular-nums ${acao.status === "atrasado" ? "text-destructive" : ""}`}
-                                >
-                                  {acao.prazo}
-                                </span>
-                              </td>
-                              <td className="py-2 px-2">
-                                <span
-                                  className={`inline-flex text-[10px] px-1.5 py-0.5 rounded border ${tipoConfig[acao.tipo].color}`}
-                                >
-                                  {tipoConfig[acao.tipo].label}
-                                </span>
-                              </td>
-                              <td className="py-2 px-2">
-                                <span
-                                  className={`inline-flex text-[10px] px-1.5 py-0.5 rounded border ${origemConfig[acao.origem].color}`}
-                                >
-                                  {origemConfig[acao.origem].label}
-                                </span>
-                              </td>
-                              <td className="py-2 px-2">
-                                <div className="font-medium text-foreground text-xs">{acao.titulo}</div>
-                              </td>
-                              <td className="py-2 px-2 text-xs text-muted-foreground">{acao.responsavel}</td>
-                              <td className="py-2 px-2">
-                                <span
-                                  className={`inline-flex items-center gap-1 text-xs px-1.5 py-0.5 rounded ${statusConfig[acao.status].color}`}
-                                >
-                                  <StatusIcon className="h-3 w-3" />
-                                  {statusConfig[acao.status].label}
-                                </span>
-                              </td>
-                              <td className="py-2 px-2">
-                                <span
-                                  className={`text-[10px] px-1.5 py-0.5 rounded border ${prioridadeConfig[acao.prioridade].color}`}
-                                >
-                                  {prioridadeConfig[acao.prioridade].label}
-                                </span>
-                              </td>
-                              <td className="py-2 px-2 text-center">
-                                <div className="flex items-center justify-center gap-1.5 text-muted-foreground">
-                                  {acao.origemNeural && <Link2 className="h-3.5 w-3.5" />}
-                                  {acao.anexos > 0 && <Paperclip className="h-3.5 w-3.5" />}
-                                  {acao.comentarios.length > 0 && <MessageSquare className="h-3.5 w-3.5" />}
-                                </div>
-                              </td>
-                            </tr>
-                          )
-                        })}
-                      </tbody>
-                    </table>
-                  </ScrollArea>
+      {/* Conteudo principal */}
+      {modoVisualizacao === "painel" ? (
+        <div className="flex-1 mt-4 overflow-hidden">{renderPainelDia()}</div>
+      ) : (
+        <>
+          {/* Cards de resumo - mostrar para lista, calendario e graficos */}
+          <div className="grid grid-cols-5 gap-3 py-4 flex-shrink-0">
+            <Card className="border-warning/30 bg-warning/5">
+              <CardContent className="p-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-muted-foreground">Pendentes</span>
+                  <Circle className="h-4 w-4 text-warning fill-warning" />
                 </div>
+                <div className="flex items-baseline gap-2 mt-1">
+                  <span className="text-2xl font-bold text-warning">{contadores.pendentes}</span>
+                  <span className="text-xs text-muted-foreground">acoes</span>
+                </div>
+                <div className="flex items-center gap-1 mt-1">
+                  {tendencias.pendentes < 0 ? (
+                    <TrendingDown className="h-3 w-3 text-success" />
+                  ) : (
+                    <TrendingUp className="h-3 w-3 text-destructive" />
+                  )}
+                  <span className={`text-[10px] ${tendencias.pendentes < 0 ? "text-success" : "text-destructive"}`}>
+                    {tendencias.pendentes > 0 ? "+" : ""}
+                    {tendencias.pendentes}% vs sem. ant.
+                  </span>
+                </div>
+              </CardContent>
+            </Card>
 
-                {/* Painel lateral de detalhes */}
-                {selectedAcao && (
-                  <Card className="w-[380px] flex-shrink-0 border-l border-border/50 rounded-l-none flex flex-col">
-                    <CardHeader className="p-3 pb-2 border-b border-border/50">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <Badge variant="outline" className="text-[10px] font-mono">
-                            {selectedAcao.id}
-                          </Badge>
-                          <Badge className={`text-[10px] ${prioridadeConfig[selectedAcao.prioridade].color}`}>
-                            {prioridadeConfig[selectedAcao.prioridade].label}
-                          </Badge>
-                        </div>
-                        <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => setSelectedAcao(null)}>
-                          <X className="h-4 w-4" />
-                        </Button>
+            <Card className="border-destructive/30 bg-destructive/5">
+              <CardContent className="p-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-muted-foreground">Atrasadas</span>
+                  <AlertTriangle className="h-4 w-4 text-destructive" />
+                </div>
+                <div className="flex items-baseline gap-2 mt-1">
+                  <span className="text-2xl font-bold text-destructive">{contadores.atrasadas}</span>
+                  <span className="text-xs text-muted-foreground">acoes</span>
+                </div>
+                <div className="flex items-center gap-1 mt-1">
+                  <TrendingUp className="h-3 w-3 text-destructive" />
+                  <span className="text-[10px] text-destructive">+{tendencias.atrasadas}% vs sem. ant.</span>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border-destructive/30 bg-destructive/5">
+              <CardContent className="p-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-muted-foreground">Criticas</span>
+                  <AlertTriangle className="h-4 w-4 text-destructive fill-destructive" />
+                </div>
+                <div className="flex items-baseline gap-2 mt-1">
+                  <span className="text-2xl font-bold text-destructive">{contadores.criticas}</span>
+                  <span className="text-xs text-muted-foreground">risco</span>
+                </div>
+                <div className="flex items-center gap-1 mt-1">
+                  <TrendingUp className="h-3 w-3 text-destructive" />
+                  <span className="text-[10px] text-destructive">+{tendencias.criticas} esta semana</span>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border-muted">
+              <CardContent className="p-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-muted-foreground">Sem Responsavel</span>
+                  <Users className="h-4 w-4 text-muted-foreground" />
+                </div>
+                <div className="flex items-baseline gap-2 mt-1">
+                  <span className="text-2xl font-bold text-muted-foreground">{contadores.semResponsavel}</span>
+                  <span className="text-xs text-muted-foreground">acoes</span>
+                </div>
+                <div className="text-[10px] text-muted-foreground mt-1">Necessitam atribuicao</div>
+              </CardContent>
+            </Card>
+
+            <Card className="border-info/30 bg-info/5">
+              <CardContent className="p-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-muted-foreground">Eventos Hoje</span>
+                  <Calendar className="h-4 w-4 text-info" />
+                </div>
+                <div className="flex items-baseline gap-2 mt-1">
+                  <span className="text-2xl font-bold text-info">{contadores.eventosHoje}</span>
+                  <span className="text-xs text-muted-foreground">agendados</span>
+                </div>
+                <div className="text-[10px] text-info mt-1">07 de Janeiro</div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Filtros de origem - apenas para lista */}
+          {modoVisualizacao === "lista" && (
+            <div className="flex items-center gap-2 pb-3 border-b border-border/30 flex-shrink-0">
+              <span className="text-[10px] text-muted-foreground uppercase tracking-wide">Origem:</span>
+              <button
+                onClick={() => setFiltroOrigem("todos")}
+                className={`text-xs px-2 py-1 rounded ${filtroOrigem === "todos" ? "bg-muted font-medium" : ""}`}
+              >
+                Todos
+              </button>
+              {(Object.keys(origemConfig) as Origem[]).map((origem) => (
+                <button
+                  key={origem}
+                  onClick={() => setFiltroOrigem(origem)}
+                  className={`text-xs px-2 py-1 rounded ${filtroOrigem === origem ? origemConfig[origem].color : ""}`}
+                >
+                  {origemConfig[origem].label}
+                </button>
+              ))}
+              <div className="flex-1" />
+              <span className="text-[10px] text-muted-foreground uppercase tracking-wide">Status:</span>
+              <button
+                onClick={() => setFiltroStatus("todos")}
+                className={`text-xs px-2 py-1 rounded ${filtroStatus === "todos" ? "bg-muted font-medium" : ""}`}
+              >
+                Todos
+              </button>
+              {(Object.keys(statusConfig) as Status[]).map((status) => {
+                const StatusIcon = statusConfig[status].icon
+                return (
+                  <button
+                    key={status}
+                    onClick={() => setFiltroStatus(status)}
+                    className={`flex items-center gap-1 text-xs px-2 py-1 rounded ${filtroStatus === status ? statusConfig[status].color : ""}`}
+                  >
+                    <StatusIcon className="h-3 w-3" />
+                    {statusConfig[status].label}
+                  </button>
+                )
+              })}
+            </div>
+          )}
+
+          {/* Conteudo baseado no modo de visualizacao */}
+          {modoVisualizacao === "lista" && (
+            <div className="flex-1 flex gap-0 min-h-0 mt-3">
+              {/* Tabela de Acoes */}
+              <div className={`flex-1 flex flex-col min-h-0 ${selectedAcao ? "pr-4" : ""}`}>
+                <ScrollArea className="flex-1">
+                  <table className="w-full text-sm">
+                    <thead className="sticky top-0 bg-background z-10">
+                      <tr className="border-b border-border/50">
+                        <th className="text-left py-2 px-2 text-[10px] font-medium text-muted-foreground uppercase tracking-wide w-[70px]">
+                          ID
+                        </th>
+                        <th className="text-left py-2 px-2 text-[10px] font-medium text-muted-foreground uppercase tracking-wide w-[80px]">
+                          Prazo
+                        </th>
+                        <th className="text-left py-2 px-2 text-[10px] font-medium text-muted-foreground uppercase tracking-wide w-[90px]">
+                          Tipo
+                        </th>
+                        <th className="text-left py-2 px-2 text-[10px] font-medium text-muted-foreground uppercase tracking-wide w-[85px]">
+                          Origem
+                        </th>
+                        <th className="text-left py-2 px-2 text-[10px] font-medium text-muted-foreground uppercase tracking-wide">
+                          Assunto
+                        </th>
+                        <th className="text-left py-2 px-2 text-[10px] font-medium text-muted-foreground uppercase tracking-wide w-[120px]">
+                          Responsavel
+                        </th>
+                        <th className="text-left py-2 px-2 text-[10px] font-medium text-muted-foreground uppercase tracking-wide w-[100px]">
+                          Status
+                        </th>
+                        <th className="text-left py-2 px-2 text-[10px] font-medium text-muted-foreground uppercase tracking-wide w-[60px]">
+                          Prior.
+                        </th>
+                        <th className="text-center py-2 px-2 text-[10px] font-medium text-muted-foreground uppercase tracking-wide w-[70px]">
+                          Links
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {acoesFiltradas.map((acao) => {
+                        const StatusIcon = statusConfig[acao.status].icon
+                        return (
+                          <tr
+                            key={acao.id}
+                            onClick={() => setSelectedAcao(acao)}
+                            className={`border-b border-border/30 hover:bg-muted/30 cursor-pointer transition-colors ${selectedAcao?.id === acao.id ? "bg-muted/50" : ""} ${acao.status === "atrasado" ? "bg-destructive/5" : ""}`}
+                          >
+                            <td className="py-2 px-2 font-mono text-xs text-muted-foreground">{acao.id}</td>
+                            <td className="py-2 px-2">
+                              <span
+                                className={`text-xs font-medium tabular-nums ${acao.status === "atrasado" ? "text-destructive" : ""}`}
+                              >
+                                {acao.prazo}
+                              </span>
+                            </td>
+                            <td className="py-2 px-2">
+                              <span
+                                className={`inline-flex text-[10px] px-1.5 py-0.5 rounded border ${tipoConfig[acao.tipo].color}`}
+                              >
+                                {tipoConfig[acao.tipo].label}
+                              </span>
+                            </td>
+                            <td className="py-2 px-2">
+                              <span
+                                className={`inline-flex text-[10px] px-1.5 py-0.5 rounded border ${origemConfig[acao.origem].color}`}
+                              >
+                                {origemConfig[acao.origem].label}
+                              </span>
+                            </td>
+                            <td className="py-2 px-2">
+                              <div className="font-medium text-foreground text-xs">{acao.titulo}</div>
+                            </td>
+                            <td className="py-2 px-2 text-xs text-muted-foreground">{acao.responsavel}</td>
+                            <td className="py-2 px-2">
+                              <span
+                                className={`inline-flex items-center gap-1 text-xs px-1.5 py-0.5 rounded ${statusConfig[acao.status].color}`}
+                              >
+                                <StatusIcon className="h-3 w-3" />
+                                {statusConfig[acao.status].label}
+                              </span>
+                            </td>
+                            <td className="py-2 px-2">
+                              <span
+                                className={`text-[10px] px-1.5 py-0.5 rounded border ${prioridadeConfig[acao.prioridade].color}`}
+                              >
+                                {prioridadeConfig[acao.prioridade].label}
+                              </span>
+                            </td>
+                            <td className="py-2 px-2 text-center">
+                              <div className="flex items-center justify-center gap-1.5 text-muted-foreground">
+                                {acao.origemNeural && <Link2 className="h-3.5 w-3.5" />}
+                                {acao.anexos > 0 && <Paperclip className="h-3.5 w-3.5" />}
+                                {acao.comentarios.length > 0 && <MessageSquare className="h-3.5 w-3.5" />}
+                              </div>
+                            </td>
+                          </tr>
+                        )
+                      })}
+                    </tbody>
+                  </table>
+                </ScrollArea>
+              </div>
+
+              {/* Painel lateral de detalhes */}
+              {selectedAcao && (
+                <Card className="w-[380px] flex-shrink-0 border-l border-border/50 rounded-l-none flex flex-col">
+                  <CardHeader className="p-3 pb-2 border-b border-border/50">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Badge variant="outline" className="text-[10px] font-mono">
+                          {selectedAcao.id}
+                        </Badge>
+                        <Badge className={`text-[10px] ${prioridadeConfig[selectedAcao.prioridade].color}`}>
+                          {prioridadeConfig[selectedAcao.prioridade].label}
+                        </Badge>
                       </div>
-                      <CardTitle className="text-sm font-semibold mt-2">{selectedAcao.titulo}</CardTitle>
-                      <p className="text-xs text-muted-foreground mt-1">{selectedAcao.descricao}</p>
-                    </CardHeader>
+                      <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => setSelectedAcao(null)}>
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div>
+                    <CardTitle className="text-sm font-semibold mt-2">{selectedAcao.titulo}</CardTitle>
+                    <p className="text-xs text-muted-foreground mt-1">{selectedAcao.descricao}</p>
+                  </CardHeader>
 
-                    <ScrollArea className="flex-1">
-                      <CardContent className="p-3 space-y-4">
-                        {/* Origem Neural */}
-                        {selectedAcao.origemNeural && (
-                          <div className="p-2 bg-muted/30 rounded-lg border border-border/50">
-                            <div className="flex items-center gap-2 mb-1">
-                              <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wide">
-                                Origem Neural
+                  <ScrollArea className="flex-1">
+                    <CardContent className="p-3 space-y-4">
+                      {/* Origem Neural */}
+                      {selectedAcao.origemNeural && (
+                        <div className="p-2 bg-muted/30 rounded-lg border border-border/50">
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wide">
+                              Origem Neural
+                            </span>
+                          </div>
+                          <a
+                            href={selectedAcao.origemNeural.link}
+                            className="flex items-center gap-2 text-primary hover:underline"
+                          >
+                            {(() => {
+                              const config = origemNeuralConfig[selectedAcao.origemNeural.tipo]
+                              const Icon = config?.icon || Target
+                              return <Icon className={`h-4 w-4 ${config?.color || "text-primary"}`} />
+                            })()}
+                            {selectedAcao.origemNeural.label}
+                            <ExternalLink className="h-3 w-3" />
+                          </a>
+                        </div>
+                      )}
+
+                      {/* Checklist */}
+                      <div>
+                        <h4 className="text-[10px] font-medium text-muted-foreground uppercase tracking-wide mb-2">
+                          Checklist
+                        </h4>
+                        <div className="space-y-1.5">
+                          {selectedAcao.checklist.map((item) => (
+                            <div key={item.id} className="flex items-center gap-2">
+                              <Checkbox checked={item.concluido} className="h-4 w-4" />
+                              <span className={`text-xs ${item.concluido ? "line-through text-muted-foreground" : ""}`}>
+                                {item.texto}
                               </span>
                             </div>
-                            <a
-                              href={selectedAcao.origemNeural.link}
-                              className="flex items-center gap-2 text-primary hover:underline"
-                            >
-                              {(() => {
-                                const config = origemNeuralConfig[selectedAcao.origemNeural.tipo]
-                                const Icon = config?.icon || Target
-                                return <Icon className={`h-4 w-4 ${config?.color || "text-primary"}`} />
-                              })()}
-                              {selectedAcao.origemNeural.label}
-                              <ExternalLink className="h-3 w-3" />
-                            </a>
-                          </div>
-                        )}
-
-                        {/* Checklist */}
-                        <div>
-                          <h4 className="text-[10px] font-medium text-muted-foreground uppercase tracking-wide mb-2">
-                            Checklist
-                          </h4>
-                          <div className="space-y-1.5">
-                            {selectedAcao.checklist.map((item) => (
-                              <div key={item.id} className="flex items-center gap-2">
-                                <Checkbox checked={item.concluido} className="h-4 w-4" />
-                                <span
-                                  className={`text-xs ${item.concluido ? "line-through text-muted-foreground" : ""}`}
-                                >
-                                  {item.texto}
-                                </span>
-                              </div>
-                            ))}
-                          </div>
+                          ))}
                         </div>
-
-                        {/* Comentarios */}
-                        <div>
-                          <h4 className="text-[10px] font-medium text-muted-foreground uppercase tracking-wide mb-2">
-                            Comentarios ({selectedAcao.comentarios.length})
-                          </h4>
-                          <div className="space-y-2">
-                            {selectedAcao.comentarios.map((com) => (
-                              <div key={com.id} className="p-2 bg-muted/30 rounded text-xs">
-                                <div className="flex items-center justify-between mb-1">
-                                  <span className="font-medium">{com.usuario}</span>
-                                  <span className="text-muted-foreground text-[10px]">{com.data}</span>
-                                </div>
-                                <p className="text-muted-foreground">{com.texto}</p>
-                              </div>
-                            ))}
-                          </div>
-                          <div className="mt-2 flex gap-2">
-                            <Input
-                              placeholder="Adicionar comentario..."
-                              className="h-8 text-xs"
-                              value={novoComentario}
-                              onChange={(e) => setNovoComentario(e.target.value)}
-                            />
-                            <Button size="sm" className="h-8 px-3">
-                              <MessageSquare className="h-3.5 w-3.5" />
-                            </Button>
-                          </div>
-                        </div>
-
-                        {/* Historico */}
-                        <div>
-                          <h4 className="text-[10px] font-medium text-muted-foreground uppercase tracking-wide mb-2">
-                            Historico
-                          </h4>
-                          <div className="space-y-1.5">
-                            {selectedAcao.historico.map((h, i) => (
-                              <div key={i} className="flex items-start gap-2 text-[10px]">
-                                <History className="h-3 w-3 mt-0.5 text-muted-foreground" />
-                                <div>
-                                  <span className="text-muted-foreground">{h.data}</span>
-                                  <span className="mx-1">-</span>
-                                  <span>{h.acao}</span>
-                                  <span className="text-muted-foreground ml-1">({h.usuario})</span>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      </CardContent>
-                    </ScrollArea>
-                  </Card>
-                )}
-              </div>
-            )}
-
-            {modoVisualizacao === "calendario" && (
-              <div className="flex-1 flex gap-4 min-h-0 mt-3">
-                <div className="flex-1">
-                  <div className="grid grid-cols-7 gap-1 mb-2">
-                    {diasSemana.map((dia) => (
-                      <div key={dia} className="text-center text-xs font-medium text-muted-foreground py-2">
-                        {dia}
                       </div>
-                    ))}
-                  </div>
-                  <div className="grid grid-cols-7 gap-1">{renderCalendario()}</div>
-                </div>
 
-                {/* Painel do dia selecionado */}
-                {selectedDay && (
-                  <Card className="w-[300px] flex-shrink-0">
-                    <CardHeader className="p-3 pb-2">
-                      <CardTitle className="text-sm font-semibold">
-                        {selectedDay} de {mesesNomes[mesCalendario.mes]}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="p-3 pt-0">
-                      <ScrollArea className="h-[400px]">
+                      {/* Comentarios */}
+                      <div>
+                        <h4 className="text-[10px] font-medium text-muted-foreground uppercase tracking-wide mb-2">
+                          Comentarios ({selectedAcao.comentarios.length})
+                        </h4>
                         <div className="space-y-2">
-                          {getAcoesPorDia(selectedDay).length === 0 ? (
-                            <p className="text-xs text-muted-foreground">Nenhuma acao para este dia.</p>
-                          ) : (
-                            getAcoesPorDia(selectedDay).map((acao) => (
-                              <div
-                                key={acao.id}
-                                onClick={() => setSelectedAcao(acao)}
-                                className={`p-2 rounded border cursor-pointer hover:border-primary/50 ${
-                                  acao.status === "atrasado"
-                                    ? "border-destructive/30 bg-destructive/5"
-                                    : "border-border/50"
-                                }`}
-                              >
-                                <div className="flex items-center justify-between mb-1">
-                                  <Badge variant="outline" className="text-[9px]">
-                                    {acao.id}
-                                  </Badge>
-                                  <Badge className={`text-[9px] ${prioridadeConfig[acao.prioridade].color}`}>
-                                    {prioridadeConfig[acao.prioridade].label}
-                                  </Badge>
-                                </div>
-                                <p className="text-xs font-medium">{acao.titulo}</p>
-                                <p className="text-[10px] text-muted-foreground mt-1">{acao.responsavel}</p>
+                          {selectedAcao.comentarios.map((com) => (
+                            <div key={com.id} className="p-2 bg-muted/30 rounded text-xs">
+                              <div className="flex items-center justify-between mb-1">
+                                <span className="font-medium">{com.usuario}</span>
+                                <span className="text-muted-foreground text-[10px]">{com.data}</span>
                               </div>
-                            ))
-                          )}
+                              <p className="text-muted-foreground">{com.texto}</p>
+                            </div>
+                          ))}
                         </div>
-                      </ScrollArea>
-                    </CardContent>
-                  </Card>
-                )}
-              </div>
-            )}
+                        <div className="mt-2 flex gap-2">
+                          <Input
+                            placeholder="Adicionar comentario..."
+                            className="h-8 text-xs"
+                            value={novoComentario}
+                            onChange={(e) => setNovoComentario(e.target.value)}
+                          />
+                          <Button size="sm" className="h-8 px-3">
+                            <MessageSquare className="h-3.5 w-3.5" />
+                          </Button>
+                        </div>
+                      </div>
 
-            {modoVisualizacao === "graficos" && (
-              <div className="flex-1 mt-3 overflow-auto">
-                {/* KPIs de resumo */}
-                <div className="grid grid-cols-5 gap-3 mb-4">
-                  <Card>
-                    <CardContent className="p-3 text-center">
-                      <span className="text-2xl font-bold text-primary">{contadores.total}</span>
-                      <p className="text-xs text-muted-foreground">Total de Acoes</p>
+                      {/* Historico */}
+                      <div>
+                        <h4 className="text-[10px] font-medium text-muted-foreground uppercase tracking-wide mb-2">
+                          Historico
+                        </h4>
+                        <div className="space-y-1.5">
+                          {selectedAcao.historico.map((h, i) => (
+                            <div key={i} className="flex items-start gap-2 text-[10px]">
+                              <History className="h-3 w-3 mt-0.5 text-muted-foreground" />
+                              <div>
+                                <span className="text-muted-foreground">{h.data}</span>
+                                <span className="mx-1">-</span>
+                                <span>{h.acao}</span>
+                                <span className="text-muted-foreground ml-1">({h.usuario})</span>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
                     </CardContent>
-                  </Card>
-                  <Card>
-                    <CardContent className="p-3 text-center">
-                      <span className="text-2xl font-bold text-info">{contadores.emAndamento}</span>
-                      <p className="text-xs text-muted-foreground">Em Andamento</p>
-                    </CardContent>
-                  </Card>
-                  <Card>
-                    <CardContent className="p-3 text-center">
-                      <span className="text-2xl font-bold text-destructive">{contadores.atrasadas}</span>
-                      <p className="text-xs text-muted-foreground">Atrasadas</p>
-                    </CardContent>
-                  </Card>
-                  <Card>
-                    <CardContent className="p-3 text-center">
-                      <span className="text-2xl font-bold text-success">{contadores.concluidas}</span>
-                      <p className="text-xs text-muted-foreground">Concluidas</p>
-                    </CardContent>
-                  </Card>
-                  <Card>
-                    <CardContent className="p-3 text-center">
-                      <span className="text-2xl font-bold text-warning">{contadores.pendentes}</span>
-                      <p className="text-xs text-muted-foreground">Pendentes</p>
-                    </CardContent>
-                  </Card>
+                  </ScrollArea>
+                </Card>
+              )}
+            </div>
+          )}
+
+          {modoVisualizacao === "calendario" && (
+            <div className="flex-1 flex gap-4 min-h-0 mt-3">
+              <div className="flex-1">
+                <div className="grid grid-cols-7 gap-1 mb-2">
+                  {diasSemana.map((dia) => (
+                    <div key={dia} className="text-center text-xs font-medium text-muted-foreground py-2">
+                      {dia}
+                    </div>
+                  ))}
                 </div>
+                <div className="grid grid-cols-7 gap-1">{renderCalendario()}</div>
+              </div>
 
-                {/* Graficos */}
-                <div className="grid grid-cols-2 gap-4">
-                  {/* Pizza de Status */}
-                  <Card>
-                    <CardHeader className="p-3 pb-0">
-                      <CardTitle className="text-sm font-semibold">Distribuicao por Status</CardTitle>
-                    </CardHeader>
-                    <CardContent className="p-3">
-                      <div className="h-[200px]">
-                        <ResponsiveContainer width="100%" height="100%">
-                          <RechartsPieChart>
-                            <Pie
-                              data={dadosStatusPizza}
-                              cx="50%"
-                              cy="50%"
-                              innerRadius={50}
-                              outerRadius={80}
-                              paddingAngle={2}
-                              dataKey="value"
+              {/* Painel do dia selecionado */}
+              {selectedDay && (
+                <Card className="w-[300px] flex-shrink-0">
+                  <CardHeader className="p-3 pb-2">
+                    <CardTitle className="text-sm font-semibold">
+                      {selectedDay} de {mesesNomes[mesCalendario.mes]}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-3 pt-0">
+                    <ScrollArea className="h-[400px]">
+                      <div className="space-y-2">
+                        {getAcoesPorDia(selectedDay).length === 0 ? (
+                          <p className="text-xs text-muted-foreground">Nenhuma acao para este dia.</p>
+                        ) : (
+                          getAcoesPorDia(selectedDay).map((acao) => (
+                            <div
+                              key={acao.id}
+                              onClick={() => setSelectedAcao(acao)}
+                              className={`p-2 rounded border cursor-pointer hover:border-primary/50 ${
+                                acao.status === "atrasado"
+                                  ? "border-destructive/30 bg-destructive/5"
+                                  : "border-border/50"
+                              }`}
                             >
-                              {dadosStatusPizza.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={entry.color} />
-                              ))}
-                            </Pie>
-                            <Tooltip />
-                            <Legend
-                              verticalAlign="bottom"
-                              height={36}
-                              formatter={(value) => <span className="text-xs">{value}</span>}
-                            />
-                          </RechartsPieChart>
-                        </ResponsiveContainer>
+                              <div className="flex items-center justify-between mb-1">
+                                <Badge variant="outline" className="text-[9px]">
+                                  {acao.id}
+                                </Badge>
+                                <Badge className={`text-[9px] ${prioridadeConfig[acao.prioridade].color}`}>
+                                  {prioridadeConfig[acao.prioridade].label}
+                                </Badge>
+                              </div>
+                              <p className="text-xs font-medium">{acao.titulo}</p>
+                              <p className="text-[10px] text-muted-foreground mt-1">{acao.responsavel}</p>
+                            </div>
+                          ))
+                        )}
                       </div>
-                    </CardContent>
-                  </Card>
+                    </ScrollArea>
+                  </CardContent>
+                </Card>
+              )}
+            </div>
+          )}
 
-                  {/* Barras por Responsavel */}
-                  <Card>
-                    <CardHeader className="p-3 pb-0">
-                      <CardTitle className="text-sm font-semibold">Acoes por Responsavel</CardTitle>
-                    </CardHeader>
-                    <CardContent className="p-3">
-                      <div className="h-[200px]">
-                        <ResponsiveContainer width="100%" height="100%">
-                          <BarChart data={dadosPorResponsavel} layout="vertical">
-                            <XAxis tick={{ fontSize: 10 }} />
-                            <YAxis dataKey="name" type="category" width={100} tick={{ fontSize: 10 }} />
-                            <Tooltip />
-                            <Bar dataKey="pendentes" stackId="a" fill="var(--warning)" name="Pendentes" />
-                            <Bar dataKey="concluidas" stackId="a" fill="var(--success)" name="Concluidas" />
-                            <Bar dataKey="atrasadas" stackId="a" fill="var(--destructive)" name="Atrasadas" />
-                          </BarChart>
-                        </ResponsiveContainer>
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  {/* Evolucao Semanal */}
-                  <Card>
-                    <CardHeader className="p-3 pb-0">
-                      <CardTitle className="text-sm font-semibold">Evolucao Semanal</CardTitle>
-                    </CardHeader>
-                    <CardContent className="p-3">
-                      <div className="h-[200px]">
-                        <ResponsiveContainer width="100%" height="100%">
-                          <LineChart data={dadosEvolucaoSemanal}>
-                            <XAxis dataKey="semana" tick={{ fontSize: 10 }} />
-                            <YAxis tick={{ fontSize: 10 }} />
-                            <Tooltip />
-                            <Legend formatter={(value) => <span className="text-xs">{value}</span>} />
-                            <Line
-                              type="monotone"
-                              dataKey="criadas"
-                              stroke="var(--info)"
-                              name="Criadas"
-                              strokeWidth={2}
-                            />
-                            <Line
-                              type="monotone"
-                              dataKey="concluidas"
-                              stroke="var(--success)"
-                              name="Concluidas"
-                              strokeWidth={2}
-                            />
-                            <Line
-                              type="monotone"
-                              dataKey="atrasadas"
-                              stroke="var(--destructive)"
-                              name="Atrasadas"
-                              strokeWidth={2}
-                            />
-                          </LineChart>
-                        </ResponsiveContainer>
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  {/* Por Tipo */}
-                  <Card>
-                    <CardHeader className="p-3 pb-0">
-                      <CardTitle className="text-sm font-semibold">Acoes por Tipo</CardTitle>
-                    </CardHeader>
-                    <CardContent className="p-3">
-                      <div className="h-[200px]">
-                        <ResponsiveContainer width="100%" height="100%">
-                          <BarChart data={dadosPorTipo}>
-                            <XAxis dataKey="tipo" tick={{ fontSize: 10 }} />
-                            <YAxis tick={{ fontSize: 10 }} />
-                            <Tooltip />
-                            <Bar dataKey="qtd" fill="var(--primary)" name="Quantidade" />
-                          </BarChart>
-                        </ResponsiveContainer>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
+          {modoVisualizacao === "graficos" && (
+            <div className="flex-1 mt-3 overflow-auto">
+              {/* KPIs de resumo */}
+              <div className="grid grid-cols-5 gap-3 mb-4">
+                <Card>
+                  <CardContent className="p-3 text-center">
+                    <span className="text-2xl font-bold text-primary">{contadores.total}</span>
+                    <p className="text-xs text-muted-foreground">Total de Acoes</p>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent className="p-3 text-center">
+                    <span className="text-2xl font-bold text-info">{contadores.emAndamento}</span>
+                    <p className="text-xs text-muted-foreground">Em Andamento</p>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent className="p-3 text-center">
+                    <span className="text-2xl font-bold text-destructive">{contadores.atrasadas}</span>
+                    <p className="text-xs text-muted-foreground">Atrasadas</p>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent className="p-3 text-center">
+                    <span className="text-2xl font-bold text-success">{contadores.concluidas}</span>
+                    <p className="text-xs text-muted-foreground">Concluidas</p>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent className="p-3 text-center">
+                    <span className="text-2xl font-bold text-warning">{contadores.pendentes}</span>
+                    <p className="text-xs text-muted-foreground">Pendentes</p>
+                  </CardContent>
+                </Card>
               </div>
-            )}
-          </>
-        )}
-      </div>
+
+              {/* Graficos */}
+              <div className="grid grid-cols-2 gap-4">
+                {/* Pizza de Status */}
+                <Card>
+                  <CardHeader className="p-3 pb-0">
+                    <CardTitle className="text-sm font-semibold">Distribuicao por Status</CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-3">
+                    <div className="h-[200px]">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <RechartsPieChart>
+                          <Pie
+                            data={dadosStatusPizza}
+                            cx="50%"
+                            cy="50%"
+                            innerRadius={50}
+                            outerRadius={80}
+                            paddingAngle={2}
+                            dataKey="value"
+                          >
+                            {dadosStatusPizza.map((entry, index) => (
+                              <Cell key={`cell-${index}`} fill={entry.color} />
+                            ))}
+                          </Pie>
+                          <RechartsTooltip />
+                          <Legend
+                            verticalAlign="bottom"
+                            height={36}
+                            formatter={(value) => <span className="text-xs">{value}</span>}
+                          />
+                        </RechartsPieChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Barras por Responsavel */}
+                <Card>
+                  <CardHeader className="p-3 pb-0">
+                    <CardTitle className="text-sm font-semibold">Acoes por Responsavel</CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-3">
+                    <div className="h-[200px]">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <BarChart data={dadosPorResponsavel} layout="vertical">
+                          <XAxis tick={{ fontSize: 10 }} />
+                          <YAxis dataKey="name" type="category" width={100} tick={{ fontSize: 10 }} />
+                          <RechartsTooltip />
+                          <Bar dataKey="pendentes" stackId="a" fill="var(--warning)" name="Pendentes" />
+                          <Bar dataKey="concluidas" stackId="a" fill="var(--success)" name="Concluidas" />
+                          <Bar dataKey="atrasadas" stackId="a" fill="var(--destructive)" name="Atrasadas" />
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Evolucao Semanal */}
+                <Card>
+                  <CardHeader className="p-3 pb-0">
+                    <CardTitle className="text-sm font-semibold">Evolucao Semanal</CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-3">
+                    <div className="h-[200px]">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <LineChart data={dadosEvolucaoSemanal}>
+                          <XAxis dataKey="semana" tick={{ fontSize: 10 }} />
+                          <YAxis tick={{ fontSize: 10 }} />
+                          <RechartsTooltip />
+                          <Legend formatter={(value) => <span className="text-xs">{value}</span>} />
+                          <Line type="monotone" dataKey="criadas" stroke="var(--info)" name="Criadas" strokeWidth={2} />
+                          <Line
+                            type="monotone"
+                            dataKey="concluidas"
+                            stroke="var(--success)"
+                            name="Concluidas"
+                            strokeWidth={2}
+                          />
+                          <Line
+                            type="monotone"
+                            dataKey="atrasadas"
+                            stroke="var(--destructive)"
+                            name="Atrasadas"
+                            strokeWidth={2}
+                          />
+                        </LineChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Por Tipo */}
+                <Card>
+                  <CardHeader className="p-3 pb-0">
+                    <CardTitle className="text-sm font-semibold">Acoes por Tipo</CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-3">
+                    <div className="h-[200px]">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <BarChart data={dadosPorTipo}>
+                          <XAxis dataKey="tipo" tick={{ fontSize: 10 }} />
+                          <YAxis tick={{ fontSize: 10 }} />
+                          <RechartsTooltip />
+                          <Bar dataKey="qtd" fill="var(--primary)" name="Quantidade" />
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          )}
+        </>
+      )}
     </div>
   )
 }
