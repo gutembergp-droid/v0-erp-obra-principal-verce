@@ -1,6 +1,5 @@
 "use client"
 
-import { AppLayout } from "@/components/layout/app-layout"
 import { Header } from "@/components/layout/header"
 import { InfoTooltip } from "@/components/ui/info-tooltip"
 import { Badge } from "@/components/ui/badge"
@@ -21,7 +20,7 @@ export default function ConfiguracoesPage() {
   const { theme, colorTheme, setTheme, setColorTheme } = useTheme()
 
   return (
-    <AppLayout>
+    <>
       <Header
         title="Configuracoes"
         description="Personalizacao e preferencias do sistema"
@@ -225,6 +224,6 @@ export default function ConfiguracoesPage() {
           </Button>
         </div>
       </div>
-    </AppLayout>
+    </>
   )
 }

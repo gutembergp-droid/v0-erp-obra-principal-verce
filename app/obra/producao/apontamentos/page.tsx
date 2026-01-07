@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { AppLayout } from "@/components/layout/app-layout"
 import { Header } from "@/components/layout/header"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -102,7 +101,7 @@ export default function ApontamentosPage() {
   const indiceGeral = Math.round(apontamentosMock.reduce((acc, a) => acc + a.indice, 0) / apontamentosMock.length)
 
   return (
-    <AppLayout>
+    <>
       <Header
         title="Apontamentos de Producao"
         description="Registro e analise de produtividade por item da EAP"
@@ -308,6 +307,6 @@ export default function ApontamentosPage() {
           </CardContent>
         </Card>
       </div>
-    </AppLayout>
+    </>
   )
 }

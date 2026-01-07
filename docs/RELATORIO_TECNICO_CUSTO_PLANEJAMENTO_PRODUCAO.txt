@@ -1,0 +1,962 @@
+================================================================================
+                         RELATORIO TECNICO COMPLETO
+          DEPARTAMENTOS DE CUSTO, PLANEJAMENTO E PRODUCAO
+                         PROJETO ERP-GNESIS
+================================================================================
+
+Data de Geracao: 07/01/2026
+Versao: 1.0
+
+================================================================================
+1. ESTRUTURA GERAL
+================================================================================
+
+1.1 ARQUITETURA GERAL DOS MODULOS
+---------------------------------
+
+Os tres modulos estao implementados como paginas React/Next.js dentro da 
+estrutura /app/obra/:
+
++---------------+-------------------------+-------------------------------------+
+| Modulo        | Localizacao             | Arquivo Principal                   |
++---------------+-------------------------+-------------------------------------+
+| CUSTO         | /app/obra/comercial/    | custo/page.tsx                      |
+|               |                         | custo-meta/page.tsx                 |
+|               |                         | eap/page.tsx                        |
+|               |                         | estruturacao-custo/page.tsx         |
++---------------+-------------------------+-------------------------------------+
+| PLANEJAMENTO  | /app/obra/engenharia/   | planejamento/page.tsx               |
++---------------+-------------------------+-------------------------------------+
+| PRODUCAO      | /app/obra/producao/     | page.tsx                            |
++---------------+-------------------------+-------------------------------------+
+
+
+1.2 RELACAO ENTRE OS MODULOS
+----------------------------
+
+                         +------------------+
+                         |      CUSTO       |
+                         |   (EAP Custo)    |
+                         +--------+---------+
+                                  |
+                                  | vinculo via codigo EAP
+                                  |
+         +------------------------+------------------------+
+         |                        |                        |
+         v                        v                        v
++----------------+       +----------------+       +----------------+
+|  PLANEJAMENTO  |<------|      PBS       |------>|   PRODUCAO     |
+|  (Cronograma)  |       |  (Estrutura    |       |    (RDO)       |
+|                |       |  Operacional)  |       |                |
++----------------+       +----------------+       +----------------+
+
+Fluxo de dados:
+1. CUSTO define a EAP de Custo (estrutura financeira)
+2. PRODUCAO propoe a PBS (estrutura operacional)
+3. PLANEJAMENTO valida a PBS e define cronograma
+4. PBS se vincula a EAP via "Mapa Producao -> Custo"
+5. Avancos de PRODUCAO propagam para PLANEJAMENTO e CUSTO
+
+
+1.3 ENTIDADES PRINCIPAIS
+------------------------
+
++---------------+-------------------------+-------------------------------------+
+| Entidade      | Modulo                  | Descricao                           |
++---------------+-------------------------+-------------------------------------+
+| EAP Custo     | CUSTO                   | Estrutura Analitica de Projeto      |
+|               |                         | para controle financeiro            |
++---------------+-------------------------+-------------------------------------+
+| PBS           | PRODUCAO/PLANEJAMENTO   | Production Breakdown Structure      |
+|               |                         | estrutura operacional               |
++---------------+-------------------------+-------------------------------------+
+| RDO           | PRODUCAO                | Relatorio Diario de Obra            |
++---------------+-------------------------+-------------------------------------+
+| Curva S       | PLANEJAMENTO            | Grafico de avanco acumulado         |
++---------------+-------------------------+-------------------------------------+
+| Mapa Custo    | PRODUCAO                | Vinculo entre PBS e EAP             |
++---------------+-------------------------+-------------------------------------+
+
+
+================================================================================
+2. DEPARTAMENTO DE CUSTO
+================================================================================
+
+2.1 ESTRUTURA DA EAP DE CUSTO
+-----------------------------
+
+Arquivo: app/obra/comercial/estruturacao-custo/page.tsx
+
+ARVORE COMPLETA DA EAP:
+
+1. CUSTO DIRETO (R$ 28.500.000)
+|
++-- 1.1 Terraplenagem (R$ 8.500.000)
+|   +-- 1.1.1 Escavacao e Carga
+|   |         Unidade: m3
+|   |         Quantidade: 45.000
+|   |         Valor Unitario: R$ 71,11
+|   |         Total: R$ 3.200.000
+|   |         Status: [Configurado]
+|   |
+|   +-- 1.1.2 Transporte de Material
+|   |         Unidade: m3xkm
+|   |         Quantidade: 280.000
+|   |         Valor Unitario: R$ 10,00
+|   |         Total: R$ 2.800.000
+|   |         Status: [Configurado]
+|   |
+|   +-- 1.1.3 Compactacao
+|             Unidade: m3
+|             Quantidade: 50.000
+|             Valor Unitario: R$ 50,00
+|             Total: R$ 2.500.000
+|             Status: [Configurado]
+|
++-- 1.2 Pavimentacao (R$ 12.000.000)
+|   +-- 1.2.1 Base Granular
+|   |         Unidade: m3
+|   |         Quantidade: 22.500
+|   |         Valor Unitario: R$ 200,00
+|   |         Total: R$ 4.500.000
+|   |         Status: [Configurado]
+|   |
+|   +-- 1.2.2 Imprimacao
+|   |         Unidade: m2
+|   |         Quantidade: 75.000
+|   |         Valor Unitario: R$ 20,00
+|   |         Total: R$ 1.500.000
+|   |         Status: [Configurado]
+|   |
+|   +-- 1.2.3 CBUQ - Binder
+|   |         Unidade: t
+|   |         Quantidade: 7.000
+|   |         Valor Unitario: R$ 500,00
+|   |         Total: R$ 3.500.000
+|   |         Status: [Configurado]
+|   |
+|   +-- 1.2.4 CBUQ - Capa
+|             Unidade: t
+|             Quantidade: 5.000
+|             Valor Unitario: R$ 500,00
+|             Total: R$ 2.500.000
+|             Status: [Pendente]
+|
++-- 1.3 Drenagem (R$ 5.000.000)
+|   +-- 1.3.1 Bueiros BSTC
+|   |         Unidade: m
+|   |         Quantidade: 400
+|   |         Valor Unitario: R$ 5.000,00
+|   |         Total: R$ 2.000.000
+|   |         Status: [Configurado]
+|   |
+|   +-- 1.3.2 Sarjetas
+|   |         Unidade: m
+|   |         Quantidade: 3.000
+|   |         Valor Unitario: R$ 500,00
+|   |         Total: R$ 1.500.000
+|   |         Status: [Configurado]
+|   |
+|   +-- 1.3.3 Meio-fio
+|             Unidade: m
+|             Quantidade: 6.000
+|             Valor Unitario: R$ 250,00
+|             Total: R$ 1.500.000
+|             Status: [Pendente]
+|
++-- 1.4 Obras de Arte Especiais (R$ 3.000.000)
+    +-- 1.4.1 Ponte Km 12
+              Unidade: vb
+              Quantidade: 1
+              Valor Unitario: R$ 3.000.000,00
+              Total: R$ 3.000.000
+              Status: [Configurado]
+
+2. CUSTO INDIRETO IDENTIFICADO (R$ 4.275.000)
+|
++-- 2.1 Administracao Local
+|       Unidade: mes
+|       Quantidade: 18
+|       Valor Unitario: R$ 138.888,89
+|       Total: R$ 2.500.000
+|       Status: [Identificado]
+|
++-- 2.2 Mobilizacao/Desmobilizacao
+|       Unidade: vb
+|       Quantidade: 1
+|       Valor Unitario: R$ 800.000,00
+|       Total: R$ 800.000
+|       Status: [Identificado]
+|
++-- 2.3 Canteiro de Obras
+        Unidade: vb
+        Quantidade: 1
+        Valor Unitario: R$ 975.000,00
+        Total: R$ 975.000
+        Status: [Identificado]
+
+--------------------------------------------------------------------------------
+TOTAL GERAL DA EAP: R$ 32.775.000
+--------------------------------------------------------------------------------
+
+NIVEIS HIERARQUICOS:
+- Nivel 1: Grupos principais (CUSTO DIRETO, CUSTO INDIRETO)
+- Nivel 2: Pacotes de servico (Terraplenagem, Pavimentacao, etc.)
+- Nivel 3: Itens de custo (servicos/materiais especificos)
+
+UNIDADES DE MEDIDA UTILIZADAS:
+- m3 (metros cubicos) - escavacao, compactacao
+- m3xkm - transporte
+- m2 - imprimacao
+- t (tonelada) - CBUQ
+- m (metro linear) - bueiros, sarjetas, meio-fio
+- vb (verba) - itens globais
+- mes - custos mensais
+
+STATUS DOS ITENS:
+- Configurado: 11 itens
+- Pendente: 3 itens
+- Identificado: 3 itens (custos indiretos)
+
+
+2.2 FUNCIONALIDADES IMPLEMENTADAS
+---------------------------------
+
+Arquivo: app/obra/comercial/custo/page.tsx
+
++-------------------------+-------------+----------------------------------------+
+| Funcionalidade          | Status      | Descricao                              |
++-------------------------+-------------+----------------------------------------+
+| Criacao de EAP          | IMPLEMENTADO| Tabela expansivel com hierarquia       |
++-------------------------+-------------+----------------------------------------+
+| Edicao de itens         | PARCIAL     | Botao "Eye" para visualizar            |
++-------------------------+-------------+----------------------------------------+
+| Controle de orcamento   | IMPLEMENTADO| Cards com valores:                     |
+|                         |             | Orcamento R$ 405Mi                     |
+|                         |             | Realizado R$ 267Mi                     |
++-------------------------+-------------+----------------------------------------+
+| Desvio de custo         | IMPLEMENTADO| Card com -2.3%                         |
++-------------------------+-------------+----------------------------------------+
+| Engenharia de Valor     | IMPLEMENTADO| Tab com 3 propostas:                   |
+|                         |             | - Substituicao Drenagem R$ 2.8Mi       |
+|                         |             | - Otimizacao Terra R$ 4.2Mi            |
+|                         |             | - Revisao Fundacoes R$ 5.5Mi           |
++-------------------------+-------------+----------------------------------------+
+| Analise de Desvios      | PLACEHOLDER | Tab existe mas conteudo e placeholder  |
++-------------------------+-------------+----------------------------------------+
+| Otimizacao              | PLACEHOLDER | Tab existe mas conteudo e placeholder  |
++-------------------------+-------------+----------------------------------------+
+
+Arquivo: app/obra/comercial/custo-meta/page.tsx
+
++-----------------------------+-------------+----------------------------------+
+| Funcionalidade              | Status      | Descricao                        |
++-----------------------------+-------------+----------------------------------+
+| Resumo Executivo            | IMPLEMENTADO| 5 cards:                         |
+|                             |             | - Baseline: R$ 45.68Mi           |
+|                             |             | - Realizado: R$ 47.25Mi          |
+|                             |             | - Desvio: R$ 1.57Mi (3.44%)      |
+|                             |             | - Meta: R$ 44.5Mi                |
+|                             |             | - Eficiencia: 94%                |
++-----------------------------+-------------+----------------------------------+
+| Comparativo Plan x Real     | IMPLEMENTADO| Tabela com 6 pacotes, desvios    |
+|                             |             | e status (OK, Atencao, Critico)  |
++-----------------------------+-------------+----------------------------------+
+| Analise de Desempenho       | IMPLEMENTADO| Card lateral com contadores:     |
+|                             |             | - Dentro meta: 2                 |
+|                             |             | - Fora meta: 4                   |
+|                             |             | - Impacto: R$ 1.57Mi             |
+|                             |             | - Tendencia: Piora               |
++-----------------------------+-------------+----------------------------------+
+| Desvios Relevantes          | IMPLEMENTADO| Tabela com 3 desvios, tipo,      |
+|                             |             | impacto, situacao e acao         |
++-----------------------------+-------------+----------------------------------+
+| Painel Lateral Desvio       | IMPLEMENTADO| Sheet com detalhes do desvio     |
++-----------------------------+-------------+----------------------------------+
+
+
+2.3 TELAS EXISTENTES DE CUSTO
+-----------------------------
+
++-------------------+----------------------------+-------------+-----------------+
+| Tela              | Rota                       | Tipo        | Descricao       |
++-------------------+----------------------------+-------------+-----------------+
+| Custo             | /obra/comercial/custo      | Gerencial   | Eng. de Valor,  |
+|                   |                            |             | Desvios         |
++-------------------+----------------------------+-------------+-----------------+
+| EAP               | /obra/comercial/eap        | Operacional | Estrutura       |
+|                   |                            |             | Analitica       |
++-------------------+----------------------------+-------------+-----------------+
+| Custo & Meta      | /obra/comercial/custo-meta | Gerencial   | Performance     |
+|                   |                            |             | economica       |
++-------------------+----------------------------+-------------+-----------------+
+| Custo Detalhe     | /obra/comercial/custo-     | Operacional | Detalhamento    |
+|                   | detalhe                    |             | por servico     |
++-------------------+----------------------------+-------------+-----------------+
+| Estruturacao      | /obra/comercial/           | Configuracao| Configuracao    |
+| Custo             | estruturacao-custo         |             | da EAP          |
++-------------------+----------------------------+-------------+-----------------+
+
+CAMPOS DISPONIVEIS NA EAP:
+- Codigo
+- Descricao
+- Nivel
+- Tipo (Direto/Indireto)
+- Categoria (Servico/Material/Pessoal/Infraestrutura)
+- Custo Orcado
+- Unidade
+- Quantidade
+- Valor Unitario
+- Status
+
+
+2.4 INDICADORES E DASHBOARDS DE CUSTO
+-------------------------------------
+
+INDICADORES IMPLEMENTADOS:
+
++---------------------+---------------------------+-------------------------+
+| Indicador           | Formula/Fonte             | Valor Atual             |
++---------------------+---------------------------+-------------------------+
+| Custo Baseline      | Soma EAP                  | R$ 45.680.000           |
++---------------------+---------------------------+-------------------------+
+| Custo Realizado     | Apropriacao               | R$ 47.250.000           |
++---------------------+---------------------------+-------------------------+
+| Desvio de Custo     | Realizado - Baseline      | R$ 1.570.000 (3.44%)    |
++---------------------+---------------------------+-------------------------+
+| Meta Economica      | Definido                  | R$ 44.500.000           |
++---------------------+---------------------------+-------------------------+
+| Eficiencia (F/CD)   | Meta / Realizado          | 94%                     |
++---------------------+---------------------------+-------------------------+
+| Economia Eng. Valor | Propostas aprovadas       | R$ 12.5 Mi              |
++---------------------+---------------------------+-------------------------+
+
+METRICAS DE CONTROLE CONFIGURADAS:
+
++---------------------+------------------+------------------+
+| Metrica             | Previsto         | Tolerancia       |
++---------------------+------------------+------------------+
+| F/CD                | 1.15             | +/- 5%           |
++---------------------+------------------+------------------+
+| BDI Aplicado        | 25%              | +/- 2%           |
++---------------------+------------------+------------------+
+| Custo por km        | R$ 2.184.000/km  | +/- 10%          |
++---------------------+------------------+------------------+
+| Indice de Material  | 45%              | +/- 5%           |
++---------------------+------------------+------------------+
+| Indice de MO        | 35%              | +/- 5%           |
++---------------------+------------------+------------------+
+
+
+================================================================================
+3. DEPARTAMENTO DE PLANEJAMENTO
+================================================================================
+
+3.1 ESTRUTURA DE PLANEJAMENTO
+-----------------------------
+
+Arquivo: app/obra/engenharia/planejamento/page.tsx
+
+ORGANIZACAO POR ABAS:
+1. Cenario Atual
+2. EAP Custo (somente leitura)
+3. PBS
+4. Estrutura
+5. Gantt
+6. Curvas S
+7. Histogramas
+8. Desvios
+
+ESTRUTURA DE PLANEJAMENTO:
+
++----------+---------------------------+----------+----------+--------+-------+
+| ID       | Descricao                 | Qtd Prev | Qtd Real | Saldo  | Unid  |
++----------+---------------------------+----------+----------+--------+-------+
+| PBS-001  | Escavacao 1a Categoria    | 850.000  | 722.500  | 127.500| m3    |
+| PBS-002  | Escavacao 2a Categoria    | 120.000  | 96.000   | 24.000 | m3    |
+| PBS-003  | Escavacao 3a Categoria    | 45.000   | 40.500   | 4.500  | m3    |
+| PBS-004  | Compactacao de Aterro     | 370.000  | 314.500  | 55.500 | m3    |
+| PBS-005  | Pavimentacao Asfaltica    | 280.000  | 70.000   | 210.000| m2    |
+| PBS-006  | Sub-base Granular         | 195.000  | 58.500   | 136.500| m3    |
+| PBS-007  | Fundacoes OAE             | 48       | 14       | 34     | un    |
+| PBS-008  | Superestrutura OAE        | 12       | 2        | 10     | un    |
++----------+---------------------------+----------+----------+--------+-------+
+
++----------+-----------+-----------+---------------+
+| ID       | Ritmo     | Tendencia | Status        |
++----------+-----------+-----------+---------------+
+| PBS-001  | 2.800/dia | No prazo  | Em andamento  |
+| PBS-002  | 450/dia   | Atrasado  | Em andamento  |
+| PBS-003  | 180/dia   | Adiantado | Em andamento  |
+| PBS-004  | 1.850/dia | No prazo  | Em andamento  |
+| PBS-005  | 1.200/dia | Atrasado  | Em andamento  |
+| PBS-006  | 650/dia   | No prazo  | Em andamento  |
+| PBS-007  | 0.5/dia   | Atrasado  | Em andamento  |
+| PBS-008  | 0.15/dia  | No prazo  | Em andamento  |
++----------+-----------+-----------+---------------+
+
+
+3.2 PBS (PRODUCTION BREAKDOWN STRUCTURE)
+----------------------------------------
+
+COMO A PBS E CRIADA:
+- PBS e proposta pela PRODUCAO no sistema
+- Dados mockados em pbsPropostaMock com 8 itens
+
+QUEM PODE CRIAR:
+- Producao propoe (status: "em_proposta")
+- Planejamento valida (status: "validada")
+
+STATUS POSSIVEIS:
+- em_proposta: Aguardando validacao do Planejamento
+- validada: Aprovada pelo Planejamento
+
+DADOS DA PBS PROPOSTA:
+
++----------+---------------------------+-----------+----------+-------+-------+
+| ID       | Descricao                 | EAP Custo | Qtd      | Unid  | Peso% |
++----------+---------------------------+-----------+----------+-------+-------+
+| PBS-001  | Escavacao 1a Categoria    | 1.1       | 850.000  | m3    | 12.5  |
+| PBS-002  | Escavacao 2a Categoria    | 1.2       | 120.000  | m3    | 4.2   |
+| PBS-003  | Escavacao 3a Categoria    | 1.3       | 45.000   | m3    | 2.8   |
+| PBS-004  | Compactacao de Aterro     | 1.4       | 370.000  | m3    | 8.5   |
+| PBS-005  | Pavimentacao Asfaltica    | 2.1       | 280.000  | m2    | 15.3  |
+| PBS-006  | Sub-base Granular         | 2.2       | 195.000  | m3    | 6.8   |
+| PBS-007  | Fundacoes OAE             | 3.1       | 48       | un    | 9.2   |
+| PBS-008  | Superestrutura OAE        | 3.2       | 12       | un    | 11.5  |
++----------+---------------------------+-----------+----------+-------+-------+
+
++----------+-------------+---------------+
+| ID       | Status      | Responsavel   |
++----------+-------------+---------------+
+| PBS-001  | validada    | Planejamento  |
+| PBS-002  | validada    | Planejamento  |
+| PBS-003  | validada    | Planejamento  |
+| PBS-004  | validada    | Planejamento  |
+| PBS-005  | em_proposta | Producao      |
+| PBS-006  | em_proposta | Producao      |
+| PBS-007  | validada    | Planejamento  |
+| PBS-008  | em_proposta | Producao      |
++----------+-------------+---------------+
+
+
+3.3 PLANEJAMENTO NO TEMPO
+-------------------------
+
+DEFINICAO DE PRAZOS:
+- Campos implementados: inicio, fim, duracao (dias)
+
+MARCOS (MILESTONES):
+- Gantt visual implementado com 7 fases
+
+DADOS DO GANTT:
+
++----------+------------------------+--------+----------+--------------+----------+
+| ID       | Nome                   | Inicio | Duracao  | Status       | Caminho  |
+|          |                        | (dia)  | (dias)   |              | Critico  |
++----------+------------------------+--------+----------+--------------+----------+
+| FASE-01  | Mobilizacao            | 0      | 30       | Concluido    | Nao      |
+| FASE-02  | Terraplenagem          | 30     | 880      | Em andamento | SIM      |
+| FASE-03  | Pavimentacao           | 500    | 940      | Em andamento | Nao      |
+| FASE-04  | OAE - Fundacoes        | 365    | 450      | Em andamento | SIM      |
+| FASE-05  | OAE - Superestrutura   | 815    | 400      | Nao iniciado | SIM      |
+| FASE-06  | Sinalizacao            | 1200   | 210      | Nao iniciado | Nao      |
+| FASE-07  | Desmobilizacao         | 1380   | 30       | Nao iniciado | Nao      |
++----------+------------------------+--------+----------+--------------+----------+
+
+
+3.4 GANTT
+---------
+
+VISUALIZACAO IMPLEMENTADA:
+- Grafico de barras horizontal
+- Caminho critico destacado em vermelho
+- Status por cor (verde=concluido, azul=em andamento, cinza=nao iniciado)
+- Linha de referencia para data atual
+
+INFORMACOES EXIBIDAS:
+- Nome da fase
+- Barra de duracao proporcional
+- Indicacao de caminho critico
+- Botao "Ver Detalhes"
+
+
+3.5 TELAS EXISTENTES DE PLANEJAMENTO
+------------------------------------
+
++----------------+-------------+---------------+-------------------------------+
+| Tela           | Aba         | Tipo          | Descricao                     |
++----------------+-------------+---------------+-------------------------------+
+| Cenario Atual  | cenario     | Dashboard     | Resumo com Curva S mini e     |
+|                |             |               | alertas                       |
++----------------+-------------+---------------+-------------------------------+
+| EAP Custo      | eap         | Visualizacao  | Somente leitura da estrutura  |
+|                |             |               | de custo                      |
++----------------+-------------+---------------+-------------------------------+
+| PBS            | pbs         | Operacional   | Tabela de proposta e          |
+|                |             |               | validacao                     |
++----------------+-------------+---------------+-------------------------------+
+| Estrutura      | estrutura   | Operacional   | Tabela com previsto,          |
+|                |             |               | realizado, saldo, ritmo       |
++----------------+-------------+---------------+-------------------------------+
+| Gantt          | gantt       | Visual        | Grafico de barras com         |
+|                |             |               | caminho critico               |
++----------------+-------------+---------------+-------------------------------+
+| Curvas S       | curvas      | Indicadores   | Fisica, Financeira,           |
+|                |             |               | Integrada (3 sub-abas)        |
++----------------+-------------+---------------+-------------------------------+
+| Histogramas    | histogramas | Indicadores   | MO e Equipamentos             |
++----------------+-------------+---------------+-------------------------------+
+| Desvios        | desvios     | Analise       | Desvio Fisico x Financeiro    |
++----------------+-------------+---------------+-------------------------------+
+
+
+3.6 INDICADORES E ANALISES
+--------------------------
+
+CURVA S FISICA:
+- Dados de Jan/24 a Jun/25 (18 meses)
+- Campos: mes, planejado, realizado, acumPlan, acumReal
+- Grafico: ComposedChart com Area (acumulado) + Bar (mensal)
+- Toggle: Grafico/Tabela
+
+CURVA S FINANCEIRA:
+- Dados de Jan/24 a Dez/24 (12 meses)
+- Valores em milhoes (R$ 8.5Mi a R$ 32.5Mi mensais)
+- Acumulado: R$ 269.5Mi planejado, R$ 273.2Mi realizado
+
+HISTOGRAMA DE MAO DE OBRA:
+- 12 meses de dados
+- Planejado vs Realizado (180 a 450 colaboradores)
+- Pico em Dez/24: 450 planejado, 448 realizado
+
+HISTOGRAMA DE EQUIPAMENTOS:
+- 12 meses de dados
+- Planejado vs Realizado (45 a 130 equipamentos)
+- Pico em Dez/24: 130 planejado, 128 realizado
+
+INDICADORES CALCULADOS:
+
++---------------------+-------------------------------+--------------+
+| Indicador           | Formula                       | Valor Atual  |
++---------------------+-------------------------------+--------------+
+| Avanco Real         | Producao acumulada            | 69.0%        |
+| Avanco Planejado    | Cronograma                    | 69.1%        |
+| SPI                 | Avanco Real / Avanco Planejado| 1.00         |
+| CPI                 | Valor Agregado / Custo Real   | 1.02         |
+| Atividades Criticas | Contagem caminho critico      | 3            |
+| PBS Validadas       | Status = validada             | 5            |
+| PBS Proposta        | Status = em_proposta          | 3            |
+| Itens Atrasados     | Tendencia = atrasado          | 3            |
++---------------------+-------------------------------+--------------+
+
+DESVIO FISICO X FINANCEIRO:
+- 12 meses de dados
+- DesvioFisico: -1.3% a +0.5%
+- DesvioFinanceiro: -7.0% a +3.7%
+- Grafico: AreaChart com duas series
+
+
+================================================================================
+4. DEPARTAMENTO DE PRODUCAO
+================================================================================
+
+4.1 ESTRUTURA DE EXECUCAO
+-------------------------
+
+Arquivo: app/obra/producao/page.tsx
+
+ESTRUTURA PBS IMPLEMENTADA:
+
+1. TERRAPLENAGEM (Avanco: 68%)
+|
++-- 1.1 Escavacao Material 1a Categoria
+|       Quantidade: 850.000 m3
+|       Concluido: 72%
+|
++-- 1.2 Escavacao Material 3a Categoria
+|       Quantidade: 120.000 m3
+|       Concluido: 65%
+|
++-- 1.3 Compactacao de Aterro
+        Quantidade: 370.000 m3
+        Concluido: 66%
+
+2. PAVIMENTACAO (Avanco: 42%)
+|
++-- 2.1 Sub-base Granular
+|       Quantidade: 280.000 m2
+|       Concluido: 50%
+|
++-- 2.2 Base Estabilizada
+|       Quantidade: 280.000 m2
+|       Concluido: 40%
+|
++-- 2.3 Revestimento Asfaltico
+        Quantidade: 280.000 m2
+        Concluido: 36%
+
+3. OBRAS DE ARTE ESPECIAIS (Avanco: 35%)
+|
++-- 3.1 Fundacoes Profundas
+|       Quantidade: 120 un
+|       Concluido: 45%
+|
++-- 3.2 Estrutura de Concreto
+|       Quantidade: 4.500 m3
+|       Concluido: 30%
+|
++-- 3.3 Superestrutura Metalica
+        Quantidade: 800 ton
+        Concluido: 30%
+
+4. DRENAGEM (Avanco: 58%)
+|
++-- 4.1 Drenagem Profunda
+|       Quantidade: 28.500 m
+|       Concluido: 65%
+|
++-- 4.2 Drenagem Superficial
+        Quantidade: 45.000 m
+        Concluido: 50%
+
+5. SINALIZACAO (Avanco: 12%)
+|
++-- 5.1 Sinalizacao Horizontal
+|       Quantidade: 45.000 m2
+|       Concluido: 12%
+|
++-- 5.2 Sinalizacao Vertical
+        Quantidade: 580 un
+        Concluido: 12%
+
+
+4.2 REGISTRO DE PRODUCAO
+------------------------
+
+TIPOS DE APROPRIACAO:
+- Apontamento diario (via RDO)
+- Medicao topografica
+- Controle usina
+
+FREQUENCIA DE LANCAMENTO:
+- Diario (campo fonteRDO)
+
+PARAMETRIZACAO PBS IMPLEMENTADA:
+
++-----------+--------------------+-------+-----------------+------------------+
+| ID        | Descricao          | Unid  | Regra Calculo   | Fonte RDO        |
++-----------+--------------------+-------+-----------------+------------------+
+| PBS-001.1 | Escavacao 1a Cat   | m3    | Volume=L x A x H| Apontamento      |
+| PBS-001.2 | Escavacao 3a Cat   | m3    | Volume=L x A x H| Apontamento      |
+| PBS-001.3 | Compactacao        | m3    | Vol compactado  | Apontamento      |
+| PBS-002.1 | Sub-base Granular  | m2    | Area = L x C    | Medicao topo     |
+| PBS-002.2 | Base Estabilizada  | m2    | Area = L x C    | Medicao topo     |
+| PBS-002.3 | Revest. Asfaltico  | m2    | Area = L x C    | Controle usina   |
++-----------+--------------------+-------+-----------------+------------------+
+
++-----------+------------+-------------+
+| ID        | Tolerancia | Status      |
++-----------+------------+-------------+
+| PBS-001.1 | 5%         | Configurado |
+| PBS-001.2 | 5%         | Configurado |
+| PBS-001.3 | 3%         | Configurado |
+| PBS-002.1 | 2%         | Configurado |
+| PBS-002.2 | 2%         | Pendente    |
+| PBS-002.3 | 1%         | Pendente    |
++-----------+------------+-------------+
+
+
+4.3 INTEGRACAO COM PLANEJAMENTO
+-------------------------------
+
+MAPA PRODUCAO -> CUSTO:
+
++--------+---------------------------+-----------+-------------------+--------+
+| PBS    | PBS Descricao             | EAP Custo | EAP Descricao     | Rateio |
++--------+---------------------------+-----------+-------------------+--------+
+| 1.1    | Escavacao Mat 1a Cat      | ESC-001   | Escavacao e Carga | 100%   |
+| 1.2    | Escavacao Mat 3a Cat      | ESC-001   | Escavacao e Carga | 100%   |
+| 1.3    | Compactacao de Aterro     | ESC-002   | Compactacao       | 100%   |
+| 2.1    | Sub-base Granular         | ESC-003   | Pavimentacao Base | 60%    |
+| 2.2    | Base Estabilizada         | ESC-003   | Pavimentacao Base | 40%    |
+| 2.3    | Revestimento Asfaltico    | ESC-004   | Revestimento      | 100%   |
+| 3.1    | Fundacoes Profundas       | ESC-005   | OAE               | 30%    |
+| 3.2    | Estrutura de Concreto     | ESC-005   | OAE               | 50%    |
+| 3.3    | Superestrutura Metalica   | ESC-005   | OAE               | 20%    |
++--------+---------------------------+-----------+-------------------+--------+
+
++--------+------------------+--------+
+| PBS    | Fator Conversao  | Status |
++--------+------------------+--------+
+| 1.1    | 1.0              | Ativo  |
+| 1.2    | 1.2              | Ativo  |
+| 1.3    | 1.0              | Ativo  |
+| 2.1    | 1.0              | Ativo  |
+| 2.2    | 1.0              | Ativo  |
+| 2.3    | 1.0              | Ativo  |
+| 3.1    | 1.0              | Ativo  |
+| 3.2    | 1.0              | Ativo  |
+| 3.3    | 1.0              | Ativo  |
++--------+------------------+--------+
+
+
+4.4 INTEGRACAO COM CUSTO
+------------------------
+
+COMO O AVANCO REFLETE NO CUSTO:
+- Via regra de rateio no mapa PBS -> EAP
+- Fator de conversao para unidades diferentes
+
+COMO O CONSUMO E CALCULADO:
+- Quantidade realizada x Valor unitario da EAP
+- Aplicacao do fator de conversao quando necessario
+
+
+4.5 TELAS EXISTENTES DE PRODUCAO
+--------------------------------
+
++---------------+---------------+---------------+------------------------------+
+| Tela          | Aba           | Tipo          | Descricao                    |
++---------------+---------------+---------------+------------------------------+
+| Dashboard     | dashboard     | Gerencial     | KPIs, Curva S resumo,        |
+|               |               |               | produtividade por frente     |
++---------------+---------------+---------------+------------------------------+
+| PBS           | pbs           | Operacional   | Estrutura operacional        |
+|               |               |               | expansivel                   |
++---------------+---------------+---------------+------------------------------+
+| Parametrizacao| parametrizacao| Configuracao  | Regras de calculo e          |
+|               |               |               | fonte RDO                    |
++---------------+---------------+---------------+------------------------------+
+| RDO           | rdo           | Operacional   | Relatorio diario             |
+|               |               |               | (arquivo separado)           |
++---------------+---------------+---------------+------------------------------+
+| Mapa Custo    | mapa          | Configuracao  | Vinculo PBS x EAP            |
+|               |               |               | com regras                   |
++---------------+---------------+---------------+------------------------------+
+| Medicao       | medicao       | Operacional   | Medicoes de producao         |
+|               |               |               | aprovadas                    |
++---------------+---------------+---------------+------------------------------+
+| Desvios       | desvios       | Analise       | Desvios de producao          |
+|               |               |               | abertos                      |
++---------------+---------------+---------------+------------------------------+
+| Historico     | historico     | Consulta      | Historico de lancamentos     |
++---------------+---------------+---------------+------------------------------+
+
+
+4.6 INDICADORES E DASHBOARDS DE PRODUCAO
+----------------------------------------
+
+KPIs IMPLEMENTADOS:
+
++------------------+--------+--------------------------------+
+| Indicador        | Valor  | Descricao                      |
++------------------+--------+--------------------------------+
+| Avanco Geral     | 65%    | Producao acumulada             |
+| IDP              | 0.92   | Indice de Desempenho de Prazo  |
+| Produtividade    | 94%    | Media de produtividade         |
+| Itens PBS        | 14     | Total de itens operacionais    |
+| Mapeamentos      | 9      | Vinculos PBS x EAP             |
+| RDO Periodo      | 28     | RDOs no periodo                |
+| Desvios Abertos  | 2      | Desvios em tratamento          |
+| Medicoes         | 3      | Medicoes aprovadas             |
++------------------+--------+--------------------------------+
+
+PRODUTIVIDADE POR FRENTE:
+
++---------------+----------+----------+----------+---------+
+| Frente        | Planejado| Realizado| Unidade  | Desvio  |
++---------------+----------+----------+----------+---------+
+| Terraplenagem | 12.000   | 10.500   | m3/dia   | -12.5%  |
+| Pavimentacao  | 3.500    | 3.200    | m2/dia   | -8.6%   |
+| OAE           | 45       | 42       | m3/dia   | -6.7%   |
+| Drenagem      | 450      | 480      | m/dia    | +6.7%   |
+| Sinalizacao   | 200      | 180      | m2/dia   | -10.0%  |
++---------------+----------+----------+----------+---------+
+
+DESVIOS DE PRODUCAO:
+
++--------+------+--------------------+--------+--------+--------+
+| ID     | PBS  | Descricao          | Prev   | Real   | Desvio |
++--------+------+--------------------+--------+--------+--------+
+| DV-001 | 1.1  | Escavacao 1a Cat   | 85.000 | 72.000 | -15.3% |
+| DV-002 | 2.3  | Revest. Asfaltico  | 35.000 | 28.000 | -20.0% |
+| DV-003 | 3.2  | Estrutura Concreto | 450    | 380    | -15.6% |
+| DV-004 | 4.1  | Drenagem Profunda  | 2.800  | 3.100  | +10.7% |
++--------+------+--------------------+--------+--------+--------+
+
++--------+---------------+---------------+---------------+
+| ID     | Impacto Fisico| Impacto Custo | Status        |
++--------+---------------+---------------+---------------+
+| DV-001 | -2.1%         | R$ 450.000    | Aberto        |
+| DV-002 | -1.8%         | R$ 380.000    | Em tratamento |
+| DV-003 | -1.2%         | R$ 220.000    | Resolvido     |
+| DV-004 | +0.5%         | -R$ 45.000    | Positivo      |
++--------+---------------+---------------+---------------+
+
+
+================================================================================
+5. ESTADO ATUAL DO SISTEMA
+================================================================================
+
+5.1 O QUE JA ESTA IMPLEMENTADO
+------------------------------
+
++---------------+----------------------------------+--------+
+| Modulo        | Funcionalidade                   | Status |
++---------------+----------------------------------+--------+
+| CUSTO         | EAP com arvore expansivel        | OK     |
+| CUSTO         | Visao Comercial e Operacional    | OK     |
+| CUSTO         | Custo & Meta com desvios         | OK     |
+| CUSTO         | Engenharia de Valor              | OK     |
+| CUSTO         | Metricas de controle             | OK     |
++---------------+----------------------------------+--------+
+| PLANEJAMENTO  | Cenario Atual com KPIs           | OK     |
+| PLANEJAMENTO  | PBS com proposta/validacao       | OK     |
+| PLANEJAMENTO  | Estrutura com tendencia          | OK     |
+| PLANEJAMENTO  | Gantt visual                     | OK     |
+| PLANEJAMENTO  | Curvas S (fisica, financeira)    | OK     |
+| PLANEJAMENTO  | Histogramas (MO, Equipamentos)   | OK     |
+| PLANEJAMENTO  | Desvio Fisico x Financeiro       | OK     |
++---------------+----------------------------------+--------+
+| PRODUCAO      | Dashboard com KPIs               | OK     |
+| PRODUCAO      | PBS com estrutura expansivel     | OK     |
+| PRODUCAO      | Parametrizacao PBS               | OK     |
+| PRODUCAO      | Mapa Producao -> Custo           | OK     |
+| PRODUCAO      | Desvios com acoes                | OK     |
+| PRODUCAO      | Curva S resumo                   | OK     |
+| PRODUCAO      | Produtividade por frente         | OK     |
++---------------+----------------------------------+--------+
+
+
+5.2 O QUE ESTA PARCIALMENTE IMPLEMENTADO
+----------------------------------------
+
++---------------+----------------------+----------+---------------------------+
+| Modulo        | Funcionalidade       | Status   | Pendencia                 |
++---------------+----------------------+----------+---------------------------+
+| CUSTO         | Analise de Desvios   | PARCIAL  | Tab existe, conteudo      |
+|               |                      |          | placeholder               |
++---------------+----------------------+----------+---------------------------+
+| CUSTO         | Otimizacao           | PARCIAL  | Tab existe, conteudo      |
+|               |                      |          | placeholder               |
++---------------+----------------------+----------+---------------------------+
+| CUSTO         | Vinculacao medicao   | PARCIAL  | 3 itens sem vinculo       |
++---------------+----------------------+----------+---------------------------+
+| PLANEJAMENTO  | Dependencias Gantt   | PARCIAL  | Visual existe, logica nao |
++---------------+----------------------+----------+---------------------------+
+| PRODUCAO      | RDO integrado        | PARCIAL  | Arquivo separado, sem     |
+|               |                      |          | integracao                |
++---------------+----------------------+----------+---------------------------+
+
+
+5.3 O QUE AINDA NAO EXISTE
+--------------------------
+
++---------------+----------------------------------+---------+
+| Modulo        | Funcionalidade                   | Impacto |
++---------------+----------------------------------+---------+
+| GERAL         | Persistencia em banco            | ALTO    |
+| GERAL         | Autenticacao/autorizacao         | ALTO    |
++---------------+----------------------------------+---------+
+| CUSTO         | Apropriacao real de custos       | ALTO    |
+| CUSTO         | Workflow de aprovacao            | MEDIO   |
++---------------+----------------------------------+---------+
+| PLANEJAMENTO  | Calculo automatico caminho crit. | MEDIO   |
+| PLANEJAMENTO  | Reprogramacao de cronograma      | ALTO    |
+| PLANEJAMENTO  | Versionamento de baseline        | MEDIO   |
++---------------+----------------------------------+---------+
+| PRODUCAO      | Lancamento real via RDO          | ALTO    |
+| PRODUCAO      | Propagacao automatica de avanco  | ALTO    |
+| PRODUCAO      | Calculo automatico de tendencia  | MEDIO   |
++---------------+----------------------------------+---------+
+
+
+5.4 LIMITACOES CONHECIDAS
+-------------------------
+
+1. DADOS MOCKADOS: Todos os dados sao estaticos, definidos no codigo
+
+2. SEM PERSISTENCIA: Nenhuma alteracao e salva
+
+3. SEM CALCULO REAL: SPI, CPI, tendencias sao valores fixos
+
+4. GANTT SIMPLIFICADO: Nao calcula caminho critico dinamicamente
+
+5. INTEGRACAO SIMULADA: Vinculo PBS x EAP existe mas nao propaga dados
+
+
+================================================================================
+6. OBSERVACOES TECNICAS
+================================================================================
+
+6.1 SUPOSICOES FEITAS PELO SISTEMA
+----------------------------------
+
+1. F/CD (Fator sobre Custo Direto): Assumido 1.15 como padrao
+
+2. BDI: Assumido 25% como padrao
+
+3. TOLERANCIAS: Assumidas fixas por tipo de servico
+
+4. RITMO: Calculado como media simples (sem sazonalidade)
+
+
+6.2 REGRAS IMPLICITAS
+---------------------
+
+1. STATUS DA PBS:
+   - Proposta pela Producao = "em_proposta"
+   - Validada pelo Planejamento = "validada"
+   - Somente PBS validada entra no cronograma
+
+2. RATEIO DE CUSTOS:
+   - PBS pode ratear para multiplas EAPs
+   - Soma dos rateios deve ser 100%
+   - Fator de conversao aplicado antes do rateio
+
+3. CAMINHO CRITICO:
+   - Definido manualmente como flag critico: true
+   - Destaque visual em vermelho
+
+
+6.3 COMPORTAMENTOS AUTOMATICOS
+------------------------------
+
+1. TOGGLE GRAFICO/TABELA: Todos os cards com dados densos tem alternancia
+
+2. EXPANSAO DE ARVORE: PBS e EAP sao arvores expansiveis
+
+3. CALCULO DE TOTAIS: Somatorios na EAP sao automaticos
+
+4. STATUS POR COR: Verde (OK), Amarelo (Atencao), Vermelho (Critico)
+
+
+6.4 PONTOS QUE EXIGEM DEFINICAO FUTURA
+--------------------------------------
+
+1. WORKFLOW DE APROVACAO: Quem aprova o que? Quais alcadas?
+
+2. REGRA DE TENDENCIA: Como calcular tendencia de forma automatica?
+
+3. BASELINE: Quando criar nova baseline? Como versionar?
+
+4. CONCILIACAO: Como conciliar avanco fisico com financeiro?
+
+5. AUDITORIA: Como rastrear alteracoes? Logs?
+
+
+================================================================================
+                              FIM DO RELATORIO
+================================================================================
+
+Data de Geracao: 07/01/2026
+Arquivo: RELATORIO_TECNICO_CUSTO_PLANEJAMENTO_PRODUCAO.txt
+Linhas: ~900
+Tamanho: ~45KB
+
+Este relatorio foi gerado com base na analise completa dos arquivos de 
+codigo-fonte do sistema ERP-GNESIS. Serve como base para auditoria e 
+analise critica de coerencia pelo arquiteto do sistema.
+
+================================================================================

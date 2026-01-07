@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { AppLayout } from "@/components/layout/app-layout"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -206,43 +205,41 @@ export default function ChangeControlPage() {
   }
 
   return (
-    <AppLayout>
-      <div className="flex flex-col h-full">
-        {/* Header */}
-        <div className="flex-shrink-0 border-b border-border bg-card px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <div className="flex items-center gap-3">
-                <h1 className="text-xl font-bold text-foreground">Change Control</h1>
-                <Badge variant="outline" className="text-xs font-mono">
-                  RM-05
-                </Badge>
-              </div>
-              <p className="text-sm text-muted-foreground mt-1">SME, Aditivos e Pleitos</p>
-            </div>
+    <div className="flex flex-col h-full">
+      {/* Header */}
+      <div className="flex-shrink-0 border-b border-border bg-card px-6 py-4">
+        <div className="flex items-center justify-between">
+          <div>
             <div className="flex items-center gap-3">
-              <Select value={competencia} onValueChange={setCompetencia}>
-                <SelectTrigger className="w-36 h-9 text-xs">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="2025-12">Dezembro/2025</SelectItem>
-                  <SelectItem value="2025-11">Novembro/2025</SelectItem>
-                  <SelectItem value="2025-10">Outubro/2025</SelectItem>
-                </SelectContent>
-              </Select>
-              <Select value={filtroTipo} onValueChange={setFiltroTipo}>
-                <SelectTrigger className="w-32 h-9 text-xs">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="todos">Todos os Tipos</SelectItem>
-                  <SelectItem value="SME">SME</SelectItem>
-                  <SelectItem value="Aditivo">Aditivo</SelectItem>
-                  <SelectItem value="Pleito">Pleito</SelectItem>
-                </SelectContent>
-              </Select>
+              <h1 className="text-xl font-bold text-foreground">Change Control</h1>
+              <Badge variant="outline" className="text-xs font-mono">
+                RM-05
+              </Badge>
             </div>
+            <p className="text-sm text-muted-foreground mt-1">SME, Aditivos e Pleitos</p>
+          </div>
+          <div className="flex items-center gap-3">
+            <Select value={competencia} onValueChange={setCompetencia}>
+              <SelectTrigger className="w-36 h-9 text-xs">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="2025-12">Dezembro/2025</SelectItem>
+                <SelectItem value="2025-11">Novembro/2025</SelectItem>
+                <SelectItem value="2025-10">Outubro/2025</SelectItem>
+              </SelectContent>
+            </Select>
+            <Select value={filtroTipo} onValueChange={setFiltroTipo}>
+              <SelectTrigger className="w-32 h-9 text-xs">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="todos">Todos os Tipos</SelectItem>
+                <SelectItem value="SME">SME</SelectItem>
+                <SelectItem value="Aditivo">Aditivo</SelectItem>
+                <SelectItem value="Pleito">Pleito</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </div>
 
@@ -550,6 +547,6 @@ export default function ChangeControlPage() {
           </div>
         </div>
       </div>
-    </AppLayout>
+    </div>
   )
 }

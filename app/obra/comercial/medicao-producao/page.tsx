@@ -301,9 +301,7 @@ export default function MedicaoProducaoPage() {
               <div>
                 <div className="flex items-center gap-3">
                   <h1 className="text-xl font-semibold">Medição de Produção</h1>
-                  <Badge variant="outline" className="font-mono text-xs">
-                    RM-02
-                  </Badge>
+                  <Badge className="bg-primary/10 text-primary border-primary/20">RM-02</Badge>
                 </div>
                 <p className="text-sm text-muted-foreground mt-0.5">Avanço físico baseado na EAP</p>
               </div>

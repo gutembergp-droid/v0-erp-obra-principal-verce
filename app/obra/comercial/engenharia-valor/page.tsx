@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { AppLayout } from "@/components/layout/app-layout"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -138,7 +137,7 @@ export default function EngenhariaValorPage() {
   const cpiMedio = performanceCRCOMock.reduce((acc, p) => acc + p.cpi, 0) / performanceCRCOMock.length
 
   return (
-    <AppLayout>
+    <>
       <div className="px-6 pt-6 pb-2">
         <div className="flex items-center gap-3">
           <h1 className="text-2xl font-bold">Engenharia de Valor</h1>
@@ -458,6 +457,6 @@ export default function EngenhariaValorPage() {
           </TabsContent>
         </Tabs>
       </div>
-    </AppLayout>
+    </>
   )
 }

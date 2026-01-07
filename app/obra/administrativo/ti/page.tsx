@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { AppLayout } from "@/components/layout/app-layout"
 import { Header } from "@/components/layout/header"
 import { InfoTooltip } from "@/components/ui/info-tooltip"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
@@ -93,7 +92,7 @@ export default function TIPage() {
   const ativosManutencao = ativosTIMock.filter((a) => a.status === "manutencao").length
 
   return (
-    <AppLayout>
+    <>
       <Header
         title="TI / Infraestrutura"
         description="Gestao de Ativos de Tecnologia da Informacao"
@@ -235,6 +234,6 @@ export default function TIPage() {
           </CardContent>
         </Card>
       </div>
-    </AppLayout>
+    </>
   )
 }
