@@ -4,6 +4,14 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Badge } from "@/components/ui/badge"
+import { Input } from "@/components/ui/input"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Textarea } from "@/components/ui/textarea"
+import { Progress } from "@/components/ui/progress"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Label } from "@/components/ui/label"
 import {
   ChevronLeft,
   ChevronRight,
@@ -17,17 +25,81 @@ import {
   MessageSquare,
   Paperclip,
   History,
+  Search,
+  Plus,
+  Calendar,
+  Users,
+  TrendingUp,
+  TrendingDown,
+  Link2,
+  Target,
+  Gauge,
+  FileCheck,
+  Shield,
+  BarChart3,
+  ExternalLink,
+  CalendarDays,
+  List,
+  PieChart,
+  Play,
+  Sun,
+  Cloud,
+  Wind,
+  Thermometer,
+  HardHat,
+  Camera,
+  ClipboardList,
+  AlertCircle,
+  Send,
+  Eye,
+  FileImage,
+  FilePlus,
 } from "lucide-react"
 import { InfoTooltip } from "@/components/ui/info-tooltip"
+import {
+  PieChart as RechartsPieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+  LineChart,
+  Line,
+} from "recharts"
 
-type Origem = "corporativo" | "contrato" | "obra" | "auditoria" | "controle" | "comunicacao"
+type Tipo = "reuniao" | "cobranca" | "aprovacao" | "auditoria" | "comunicacao" | "planejamento" | "financeiro"
+type Origem = "contrato" | "obra" | "corporativo" | "auditoria"
 type Status = "pendente" | "em_andamento" | "concluido" | "atrasado"
-type Prioridade = "alta" | "media" | "baixa"
+type Prioridade = "critica" | "alta" | "media" | "baixa"
+
+interface OrigemNeural {
+  tipo: "kpi" | "medicao" | "change_control" | "qsms" | "governanca" | "financeiro"
+  label: string
+  link: string
+}
+
+interface ChecklistItem {
+  id: string
+  texto: string
+  concluido: boolean
+}
+
+interface Comentario {
+  id: string
+  usuario: string
+  data: string
+  texto: string
+}
 
 interface AcaoGerencial {
   id: string
   titulo: string
   descricao: string
+  tipo: Tipo
   origem: Origem
   status: Status
   prioridade: Prioridade
@@ -36,17 +108,180 @@ interface AcaoGerencial {
   dataCriacao: string
   historico: { data: string; acao: string; usuario: string }[]
   anexos: number
-  comentarios: number
+  comentarios: Comentario[]
+  checklist: ChecklistItem[]
+  origemNeural?: OrigemNeural
 }
+
+interface AtividadeExecucao {
+  id: string
+  nome: string
+  frente: string
+  progresso: number
+  efetivo: number
+  ritmo: "adiantado" | "normal" | "atrasado"
+  previsaoTermino: string
+  diasRestantes: number
+  responsavel: string
+  ultimaAtualizacao: string
+}
+
+interface OcorrenciaDia {
+  id: string
+  hora: string
+  tipo: "parada" | "alerta" | "info"
+  descricao: string
+  frente: string
+  duracao?: string
+}
+
+interface NCDia {
+  id: string
+  descricao: string
+  tipo: string
+  status: "aberta" | "em_tratamento" | "fechada"
+  responsavel: string
+}
+
+interface EvidenciaDia {
+  id: string
+  tipo: "foto" | "documento" | "rdo"
+  nome: string
+  data: string
+  hora: string
+}
+
+interface DemandaGerada {
+  id: string
+  departamento: string
+  assunto: string
+  status: "pendente" | "concluida"
+  data: string
+}
+
+const atividadesExecucao: AtividadeExecucao[] = [
+  {
+    id: "AT-001",
+    nome: "Fundacao Bloco B",
+    frente: "Obras de Arte",
+    progresso: 65,
+    efetivo: 32,
+    ritmo: "atrasado",
+    previsaoTermino: "15/01/2026",
+    diasRestantes: 8,
+    responsavel: "Eng. Carlos Lima",
+    ultimaAtualizacao: "07/01/2026 08:30",
+  },
+  {
+    id: "AT-002",
+    nome: "Terraplenagem Norte",
+    frente: "Terraplenagem",
+    progresso: 92,
+    efetivo: 85,
+    ritmo: "adiantado",
+    previsaoTermino: "09/01/2026",
+    diasRestantes: 2,
+    responsavel: "Eng. Pedro Costa",
+    ultimaAtualizacao: "07/01/2026 09:15",
+  },
+  {
+    id: "AT-003",
+    nome: "Concretagem Pilar P12",
+    frente: "Obras de Arte",
+    progresso: 30,
+    efetivo: 18,
+    ritmo: "atrasado",
+    previsaoTermino: "20/01/2026",
+    diasRestantes: 13,
+    responsavel: "Eng. Ana Silva",
+    ultimaAtualizacao: "07/01/2026 07:45",
+  },
+  {
+    id: "AT-004",
+    nome: "Pavimentacao KM 45-48",
+    frente: "Pavimentacao",
+    progresso: 80,
+    efetivo: 40,
+    ritmo: "normal",
+    previsaoTermino: "10/01/2026",
+    diasRestantes: 3,
+    responsavel: "Eng. Roberto Alves",
+    ultimaAtualizacao: "07/01/2026 08:00",
+  },
+  {
+    id: "AT-005",
+    nome: "Drenagem Trecho Sul",
+    frente: "Drenagem",
+    progresso: 55,
+    efetivo: 22,
+    ritmo: "normal",
+    previsaoTermino: "18/01/2026",
+    diasRestantes: 11,
+    responsavel: "Eng. Maria Santos",
+    ultimaAtualizacao: "07/01/2026 09:00",
+  },
+]
+
+const ocorrenciasDia: OcorrenciaDia[] = [
+  {
+    id: "OC-001",
+    hora: "14:32",
+    tipo: "parada",
+    descricao: "Parada por chuva forte",
+    frente: "Terraplenagem Sul",
+    duracao: "45min",
+  },
+  {
+    id: "OC-002",
+    hora: "10:15",
+    tipo: "alerta",
+    descricao: "Equipamento CAT320 em manutencao preventiva",
+    frente: "Terraplenagem Norte",
+  },
+]
+
+const ncsDia: NCDia[] = [
+  {
+    id: "NC-089",
+    descricao: "Concreto fora de especificacao - Lote 234",
+    tipo: "Material",
+    status: "em_tratamento",
+    responsavel: "Eng. Qualidade",
+  },
+]
+
+const evidenciasMock: EvidenciaDia[] = [
+  { id: "EV-001", tipo: "foto", nome: "Avanco Fundacao 07-01", data: "07/01/2026", hora: "09:32" },
+  { id: "EV-002", tipo: "foto", nome: "Equipe Terraplenagem", data: "07/01/2026", hora: "08:15" },
+  { id: "EV-003", tipo: "rdo", nome: "RDO 06/01/2026", data: "06/01/2026", hora: "18:00" },
+]
+
+const demandasMock: DemandaGerada[] = [
+  {
+    id: "DM-1234",
+    departamento: "Comercial",
+    assunto: "Custo atualizado Fundacao B",
+    status: "pendente",
+    data: "06/01/2026",
+  },
+  {
+    id: "DM-1230",
+    departamento: "Planejamento",
+    assunto: "Reprojetar cronograma OAE",
+    status: "concluida",
+    data: "05/01/2026",
+  },
+]
 
 const acoes: AcaoGerencial[] = [
   {
     id: "AG-001",
     titulo: "Aprovar BM-12 para faturamento",
-    descricao: "Boletim de Medicao 12 aguardando aprovacao final do GC para envio ao cliente",
+    descricao: "Boletim de Medicao 12 aguardando aprovacao final do GC para envio ao cliente. Valor: R$ 2.450.000,00",
+    tipo: "aprovacao",
     origem: "contrato",
     status: "pendente",
-    prioridade: "alta",
+    prioridade: "critica",
     responsavel: "Gerente Contrato",
     prazo: "06/01/2026",
     dataCriacao: "03/01/2026",
@@ -55,29 +290,53 @@ const acoes: AcaoGerencial[] = [
       { data: "04/01/2026", acao: "Documentacao anexada", usuario: "Carlos Lima" },
     ],
     anexos: 3,
-    comentarios: 2,
+    comentarios: [
+      { id: "c1", usuario: "Ana Silva", data: "04/01/2026", texto: "Documentos conferidos e OK" },
+      { id: "c2", usuario: "Carlos Lima", data: "05/01/2026", texto: "Aguardando aprovacao do GC" },
+    ],
+    checklist: [
+      { id: "ck1", texto: "Conferir valores da medicao", concluido: true },
+      { id: "ck2", texto: "Validar documentacao", concluido: true },
+      { id: "ck3", texto: "Aprovar faturamento", concluido: false },
+    ],
+    origemNeural: { tipo: "medicao", label: "BM-12 / Dez-2025", link: "/obra/comercial/medicao" },
   },
   {
     id: "AG-002",
-    titulo: "Reuniao de alinhamento com Cliente",
-    descricao: "Reuniao mensal de acompanhamento com representantes do DNIT",
+    titulo: "Reuniao de alinhamento com Cliente DNIT",
+    descricao: "Reuniao mensal de acompanhamento com representantes do DNIT. Pauta: Cronograma e Terraplenagem",
+    tipo: "reuniao",
     origem: "corporativo",
-    status: "em_andamento",
+    status: "pendente",
     prioridade: "alta",
     responsavel: "Gerente Contrato",
     prazo: "07/01/2026",
     dataCriacao: "02/01/2026",
     historico: [{ data: "02/01/2026", acao: "Agendada pela Diretoria", usuario: "Diretor Operacoes" }],
     anexos: 1,
-    comentarios: 5,
+    comentarios: [
+      {
+        id: "c1",
+        usuario: "Diretor Operacoes",
+        data: "02/01/2026",
+        texto: "Confirmar presenca de todos os envolvidos",
+      },
+    ],
+    checklist: [
+      { id: "ck1", texto: "Preparar apresentacao", concluido: false },
+      { id: "ck2", texto: "Confirmar sala", concluido: true },
+      { id: "ck3", texto: "Enviar convite", concluido: true },
+    ],
+    origemNeural: { tipo: "governanca", label: "Reuniao Mensal Cliente", link: "/obra/gerencial/cockpit" },
   },
   {
     id: "AG-003",
-    titulo: "Validar NC-2024-089 (Concreto)",
-    descricao: "Nao conformidade em lote de concreto - aguardando parecer tecnico",
+    titulo: "Validar NC-2024-089 (Concreto fora de especificacao)",
+    descricao: "Nao conformidade em lote de concreto do fornecedor XYZ - aguardando parecer tecnico e plano de acao",
+    tipo: "auditoria",
     origem: "auditoria",
     status: "atrasado",
-    prioridade: "alta",
+    prioridade: "critica",
     responsavel: "Eng. Qualidade",
     prazo: "04/01/2026",
     dataCriacao: "28/12/2025",
@@ -86,27 +345,45 @@ const acoes: AcaoGerencial[] = [
       { data: "02/01/2026", acao: "Solicitado laudo laboratorio", usuario: "Joao Pereira" },
     ],
     anexos: 4,
-    comentarios: 8,
+    comentarios: [
+      { id: "c1", usuario: "Maria Santos", data: "28/12/2025", texto: "Lote bloqueado para uso" },
+      { id: "c2", usuario: "Joao Pereira", data: "02/01/2026", texto: "Laudo solicitado ao Lab Central" },
+    ],
+    checklist: [
+      { id: "ck1", texto: "Registrar NC", concluido: true },
+      { id: "ck2", texto: "Bloquear lote", concluido: true },
+      { id: "ck3", texto: "Solicitar laudo", concluido: true },
+      { id: "ck4", texto: "Elaborar plano de acao", concluido: false },
+      { id: "ck5", texto: "Fechar NC", concluido: false },
+    ],
+    origemNeural: { tipo: "qsms", label: "NC-2024-089", link: "/obra/qsms/nao-conformidades" },
   },
   {
     id: "AG-004",
-    titulo: "Liberar requisicao de pessoal",
-    descricao: "Requisicao de 5 armadores para frente de servico OAE-03",
+    titulo: "Liberar requisicao de pessoal RP-0234",
+    descricao: "Requisicao de 5 armadores para frente de servico OAE-03. Urgente para nao atrasar cronograma.",
+    tipo: "aprovacao",
     origem: "obra",
     status: "pendente",
-    prioridade: "media",
+    prioridade: "alta",
     responsavel: "Gerente Contrato",
     prazo: "08/01/2026",
     dataCriacao: "05/01/2026",
     historico: [{ data: "05/01/2026", acao: "Solicitado pelo Eng. Producao", usuario: "Pedro Costa" }],
     anexos: 1,
-    comentarios: 0,
+    comentarios: [],
+    checklist: [
+      { id: "ck1", texto: "Verificar disponibilidade orcamentaria", concluido: false },
+      { id: "ck2", texto: "Aprovar requisicao", concluido: false },
+    ],
+    origemNeural: { tipo: "governanca", label: "OAE-03 / Armacao", link: "/obra/engenharia/planejamento" },
   },
   {
     id: "AG-005",
-    titulo: "Revisar projecao de fluxo de caixa",
-    descricao: "Atualizar projecao financeira para os proximos 3 meses",
-    origem: "controle",
+    titulo: "Revisar projecao de fluxo de caixa Q1/2026",
+    descricao: "Atualizar projecao financeira para os proximos 3 meses considerando novos aditivos",
+    tipo: "financeiro",
+    origem: "corporativo",
     status: "em_andamento",
     prioridade: "media",
     responsavel: "Controller",
@@ -114,13 +391,25 @@ const acoes: AcaoGerencial[] = [
     dataCriacao: "04/01/2026",
     historico: [{ data: "04/01/2026", acao: "Iniciada analise", usuario: "Fernanda Lima" }],
     anexos: 2,
-    comentarios: 1,
+    comentarios: [{ id: "c1", usuario: "Fernanda Lima", data: "05/01/2026", texto: "Em elaboracao, 60% concluido" }],
+    checklist: [
+      { id: "ck1", texto: "Coletar dados de receita", concluido: true },
+      { id: "ck2", texto: "Coletar dados de despesa", concluido: true },
+      { id: "ck3", texto: "Projetar fluxo", concluido: false },
+      { id: "ck4", texto: "Validar com Diretoria", concluido: false },
+    ],
+    origemNeural: {
+      tipo: "financeiro",
+      label: "Fluxo de Caixa Q1/2026",
+      link: "/obra/gerencial/cockpit/visao-financeiro",
+    },
   },
   {
     id: "AG-006",
     titulo: "Responder oficio DNIT 0234/2026",
-    descricao: "Oficio solicitando esclarecimentos sobre cronograma de terraplenagem",
-    origem: "comunicacao",
+    descricao: "Oficio solicitando esclarecimentos sobre cronograma de terraplenagem - Prazo legal: 5 dias uteis",
+    tipo: "comunicacao",
+    origem: "contrato",
     status: "pendente",
     prioridade: "alta",
     responsavel: "Gerente Contrato",
@@ -128,12 +417,19 @@ const acoes: AcaoGerencial[] = [
     dataCriacao: "05/01/2026",
     historico: [{ data: "05/01/2026", acao: "Recebido e protocolado", usuario: "Secretaria" }],
     anexos: 1,
-    comentarios: 0,
+    comentarios: [],
+    checklist: [
+      { id: "ck1", texto: "Analisar demanda", concluido: false },
+      { id: "ck2", texto: "Elaborar resposta", concluido: false },
+      { id: "ck3", texto: "Aprovar resposta", concluido: false },
+      { id: "ck4", texto: "Protocolar envio", concluido: false },
+    ],
   },
   {
     id: "AG-007",
-    titulo: "Aprovar pedido de compra PC-1247",
-    descricao: "Pedido de compra de aco CA-50 - R$ 847.000,00",
+    titulo: "Aprovar pedido de compra PC-1247 (Aco CA-50)",
+    descricao: "Pedido de compra de aco CA-50 para OAE - Valor: R$ 847.000,00 - 3 cotacoes anexas",
+    tipo: "aprovacao",
     origem: "obra",
     status: "concluido",
     prioridade: "alta",
@@ -146,9 +442,106 @@ const acoes: AcaoGerencial[] = [
       { data: "05/01/2026", acao: "Aprovado pelo GC", usuario: "Gerente Contrato" },
     ],
     anexos: 5,
-    comentarios: 3,
+    comentarios: [
+      { id: "c1", usuario: "Lucas Oliveira", data: "04/01/2026", texto: "Melhor preco: Gerdau - R$ 847k" },
+      { id: "c2", usuario: "Gerente Contrato", data: "05/01/2026", texto: "Aprovado. Pode prosseguir." },
+    ],
+    checklist: [
+      { id: "ck1", texto: "Coletar cotacoes", concluido: true },
+      { id: "ck2", texto: "Analisar propostas", concluido: true },
+      { id: "ck3", texto: "Aprovar compra", concluido: true },
+    ],
+  },
+  {
+    id: "AG-008",
+    titulo: "Atualizar cronograma executivo - Revisao 12",
+    descricao: "Incorporar impactos das chuvas de dezembro e reprogramar atividades criticas de janeiro",
+    tipo: "planejamento",
+    origem: "obra",
+    status: "em_andamento",
+    prioridade: "alta",
+    responsavel: "Eng. Planejamento",
+    prazo: "08/01/2026",
+    dataCriacao: "02/01/2026",
+    historico: [
+      { data: "02/01/2026", acao: "Iniciada revisao", usuario: "Roberto Alves" },
+      { data: "04/01/2026", acao: "Coletados dados de campo", usuario: "Roberto Alves" },
+    ],
+    anexos: 2,
+    comentarios: [],
+    checklist: [
+      { id: "ck1", texto: "Coletar dados de producao", concluido: true },
+      { id: "ck2", texto: "Analisar desvios", concluido: true },
+      { id: "ck3", texto: "Reprogramar atividades", concluido: false },
+      { id: "ck4", texto: "Validar com producao", concluido: false },
+    ],
+    origemNeural: { tipo: "kpi", label: "SPI: 0.92 / CPI: 0.98", link: "/obra/gerencial/indicadores" },
+  },
+  {
+    id: "AG-009",
+    titulo: "Cobranca medicao pendente - Nov/2025",
+    descricao: "Medicao de novembro ainda nao paga pelo cliente. Valor: R$ 1.890.000,00 - Vencida ha 15 dias",
+    tipo: "cobranca",
+    origem: "contrato",
+    status: "atrasado",
+    prioridade: "critica",
+    responsavel: "Gerente Contrato",
+    prazo: "20/12/2025",
+    dataCriacao: "15/12/2025",
+    historico: [
+      { data: "15/12/2025", acao: "Enviada cobranca inicial", usuario: "Financeiro" },
+      { data: "28/12/2025", acao: "Segunda cobranca enviada", usuario: "Financeiro" },
+      { data: "03/01/2026", acao: "Escalado para GC", usuario: "Controller" },
+    ],
+    anexos: 3,
+    comentarios: [
+      {
+        id: "c1",
+        usuario: "Controller",
+        data: "03/01/2026",
+        texto: "Cliente alega problema de fluxo. Negociar prazo.",
+      },
+    ],
+    checklist: [
+      { id: "ck1", texto: "Enviar cobranca", concluido: true },
+      { id: "ck2", texto: "Contatar cliente", concluido: true },
+      { id: "ck3", texto: "Negociar pagamento", concluido: false },
+      { id: "ck4", texto: "Receber valores", concluido: false },
+    ],
+    origemNeural: { tipo: "financeiro", label: "Contas a Receber", link: "/obra/gerencial/cockpit/visao-financeiro" },
+  },
+  {
+    id: "AG-010",
+    titulo: "Auditoria interna de seguranca - Janeiro",
+    descricao: "Auditoria programada de SSMA para verificacao de conformidade com NRs e procedimentos internos",
+    tipo: "auditoria",
+    origem: "auditoria",
+    status: "pendente",
+    prioridade: "media",
+    responsavel: "Eng. Seguranca",
+    prazo: "15/01/2026",
+    dataCriacao: "02/01/2026",
+    historico: [{ data: "02/01/2026", acao: "Auditoria programada", usuario: "QSMS" }],
+    anexos: 1,
+    comentarios: [],
+    checklist: [
+      { id: "ck1", texto: "Preparar documentacao", concluido: false },
+      { id: "ck2", texto: "Realizar auditoria", concluido: false },
+      { id: "ck3", texto: "Elaborar relatorio", concluido: false },
+    ],
+    origemNeural: { tipo: "qsms", label: "Auditoria SSMA Jan/26", link: "/obra/qsms/auditorias" },
   },
 ]
+
+const tipoConfig: Record<Tipo, { label: string; color: string }> = {
+  reuniao: { label: "Reuniao", color: "bg-blue-500/10 text-blue-600 border-blue-500/20" },
+  cobranca: { label: "Cobranca", color: "bg-orange-500/10 text-orange-600 border-orange-500/20" },
+  aprovacao: { label: "Aprovacao", color: "bg-emerald-500/10 text-emerald-600 border-emerald-500/20" },
+  auditoria: { label: "Auditoria", color: "bg-red-500/10 text-red-600 border-red-500/20" },
+  comunicacao: { label: "Comunicacao", color: "bg-cyan-500/10 text-cyan-600 border-cyan-500/20" },
+  planejamento: { label: "Planejamento", color: "bg-purple-500/10 text-purple-600 border-purple-500/20" },
+  financeiro: { label: "Financeiro", color: "bg-yellow-500/10 text-yellow-600 border-yellow-500/20" },
+}
 
 const origemConfig: Record<Origem, { label: string; color: string; icon: typeof Building2 }> = {
   corporativo: {
@@ -159,43 +552,834 @@ const origemConfig: Record<Origem, { label: string; color: string; icon: typeof 
   contrato: { label: "Contrato", color: "bg-blue-500/10 text-blue-600 border-blue-500/20", icon: FileText },
   obra: { label: "Obra", color: "bg-orange-500/10 text-orange-600 border-orange-500/20", icon: Building2 },
   auditoria: { label: "Auditoria", color: "bg-red-500/10 text-red-600 border-red-500/20", icon: AlertTriangle },
-  controle: { label: "Controle", color: "bg-emerald-500/10 text-emerald-600 border-emerald-500/20", icon: FileText },
-  comunicacao: { label: "Comunicacao", color: "bg-cyan-500/10 text-cyan-600 border-cyan-500/20", icon: MessageSquare },
 }
 
 const statusConfig: Record<Status, { label: string; color: string; icon: typeof Circle }> = {
-  pendente: { label: "Pendente", color: "text-yellow-600", icon: Circle },
-  em_andamento: { label: "Em Andamento", color: "text-blue-600", icon: Clock },
-  concluido: { label: "Concluido", color: "text-green-600", icon: CheckCircle2 },
-  atrasado: { label: "Atrasado", color: "text-red-600", icon: AlertTriangle },
+  pendente: { label: "Pendente", color: "text-yellow-600 bg-yellow-500/10", icon: Circle },
+  em_andamento: { label: "Em Andamento", color: "text-blue-600 bg-blue-500/10", icon: Clock },
+  concluido: { label: "Concluido", color: "text-green-600 bg-green-500/10", icon: CheckCircle2 },
+  atrasado: { label: "Atrasado", color: "text-red-600 bg-red-500/10", icon: AlertTriangle },
 }
 
 const prioridadeConfig: Record<Prioridade, { label: string; color: string }> = {
-  alta: { label: "Alta", color: "bg-red-500/10 text-red-600 border-red-500/30" },
+  critica: { label: "Critica", color: "bg-red-600 text-white border-red-600" },
+  alta: { label: "Alta", color: "bg-orange-500/10 text-orange-600 border-orange-500/30" },
   media: { label: "Media", color: "bg-yellow-500/10 text-yellow-600 border-yellow-500/30" },
   baixa: { label: "Baixa", color: "bg-gray-500/10 text-gray-600 border-gray-500/30" },
 }
 
-const diasSemana = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"]
+const origemNeuralConfig: Record<string, { icon: typeof Target; color: string }> = {
+  kpi: { icon: Gauge, color: "text-blue-600" },
+  medicao: { icon: FileCheck, color: "text-emerald-600" },
+  change_control: { icon: FileText, color: "text-purple-600" },
+  qsms: { icon: Shield, color: "text-red-600" },
+  governanca: { icon: Target, color: "text-orange-600" },
+  financeiro: { icon: BarChart3, color: "text-yellow-600" },
+}
 
 export default function AgendaGerencialPage() {
   const [selectedAcao, setSelectedAcao] = useState<AcaoGerencial | null>(null)
-  const [visaoTemporal, setVisaoTemporal] = useState<"semana" | "mes">("semana")
+  const [visaoTemporal, setVisaoTemporal] = useState<"dia" | "semana" | "mes">("semana")
   const [filtroOrigem, setFiltroOrigem] = useState<Origem | "todos">("todos")
   const [filtroStatus, setFiltroStatus] = useState<Status | "todos">("todos")
+  const [searchTerm, setSearchTerm] = useState("")
+  const [novoComentario, setNovoComentario] = useState("")
+  const [modoVisualizacao, setModoVisualizacao] = useState<"lista" | "calendario" | "graficos" | "painel">("lista")
+  const [selectedDay, setSelectedDay] = useState<number | null>(null)
+  const [mesCalendario, setMesCalendario] = useState({ mes: 0, ano: 2026 })
+
+  const [dataPainel, setDataPainel] = useState("07/01/2026")
+  const [selectedAtividade, setSelectedAtividade] = useState<AtividadeExecucao | null>(null)
+  const [showDemandaDialog, setShowDemandaDialog] = useState(false)
+  const [showEvidenciaDialog, setShowEvidenciaDialog] = useState(false)
+  const [showPADialog, setShowPADialog] = useState(false)
+  const [showNCDialog, setShowNCDialog] = useState(false)
+  const [demandaDepartamento, setDemandaDepartamento] = useState("")
+  const [demandaAssunto, setDemandaAssunto] = useState("")
 
   const acoesFiltradas = acoes.filter((acao) => {
     if (filtroOrigem !== "todos" && acao.origem !== filtroOrigem) return false
     if (filtroStatus !== "todos" && acao.status !== filtroStatus) return false
+    if (
+      searchTerm &&
+      !acao.titulo.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      !acao.id.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+      return false
     return true
   })
 
   const contadores = {
-    pendente: acoes.filter((a) => a.status === "pendente").length,
-    em_andamento: acoes.filter((a) => a.status === "em_andamento").length,
-    atrasado: acoes.filter((a) => a.status === "atrasado").length,
-    concluido: acoes.filter((a) => a.status === "concluido").length,
+    pendentes: acoes.filter((a) => a.status === "pendente").length,
+    atrasadas: acoes.filter((a) => a.status === "atrasado").length,
+    criticas: acoes.filter((a) => a.prioridade === "critica").length,
+    semResponsavel: acoes.filter((a) => !a.responsavel || a.responsavel === "").length,
+    eventosHoje: acoes.filter((a) => a.prazo === "07/01/2026").length,
+    emAndamento: acoes.filter((a) => a.status === "em_andamento").length,
+    concluidas: acoes.filter((a) => a.status === "concluido").length,
+    naoIniciadas: acoes.filter((a) => a.status === "pendente" && a.checklist.every((c) => !c.concluido)).length,
+    total: acoes.length,
   }
+
+  const tendencias = {
+    pendentes: -12,
+    atrasadas: +8,
+    criticas: +2,
+  }
+
+  const contadoresPainel = {
+    efetivo: atividadesExecucao.reduce((acc, a) => acc + a.efetivo, 0),
+    atividades: atividadesExecucao.length,
+    atrasadas: atividadesExecucao.filter((a) => a.ritmo === "atrasado").length,
+    ocorrencias: ocorrenciasDia.length,
+    ncs: ncsDia.filter((nc) => nc.status !== "fechada").length,
+  }
+
+  const getDiasNoMes = (mes: number, ano: number) => {
+    return new Date(ano, mes + 1, 0).getDate()
+  }
+
+  const getPrimeiroDiaSemana = (mes: number, ano: number) => {
+    return new Date(ano, mes, 1).getDay()
+  }
+
+  const diasSemana = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"]
+  const mesesNomes = [
+    "Janeiro",
+    "Fevereiro",
+    "Marco",
+    "Abril",
+    "Maio",
+    "Junho",
+    "Julho",
+    "Agosto",
+    "Setembro",
+    "Outubro",
+    "Novembro",
+    "Dezembro",
+  ]
+
+  const getAcoesPorDia = (dia: number) => {
+    const diaStr = dia.toString().padStart(2, "0")
+    const mesStr = (mesCalendario.mes + 1).toString().padStart(2, "0")
+    const dataStr = `${diaStr}/${mesStr}/${mesCalendario.ano}`
+    return acoes.filter((a) => a.prazo === dataStr)
+  }
+
+  const renderCalendario = () => {
+    const diasNoMes = getDiasNoMes(mesCalendario.mes, mesCalendario.ano)
+    const primeiroDia = getPrimeiroDiaSemana(mesCalendario.mes, mesCalendario.ano)
+    const dias = []
+
+    for (let i = 0; i < primeiroDia; i++) {
+      dias.push(<div key={`empty-${i}`} className="h-24 bg-muted/20 rounded" />)
+    }
+
+    for (let dia = 1; dia <= diasNoMes; dia++) {
+      const acoesDia = getAcoesPorDia(dia)
+      const isHoje = dia === 7 && mesCalendario.mes === 0
+      const isSelected = selectedDay === dia
+
+      dias.push(
+        <div
+          key={dia}
+          onClick={() => setSelectedDay(dia === selectedDay ? null : dia)}
+          className={`h-24 p-1.5 rounded border cursor-pointer transition-all ${
+            isHoje ? "border-primary bg-primary/5" : "border-border/30 hover:border-border"
+          } ${isSelected ? "ring-2 ring-primary" : ""}`}
+        >
+          <div className="flex items-center justify-between mb-1">
+            <span className={`text-xs font-medium ${isHoje ? "text-primary" : "text-muted-foreground"}`}>{dia}</span>
+            {acoesDia.length > 0 && (
+              <Badge variant="secondary" className="text-[9px] h-4 px-1">
+                {acoesDia.length}
+              </Badge>
+            )}
+          </div>
+          <div className="space-y-0.5 overflow-hidden">
+            {acoesDia.slice(0, 3).map((acao) => (
+              <div
+                key={acao.id}
+                className={`text-[9px] px-1 py-0.5 rounded truncate ${
+                  acao.status === "atrasado"
+                    ? "bg-red-500/20 text-red-700"
+                    : acao.status === "concluido"
+                      ? "bg-green-500/20 text-green-700"
+                      : acao.status === "em_andamento"
+                        ? "bg-blue-500/20 text-blue-700"
+                        : "bg-yellow-500/20 text-yellow-700"
+                }`}
+              >
+                {acao.titulo.substring(0, 18)}...
+              </div>
+            ))}
+            {acoesDia.length > 3 && (
+              <span className="text-[9px] text-muted-foreground">+{acoesDia.length - 3} mais</span>
+            )}
+          </div>
+        </div>,
+      )
+    }
+
+    return dias
+  }
+
+  const dadosStatusPizza = [
+    { name: "Pendentes", value: contadores.pendentes, color: "#eab308" },
+    { name: "Em Andamento", value: contadores.emAndamento, color: "#3b82f6" },
+    { name: "Atrasadas", value: contadores.atrasadas, color: "#ef4444" },
+    { name: "Concluidas", value: contadores.concluidas, color: "#22c55e" },
+  ]
+
+  const dadosPorResponsavel = [
+    { name: "Gerente Contrato", total: 5, concluidas: 1, pendentes: 3, atrasadas: 1 },
+    { name: "Eng. Qualidade", total: 1, concluidas: 0, pendentes: 0, atrasadas: 1 },
+    { name: "Controller", total: 1, concluidas: 0, pendentes: 1, atrasadas: 0 },
+    { name: "Eng. Planejamento", total: 1, concluidas: 0, pendentes: 1, atrasadas: 0 },
+    { name: "Eng. Seguranca", total: 1, concluidas: 0, pendentes: 1, atrasadas: 0 },
+  ]
+
+  const dadosEvolucaoSemanal = [
+    { semana: "Sem 1", criadas: 8, concluidas: 3, atrasadas: 1 },
+    { semana: "Sem 2", criadas: 5, concluidas: 4, atrasadas: 2 },
+    { semana: "Sem 3", criadas: 7, concluidas: 5, atrasadas: 1 },
+    { semana: "Sem 4", criadas: 10, concluidas: 6, atrasadas: 2 },
+  ]
+
+  const dadosPorTipo = [
+    { tipo: "Aprovacao", qtd: 3 },
+    { tipo: "Reuniao", qtd: 1 },
+    { tipo: "Auditoria", qtd: 2 },
+    { tipo: "Cobranca", qtd: 1 },
+    { tipo: "Financeiro", qtd: 1 },
+    { tipo: "Planejamento", qtd: 1 },
+    { tipo: "Comunicacao", qtd: 1 },
+  ]
+
+  const renderPainelDia = () => (
+    <div className="flex-1 flex flex-col gap-4 overflow-auto">
+      {/* Condicoes Climaticas */}
+      <Card className="flex-shrink-0">
+        <CardContent className="p-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <Sun className="h-6 w-6 text-yellow-500" />
+                <div>
+                  <span className="text-sm font-medium">Ensolarado</span>
+                  <p className="text-[10px] text-muted-foreground">Parcialmente nublado a tarde</p>
+                </div>
+              </div>
+              <div className="h-8 w-px bg-border/50" />
+              <div className="flex items-center gap-1">
+                <Thermometer className="h-4 w-4 text-orange-500" />
+                <span className="text-sm font-medium">28°C</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <Wind className="h-4 w-4 text-blue-500" />
+                <span className="text-sm">12 km/h</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <Cloud className="h-4 w-4 text-gray-500" />
+                <span className="text-sm">Umidade: 65%</span>
+              </div>
+            </div>
+            <Badge variant="outline" className="text-green-600 border-green-500/30 bg-green-500/10">
+              Impacto: Nenhum
+            </Badge>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Cards de Resumo do Dia */}
+      <div className="grid grid-cols-5 gap-3 flex-shrink-0">
+        <Card className="border-blue-500/30 bg-blue-500/5">
+          <CardContent className="p-3">
+            <div className="flex items-center justify-between">
+              <span className="text-xs text-muted-foreground">Efetivo</span>
+              <HardHat className="h-4 w-4 text-blue-600" />
+            </div>
+            <div className="flex items-baseline gap-2 mt-1">
+              <span className="text-2xl font-bold text-blue-600">{contadoresPainel.efetivo}</span>
+              <span className="text-xs text-muted-foreground">colaboradores</span>
+            </div>
+            <div className="flex items-center gap-1 mt-1">
+              <TrendingUp className="h-3 w-3 text-green-600" />
+              <span className="text-[10px] text-green-600">+5% vs ontem</span>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="border-emerald-500/30 bg-emerald-500/5">
+          <CardContent className="p-3">
+            <div className="flex items-center justify-between">
+              <span className="text-xs text-muted-foreground">Atividades</span>
+              <Play className="h-4 w-4 text-emerald-600" />
+            </div>
+            <div className="flex items-baseline gap-2 mt-1">
+              <span className="text-2xl font-bold text-emerald-600">{contadoresPainel.atividades}</span>
+              <span className="text-xs text-muted-foreground">em execucao</span>
+            </div>
+            <div className="text-[10px] text-muted-foreground mt-1">3 proximas de concluir</div>
+          </CardContent>
+        </Card>
+
+        <Card className="border-red-500/30 bg-red-500/5">
+          <CardContent className="p-3">
+            <div className="flex items-center justify-between">
+              <span className="text-xs text-muted-foreground">Atrasadas</span>
+              <AlertTriangle className="h-4 w-4 text-red-600" />
+            </div>
+            <div className="flex items-baseline gap-2 mt-1">
+              <span className="text-2xl font-bold text-red-600">{contadoresPainel.atrasadas}</span>
+              <span className="text-xs text-muted-foreground">atividades</span>
+            </div>
+            <div className="text-[10px] text-red-600 mt-1">Requer atencao</div>
+          </CardContent>
+        </Card>
+
+        <Card className="border-yellow-500/30 bg-yellow-500/5">
+          <CardContent className="p-3">
+            <div className="flex items-center justify-between">
+              <span className="text-xs text-muted-foreground">Ocorrencias</span>
+              <AlertCircle className="h-4 w-4 text-yellow-600" />
+            </div>
+            <div className="flex items-baseline gap-2 mt-1">
+              <span className="text-2xl font-bold text-yellow-600">{contadoresPainel.ocorrencias}</span>
+              <span className="text-xs text-muted-foreground">hoje</span>
+            </div>
+            <div className="text-[10px] text-muted-foreground mt-1">1 parada registrada</div>
+          </CardContent>
+        </Card>
+
+        <Card className="border-orange-500/30 bg-orange-500/5">
+          <CardContent className="p-3">
+            <div className="flex items-center justify-between">
+              <span className="text-xs text-muted-foreground">NCs Abertas</span>
+              <Shield className="h-4 w-4 text-orange-600" />
+            </div>
+            <div className="flex items-baseline gap-2 mt-1">
+              <span className="text-2xl font-bold text-orange-600">{contadoresPainel.ncs}</span>
+              <span className="text-xs text-muted-foreground">pendentes</span>
+            </div>
+            <div className="text-[10px] text-muted-foreground mt-1">1 em tratamento</div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Atividades em Execucao e Painel Lateral */}
+      <div className="flex-1 flex gap-4 min-h-0">
+        <div className="flex-1 flex flex-col min-h-0">
+          <div className="flex items-center justify-between mb-2">
+            <h3 className="text-sm font-semibold flex items-center gap-2">
+              <Play className="h-4 w-4 text-primary" />
+              Atividades em Execucao
+            </h3>
+            <Button variant="outline" size="sm" className="h-7 text-xs bg-transparent" asChild>
+              <a href="/obra/producao/rdo" target="_blank" rel="noreferrer">
+                <ExternalLink className="h-3 w-3 mr-1" />
+                Ver RDO Completo
+              </a>
+            </Button>
+          </div>
+
+          <ScrollArea className="flex-1">
+            <div className="space-y-2 pr-2">
+              {atividadesExecucao.map((atividade) => (
+                <Card
+                  key={atividade.id}
+                  onClick={() => setSelectedAtividade(atividade.id === selectedAtividade?.id ? null : atividade)}
+                  className={`cursor-pointer transition-all hover:border-primary/50 ${
+                    selectedAtividade?.id === atividade.id ? "ring-2 ring-primary border-primary" : ""
+                  } ${atividade.ritmo === "atrasado" ? "border-red-500/30 bg-red-500/5" : ""}`}
+                >
+                  <CardContent className="p-3">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <span className="font-medium text-sm">{atividade.nome}</span>
+                        <Badge variant="outline" className="text-[10px]">
+                          {atividade.frente}
+                        </Badge>
+                      </div>
+                      <Badge
+                        variant="outline"
+                        className={`text-[10px] ${
+                          atividade.ritmo === "adiantado"
+                            ? "text-green-600 border-green-500/30 bg-green-500/10"
+                            : atividade.ritmo === "atrasado"
+                              ? "text-red-600 border-red-500/30 bg-red-500/10"
+                              : "text-blue-600 border-blue-500/30 bg-blue-500/10"
+                        }`}
+                      >
+                        {atividade.ritmo === "adiantado"
+                          ? "Adiantado"
+                          : atividade.ritmo === "atrasado"
+                            ? "Atrasado"
+                            : "Normal"}
+                      </Badge>
+                    </div>
+
+                    <div className="flex items-center gap-4 mb-2">
+                      <div className="flex-1">
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-[10px] text-muted-foreground">Progresso</span>
+                          <span className="text-xs font-medium">{atividade.progresso}%</span>
+                        </div>
+                        <Progress
+                          value={atividade.progresso}
+                          className={`h-2 ${atividade.ritmo === "atrasado" ? "[&>div]:bg-red-500" : ""}`}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between text-[10px] text-muted-foreground">
+                      <div className="flex items-center gap-3">
+                        <span className="flex items-center gap-1">
+                          <HardHat className="h-3 w-3" />
+                          {atividade.efetivo} colaboradores
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <Clock className="h-3 w-3" />
+                          Termino: {atividade.previsaoTermino}
+                        </span>
+                        <span>({atividade.diasRestantes} dias)</span>
+                      </div>
+                      <span>{atividade.responsavel}</span>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </ScrollArea>
+        </div>
+
+        {/* Painel Lateral - Detalhes da Atividade */}
+        {selectedAtividade && (
+          <Card className="w-[380px] flex-shrink-0 flex flex-col">
+            <CardHeader className="p-3 pb-2 border-b border-border/50">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-sm font-semibold">{selectedAtividade.nome}</CardTitle>
+                <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => setSelectedAtividade(null)}>
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+              <div className="flex items-center gap-2 mt-1">
+                <Badge variant="outline" className="text-[10px]">
+                  {selectedAtividade.frente}
+                </Badge>
+                <Badge variant="outline" className="text-[10px]">
+                  {selectedAtividade.id}
+                </Badge>
+              </div>
+            </CardHeader>
+
+            <ScrollArea className="flex-1">
+              <CardContent className="p-3 space-y-4">
+                {/* Informacoes */}
+                <div className="space-y-2">
+                  <h4 className="text-[10px] font-medium text-muted-foreground uppercase tracking-wide">Informacoes</h4>
+                  <div className="grid grid-cols-2 gap-2 text-xs">
+                    <div className="p-2 bg-muted/30 rounded">
+                      <span className="text-muted-foreground">Progresso</span>
+                      <p className="font-medium">{selectedAtividade.progresso}%</p>
+                    </div>
+                    <div className="p-2 bg-muted/30 rounded">
+                      <span className="text-muted-foreground">Efetivo</span>
+                      <p className="font-medium">{selectedAtividade.efetivo} pessoas</p>
+                    </div>
+                    <div className="p-2 bg-muted/30 rounded">
+                      <span className="text-muted-foreground">Previsao Termino</span>
+                      <p className="font-medium">{selectedAtividade.previsaoTermino}</p>
+                    </div>
+                    <div className="p-2 bg-muted/30 rounded">
+                      <span className="text-muted-foreground">Dias Restantes</span>
+                      <p className="font-medium">{selectedAtividade.diasRestantes} dias</p>
+                    </div>
+                  </div>
+                  <div className="p-2 bg-muted/30 rounded text-xs">
+                    <span className="text-muted-foreground">Responsavel</span>
+                    <p className="font-medium">{selectedAtividade.responsavel}</p>
+                  </div>
+                </div>
+
+                {/* Acoes Disponiveis */}
+                <div className="space-y-2">
+                  <h4 className="text-[10px] font-medium text-muted-foreground uppercase tracking-wide">
+                    Acoes Disponiveis
+                  </h4>
+                  <div className="grid grid-cols-2 gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="h-8 text-xs justify-start bg-transparent"
+                      onClick={() => setShowEvidenciaDialog(true)}
+                    >
+                      <Camera className="h-3 w-3 mr-1.5" />
+                      Solicitar Evidencias
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="h-8 text-xs justify-start bg-transparent"
+                      onClick={() => setShowPADialog(true)}
+                    >
+                      <ClipboardList className="h-3 w-3 mr-1.5" />
+                      Abrir Plano de Acao
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="h-8 text-xs justify-start bg-transparent"
+                      onClick={() => setShowDemandaDialog(true)}
+                    >
+                      <Send className="h-3 w-3 mr-1.5" />
+                      Gerar Demanda
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="h-8 text-xs justify-start text-red-600 hover:text-red-600 bg-transparent"
+                      onClick={() => setShowNCDialog(true)}
+                    >
+                      <AlertTriangle className="h-3 w-3 mr-1.5" />
+                      Registrar NC
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Evidencias Existentes */}
+                <div className="space-y-2">
+                  <h4 className="text-[10px] font-medium text-muted-foreground uppercase tracking-wide">
+                    Evidencias Existentes
+                  </h4>
+                  <div className="space-y-1">
+                    {evidenciasMock.map((ev) => (
+                      <div
+                        key={ev.id}
+                        className="flex items-center justify-between p-2 bg-muted/30 rounded text-xs hover:bg-muted/50 cursor-pointer"
+                      >
+                        <div className="flex items-center gap-2">
+                          {ev.tipo === "foto" ? (
+                            <FileImage className="h-3.5 w-3.5 text-blue-600" />
+                          ) : ev.tipo === "rdo" ? (
+                            <FileText className="h-3.5 w-3.5 text-orange-600" />
+                          ) : (
+                            <FileText className="h-3.5 w-3.5 text-gray-600" />
+                          )}
+                          <span>{ev.nome}</span>
+                        </div>
+                        <span className="text-[10px] text-muted-foreground">{ev.hora}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Demandas Geradas */}
+                <div className="space-y-2">
+                  <h4 className="text-[10px] font-medium text-muted-foreground uppercase tracking-wide">
+                    Demandas Geradas
+                  </h4>
+                  <div className="space-y-1">
+                    {demandasMock.map((dm) => (
+                      <div key={dm.id} className="flex items-center justify-between p-2 bg-muted/30 rounded text-xs">
+                        <div className="flex items-center gap-2">
+                          <Badge
+                            variant="outline"
+                            className={`text-[9px] ${dm.status === "concluida" ? "text-green-600 border-green-500/30" : "text-yellow-600 border-yellow-500/30"}`}
+                          >
+                            {dm.status === "concluida" ? "Concluida" : "Pendente"}
+                          </Badge>
+                          <span className="font-medium">{dm.departamento}</span>
+                        </div>
+                        <span className="text-[10px] text-muted-foreground">{dm.id}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </CardContent>
+            </ScrollArea>
+          </Card>
+        )}
+      </div>
+
+      {/* Ocorrencias e NCs */}
+      <div className="grid grid-cols-2 gap-4 flex-shrink-0">
+        <Card>
+          <CardHeader className="p-3 pb-2">
+            <CardTitle className="text-sm font-semibold flex items-center gap-2">
+              <AlertCircle className="h-4 w-4 text-yellow-600" />
+              Ocorrencias do Dia
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-3 pt-0">
+            {ocorrenciasDia.length === 0 ? (
+              <p className="text-xs text-muted-foreground">Nenhuma ocorrencia registrada hoje.</p>
+            ) : (
+              <div className="space-y-2">
+                {ocorrenciasDia.map((oc) => (
+                  <div
+                    key={oc.id}
+                    className={`p-2 rounded border text-xs ${
+                      oc.tipo === "parada"
+                        ? "border-red-500/30 bg-red-500/5"
+                        : oc.tipo === "alerta"
+                          ? "border-yellow-500/30 bg-yellow-500/5"
+                          : "border-blue-500/30 bg-blue-500/5"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="font-medium">{oc.hora}</span>
+                      <Badge variant="outline" className="text-[9px]">
+                        {oc.frente}
+                      </Badge>
+                    </div>
+                    <p className="text-muted-foreground">{oc.descricao}</p>
+                    {oc.duracao && <p className="text-[10px] mt-1">Duracao: {oc.duracao}</p>}
+                  </div>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="p-3 pb-2">
+            <CardTitle className="text-sm font-semibold flex items-center gap-2">
+              <Shield className="h-4 w-4 text-orange-600" />
+              NCs Abertas
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-3 pt-0">
+            {ncsDia.length === 0 ? (
+              <p className="text-xs text-muted-foreground">Nenhuma NC aberta.</p>
+            ) : (
+              <div className="space-y-2">
+                {ncsDia.map((nc) => (
+                  <div key={nc.id} className="p-2 rounded border border-orange-500/30 bg-orange-500/5 text-xs">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="font-medium">{nc.id}</span>
+                      <Badge
+                        variant="outline"
+                        className={`text-[9px] ${nc.status === "em_tratamento" ? "text-yellow-600 border-yellow-500/30" : "text-red-600 border-red-500/30"}`}
+                      >
+                        {nc.status === "em_tratamento" ? "Em Tratamento" : "Aberta"}
+                      </Badge>
+                    </div>
+                    <p className="text-muted-foreground">{nc.descricao}</p>
+                    <p className="text-[10px] mt-1">Responsavel: {nc.responsavel}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+            <Button variant="outline" size="sm" className="w-full mt-2 h-7 text-xs bg-transparent">
+              <Plus className="h-3 w-3 mr-1" />
+              Registrar NC
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Dialog Gerar Demanda */}
+      <Dialog open={showDemandaDialog} onOpenChange={setShowDemandaDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Gerar Demanda</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label>Departamento</Label>
+              <Select value={demandaDepartamento} onValueChange={setDemandaDepartamento}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Selecione o departamento" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="comercial">Comercial - Quanto ja custou?</SelectItem>
+                  <SelectItem value="planejamento">Planejamento - Previsao de termino?</SelectItem>
+                  <SelectItem value="producao">Producao - Por que esta improdutivo?</SelectItem>
+                  <SelectItem value="qsms">QSMS - Verificar condicoes de seguranca</SelectItem>
+                  <SelectItem value="engenharia">Engenharia - Suporte tecnico</SelectItem>
+                  <SelectItem value="administrativo">Administrativo - Recursos/RH</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label>Assunto / Solicitacao</Label>
+              <Textarea
+                placeholder="Descreva sua solicitacao..."
+                value={demandaAssunto}
+                onChange={(e) => setDemandaAssunto(e.target.value)}
+              />
+            </div>
+            <div className="p-3 bg-muted/30 rounded text-xs">
+              <p className="font-medium mb-1">Atividade vinculada:</p>
+              <p className="text-muted-foreground">{selectedAtividade?.nome}</p>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowDemandaDialog(false)}>
+              Cancelar
+            </Button>
+            <Button onClick={() => setShowDemandaDialog(false)}>
+              <Send className="h-4 w-4 mr-1" />
+              Enviar Demanda
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Dialog Solicitar Evidencias */}
+      <Dialog open={showEvidenciaDialog} onOpenChange={setShowEvidenciaDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Solicitar Evidencias</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label>Tipo de Evidencia</Label>
+              <Select>
+                <SelectTrigger>
+                  <SelectValue placeholder="Selecione o tipo" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="foto">Fotos do local</SelectItem>
+                  <SelectItem value="video">Video da execucao</SelectItem>
+                  <SelectItem value="documento">Documento/Relatorio</SelectItem>
+                  <SelectItem value="medicao">Registro de medicao</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label>Descricao da solicitacao</Label>
+              <Textarea placeholder="Descreva o que precisa ser registrado..." />
+            </div>
+            <div className="space-y-2">
+              <Label>Responsavel</Label>
+              <Select>
+                <SelectTrigger>
+                  <SelectValue placeholder="Selecione o responsavel" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="encarregado">Encarregado da frente</SelectItem>
+                  <SelectItem value="engenheiro">Engenheiro responsavel</SelectItem>
+                  <SelectItem value="qualidade">Equipe de Qualidade</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowEvidenciaDialog(false)}>
+              Cancelar
+            </Button>
+            <Button onClick={() => setShowEvidenciaDialog(false)}>
+              <Camera className="h-4 w-4 mr-1" />
+              Solicitar
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Dialog Abrir PA */}
+      <Dialog open={showPADialog} onOpenChange={setShowPADialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Abrir Plano de Acao</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label>Titulo do Plano de Acao</Label>
+              <Input placeholder="Ex: Recuperar atraso na Fundacao Bloco B" />
+            </div>
+            <div className="space-y-2">
+              <Label>Descricao do problema</Label>
+              <Textarea placeholder="Descreva o problema identificado..." />
+            </div>
+            <div className="space-y-2">
+              <Label>Responsavel pela execucao</Label>
+              <Select>
+                <SelectTrigger>
+                  <SelectValue placeholder="Selecione o responsavel" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="producao">Eng. Producao</SelectItem>
+                  <SelectItem value="planejamento">Eng. Planejamento</SelectItem>
+                  <SelectItem value="qualidade">Eng. Qualidade</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label>Prazo para conclusao</Label>
+              <Input type="date" />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowPADialog(false)}>
+              Cancelar
+            </Button>
+            <Button onClick={() => setShowPADialog(false)}>
+              <FilePlus className="h-4 w-4 mr-1" />
+              Criar Plano de Acao
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Dialog Registrar NC */}
+      <Dialog open={showNCDialog} onOpenChange={setShowNCDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Registrar Nao Conformidade</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label>Tipo de NC</Label>
+              <Select>
+                <SelectTrigger>
+                  <SelectValue placeholder="Selecione o tipo" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="material">Material fora de especificacao</SelectItem>
+                  <SelectItem value="execucao">Execucao inadequada</SelectItem>
+                  <SelectItem value="seguranca">Desvio de seguranca</SelectItem>
+                  <SelectItem value="processo">Processo nao seguido</SelectItem>
+                  <SelectItem value="documentacao">Documentacao incorreta</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label>Descricao da NC</Label>
+              <Textarea placeholder="Descreva a nao conformidade identificada..." />
+            </div>
+            <div className="space-y-2">
+              <Label>Local/Frente</Label>
+              <Input placeholder="Ex: Fundacao Bloco B" defaultValue={selectedAtividade?.nome} />
+            </div>
+            <div className="space-y-2">
+              <Label>Responsavel pelo tratamento</Label>
+              <Select>
+                <SelectTrigger>
+                  <SelectValue placeholder="Selecione o responsavel" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="qualidade">Eng. Qualidade</SelectItem>
+                  <SelectItem value="producao">Eng. Producao</SelectItem>
+                  <SelectItem value="seguranca">Tec. Seguranca</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowNCDialog(false)}>
+              Cancelar
+            </Button>
+            <Button variant="destructive" onClick={() => setShowNCDialog(false)}>
+              <AlertTriangle className="h-4 w-4 mr-1" />
+              Registrar NC
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </div>
+  )
 
   return (
     <div className="overflow-auto h-full">
@@ -204,313 +1388,736 @@ export default function AgendaGerencialPage() {
         <div className="flex items-center justify-between pb-4 border-b border-border/50 flex-shrink-0">
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2">
+              <CalendarDays className="h-5 w-5 text-primary" />
               <h1 className="text-xl font-semibold text-foreground">Agenda Gerencial</h1>
               <Badge variant="outline" className="text-[10px] font-mono">
                 GC-02
               </Badge>
               <InfoTooltip
                 title="Agenda Gerencial de Governanca"
-                description="Centraliza todas as acoes gerenciais pendentes: corporativas, contratuais, obra, auditoria, controle e comunicacoes."
+                description="Centraliza todas as acoes gerenciais: reunioes, cobrancas, aprovacoes, auditorias, comunicacoes, planejamento e financeiro. Inclui Painel do Dia para visao em tempo real da obra."
               />
             </div>
+            <div className="h-4 w-px bg-border/50" />
+            <span className="text-sm text-muted-foreground">BR-101 LOTE 2</span>
+            <Badge variant="secondary" className="text-[10px]">
+              Janeiro 2026
+            </Badge>
           </div>
           <div className="flex items-center gap-2">
-            {/* Navegacao temporal */}
-            <div className="flex items-center gap-1 border border-border/50 rounded-lg p-1">
-              <Button variant="ghost" size="icon" className="h-7 w-7">
-                <ChevronLeft className="h-4 w-4" />
-              </Button>
-              <span className="text-sm font-medium px-2 min-w-[140px] text-center">
-                {visaoTemporal === "semana" ? "05 - 11 Jan 2026" : "Janeiro 2026"}
-              </span>
-              <Button variant="ghost" size="icon" className="h-7 w-7">
-                <ChevronRight className="h-4 w-4" />
-              </Button>
-            </div>
-            {/* Toggle semana/mes */}
             <div className="flex items-center border border-border/50 rounded-lg p-1">
               <Button
-                variant={visaoTemporal === "semana" ? "secondary" : "ghost"}
+                variant={modoVisualizacao === "lista" ? "secondary" : "ghost"}
                 size="sm"
-                className="h-7 text-xs"
-                onClick={() => setVisaoTemporal("semana")}
+                className="h-7 text-xs gap-1"
+                onClick={() => setModoVisualizacao("lista")}
               >
-                Semana
+                <List className="h-3.5 w-3.5" />
+                Lista
               </Button>
               <Button
-                variant={visaoTemporal === "mes" ? "secondary" : "ghost"}
+                variant={modoVisualizacao === "calendario" ? "secondary" : "ghost"}
                 size="sm"
-                className="h-7 text-xs"
-                onClick={() => setVisaoTemporal("mes")}
+                className="h-7 text-xs gap-1"
+                onClick={() => setModoVisualizacao("calendario")}
               >
-                Mes
+                <Calendar className="h-3.5 w-3.5" />
+                Calendario
+              </Button>
+              <Button
+                variant={modoVisualizacao === "graficos" ? "secondary" : "ghost"}
+                size="sm"
+                className="h-7 text-xs gap-1"
+                onClick={() => setModoVisualizacao("graficos")}
+              >
+                <PieChart className="h-3.5 w-3.5" />
+                Graficos
+              </Button>
+              <Button
+                variant={modoVisualizacao === "painel" ? "secondary" : "ghost"}
+                size="sm"
+                className="h-7 text-xs gap-1"
+                onClick={() => setModoVisualizacao("painel")}
+              >
+                <Eye className="h-3.5 w-3.5" />
+                Painel do Dia
               </Button>
             </div>
-          </div>
-        </div>
-
-        {/* Contadores de status */}
-        <div className="flex items-center gap-4 py-3 border-b border-border/30 flex-shrink-0">
-          <button
-            onClick={() => setFiltroStatus("todos")}
-            className={`text-xs font-medium px-2 py-1 rounded ${filtroStatus === "todos" ? "bg-muted" : ""}`}
-          >
-            Todos ({acoes.length})
-          </button>
-          <button
-            onClick={() => setFiltroStatus("pendente")}
-            className={`flex items-center gap-1.5 text-xs font-medium px-2 py-1 rounded ${filtroStatus === "pendente" ? "bg-yellow-500/10" : ""}`}
-          >
-            <Circle className="h-3 w-3 text-yellow-600 fill-yellow-600" />
-            Pendentes ({contadores.pendente})
-          </button>
-          <button
-            onClick={() => setFiltroStatus("em_andamento")}
-            className={`flex items-center gap-1.5 text-xs font-medium px-2 py-1 rounded ${filtroStatus === "em_andamento" ? "bg-blue-500/10" : ""}`}
-          >
-            <Clock className="h-3 w-3 text-blue-600" />
-            Em Andamento ({contadores.em_andamento})
-          </button>
-          <button
-            onClick={() => setFiltroStatus("atrasado")}
-            className={`flex items-center gap-1.5 text-xs font-medium px-2 py-1 rounded ${filtroStatus === "atrasado" ? "bg-red-500/10" : ""}`}
-          >
-            <AlertTriangle className="h-3 w-3 text-red-600" />
-            Atrasados ({contadores.atrasado})
-          </button>
-          <button
-            onClick={() => setFiltroStatus("concluido")}
-            className={`flex items-center gap-1.5 text-xs font-medium px-2 py-1 rounded ${filtroStatus === "concluido" ? "bg-green-500/10" : ""}`}
-          >
-            <CheckCircle2 className="h-3 w-3 text-green-600" />
-            Concluidos ({contadores.concluido})
-          </button>
-          <div className="flex-1" />
-          {/* Filtro origem */}
-          <div className="flex items-center gap-1">
-            <span className="text-[10px] text-muted-foreground uppercase tracking-wide mr-1">Origem:</span>
-            <button
-              onClick={() => setFiltroOrigem("todos")}
-              className={`text-[10px] px-1.5 py-0.5 rounded ${filtroOrigem === "todos" ? "bg-muted font-medium" : ""}`}
-            >
-              Todos
-            </button>
-            {(Object.keys(origemConfig) as Origem[]).map((origem) => (
-              <button
-                key={origem}
-                onClick={() => setFiltroOrigem(origem)}
-                className={`text-[10px] px-1.5 py-0.5 rounded border ${filtroOrigem === origem ? origemConfig[origem].color : "border-transparent"}`}
-              >
-                {origemConfig[origem].label}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Conteudo Principal */}
-        <div className="flex-1 flex gap-0 min-h-0 mt-3">
-          {/* Tabela de Acoes */}
-          <div className={`flex-1 flex flex-col min-h-0 ${selectedAcao ? "pr-4" : ""}`}>
-            <ScrollArea className="flex-1">
-              <table className="w-full text-sm">
-                <thead className="sticky top-0 bg-background z-10">
-                  <tr className="border-b border-border/50">
-                    <th className="text-left py-2 px-3 text-[10px] font-medium text-muted-foreground uppercase tracking-wide w-[80px]">
-                      ID
-                    </th>
-                    <th className="text-left py-2 px-3 text-[10px] font-medium text-muted-foreground uppercase tracking-wide">
-                      Acao
-                    </th>
-                    <th className="text-left py-2 px-3 text-[10px] font-medium text-muted-foreground uppercase tracking-wide w-[100px]">
-                      Origem
-                    </th>
-                    <th className="text-left py-2 px-3 text-[10px] font-medium text-muted-foreground uppercase tracking-wide w-[110px]">
-                      Status
-                    </th>
-                    <th className="text-left py-2 px-3 text-[10px] font-medium text-muted-foreground uppercase tracking-wide w-[70px]">
-                      Prior.
-                    </th>
-                    <th className="text-left py-2 px-3 text-[10px] font-medium text-muted-foreground uppercase tracking-wide w-[90px]">
-                      Prazo
-                    </th>
-                    <th className="text-center py-2 px-3 text-[10px] font-medium text-muted-foreground uppercase tracking-wide w-[60px]">
-                      Anexos
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {acoesFiltradas.map((acao) => {
-                    const StatusIcon = statusConfig[acao.status].icon
-                    return (
-                      <tr
-                        key={acao.id}
-                        onClick={() => setSelectedAcao(acao)}
-                        className={`border-b border-border/30 hover:bg-muted/30 cursor-pointer transition-colors ${selectedAcao?.id === acao.id ? "bg-muted/50" : ""}`}
-                      >
-                        <td className="py-2.5 px-3 font-mono text-xs text-muted-foreground">{acao.id}</td>
-                        <td className="py-2.5 px-3">
-                          <div className="font-medium text-foreground">{acao.titulo}</div>
-                          <div className="text-xs text-muted-foreground truncate max-w-[300px]">{acao.descricao}</div>
-                        </td>
-                        <td className="py-2.5 px-3">
-                          <span
-                            className={`inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded border ${origemConfig[acao.origem].color}`}
-                          >
-                            {origemConfig[acao.origem].label}
-                          </span>
-                        </td>
-                        <td className="py-2.5 px-3">
-                          <span
-                            className={`inline-flex items-center gap-1.5 text-xs ${statusConfig[acao.status].color}`}
-                          >
-                            <StatusIcon className="h-3.5 w-3.5" />
-                            {statusConfig[acao.status].label}
-                          </span>
-                        </td>
-                        <td className="py-2.5 px-3">
-                          <span
-                            className={`text-[10px] px-1.5 py-0.5 rounded border ${prioridadeConfig[acao.prioridade].color}`}
-                          >
-                            {prioridadeConfig[acao.prioridade].label}
-                          </span>
-                        </td>
-                        <td className="py-2.5 px-3">
-                          <span
-                            className={`text-xs font-medium tabular-nums ${acao.status === "atrasado" ? "text-red-600" : ""}`}
-                          >
-                            {acao.prazo}
-                          </span>
-                        </td>
-                        <td className="py-2.5 px-3 text-center">
-                          <div className="flex items-center justify-center gap-2 text-muted-foreground">
-                            {acao.anexos > 0 && (
-                              <span className="flex items-center gap-0.5 text-xs">
-                                <Paperclip className="h-3 w-3" />
-                                {acao.anexos}
-                              </span>
-                            )}
-                            {acao.comentarios > 0 && (
-                              <span className="flex items-center gap-0.5 text-xs">
-                                <MessageSquare className="h-3 w-3" />
-                                {acao.comentarios}
-                              </span>
-                            )}
-                          </div>
-                        </td>
-                      </tr>
-                    )
-                  })}
-                </tbody>
-              </table>
-            </ScrollArea>
-          </div>
-
-          {/* Painel Lateral de Contexto */}
-          {selectedAcao && (
-            <div className="w-[360px] border-l border-border/50 pl-4 flex flex-col min-h-0">
-              <div className="flex items-center justify-between pb-3 border-b border-border/30 flex-shrink-0">
-                <div className="flex items-center gap-2">
-                  <span className="font-mono text-xs text-muted-foreground">{selectedAcao.id}</span>
-                  <span
-                    className={`text-[10px] px-1.5 py-0.5 rounded border ${prioridadeConfig[selectedAcao.prioridade].color}`}
-                  >
-                    {prioridadeConfig[selectedAcao.prioridade].label}
-                  </span>
-                </div>
-                <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => setSelectedAcao(null)}>
-                  <X className="h-4 w-4" />
+            <div className="h-4 w-px bg-border/50" />
+            {/* Busca rapida */}
+            <div className="relative">
+              <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Buscar acao..."
+                className="h-8 w-[180px] pl-8 text-sm"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+            {/* Navegacao temporal */}
+            {modoVisualizacao === "calendario" ? (
+              <div className="flex items-center gap-1 border border-border/50 rounded-lg p-1">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-7 w-7"
+                  onClick={() =>
+                    setMesCalendario((prev) => ({
+                      mes: prev.mes === 0 ? 11 : prev.mes - 1,
+                      ano: prev.mes === 0 ? prev.ano - 1 : prev.ano,
+                    }))
+                  }
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </Button>
+                <span className="text-sm font-medium px-2 min-w-[140px] text-center">
+                  {mesesNomes[mesCalendario.mes]} {mesCalendario.ano}
+                </span>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-7 w-7"
+                  onClick={() =>
+                    setMesCalendario((prev) => ({
+                      mes: prev.mes === 11 ? 0 : prev.mes + 1,
+                      ano: prev.mes === 11 ? prev.ano + 1 : prev.ano,
+                    }))
+                  }
+                >
+                  <ChevronRight className="h-4 w-4" />
                 </Button>
               </div>
+            ) : modoVisualizacao === "painel" ? (
+              <div className="flex items-center gap-1 border border-border/50 rounded-lg p-1">
+                <Button variant="ghost" size="icon" className="h-7 w-7">
+                  <ChevronLeft className="h-4 w-4" />
+                </Button>
+                <span className="text-sm font-medium px-2 min-w-[120px] text-center">{dataPainel}</span>
+                <Button variant="ghost" size="icon" className="h-7 w-7">
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </div>
+            ) : (
+              <>
+                <div className="flex items-center gap-1 border border-border/50 rounded-lg p-1">
+                  <Button variant="ghost" size="icon" className="h-7 w-7">
+                    <ChevronLeft className="h-4 w-4" />
+                  </Button>
+                  <span className="text-sm font-medium px-2 min-w-[120px] text-center">
+                    {visaoTemporal === "dia"
+                      ? "07 Jan 2026"
+                      : visaoTemporal === "semana"
+                        ? "05-11 Jan"
+                        : "Janeiro 2026"}
+                  </span>
+                  <Button variant="ghost" size="icon" className="h-7 w-7">
+                    <ChevronRight className="h-4 w-4" />
+                  </Button>
+                </div>
+                {/* Toggle dia/semana/mes */}
+                <div className="flex items-center border border-border/50 rounded-lg p-1">
+                  <Button
+                    variant={visaoTemporal === "dia" ? "secondary" : "ghost"}
+                    size="sm"
+                    className="h-7 text-xs"
+                    onClick={() => setVisaoTemporal("dia")}
+                  >
+                    Dia
+                  </Button>
+                  <Button
+                    variant={visaoTemporal === "semana" ? "secondary" : "ghost"}
+                    size="sm"
+                    className="h-7 text-xs"
+                    onClick={() => setVisaoTemporal("semana")}
+                  >
+                    Semana
+                  </Button>
+                  <Button
+                    variant={visaoTemporal === "mes" ? "secondary" : "ghost"}
+                    size="sm"
+                    className="h-7 text-xs"
+                    onClick={() => setVisaoTemporal("mes")}
+                  >
+                    Mes
+                  </Button>
+                </div>
+              </>
+            )}
+            <Button variant="ghost" size="sm" className="h-8 text-xs">
+              Hoje
+            </Button>
+            <Button size="sm" className="h-8">
+              <Plus className="h-4 w-4 mr-1" />
+              Criar Acao
+            </Button>
+          </div>
+        </div>
 
-              <ScrollArea className="flex-1 mt-3">
-                <div className="space-y-4">
-                  {/* Titulo e descricao */}
-                  <div>
-                    <h3 className="font-semibold text-foreground">{selectedAcao.titulo}</h3>
-                    <p className="text-sm text-muted-foreground mt-1">{selectedAcao.descricao}</p>
+        {modoVisualizacao === "painel" ? (
+          <div className="flex-1 mt-4 overflow-hidden">{renderPainelDia()}</div>
+        ) : (
+          <>
+            {/* Cards de resumo - mostrar para lista, calendario e graficos */}
+            <div className="grid grid-cols-5 gap-3 py-4 flex-shrink-0">
+              <Card className="border-yellow-500/30 bg-yellow-500/5">
+                <CardContent className="p-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-muted-foreground">Pendentes</span>
+                    <Circle className="h-4 w-4 text-yellow-600 fill-yellow-600" />
                   </div>
-
-                  {/* Detalhes */}
-                  <div className="grid grid-cols-2 gap-3 text-sm">
-                    <div>
-                      <span className="text-[10px] text-muted-foreground uppercase tracking-wide block mb-0.5">
-                        Origem
-                      </span>
-                      <span
-                        className={`inline-flex items-center gap-1 text-xs px-1.5 py-0.5 rounded border ${origemConfig[selectedAcao.origem].color}`}
-                      >
-                        {origemConfig[selectedAcao.origem].label}
-                      </span>
-                    </div>
-                    <div>
-                      <span className="text-[10px] text-muted-foreground uppercase tracking-wide block mb-0.5">
-                        Status
-                      </span>
-                      <span
-                        className={`inline-flex items-center gap-1.5 text-xs ${statusConfig[selectedAcao.status].color}`}
-                      >
-                        {statusConfig[selectedAcao.status].label}
-                      </span>
-                    </div>
-                    <div>
-                      <span className="text-[10px] text-muted-foreground uppercase tracking-wide block mb-0.5">
-                        Responsavel
-                      </span>
-                      <span className="text-xs font-medium">{selectedAcao.responsavel}</span>
-                    </div>
-                    <div>
-                      <span className="text-[10px] text-muted-foreground uppercase tracking-wide block mb-0.5">
-                        Prazo
-                      </span>
-                      <span
-                        className={`text-xs font-medium tabular-nums ${selectedAcao.status === "atrasado" ? "text-red-600" : ""}`}
-                      >
-                        {selectedAcao.prazo}
-                      </span>
-                    </div>
+                  <div className="flex items-baseline gap-2 mt-1">
+                    <span className="text-2xl font-bold text-yellow-600">{contadores.pendentes}</span>
+                    <span className="text-xs text-muted-foreground">acoes</span>
                   </div>
+                  <div className="flex items-center gap-1 mt-1">
+                    {tendencias.pendentes < 0 ? (
+                      <TrendingDown className="h-3 w-3 text-green-600" />
+                    ) : (
+                      <TrendingUp className="h-3 w-3 text-red-600" />
+                    )}
+                    <span className={`text-[10px] ${tendencias.pendentes < 0 ? "text-green-600" : "text-red-600"}`}>
+                      {tendencias.pendentes > 0 ? "+" : ""}
+                      {tendencias.pendentes}% vs sem. ant.
+                    </span>
+                  </div>
+                </CardContent>
+              </Card>
 
-                  {/* Historico */}
-                  <div>
-                    <div className="flex items-center gap-1.5 mb-2">
-                      <History className="h-3.5 w-3.5 text-muted-foreground" />
-                      <span className="text-[10px] text-muted-foreground uppercase tracking-wide">Historico</span>
-                    </div>
-                    <div className="space-y-2">
-                      {selectedAcao.historico.map((h, i) => (
-                        <div key={i} className="flex gap-2 text-xs">
-                          <span className="text-muted-foreground tabular-nums shrink-0">{h.data}</span>
-                          <div>
-                            <span className="text-foreground">{h.acao}</span>
-                            <span className="text-muted-foreground"> - {h.usuario}</span>
+              <Card className="border-red-500/30 bg-red-500/5">
+                <CardContent className="p-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-muted-foreground">Atrasadas</span>
+                    <AlertTriangle className="h-4 w-4 text-red-600" />
+                  </div>
+                  <div className="flex items-baseline gap-2 mt-1">
+                    <span className="text-2xl font-bold text-red-600">{contadores.atrasadas}</span>
+                    <span className="text-xs text-muted-foreground">acoes</span>
+                  </div>
+                  <div className="flex items-center gap-1 mt-1">
+                    <TrendingUp className="h-3 w-3 text-red-600" />
+                    <span className="text-[10px] text-red-600">+{tendencias.atrasadas}% vs sem. ant.</span>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="border-red-600/30 bg-red-600/5">
+                <CardContent className="p-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-muted-foreground">Criticas</span>
+                    <AlertTriangle className="h-4 w-4 text-red-700 fill-red-700" />
+                  </div>
+                  <div className="flex items-baseline gap-2 mt-1">
+                    <span className="text-2xl font-bold text-red-700">{contadores.criticas}</span>
+                    <span className="text-xs text-muted-foreground">risco</span>
+                  </div>
+                  <div className="flex items-center gap-1 mt-1">
+                    <TrendingUp className="h-3 w-3 text-red-600" />
+                    <span className="text-[10px] text-red-600">+{tendencias.criticas} esta semana</span>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="border-gray-500/30">
+                <CardContent className="p-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-muted-foreground">Sem Responsavel</span>
+                    <Users className="h-4 w-4 text-gray-500" />
+                  </div>
+                  <div className="flex items-baseline gap-2 mt-1">
+                    <span className="text-2xl font-bold text-gray-600">{contadores.semResponsavel}</span>
+                    <span className="text-xs text-muted-foreground">acoes</span>
+                  </div>
+                  <div className="text-[10px] text-muted-foreground mt-1">Necessitam atribuicao</div>
+                </CardContent>
+              </Card>
+
+              <Card className="border-blue-500/30 bg-blue-500/5">
+                <CardContent className="p-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-muted-foreground">Eventos Hoje</span>
+                    <Calendar className="h-4 w-4 text-blue-600" />
+                  </div>
+                  <div className="flex items-baseline gap-2 mt-1">
+                    <span className="text-2xl font-bold text-blue-600">{contadores.eventosHoje}</span>
+                    <span className="text-xs text-muted-foreground">agendados</span>
+                  </div>
+                  <div className="text-[10px] text-blue-600 mt-1">07 de Janeiro</div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Filtros de origem - apenas para lista */}
+            {modoVisualizacao === "lista" && (
+              <div className="flex items-center gap-2 pb-3 border-b border-border/30 flex-shrink-0">
+                <span className="text-[10px] text-muted-foreground uppercase tracking-wide">Origem:</span>
+                <button
+                  onClick={() => setFiltroOrigem("todos")}
+                  className={`text-xs px-2 py-1 rounded ${filtroOrigem === "todos" ? "bg-muted font-medium" : ""}`}
+                >
+                  Todos
+                </button>
+                {(Object.keys(origemConfig) as Origem[]).map((origem) => (
+                  <button
+                    key={origem}
+                    onClick={() => setFiltroOrigem(origem)}
+                    className={`text-xs px-2 py-1 rounded border ${filtroOrigem === origem ? origemConfig[origem].color : "border-transparent"}`}
+                  >
+                    {origemConfig[origem].label}
+                  </button>
+                ))}
+                <div className="flex-1" />
+                <span className="text-[10px] text-muted-foreground uppercase tracking-wide">Status:</span>
+                <button
+                  onClick={() => setFiltroStatus("todos")}
+                  className={`text-xs px-2 py-1 rounded ${filtroStatus === "todos" ? "bg-muted font-medium" : ""}`}
+                >
+                  Todos
+                </button>
+                {(Object.keys(statusConfig) as Status[]).map((status) => {
+                  const StatusIcon = statusConfig[status].icon
+                  return (
+                    <button
+                      key={status}
+                      onClick={() => setFiltroStatus(status)}
+                      className={`flex items-center gap-1 text-xs px-2 py-1 rounded ${filtroStatus === status ? statusConfig[status].color : ""}`}
+                    >
+                      <StatusIcon className="h-3 w-3" />
+                      {statusConfig[status].label}
+                    </button>
+                  )
+                })}
+              </div>
+            )}
+
+            {/* Conteudo baseado no modo de visualizacao */}
+            {modoVisualizacao === "lista" && (
+              <div className="flex-1 flex gap-0 min-h-0 mt-3">
+                {/* Tabela de Acoes */}
+                <div className={`flex-1 flex flex-col min-h-0 ${selectedAcao ? "pr-4" : ""}`}>
+                  <ScrollArea className="flex-1">
+                    <table className="w-full text-sm">
+                      <thead className="sticky top-0 bg-background z-10">
+                        <tr className="border-b border-border/50">
+                          <th className="text-left py-2 px-2 text-[10px] font-medium text-muted-foreground uppercase tracking-wide w-[70px]">
+                            ID
+                          </th>
+                          <th className="text-left py-2 px-2 text-[10px] font-medium text-muted-foreground uppercase tracking-wide w-[80px]">
+                            Prazo
+                          </th>
+                          <th className="text-left py-2 px-2 text-[10px] font-medium text-muted-foreground uppercase tracking-wide w-[90px]">
+                            Tipo
+                          </th>
+                          <th className="text-left py-2 px-2 text-[10px] font-medium text-muted-foreground uppercase tracking-wide w-[85px]">
+                            Origem
+                          </th>
+                          <th className="text-left py-2 px-2 text-[10px] font-medium text-muted-foreground uppercase tracking-wide">
+                            Assunto
+                          </th>
+                          <th className="text-left py-2 px-2 text-[10px] font-medium text-muted-foreground uppercase tracking-wide w-[120px]">
+                            Responsavel
+                          </th>
+                          <th className="text-left py-2 px-2 text-[10px] font-medium text-muted-foreground uppercase tracking-wide w-[100px]">
+                            Status
+                          </th>
+                          <th className="text-left py-2 px-2 text-[10px] font-medium text-muted-foreground uppercase tracking-wide w-[60px]">
+                            Prior.
+                          </th>
+                          <th className="text-center py-2 px-2 text-[10px] font-medium text-muted-foreground uppercase tracking-wide w-[70px]">
+                            Links
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {acoesFiltradas.map((acao) => {
+                          const StatusIcon = statusConfig[acao.status].icon
+                          return (
+                            <tr
+                              key={acao.id}
+                              onClick={() => setSelectedAcao(acao)}
+                              className={`border-b border-border/30 hover:bg-muted/30 cursor-pointer transition-colors ${selectedAcao?.id === acao.id ? "bg-muted/50" : ""} ${acao.status === "atrasado" ? "bg-red-500/5" : ""}`}
+                            >
+                              <td className="py-2 px-2 font-mono text-xs text-muted-foreground">{acao.id}</td>
+                              <td className="py-2 px-2">
+                                <span
+                                  className={`text-xs font-medium tabular-nums ${acao.status === "atrasado" ? "text-red-600" : ""}`}
+                                >
+                                  {acao.prazo}
+                                </span>
+                              </td>
+                              <td className="py-2 px-2">
+                                <span
+                                  className={`inline-flex text-[10px] px-1.5 py-0.5 rounded border ${tipoConfig[acao.tipo].color}`}
+                                >
+                                  {tipoConfig[acao.tipo].label}
+                                </span>
+                              </td>
+                              <td className="py-2 px-2">
+                                <span
+                                  className={`inline-flex text-[10px] px-1.5 py-0.5 rounded border ${origemConfig[acao.origem].color}`}
+                                >
+                                  {origemConfig[acao.origem].label}
+                                </span>
+                              </td>
+                              <td className="py-2 px-2">
+                                <div className="font-medium text-foreground text-xs">{acao.titulo}</div>
+                              </td>
+                              <td className="py-2 px-2 text-xs text-muted-foreground">{acao.responsavel}</td>
+                              <td className="py-2 px-2">
+                                <span
+                                  className={`inline-flex items-center gap-1 text-xs px-1.5 py-0.5 rounded ${statusConfig[acao.status].color}`}
+                                >
+                                  <StatusIcon className="h-3 w-3" />
+                                  {statusConfig[acao.status].label}
+                                </span>
+                              </td>
+                              <td className="py-2 px-2">
+                                <span
+                                  className={`text-[10px] px-1.5 py-0.5 rounded border ${prioridadeConfig[acao.prioridade].color}`}
+                                >
+                                  {prioridadeConfig[acao.prioridade].label}
+                                </span>
+                              </td>
+                              <td className="py-2 px-2 text-center">
+                                <div className="flex items-center justify-center gap-1.5 text-muted-foreground">
+                                  {acao.origemNeural && <Link2 className="h-3.5 w-3.5" />}
+                                  {acao.anexos > 0 && <Paperclip className="h-3.5 w-3.5" />}
+                                  {acao.comentarios.length > 0 && <MessageSquare className="h-3.5 w-3.5" />}
+                                </div>
+                              </td>
+                            </tr>
+                          )
+                        })}
+                      </tbody>
+                    </table>
+                  </ScrollArea>
+                </div>
+
+                {/* Painel lateral de detalhes */}
+                {selectedAcao && (
+                  <Card className="w-[380px] flex-shrink-0 border-l border-border/50 rounded-l-none flex flex-col">
+                    <CardHeader className="p-3 pb-2 border-b border-border/50">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <Badge variant="outline" className="text-[10px] font-mono">
+                            {selectedAcao.id}
+                          </Badge>
+                          <Badge className={`text-[10px] ${prioridadeConfig[selectedAcao.prioridade].color}`}>
+                            {prioridadeConfig[selectedAcao.prioridade].label}
+                          </Badge>
+                        </div>
+                        <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => setSelectedAcao(null)}>
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                      <CardTitle className="text-sm font-semibold mt-2">{selectedAcao.titulo}</CardTitle>
+                      <p className="text-xs text-muted-foreground mt-1">{selectedAcao.descricao}</p>
+                    </CardHeader>
+
+                    <ScrollArea className="flex-1">
+                      <CardContent className="p-3 space-y-4">
+                        {/* Origem Neural */}
+                        {selectedAcao.origemNeural && (
+                          <div className="p-2 bg-muted/30 rounded-lg border border-border/50">
+                            <div className="flex items-center gap-2 mb-1">
+                              <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wide">
+                                Origem Neural
+                              </span>
+                            </div>
+                            <a
+                              href={selectedAcao.origemNeural.link}
+                              className="flex items-center gap-2 text-xs text-primary hover:underline"
+                            >
+                              {(() => {
+                                const config = origemNeuralConfig[selectedAcao.origemNeural.tipo]
+                                const Icon = config?.icon || Target
+                                return <Icon className={`h-4 w-4 ${config?.color || "text-primary"}`} />
+                              })()}
+                              {selectedAcao.origemNeural.label}
+                              <ExternalLink className="h-3 w-3" />
+                            </a>
+                          </div>
+                        )}
+
+                        {/* Checklist */}
+                        <div>
+                          <h4 className="text-[10px] font-medium text-muted-foreground uppercase tracking-wide mb-2">
+                            Checklist
+                          </h4>
+                          <div className="space-y-1.5">
+                            {selectedAcao.checklist.map((item) => (
+                              <div key={item.id} className="flex items-center gap-2">
+                                <Checkbox checked={item.concluido} className="h-4 w-4" />
+                                <span
+                                  className={`text-xs ${item.concluido ? "line-through text-muted-foreground" : ""}`}
+                                >
+                                  {item.texto}
+                                </span>
+                              </div>
+                            ))}
                           </div>
                         </div>
-                      ))}
-                    </div>
-                  </div>
 
-                  {/* Acoes */}
-                  <div className="pt-3 border-t border-border/30 space-y-2">
-                    <Button className="w-full" size="sm">
-                      <CheckCircle2 className="h-4 w-4 mr-2" />
-                      Marcar como Concluido
-                    </Button>
-                    <div className="flex gap-2">
-                      <Button variant="outline" size="sm" className="flex-1 bg-transparent">
-                        <MessageSquare className="h-4 w-4 mr-1" />
-                        Comentar
-                      </Button>
-                      <Button variant="outline" size="sm" className="flex-1 bg-transparent">
-                        <Paperclip className="h-4 w-4 mr-1" />
-                        Anexar
-                      </Button>
-                    </div>
+                        {/* Comentarios */}
+                        <div>
+                          <h4 className="text-[10px] font-medium text-muted-foreground uppercase tracking-wide mb-2">
+                            Comentarios ({selectedAcao.comentarios.length})
+                          </h4>
+                          <div className="space-y-2">
+                            {selectedAcao.comentarios.map((com) => (
+                              <div key={com.id} className="p-2 bg-muted/30 rounded text-xs">
+                                <div className="flex items-center justify-between mb-1">
+                                  <span className="font-medium">{com.usuario}</span>
+                                  <span className="text-muted-foreground text-[10px]">{com.data}</span>
+                                </div>
+                                <p className="text-muted-foreground">{com.texto}</p>
+                              </div>
+                            ))}
+                          </div>
+                          <div className="mt-2 flex gap-2">
+                            <Input
+                              placeholder="Adicionar comentario..."
+                              className="h-8 text-xs"
+                              value={novoComentario}
+                              onChange={(e) => setNovoComentario(e.target.value)}
+                            />
+                            <Button size="sm" className="h-8 px-3">
+                              <MessageSquare className="h-3.5 w-3.5" />
+                            </Button>
+                          </div>
+                        </div>
+
+                        {/* Historico */}
+                        <div>
+                          <h4 className="text-[10px] font-medium text-muted-foreground uppercase tracking-wide mb-2">
+                            Historico
+                          </h4>
+                          <div className="space-y-1.5">
+                            {selectedAcao.historico.map((h, i) => (
+                              <div key={i} className="flex items-start gap-2 text-[10px]">
+                                <History className="h-3 w-3 mt-0.5 text-muted-foreground" />
+                                <div>
+                                  <span className="text-muted-foreground">{h.data}</span>
+                                  <span className="mx-1">-</span>
+                                  <span>{h.acao}</span>
+                                  <span className="text-muted-foreground ml-1">({h.usuario})</span>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </CardContent>
+                    </ScrollArea>
+                  </Card>
+                )}
+              </div>
+            )}
+
+            {modoVisualizacao === "calendario" && (
+              <div className="flex-1 flex gap-4 min-h-0 mt-3">
+                <div className="flex-1">
+                  <div className="grid grid-cols-7 gap-1 mb-2">
+                    {diasSemana.map((dia) => (
+                      <div key={dia} className="text-center text-xs font-medium text-muted-foreground py-2">
+                        {dia}
+                      </div>
+                    ))}
                   </div>
+                  <div className="grid grid-cols-7 gap-1">{renderCalendario()}</div>
                 </div>
-              </ScrollArea>
-            </div>
-          )}
-        </div>
+
+                {/* Painel do dia selecionado */}
+                {selectedDay && (
+                  <Card className="w-[300px] flex-shrink-0">
+                    <CardHeader className="p-3 pb-2">
+                      <CardTitle className="text-sm font-semibold">
+                        {selectedDay} de {mesesNomes[mesCalendario.mes]}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="p-3 pt-0">
+                      <ScrollArea className="h-[400px]">
+                        <div className="space-y-2">
+                          {getAcoesPorDia(selectedDay).length === 0 ? (
+                            <p className="text-xs text-muted-foreground">Nenhuma acao para este dia.</p>
+                          ) : (
+                            getAcoesPorDia(selectedDay).map((acao) => (
+                              <div
+                                key={acao.id}
+                                onClick={() => setSelectedAcao(acao)}
+                                className={`p-2 rounded border cursor-pointer hover:border-primary/50 ${
+                                  acao.status === "atrasado" ? "border-red-500/30 bg-red-500/5" : "border-border/50"
+                                }`}
+                              >
+                                <div className="flex items-center justify-between mb-1">
+                                  <Badge variant="outline" className="text-[9px]">
+                                    {acao.id}
+                                  </Badge>
+                                  <Badge className={`text-[9px] ${prioridadeConfig[acao.prioridade].color}`}>
+                                    {prioridadeConfig[acao.prioridade].label}
+                                  </Badge>
+                                </div>
+                                <p className="text-xs font-medium">{acao.titulo}</p>
+                                <p className="text-[10px] text-muted-foreground mt-1">{acao.responsavel}</p>
+                              </div>
+                            ))
+                          )}
+                        </div>
+                      </ScrollArea>
+                    </CardContent>
+                  </Card>
+                )}
+              </div>
+            )}
+
+            {modoVisualizacao === "graficos" && (
+              <div className="flex-1 mt-3 overflow-auto">
+                {/* KPIs de resumo */}
+                <div className="grid grid-cols-5 gap-3 mb-4">
+                  <Card>
+                    <CardContent className="p-3 text-center">
+                      <span className="text-2xl font-bold text-primary">{contadores.total}</span>
+                      <p className="text-xs text-muted-foreground">Total de Acoes</p>
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardContent className="p-3 text-center">
+                      <span className="text-2xl font-bold text-blue-600">{contadores.emAndamento}</span>
+                      <p className="text-xs text-muted-foreground">Em Andamento</p>
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardContent className="p-3 text-center">
+                      <span className="text-2xl font-bold text-red-600">{contadores.atrasadas}</span>
+                      <p className="text-xs text-muted-foreground">Atrasadas</p>
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardContent className="p-3 text-center">
+                      <span className="text-2xl font-bold text-green-600">{contadores.concluidas}</span>
+                      <p className="text-xs text-muted-foreground">Concluidas</p>
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardContent className="p-3 text-center">
+                      <span className="text-2xl font-bold text-yellow-600">{contadores.pendentes}</span>
+                      <p className="text-xs text-muted-foreground">Pendentes</p>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                {/* Graficos */}
+                <div className="grid grid-cols-2 gap-4">
+                  {/* Pizza de Status */}
+                  <Card>
+                    <CardHeader className="p-3 pb-0">
+                      <CardTitle className="text-sm font-semibold">Distribuicao por Status</CardTitle>
+                    </CardHeader>
+                    <CardContent className="p-3">
+                      <div className="h-[200px]">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <RechartsPieChart>
+                            <Pie
+                              data={dadosStatusPizza}
+                              cx="50%"
+                              cy="50%"
+                              innerRadius={50}
+                              outerRadius={80}
+                              paddingAngle={2}
+                              dataKey="value"
+                            >
+                              {dadosStatusPizza.map((entry, index) => (
+                                <Cell key={`cell-${index}`} fill={entry.color} />
+                              ))}
+                            </Pie>
+                            <Tooltip />
+                            <Legend
+                              verticalAlign="bottom"
+                              height={36}
+                              formatter={(value) => <span className="text-xs">{value}</span>}
+                            />
+                          </RechartsPieChart>
+                        </ResponsiveContainer>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Barras por Responsavel */}
+                  <Card>
+                    <CardHeader className="p-3 pb-0">
+                      <CardTitle className="text-sm font-semibold">Acoes por Responsavel</CardTitle>
+                    </CardHeader>
+                    <CardContent className="p-3">
+                      <div className="h-[200px]">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <BarChart data={dadosPorResponsavel} layout="vertical">
+                            <XAxis type="number" tick={{ fontSize: 10 }} />
+                            <YAxis dataKey="name" type="category" width={100} tick={{ fontSize: 10 }} />
+                            <Tooltip />
+                            <Bar dataKey="pendentes" stackId="a" fill="#eab308" name="Pendentes" />
+                            <Bar dataKey="concluidas" stackId="a" fill="#22c55e" name="Concluidas" />
+                            <Bar dataKey="atrasadas" stackId="a" fill="#ef4444" name="Atrasadas" />
+                          </BarChart>
+                        </ResponsiveContainer>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Evolucao Semanal */}
+                  <Card>
+                    <CardHeader className="p-3 pb-0">
+                      <CardTitle className="text-sm font-semibold">Evolucao Semanal</CardTitle>
+                    </CardHeader>
+                    <CardContent className="p-3">
+                      <div className="h-[200px]">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <LineChart data={dadosEvolucaoSemanal}>
+                            <XAxis dataKey="semana" tick={{ fontSize: 10 }} />
+                            <YAxis tick={{ fontSize: 10 }} />
+                            <Tooltip />
+                            <Legend formatter={(value) => <span className="text-xs">{value}</span>} />
+                            <Line type="monotone" dataKey="criadas" stroke="#3b82f6" name="Criadas" strokeWidth={2} />
+                            <Line
+                              type="monotone"
+                              dataKey="concluidas"
+                              stroke="#22c55e"
+                              name="Concluidas"
+                              strokeWidth={2}
+                            />
+                            <Line
+                              type="monotone"
+                              dataKey="atrasadas"
+                              stroke="#ef4444"
+                              name="Atrasadas"
+                              strokeWidth={2}
+                            />
+                          </LineChart>
+                        </ResponsiveContainer>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Por Tipo */}
+                  <Card>
+                    <CardHeader className="p-3 pb-0">
+                      <CardTitle className="text-sm font-semibold">Acoes por Tipo</CardTitle>
+                    </CardHeader>
+                    <CardContent className="p-3">
+                      <div className="h-[200px]">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <BarChart data={dadosPorTipo}>
+                            <XAxis dataKey="tipo" tick={{ fontSize: 10 }} />
+                            <YAxis tick={{ fontSize: 10 }} />
+                            <Tooltip />
+                            <Bar dataKey="qtd" fill="#6366f1" name="Quantidade" />
+                          </BarChart>
+                        </ResponsiveContainer>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
+            )}
+          </>
+        )}
       </div>
     </div>
   )

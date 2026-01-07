@@ -24,14 +24,15 @@ import {
   Percent,
   Calculator,
   PieChart,
-  Scale,
   ShieldCheck,
   Users,
   Truck,
   ClipboardCheck,
   Divide,
   FileText,
+  ScaleIcon,
 } from "lucide-react"
+import { CustoPorCategoriaCard } from "@/components/indicadores"
 
 // ============================================================================
 // DADOS MOCKADOS - 100% PERFORMANCE COM KPIs GNESIS
@@ -118,13 +119,21 @@ const composicaoCustos = {
   dag: 5280000,
 }
 
-const custosPorCategoria = [
-  { categoria: "Mao de Obra", orcado: 58000000, realizado: 59200000, desvio: 1200000, status: "atencao" as const },
-  { categoria: "Materiais", orcado: 50400000, realizado: 49800000, desvio: -600000, status: "ok" as const },
-  { categoria: "Equipamentos", orcado: 26600000, realizado: 26100000, desvio: -500000, status: "ok" as const },
-  { categoria: "Terceiros", orcado: 19600000, realizado: 19580000, desvio: -20000, status: "ok" as const },
-  { categoria: "Indiretos", orcado: 6200000, realizado: 6000000, desvio: -200000, status: "ok" as const },
-]
+const efetivo = {
+  presentes: 342,
+  percentualPresenca: 90.0,
+  proprios: 257,
+  terceiros: 85,
+  turnover: 3.2,
+}
+
+const equipamentos = {
+  emOperacao: 38,
+  disponibilidade: 84.4,
+  emManutencao: 5,
+  parados: 2,
+  utilizacao: 89.5,
+}
 
 const qualidade = {
   conformidade: 93.5,
@@ -145,22 +154,6 @@ const juridico = {
   processosAtivos: 2,
   riscoEstimado: 850000,
   contratosVencer: 4,
-}
-
-const efetivo = {
-  presentes: 342,
-  percentualPresenca: 90.0,
-  proprios: 257,
-  terceiros: 85,
-  turnover: 3.2,
-}
-
-const equipamentos = {
-  emOperacao: 38,
-  disponibilidade: 84.4,
-  emManutencao: 5,
-  parados: 2,
-  utilizacao: 89.5,
 }
 
 const alertasPerformance = [
@@ -479,60 +472,13 @@ function VisaoPerformanceContent() {
         {/* CUSTO META E RECURSOS */}
         <div className="space-y-3">
           <div className="flex items-center gap-2">
-            <Scale className="h-4 w-4 text-primary" />
+            <ScaleIcon className="h-4 w-4 text-primary" />
             <h2 className="text-sm font-semibold text-foreground">CUSTO META E RECURSOS</h2>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-3">
             {/* Tabela de custos por categoria - AUMENTADO para 2 colunas */}
-            <div className="lg:col-span-2 p-4 rounded-lg border border-border bg-card">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="text-xs font-semibold text-foreground">CUSTO POR CATEGORIA</h3>
-                <div className="flex gap-2 text-[9px]">
-                  <span className="flex items-center gap-1">
-                    <div className="h-2 w-2 rounded-full bg-primary" /> Meta
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <div className="h-2 w-2 rounded-full bg-destructive" /> Real
-                  </span>
-                </div>
-              </div>
-              <div className="space-y-3">
-                {custosPorCategoria.map((cat) => (
-                  <div key={cat.categoria} className="space-y-1">
-                    <div className="flex justify-between text-xs">
-                      <span className="text-muted-foreground">{cat.categoria}</span>
-                      <div className="flex gap-3">
-                        <span className="text-foreground font-medium">{formatarMoeda(cat.realizado)}</span>
-                        <span
-                          className={`font-medium ${cat.desvio <= 0 ? "text-emerald-600 dark:text-emerald-400" : "text-destructive"}`}
-                        >
-                          {cat.desvio >= 0 ? "+" : ""}
-                          {formatarMoeda(cat.desvio)}
-                        </span>
-                      </div>
-                    </div>
-                    <div className="relative h-2.5 bg-muted rounded-full overflow-hidden">
-                      <div
-                        className="absolute h-full bg-primary/40 rounded-full"
-                        style={{ width: `${(cat.orcado / 60000000) * 100}%` }}
-                      />
-                      <div
-                        className={`absolute h-full rounded-full ${cat.status === "ok" ? "bg-primary" : "bg-destructive"}`}
-                        style={{ width: `${(cat.realizado / 60000000) * 100}%` }}
-                      />
-                    </div>
-                  </div>
-                ))}
-                <div className="pt-3 border-t border-border">
-                  <div className="flex justify-between text-xs font-semibold">
-                    <span className="text-foreground">TOTAL</span>
-                    <div className="flex gap-3">
-                      <span className="text-foreground">{formatarMoeda(160680000)}</span>
-                      <span className="text-destructive">+R$ 2.3 Mi</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <div className="lg:col-span-2">
+              <CustoPorCategoriaCard />
             </div>
 
             <div className="lg:col-span-1 space-y-3">
@@ -601,17 +547,9 @@ function VisaoPerformanceContent() {
 
             <div className="lg:col-span-1 space-y-3">
               <div className="p-3 rounded-lg border border-border bg-card">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-1.5">
-                    <ClipboardCheck className="h-3.5 w-3.5 text-primary" />
-                    <h3 className="text-[10px] font-semibold text-foreground">QUALIDADE</h3>
-                  </div>
-                  <Badge
-                    variant="outline"
-                    className="text-[8px] px-1.5 py-0 bg-amber-500/10 text-amber-600 dark:text-amber-400"
-                  >
-                    {qualidade.ncsAbertas} NCs
-                  </Badge>
+                <div className="flex items-center gap-2 mb-2">
+                  <ClipboardCheck className="h-3.5 w-3.5 text-primary" />
+                  <h3 className="text-[10px] font-semibold text-foreground">QUALIDADE</h3>
                 </div>
                 <div className="space-y-1.5">
                   <div className="flex justify-between text-[10px]">
@@ -657,7 +595,7 @@ function VisaoPerformanceContent() {
               <div className="p-3 rounded-lg border border-border bg-card">
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-1.5">
-                    <Scale className="h-3.5 w-3.5 text-primary" />
+                    <ScaleIcon className="h-3.5 w-3.5 text-primary" />
                     <h3 className="text-[10px] font-semibold text-foreground">JURIDICO</h3>
                   </div>
                   <Badge
@@ -839,7 +777,7 @@ function VisaoPerformanceContent() {
 // EXPORT
 // ============================================================================
 
-export default function VisaoPerformancePage() {
+export default function CockpitVisaoPerformance() {
   return (
     <Suspense
       fallback={

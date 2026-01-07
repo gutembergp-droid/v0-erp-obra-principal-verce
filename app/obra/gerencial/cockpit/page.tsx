@@ -30,6 +30,7 @@ import {
   AlertCircle,
   Calculator,
   Landmark,
+  Shield,
 } from "lucide-react"
 import { InfoTooltip } from "@/components/ui/info-tooltip"
 import { DRECard } from "@/components/indicadores"
@@ -465,6 +466,16 @@ function CockpitContent() {
                 Financeiro
               </Button>
             </div>
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-7 px-3 text-xs gap-1 border-violet-500/50 text-violet-600 hover:bg-violet-50 dark:hover:bg-violet-950 bg-transparent"
+              onClick={() => router.push("/obra/gerencial/cockpit/prism-demo")}
+              title="Analise Prismatica (Demo)"
+            >
+              <Shield className="w-3 h-3" />
+              Prisma
+            </Button>
             <Badge variant="outline" className="text-[10px] h-6 px-2">
               Janeiro 2025
             </Badge>
@@ -997,6 +1008,16 @@ export default function CockpitGovernanca() {
                 Financeiro
               </Button>
             </div>
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-7 px-3 text-xs gap-1 border-violet-500/50 text-violet-600 hover:bg-violet-50 dark:hover:bg-violet-950 bg-transparent"
+              onClick={() => router.push("/obra/gerencial/cockpit/prism-demo")}
+              title="Analise Prismatica (Demo)"
+            >
+              <Shield className="w-3 h-3" />
+              Prisma
+            </Button>
             <Button variant="outline" size="sm">
               <Calendar className="h-4 w-4 mr-2" />
               Janeiro 2025
