@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { AppLayout } from "@/components/layout/app-layout"
 import { Header } from "@/components/layout/header"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -92,7 +91,7 @@ export default function SSMAPage() {
   const licencasVigentes = meioAmbienteMock.filter((m) => m.status === "vigente").length
 
   return (
-    <AppLayout>
+    <>
       <Header
         title="SSMA - Seguranca, Saude e Meio Ambiente"
         description="Seguranca do Trabalho (SST) e Meio Ambiente - O Escudo do Lucro (Gate 6)"
@@ -366,6 +365,6 @@ export default function SSMAPage() {
           </TabsContent>
         </Tabs>
       </div>
-    </AppLayout>
+    </>
   )
 }

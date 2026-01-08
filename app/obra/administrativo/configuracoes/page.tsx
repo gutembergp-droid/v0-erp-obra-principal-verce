@@ -16,6 +16,8 @@ const colorThemePreviews: Record<ColorTheme, { primary: string; sidebar: string;
   dourado: { primary: "#8B2635", sidebar: "#2A1F1A", accent: "#D4AF37" },
 }
 
+const defaultPreview = { primary: "#8B2635", sidebar: "#1F1614", accent: "#F5F0EB" }
+
 export default function ConfiguracoesPage() {
   const { theme, colorTheme, setTheme, setColorTheme } = useTheme()
 
@@ -128,7 +130,7 @@ export default function ConfiguracoesPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {(Object.keys(colorThemeNames) as ColorTheme[]).map((key) => {
-              const preview = colorThemePreviews[key]
+              const preview = colorThemePreviews[key] || defaultPreview
               const isSelected = colorTheme === key
 
               return (
