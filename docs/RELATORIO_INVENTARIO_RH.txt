@@ -1,0 +1,331 @@
+================================================================================
+RELATORIO DE INVENTARIO COMPLETO - MODULO RH
+ERP GNESIS - CONSTRUTORA
+Data de Geracao: 08/01/2026
+================================================================================
+
+================================================================================
+SECAO 1: RH - MODULO CORPORATIVO
+================================================================================
+
+SITUACAO: NAO IMPLEMENTADO
+
+O modulo corporativo de RH possui referencia no menu da sidebar em:
+  Menu: Corporativo > Administrativo > RH & Gestao Talentos
+  Rota: /corporativo/administrativo/rh
+
+Porem, a pagina NAO FOI CRIADA. O arquivo nao existe no sistema.
+
+Impacto:
+- Nao existe visao global de RH para a empresa
+- Nao ha consolidacao de dados de multiplas obras
+- Nao ha gestao centralizada de talentos
+
+================================================================================
+SECAO 2: RH - MODULO OBRA
+================================================================================
+
+--------------------------------------------------------------------------------
+TELA UNICA: AD-01 RH (Recursos Humanos da Obra)
+--------------------------------------------------------------------------------
+
+INFORMACOES GERAIS:
+- Nome da Tela: RH - Recursos Humanos
+- Codigo: AD-01 (badge exibido na tela como AD-03, inconsistencia)
+- Caminho/Menu: Obra > Administrativo > AD-01 RH
+- Rota: /obra/administrativo/rh
+- Arquivo: app/obra/administrativo/rh/page.tsx
+- Total de Linhas: 2.176 linhas
+
+CONTEXTO:
+[X] Corporativo
+[X] Obra (IMPLEMENTADO)
+[ ] Ambos
+
+OBJETIVO PRINCIPAL:
+Gestao completa de pessoal mobilizado na obra, incluindo controle de 
+documentos, exames ocupacionais, treinamentos NR, ferias, afastamentos, 
+ocorrencias disciplinares, ponto e banco de horas.
+
+STATUS DA TELA:
+[X] Visualmente validada
+[ ] Parcialmente definida
+[ ] Rascunho
+
+PUBLICO-ALVO:
+- RH da obra
+- Gestor administrativo
+- Coordenador de obra
+- Setor de SSMA (para conformidade)
+
+--------------------------------------------------------------------------------
+ABAS IMPLEMENTADAS (11 abas):
+--------------------------------------------------------------------------------
+
+ABA 1: VISAO GERAL
+------------------
+Objetivo: Dashboard com KPIs e graficos resumo
+Informacoes Exibidas:
+  - 8 KPIs: Total, Ativos, Ferias, Afastados, Horas Extras, ASO Pend., NRs Pend., Bloqueados
+  - Grafico: Evolucao do Quadro (linha) - 6 meses
+  - Grafico: Distribuicao por Setor (pizza)
+  - Grafico: Horas Extras por Mes (barras)
+  - Grafico: Conformidade SST (barras empilhadas)
+  - Card: Alertas de Conformidade (ASO, NRs, Bloqueados)
+Acoes Disponiveis:
+  - Toggle Grafico/Tabela em todos os cards
+  - Navegacao para abas especificas via alertas
+  - Exportar (botao - funcao nao implementada)
+  - Novo Colaborador (botao - funcao nao implementada)
+
+ABA 2: COLABORADORES
+--------------------
+Objetivo: Listagem e gestao de pessoal mobilizado
+Informacoes Exibidas:
+  - Tabela com: Nome, ID, Funcao, Setor, Status RH, Status SST, ASO, NRs
+  - Avatar com iniciais
+  - Badges de status coloridos
+Acoes Disponiveis:
+  - Buscar colaborador
+  - Filtrar por status (Todos, Ativos, Ferias, Afastados, Bloqueados)
+  - Visualizar detalhes (abre painel lateral)
+  - Editar (botao - funcao nao implementada)
+  - Menu de acoes (botao - funcao nao implementada)
+
+Dados Mockados: 6 colaboradores
+Campos por Colaborador:
+  - id, nome, funcao, setor, admissao, statusRH, statusSST
+  - turno, ctps, telefone, email, salario
+  - asoValidade, nrPendentes, docsPendentes
+
+ABA 3: DOCUMENTOS
+-----------------
+Objetivo: Controle de documentos pessoais obrigatorios
+Informacoes Exibidas:
+  - Tabela com: Colaborador, Tipo Documento, Validade, Status, Arquivo
+  - Status: valido, vencendo, vencido
+Acoes Disponiveis:
+  - Visualizar documento
+  - Filtrar por status
+
+Dados Mockados: 6 documentos
+Tipos: RG, CPF, CNH, MOPP
+
+ABA 4: EXAMES/ASO
+-----------------
+Objetivo: Controle de exames ocupacionais (ASO)
+Informacoes Exibidas:
+  - Tabela com: Colaborador, Tipo Exame, Data, Validade, Resultado, Restricao, Status
+  - Tipos: Periodico, Admissional
+  - Resultados: Apto, Inapto Temporario
+  - Status: valido, vencendo, vencido
+Acoes Disponiveis:
+  - Visualizar detalhes
+  - Filtrar por status
+
+Dados Mockados: 6 exames
+
+ABA 5: TREINAMENTOS/NRs
+-----------------------
+Objetivo: Controle de treinamentos de seguranca (NRs)
+Informacoes Exibidas:
+  - Tabela com: Colaborador, NR, Descricao, Validade, Carga Horaria, Status
+  - NRs: NR-10, NR-11, NR-12, NR-20, NR-33, NR-35, MOPP
+  - Status: valido, vencendo, vencido
+Acoes Disponiveis:
+  - Visualizar certificado
+  - Filtrar por status/NR
+
+Dados Mockados: 8 treinamentos
+
+ABA 6: FERIAS
+-------------
+Objetivo: Gestao de ferias dos colaboradores
+Informacoes Exibidas:
+  - Tabela com: Colaborador, Periodo Aquisitivo, Saldo Dias, Data Inicio, Data Fim, Status
+  - Status: pendente, programada, em_gozo
+Acoes Disponiveis:
+  - Programar ferias
+  - Visualizar historico
+
+Dados Mockados: 4 registros de ferias
+
+ABA 7: AFASTAMENTOS
+-------------------
+Objetivo: Controle de afastamentos (atestados, licencas)
+Informacoes Exibidas:
+  - Tabela com: Colaborador, Tipo, Data Inicio, Data Fim, Dias, CID, Status
+  - Tipos: Ferias, Atestado Medico
+  - Status: ativo
+Acoes Disponiveis:
+  - Registrar novo afastamento
+  - Visualizar detalhes
+
+Dados Mockados: 2 afastamentos
+
+ABA 8: OCORRENCIAS
+------------------
+Objetivo: Registro de ocorrencias disciplinares
+Informacoes Exibidas:
+  - Tabela com: Colaborador, Tipo, Data, Descricao, Status, Ciencia
+  - Tipos: Advertencia
+  - Status: registrada
+Acoes Disponiveis:
+  - Registrar nova ocorrencia
+  - Visualizar detalhes
+
+Dados Mockados: 2 ocorrencias
+
+ABA 9: PONTO
+------------
+Objetivo: Controle de ponto diario
+Informacoes Exibidas:
+  - Tabela com: Colaborador, Data, Entrada, Intervalo, Saida, Horas Trabalhadas, Horas Extras, Status
+  - Status: regular, atraso
+Acoes Disponiveis:
+  - Filtrar por data
+  - Visualizar detalhes
+  - Ajustar ponto (nao implementado)
+
+Dados Mockados: 4 registros de ponto (1 dia)
+
+ABA 10: BANCO DE HORAS
+----------------------
+Objetivo: Controle de saldo de banco de horas
+Informacoes Exibidas:
+  - Tabela com: Colaborador, Saldo, Creditos, Debitos
+  - Saldo pode ser positivo ou negativo
+Acoes Disponiveis:
+  - Visualizar extrato
+  - Ajustar saldo (nao implementado)
+
+Dados Mockados: 4 colaboradores
+
+ABA 11: CONFORMIDADE
+--------------------
+Objetivo: Visao consolidada de conformidade SST
+Informacoes Exibidas:
+  - Resumo por categoria: ASO, NRs, Documentos
+  - Quantidades: Conformes, Pendentes, Vencidos
+Acoes Disponiveis:
+  - Visualizar detalhes por categoria
+  - Gerar relatorio de conformidade (nao implementado)
+
+--------------------------------------------------------------------------------
+PAINEL LATERAL (Sheet) - DETALHES DO COLABORADOR
+--------------------------------------------------------------------------------
+Informacoes Exibidas quando clica em "Ver" na tabela de colaboradores:
+  - Dados Pessoais: Nome, Funcao, Setor, Admissao, Turno
+  - Contato: Telefone, Email
+  - Documentos: CTPS, Status docs
+  - SST: ASO Validade, NRs Pendentes
+  - Salario (formatado em BRL)
+
+--------------------------------------------------------------------------------
+ANALISE DE COBERTURA - TIPOS DE VINCULO
+--------------------------------------------------------------------------------
+
+                                    | CLT | PJ | Terceirizado |
+------------------------------------|-----|-----|--------------|
+Colaboradores cadastrados           | SIM | NAO | NAO          |
+Documentos controlados              | SIM | NAO | NAO          |
+Exames ASO                          | SIM | NAO | NAO          |
+Treinamentos NR                     | SIM | NAO | NAO          |
+Ferias                              | SIM | N/A | N/A          |
+Afastamentos                        | SIM | NAO | NAO          |
+Ocorrencias                         | SIM | NAO | NAO          |
+Ponto                               | SIM | NAO | NAO          |
+Banco de Horas                      | SIM | NAO | NAO          |
+
+Observacao: O sistema atualmente NAO distingue tipo de vinculo.
+Todos os registros mockados aparentam ser CLT.
+
+--------------------------------------------------------------------------------
+ANALISE DE COBERTURA - FUNCIONALIDADES
+--------------------------------------------------------------------------------
+
+                                          | Implementado | Parcial | Nao Existe |
+------------------------------------------|--------------|---------|------------|
+Funcionarios CLT                          | X            |         |            |
+Pessoas Juridicas (PJ)                    |              |         | X          |
+Terceirizados                             |              |         | X          |
+Distincao Corporativo x Obra              |              |         | X          |
+Ponto                                     | X            |         |            |
+Folha de Pagamento                        |              |         | X          |
+Documentos Obrigatorios                   | X            |         |            |
+Afastamentos/Sinistros/Ocorrencias        | X            |         |            |
+Alocacao por Obra/Centro de Custo         |              |         | X          |
+
+--------------------------------------------------------------------------------
+GRAFICOS IMPLEMENTADOS (com Recharts)
+--------------------------------------------------------------------------------
+
+1. Evolucao do Quadro (LineChart)
+   - Eixos: Mes x Quantidade
+   - Series: Ativos, Admissoes, Demissoes
+   - Dados: 6 meses (Ago a Jan)
+
+2. Distribuicao por Setor (PieChart)
+   - Setores: Producao (28), Engenharia (8), SSMA (4), Administrativo (4), Suprimentos (2)
+
+3. Horas Extras por Mes (BarChart)
+   - Dados: 6 meses
+   - Range: 85h a 240h
+
+4. Conformidade SST (BarChart horizontal empilhado)
+   - Categorias: ASO, NRs, Documentos
+   - Series: Conformes, Pendentes, Vencidos
+
+Todos os graficos possuem toggle para visualizacao em tabela.
+
+================================================================================
+SECAO 3: RESUMO CONSOLIDADO
+================================================================================
+
+QUANTIDADES:
+- Total de telas do RH: 1
+- Telas no modulo CORPORATIVO: 0 (nao implementado)
+- Telas no modulo OBRA: 1 (com 11 abas)
+
+AREAS DO RH JA COBERTAS:
+[X] Cadastro de colaboradores
+[X] Documentos pessoais
+[X] Exames ocupacionais (ASO)
+[X] Treinamentos NR
+[X] Ferias
+[X] Afastamentos
+[X] Ocorrencias disciplinares
+[X] Ponto
+[X] Banco de horas
+[X] Conformidade SST
+[X] Dashboard com KPIs
+[X] Graficos analiticos
+
+AREAS DO RH NAO COBERTAS:
+[ ] RH Corporativo (visao multi-obra)
+[ ] Folha de pagamento
+[ ] Gestao de PJ
+[ ] Gestao de terceirizados
+[ ] Recrutamento e selecao
+[ ] Avaliacao de desempenho
+[ ] Plano de carreira
+[ ] Beneficios
+[ ] Alocacao por centro de custo
+[ ] Integracao com eSocial
+[ ] Relatorios legais/fiscais
+[ ] Rescisoes e homologacoes
+[ ] Gestao de uniformes/EPI (fora SSMA)
+[ ] Controle de horas noturnas
+[ ] Adicional de periculosidade/insalubridade
+
+INCONSISTENCIAS IDENTIFICADAS:
+1. Badge na tela mostra "AD-03" mas menu mostra "AD-01 RH"
+2. Menu corporativo referencia rota /corporativo/administrativo/rh mas arquivo nao existe
+
+================================================================================
+FIM DO RELATORIO
+================================================================================
+
+Gerado automaticamente pela analise do codigo-fonte.
+Este relatorio reflete APENAS o que esta implementado no sistema.
+Nenhuma sugestao ou alteracao foi feita.

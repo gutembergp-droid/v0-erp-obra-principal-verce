@@ -45,6 +45,8 @@ import {
   ClipboardCheck,
   Ban,
   RefreshCw,
+  Building2,
+  ExternalLink,
 } from "lucide-react"
 import {
   BarChart,
@@ -59,6 +61,7 @@ import {
   Cell,
   LineChart,
   Line,
+  Legend, // Added
 } from "recharts"
 
 // Dados mockados de Colaboradores (expandido)
@@ -549,6 +552,136 @@ function CustomTooltip({
   }
   return null
 }
+
+const colaboradoresObraMock = [
+  {
+    id: "COL-001",
+    nome: "Joao Silva",
+    tipoVinculo: "CLT",
+    classificacao: "Direto",
+    funcao: "Armador",
+    setor: "Setor 1",
+    statusGeral: "Ativo",
+    statusDocumental: "OK",
+    statusSST: "ASO OK",
+  },
+  {
+    id: "COL-002",
+    nome: "Carlos Lima",
+    tipoVinculo: "Terceirizado",
+    classificacao: "Direto",
+    funcao: "Carpinteiro",
+    setor: "Setor 2",
+    statusGeral: "Ativo",
+    statusDocumental: "Pendente",
+    statusSST: "NR Vencida",
+  },
+  {
+    id: "COL-003",
+    nome: "Ana Souza",
+    tipoVinculo: "CLT",
+    classificacao: "Indireto",
+    funcao: "Adm Obra",
+    setor: "Administrativo",
+    statusGeral: "Afastado",
+    statusDocumental: "OK",
+    statusSST: "ASO OK",
+  },
+  {
+    id: "COL-004",
+    nome: "Pedro Oliveira",
+    tipoVinculo: "CLT",
+    classificacao: "Direto",
+    funcao: "Pedreiro",
+    setor: "Setor 1",
+    statusGeral: "Ativo",
+    statusDocumental: "OK",
+    statusSST: "ASO OK",
+  },
+  {
+    id: "COL-005",
+    nome: "Marcos Santos",
+    tipoVinculo: "PJ",
+    classificacao: "Indireto",
+    funcao: "Engenheiro Civil",
+    setor: "Engenharia",
+    statusGeral: "Ativo",
+    statusDocumental: "OK",
+    statusSST: "ASO OK",
+  },
+  {
+    id: "COL-006",
+    nome: "Roberto Mendes",
+    tipoVinculo: "CLT",
+    classificacao: "Direto",
+    funcao: "Operador Escavadeira",
+    setor: "Setor 3",
+    statusGeral: "Bloqueado",
+    statusDocumental: "Vencido",
+    statusSST: "ASO Vencido",
+  },
+  {
+    id: "COL-007",
+    nome: "Fernanda Costa",
+    tipoVinculo: "Terceirizado",
+    classificacao: "Direto",
+    funcao: "Eletricista",
+    setor: "Setor 2",
+    statusGeral: "Ativo",
+    statusDocumental: "OK",
+    statusSST: "NR Vencendo",
+  },
+  {
+    id: "COL-008",
+    nome: "Lucas Ferreira",
+    tipoVinculo: "CLT",
+    classificacao: "Direto",
+    funcao: "Servente",
+    setor: "Setor 1",
+    statusGeral: "Ativo",
+    statusDocumental: "Pendente",
+    statusSST: "ASO OK",
+  },
+  {
+    id: "COL-009",
+    nome: "Julia Almeida",
+    tipoVinculo: "CLT",
+    classificacao: "Indireto",
+    funcao: "Tecnica Seguranca",
+    setor: "SSMA",
+    statusGeral: "Ativo",
+    statusDocumental: "OK",
+    statusSST: "ASO OK",
+  },
+  {
+    id: "COL-010",
+    nome: "Ricardo Nunes",
+    tipoVinculo: "Terceirizado",
+    classificacao: "Direto",
+    funcao: "Soldador",
+    setor: "Setor 3",
+    statusGeral: "Afastado",
+    statusDocumental: "OK",
+    statusSST: "ASO OK",
+  },
+]
+
+const composicaoEfetivoData = [
+  { name: "CLT", value: 210, color: "#3b82f6" },
+  { name: "PJ", value: 20, color: "#8b5cf6" },
+  { name: "Terceirizados", value: 70, color: "#f59e0b" },
+]
+
+const acessosRapidos = [
+  { label: "Colaboradores", icon: Users, href: "/obra/administrativo/rh/colaboradores" },
+  { label: "Documentos", icon: FileText, href: "/obra/administrativo/rh/documentos" },
+  { label: "SST (ASO/NRs)", icon: Shield, href: "/obra/administrativo/rh/sst" },
+  { label: "Ferias", icon: Calendar, href: "/obra/administrativo/rh/ferias" },
+  { label: "Afastamentos", icon: UserX, href: "/obra/administrativo/rh/afastamentos" },
+  { label: "Ocorrencias", icon: AlertTriangle, href: "/obra/administrativo/rh/ocorrencias" },
+  { label: "Ponto", icon: Clock, href: "/obra/administrativo/rh/ponto" },
+  { label: "Banco de Horas", icon: Clock, href: "/obra/administrativo/rh/banco-horas" },
+]
 
 function RHContent() {
   const [searchTerm, setSearchTerm] = useState("")
@@ -1133,16 +1266,7 @@ function RHContent() {
                     <CardTitle className="text-base">Gestao de Pessoal</CardTitle>
                     <CardDescription>Colaboradores mobilizados na obra</CardDescription>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <div className="relative">
-                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                      <Input
-                        placeholder="Buscar colaborador..."
-                        className="pl-9 w-48"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                      />
-                    </div>
+                  <div className="flex items-center gap-2">
                     <Select defaultValue="todos">
                       <SelectTrigger className="w-32">
                         <SelectValue placeholder="Status" />
@@ -2166,10 +2290,389 @@ function RHContent() {
   )
 }
 
+function RHObraContent() {
+  const [searchTerm, setSearchTerm] = useState("")
+  const [filtroVinculo, setFiltroVinculo] = useState("todos")
+  const [filtroClassificacao, setFiltroClassificacao] = useState("todos")
+  const [filtroFuncao, setFiltroFuncao] = useState("todos")
+  const [filtroSetor, setFiltroSetor] = useState("todos")
+  const [filtroStatusGeral, setFiltroStatusGeral] = useState("todos")
+  const [filtroStatusDoc, setFiltroStatusDoc] = useState("todos")
+
+  // Filtrar colaboradores
+  const colaboradoresFiltrados = colaboradoresObraMock.filter((col) => {
+    const matchSearch =
+      col.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      col.funcao.toLowerCase().includes(searchTerm.toLowerCase())
+    const matchVinculo = filtroVinculo === "todos" || col.tipoVinculo === filtroVinculo
+    const matchClassificacao = filtroClassificacao === "todos" || col.classificacao === filtroClassificacao
+    const matchFuncao = filtroFuncao === "todos" || col.funcao === filtroFuncao
+    const matchSetor = filtroSetor === "todos" || col.setor === filtroSetor
+    const matchStatusGeral = filtroStatusGeral === "todos" || col.statusGeral === filtroStatusGeral
+    const matchStatusDoc = filtroStatusDoc === "todos" || col.statusDocumental === filtroStatusDoc
+    return (
+      matchSearch &&
+      matchVinculo &&
+      matchClassificacao &&
+      matchFuncao &&
+      matchSetor &&
+      matchStatusGeral &&
+      matchStatusDoc
+    )
+  })
+
+  // Listas unicas para filtros
+  const funcoes = [...new Set(colaboradoresObraMock.map((c) => c.funcao))]
+  const setores = [...new Set(colaboradoresObraMock.map((c) => c.setor))]
+
+  const getStatusGeralBadge = (status: string) => {
+    switch (status) {
+      case "Ativo":
+        return <Badge className="bg-emerald-500/20 text-emerald-400 border-emerald-500/30">Ativo</Badge>
+      case "Afastado":
+        return <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/30">Afastado</Badge>
+      case "Bloqueado":
+        return <Badge className="bg-red-500/20 text-red-400 border-red-500/30">Bloqueado</Badge>
+      default:
+        return <Badge variant="outline">{status}</Badge>
+    }
+  }
+
+  const getStatusDocBadge = (status: string) => {
+    switch (status) {
+      case "OK":
+        return <Badge className="bg-emerald-500/20 text-emerald-400 border-emerald-500/30">OK</Badge>
+      case "Pendente":
+        return <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/30">Pendente</Badge>
+      case "Vencido":
+        return <Badge className="bg-red-500/20 text-red-400 border-red-500/30">Vencido</Badge>
+      default:
+        return <Badge variant="outline">{status}</Badge>
+    }
+  }
+
+  const getStatusSSTBadge = (status: string) => {
+    if (status.includes("OK")) {
+      return <Badge className="bg-emerald-500/20 text-emerald-400 border-emerald-500/30">{status}</Badge>
+    } else if (status.includes("Vencendo")) {
+      return <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/30">{status}</Badge>
+    } else if (status.includes("Vencid")) {
+      return <Badge className="bg-red-500/20 text-red-400 border-red-500/30">{status}</Badge>
+    }
+    return <Badge variant="outline">{status}</Badge>
+  }
+
+  const limparFiltros = () => {
+    setSearchTerm("")
+    setFiltroVinculo("todos")
+    setFiltroClassificacao("todos")
+    setFiltroFuncao("todos")
+    setFiltroSetor("todos")
+    setFiltroStatusGeral("todos")
+    setFiltroStatusDoc("todos")
+  }
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-foreground">RH da Obra</h1>
+          <p className="text-muted-foreground">OBRA ALPHA - Gestao de Pessoas</p>
+        </div>
+      </div>
+
+      {/* SECAO 1: Cards de Visao da Obra */}
+      <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-3">
+        <Card className="bg-card border-border hover:border-primary/50 transition-colors cursor-pointer">
+          <CardContent className="p-3 text-center">
+            <Users className="h-5 w-5 mx-auto mb-1 text-primary" />
+            <p className="text-xs text-muted-foreground">Total</p>
+            <p className="text-xl font-bold text-foreground">300</p>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-card border-border hover:border-blue-500/50 transition-colors cursor-pointer">
+          <CardContent className="p-3 text-center">
+            <Briefcase className="h-5 w-5 mx-auto mb-1 text-blue-500" />
+            <p className="text-xs text-muted-foreground">CLT</p>
+            <p className="text-xl font-bold text-blue-500">210</p>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-card border-border hover:border-violet-500/50 transition-colors cursor-pointer">
+          <CardContent className="p-3 text-center">
+            <Building2 className="h-5 w-5 mx-auto mb-1 text-violet-500" />
+            <p className="text-xs text-muted-foreground">PJ</p>
+            <p className="text-xl font-bold text-violet-500">20</p>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-card border-border hover:border-amber-500/50 transition-colors cursor-pointer">
+          <CardContent className="p-3 text-center">
+            <Users className="h-5 w-5 mx-auto mb-1 text-amber-500" />
+            <p className="text-xs text-muted-foreground">Terceirizados</p>
+            <p className="text-xl font-bold text-amber-500">70</p>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-card border-border hover:border-emerald-500/50 transition-colors cursor-pointer">
+          <CardContent className="p-3 text-center">
+            <UserCheck className="h-5 w-5 mx-auto mb-1 text-emerald-500" />
+            <p className="text-xs text-muted-foreground">Ef. Direto</p>
+            <p className="text-xl font-bold text-emerald-500">230</p>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-card border-border hover:border-cyan-500/50 transition-colors cursor-pointer">
+          <CardContent className="p-3 text-center">
+            <Users className="h-5 w-5 mx-auto mb-1 text-cyan-500" />
+            <p className="text-xs text-muted-foreground">Ef. Indireto</p>
+            <p className="text-xl font-bold text-cyan-500">70</p>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-card border-border hover:border-amber-500/50 transition-colors cursor-pointer">
+          <CardContent className="p-3 text-center">
+            <UserX className="h-5 w-5 mx-auto mb-1 text-amber-500" />
+            <p className="text-xs text-muted-foreground">Afastados</p>
+            <p className="text-xl font-bold text-amber-500">9</p>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-card border-border hover:border-red-500/50 transition-colors cursor-pointer">
+          <CardContent className="p-3 text-center">
+            <Ban className="h-5 w-5 mx-auto mb-1 text-red-500" />
+            <p className="text-xs text-muted-foreground">Bloqueados</p>
+            <p className="text-xl font-bold text-red-500">6</p>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-card border-border hover:border-red-500/50 transition-colors cursor-pointer">
+          <CardContent className="p-3 text-center">
+            <AlertCircle className="h-5 w-5 mx-auto mb-1 text-red-500" />
+            <p className="text-xs text-muted-foreground">Alertas</p>
+            <p className="text-xl font-bold text-red-500">2</p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* SECAO 2: Grafico Pizza + Acessos Rapidos */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Grafico Pizza */}
+        <Card className="bg-card border-border lg:col-span-2">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base font-medium">Composicao do Efetivo</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="h-[250px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={composicaoEfetivoData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={60}
+                    outerRadius={90}
+                    paddingAngle={2}
+                    dataKey="value"
+                    label={({ name, value, percent }) => `${name}: ${value} (${(percent * 100).toFixed(0)}%)`}
+                    labelLine={true}
+                  >
+                    {composicaoEfetivoData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: "hsl(var(--card))",
+                      border: "1px solid hsl(var(--border))",
+                      borderRadius: "8px",
+                    }}
+                    formatter={(value: number) => [`${value} pessoas`, ""]}
+                  />
+                  <Legend />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Acessos Rapidos */}
+        <Card className="bg-card border-border">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base font-medium">Acessos Rapidos</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            {acessosRapidos.map((acesso) => (
+              <Button key={acesso.label} variant="ghost" className="w-full justify-between h-10 hover:bg-muted">
+                <div className="flex items-center gap-2">
+                  <acesso.icon className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-sm">{acesso.label}</span>
+                </div>
+                <ChevronRight className="h-4 w-4 text-muted-foreground" />
+              </Button>
+            ))}
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* SECAO 3: Tabela Principal de Colaboradores */}
+      <Card className="bg-card border-border">
+        <CardHeader className="pb-4">
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-base font-medium">Colaboradores da Obra</CardTitle>
+            <Badge variant="outline" className="text-xs">
+              {colaboradoresFiltrados.length} de {colaboradoresObraMock.length}
+            </Badge>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {/* Filtros */}
+          <div className="flex flex-wrap gap-3">
+            <div className="relative flex-1 min-w-[200px]">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Buscar por nome ou funcao..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-9 bg-background"
+              />
+            </div>
+
+            <Select value={filtroVinculo} onValueChange={setFiltroVinculo}>
+              <SelectTrigger className="w-[140px] bg-background">
+                <SelectValue placeholder="Vinculo" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="todos">Todos Vinculos</SelectItem>
+                <SelectItem value="CLT">CLT</SelectItem>
+                <SelectItem value="PJ">PJ</SelectItem>
+                <SelectItem value="Terceirizado">Terceirizado</SelectItem>
+              </SelectContent>
+            </Select>
+
+            <Select value={filtroClassificacao} onValueChange={setFiltroClassificacao}>
+              <SelectTrigger className="w-[140px] bg-background">
+                <SelectValue placeholder="Classificacao" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="todos">Todas</SelectItem>
+                <SelectItem value="Direto">Direto</SelectItem>
+                <SelectItem value="Indireto">Indireto</SelectItem>
+              </SelectContent>
+            </Select>
+
+            <Select value={filtroSetor} onValueChange={setFiltroSetor}>
+              <SelectTrigger className="w-[140px] bg-background">
+                <SelectValue placeholder="Setor" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="todos">Todos Setores</SelectItem>
+                {setores.map((setor) => (
+                  <SelectItem key={setor} value={setor}>
+                    {setor}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <Select value={filtroStatusGeral} onValueChange={setFiltroStatusGeral}>
+              <SelectTrigger className="w-[140px] bg-background">
+                <SelectValue placeholder="Status Geral" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="todos">Todos Status</SelectItem>
+                <SelectItem value="Ativo">Ativo</SelectItem>
+                <SelectItem value="Afastado">Afastado</SelectItem>
+                <SelectItem value="Bloqueado">Bloqueado</SelectItem>
+              </SelectContent>
+            </Select>
+
+            <Select value={filtroStatusDoc} onValueChange={setFiltroStatusDoc}>
+              <SelectTrigger className="w-[140px] bg-background">
+                <SelectValue placeholder="Status Doc" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="todos">Todos Docs</SelectItem>
+                <SelectItem value="OK">OK</SelectItem>
+                <SelectItem value="Pendente">Pendente</SelectItem>
+                <SelectItem value="Vencido">Vencido</SelectItem>
+              </SelectContent>
+            </Select>
+
+            <Button variant="outline" size="icon" onClick={limparFiltros}>
+              <Filter className="h-4 w-4" />
+            </Button>
+          </div>
+
+          {/* Tabela */}
+          <div className="border border-border rounded-lg overflow-hidden">
+            <Table>
+              <TableHeader>
+                <TableRow className="bg-muted/50">
+                  <TableHead className="font-medium">Nome</TableHead>
+                  <TableHead className="font-medium">Vinculo</TableHead>
+                  <TableHead className="font-medium">Classif.</TableHead>
+                  <TableHead className="font-medium">Funcao</TableHead>
+                  <TableHead className="font-medium">Setor</TableHead>
+                  <TableHead className="font-medium">Status Geral</TableHead>
+                  <TableHead className="font-medium">Status Doc</TableHead>
+                  <TableHead className="font-medium">SST</TableHead>
+                  <TableHead className="font-medium text-right">Acao</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {colaboradoresFiltrados.map((col) => (
+                  <TableRow key={col.id} className="hover:bg-muted/30">
+                    <TableCell className="font-medium">{col.nome}</TableCell>
+                    <TableCell>
+                      <Badge variant="outline" className="text-xs">
+                        {col.tipoVinculo}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="text-muted-foreground text-sm">{col.classificacao}</TableCell>
+                    <TableCell className="text-sm">{col.funcao}</TableCell>
+                    <TableCell className="text-muted-foreground text-sm">{col.setor}</TableCell>
+                    <TableCell>{getStatusGeralBadge(col.statusGeral)}</TableCell>
+                    <TableCell>{getStatusDocBadge(col.statusDocumental)}</TableCell>
+                    <TableCell>{getStatusSSTBadge(col.statusSST)}</TableCell>
+                    <TableCell className="text-right">
+                      <Button variant="ghost" size="sm" className="h-8 text-xs">
+                        <ExternalLink className="h-3 w-3 mr-1" />
+                        Acessar
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+                {colaboradoresFiltrados.length === 0 && (
+                  <TableRow>
+                    <TableCell colSpan={9} className="text-center py-8 text-muted-foreground">
+                      Nenhum colaborador encontrado com os filtros aplicados.
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
+
 export default function RHPage() {
   return (
     <Suspense fallback={null}>
       <RHContent />
+    </Suspense>
+  )
+}
+
+export function RHObraPage() {
+  return (
+    <Suspense fallback={null}>
+      <RHObraContent />
     </Suspense>
   )
 }
