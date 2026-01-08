@@ -24,7 +24,6 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import { useRouter, usePathname } from "next/navigation"
-import { AppLayout } from "@/components/layout/app-layout"
 
 // Dados mockados da EAP de Custo
 const eapCustoData = [
@@ -801,10 +800,10 @@ function EstruturacaoCustoContent() {
 
 export default function EstruturacaoCustoPage() {
   return (
-    <AppLayout>
+    <div>
       <Suspense fallback={null}>
         <EstruturacaoCustoContent />
       </Suspense>
-    </AppLayout>
+    </div>
   )
 }

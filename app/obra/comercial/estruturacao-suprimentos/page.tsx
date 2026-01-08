@@ -1,7 +1,6 @@
 "use client"
 
 import { Suspense } from "react"
-import { AppLayout } from "@/components/layout/app-layout"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -530,10 +529,10 @@ const EstruturacaoSuprimentosContent = () => {
 
 export default function EstruturacaoSuprimentosPage() {
   return (
-    <AppLayout>
+    <div>
       <Suspense fallback={null}>
         <EstruturacaoSuprimentosContent />
       </Suspense>
-    </AppLayout>
+    </div>
   )
 }

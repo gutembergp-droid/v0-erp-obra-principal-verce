@@ -1,7 +1,4 @@
 "use client"
-
-import { Suspense } from "react"
-import { AppLayout } from "@/components/layout/app-layout"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -446,12 +443,4 @@ function EstruturacaoIndiretoContent() {
   )
 }
 
-export default function EstruturacaoIndiretoPage() {
-  return (
-    <AppLayout>
-      <Suspense fallback={null}>
-        <EstruturacaoIndiretoContent />
-      </Suspense>
-    </AppLayout>
-  )
-}
+export default EstruturacaoIndiretoContent

@@ -1,18 +1,15 @@
 "use client"
 
 import { useState } from "react"
-import { AppLayout } from "@/components/layout/app-layout"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Progress } from "@/components/ui/progress"
-import { InfoTooltip } from "@/components/ui/info-tooltip"
 import {
   CheckCircle2,
   Clock,
-  DollarSign,
   FileText,
   Send,
   Eye,
@@ -110,15 +107,11 @@ export default function ReceitaPage() {
   const percentualFaturado = (valorFaturado / valorAtual) * 100
 
   return (
-    <AppLayout>
+    <div>
       <div className="px-6 pt-6 pb-2">
         <div className="flex items-center gap-3">
           <h1 className="text-2xl font-bold">Receita</h1>
-          <InfoTooltip
-            title="Setor de Receita"
-            description="Gerencia Medicoes (MP - Producao e MC - Cliente), Aditivos (acrescimos e supressoes contratuais) e Faturamento (emissao de notas fiscais)."
-            icon={<DollarSign className="w-4 h-4" />}
-          />
+          {/* InfoTooltip component removed */}
         </div>
         <p className="text-sm text-muted-foreground mt-1">Medicoes (MP/MC), Gestao de Aditivos e Faturamento</p>
       </div>
@@ -405,6 +398,6 @@ export default function ReceitaPage() {
           </TabsContent>
         </Tabs>
       </div>
-    </AppLayout>
+    </div>
   )
 }

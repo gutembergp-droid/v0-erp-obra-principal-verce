@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { AppLayout } from "@/components/layout/app-layout"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -141,7 +140,7 @@ export default function SuprimentosPage() {
   const valorMedicaoTerceiros = medicaoTerceirosMock.reduce((acc, m) => acc + m.valorMedido, 0)
 
   return (
-    <AppLayout>
+    <div>
       <div className="px-6 pt-6 pb-2">
         <div className="flex items-center gap-3">
           <h1 className="text-2xl font-bold">Suprimentos</h1>
@@ -463,6 +462,6 @@ export default function SuprimentosPage() {
           </TabsContent>
         </Tabs>
       </div>
-    </AppLayout>
+    </div>
   )
 }
