@@ -33,59 +33,54 @@ export function RHNav({ modulo }: RHNavProps) {
   const navItems = getNavItems(baseUrl)
 
   const isActive = (href: string) => {
-    // Exatamente a rota
     if (href === pathname) return true
-
-    // Visao Geral so fica ativa se for exatamente a rota base
     if (href === baseUrl) {
       return pathname === baseUrl
     }
-
-    // Sub-rotas (ex: /pessoas/prontuario)
     if (pathname.startsWith(href + "/")) return true
-
     return false
   }
 
-  // Breadcrumb
   const currentItem = navItems.find((item) => isActive(item.href))
   const moduloLabel = modulo === "obra" ? "RH Obra" : "RH Corporativo"
 
   return (
-    <div className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-10">
-      {/* Breadcrumb */}
-      <div className="px-4 pt-3 pb-1">
-        <div className="flex items-center gap-2 text-xs text-muted-foreground">
-          <span>{moduloLabel}</span>
-          {currentItem && (
-            <>
-              <span>/</span>
-              <span className="text-foreground font-medium">{currentItem.name}</span>
-            </>
-          )}
+    <div className="border-b border-border bg-card/95 backdrop-blur-sm sticky top-0 z-50 h-[72px] min-h-[72px] max-h-[72px]">
+      <div className="h-full flex flex-col justify-center">
+        {/* Breadcrumb - altura fixa */}
+        <div className="px-4 h-[24px] flex items-center">
+          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+            <span>{moduloLabel}</span>
+            {currentItem && (
+              <>
+                <span>/</span>
+                <span className="text-foreground font-medium">{currentItem.name}</span>
+              </>
+            )}
+          </div>
         </div>
-      </div>
 
-      {/* Menu horizontal */}
-      <div className="flex items-center gap-1 px-4 py-2 overflow-x-auto scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent">
-        {navItems.map((item) => {
-          const active = isActive(item.href)
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all",
-                active
-                  ? "bg-primary text-primary-foreground shadow-sm"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted",
-              )}
-            >
-              <item.icon className="w-4 h-4" />
-              <span>{item.name}</span>
-            </Link>
-          )
-        })}
+        {/* Menu horizontal - altura fixa */}
+        <div className="flex items-center gap-1 px-4 h-[48px] overflow-x-auto scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent">
+          {navItems.map((item) => {
+            const active = isActive(item.href)
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={cn(
+                  "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all h-[36px]",
+                  active
+                    ? "bg-primary text-primary-foreground shadow-sm"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted",
+                )}
+              >
+                <item.icon className="w-4 h-4 flex-shrink-0" />
+                <span>{item.name}</span>
+              </Link>
+            )
+          })}
+        </div>
       </div>
     </div>
   )
