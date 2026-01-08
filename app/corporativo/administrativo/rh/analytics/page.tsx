@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { RHNav } from "@/components/rh/rh-nav"
 import { Users, UserPlus, UserMinus, Briefcase, Building2, TrendingDown, Download } from "lucide-react"
 import {
   BarChart,
@@ -130,6 +131,9 @@ function PeopleAnalyticsCorporativoContent() {
           </Button>
         </div>
       </div>
+
+      {/* RHNav */}
+      <RHNav />
 
       {/* Cards Analiticos */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-6">

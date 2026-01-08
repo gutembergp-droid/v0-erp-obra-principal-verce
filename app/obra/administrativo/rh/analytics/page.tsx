@@ -5,7 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Users, UserPlus, UserMinus, Briefcase, Building2, TrendingDown, Download, HardHat } from "lucide-react"
+import { RHNav } from "@/components/rh/rh-nav"
+import { Users, UserPlus, UserMinus, Briefcase, TrendingDown, Download, BarChart3, Scale } from "lucide-react"
 import {
   BarChart,
   Bar,
@@ -83,49 +84,31 @@ function PeopleAnalyticsObraContent() {
   const [mes, setMes] = useState("todos")
 
   const turnover = ((28 / 300) * 100).toFixed(1)
+  const riscoJuridicoAgregado = 3
 
   return (
     <div className="flex-1 space-y-6 p-6 bg-background min-h-screen">
       {/* Header */}
+      <RHNav modulo="obra" />
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <div>
-          <p className="text-sm text-muted-foreground">RH Obra &gt; Analytics</p>
-          <h1 className="text-2xl font-bold tracking-tight">People Analytics</h1>
-          <p className="text-sm text-muted-foreground mt-1">Visao analitica do quadro da obra</p>
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+            <BarChart3 className="h-5 w-5 text-primary" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold">People Analytics</h1>
+            <p className="text-sm text-muted-foreground">Visao analitica do quadro da obra (somente leitura)</p>
+          </div>
         </div>
         <div className="flex items-center gap-3">
-          <Badge variant="outline" className="gap-1.5 py-1.5 px-3">
-            <HardHat className="h-3.5 w-3.5" />
-            BR-101 Lote 2
-          </Badge>
           <Select value={periodo} onValueChange={setPeriodo}>
             <SelectTrigger className="w-[120px]">
               <SelectValue placeholder="Ano" />
             </SelectTrigger>
             <SelectContent>
+              <SelectItem value="2026">2026</SelectItem>
+              <SelectItem value="2025">2025</SelectItem>
               <SelectItem value="2024">2024</SelectItem>
-              <SelectItem value="2023">2023</SelectItem>
-              <SelectItem value="2022">2022</SelectItem>
-            </SelectContent>
-          </Select>
-          <Select value={mes} onValueChange={setMes}>
-            <SelectTrigger className="w-[140px]">
-              <SelectValue placeholder="Mes" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="todos">Todos os meses</SelectItem>
-              <SelectItem value="01">Janeiro</SelectItem>
-              <SelectItem value="02">Fevereiro</SelectItem>
-              <SelectItem value="03">Marco</SelectItem>
-              <SelectItem value="04">Abril</SelectItem>
-              <SelectItem value="05">Maio</SelectItem>
-              <SelectItem value="06">Junho</SelectItem>
-              <SelectItem value="07">Julho</SelectItem>
-              <SelectItem value="08">Agosto</SelectItem>
-              <SelectItem value="09">Setembro</SelectItem>
-              <SelectItem value="10">Outubro</SelectItem>
-              <SelectItem value="11">Novembro</SelectItem>
-              <SelectItem value="12">Dezembro</SelectItem>
             </SelectContent>
           </Select>
           <Button variant="outline" size="icon">
@@ -136,92 +119,69 @@ function PeopleAnalyticsObraContent() {
 
       {/* Cards Analiticos */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-6">
-        <Card className="bg-card border-border">
+        <Card className="bg-card/50">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs text-muted-foreground uppercase tracking-wide">Ativos</p>
+                <p className="text-xs text-muted-foreground uppercase">Total Pessoas</p>
                 <p className="text-2xl font-bold">300</p>
-                <p className="text-xs text-muted-foreground">na obra</p>
               </div>
-              <div className="h-10 w-10 rounded-full bg-blue-500/10 flex items-center justify-center">
-                <Users className="h-5 w-5 text-blue-500" />
-              </div>
+              <Users className="h-8 w-8 text-blue-500 opacity-50" />
             </div>
           </CardContent>
         </Card>
-
-        <Card className="bg-card border-border">
+        <Card className="bg-green-500/10 border-green-500/30">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs text-muted-foreground uppercase tracking-wide">Admissoes</p>
+                <p className="text-xs text-green-400 uppercase">Admissoes</p>
                 <p className="text-2xl font-bold text-green-500">+88</p>
-                <p className="text-xs text-muted-foreground">no periodo</p>
               </div>
-              <div className="h-10 w-10 rounded-full bg-green-500/10 flex items-center justify-center">
-                <UserPlus className="h-5 w-5 text-green-500" />
-              </div>
+              <UserPlus className="h-8 w-8 text-green-500 opacity-50" />
             </div>
           </CardContent>
         </Card>
-
-        <Card className="bg-card border-border">
+        <Card className="bg-red-500/10 border-red-500/30">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs text-muted-foreground uppercase tracking-wide">Demissoes</p>
+                <p className="text-xs text-red-400 uppercase">Demissoes</p>
                 <p className="text-2xl font-bold text-red-500">-28</p>
-                <p className="text-xs text-muted-foreground">no periodo</p>
               </div>
-              <div className="h-10 w-10 rounded-full bg-red-500/10 flex items-center justify-center">
-                <UserMinus className="h-5 w-5 text-red-500" />
-              </div>
+              <UserMinus className="h-8 w-8 text-red-500 opacity-50" />
             </div>
           </CardContent>
         </Card>
-
-        <Card className="bg-card border-border">
+        <Card className="bg-yellow-500/10 border-yellow-500/30">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs text-muted-foreground uppercase tracking-wide">Turnover</p>
-                <p className="text-2xl font-bold">{turnover}%</p>
-                <p className="text-xs text-muted-foreground">anual</p>
+                <p className="text-xs text-yellow-400 uppercase">Rotatividade</p>
+                <p className="text-2xl font-bold text-yellow-500">{turnover}%</p>
               </div>
-              <div className="h-10 w-10 rounded-full bg-amber-500/10 flex items-center justify-center">
-                <TrendingDown className="h-5 w-5 text-amber-500" />
-              </div>
+              <TrendingDown className="h-8 w-8 text-yellow-500 opacity-50" />
             </div>
           </CardContent>
         </Card>
-
-        <Card className="bg-card border-border">
+        <Card className="bg-card/50">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs text-muted-foreground uppercase tracking-wide">Ef. Direto</p>
-                <p className="text-2xl font-bold">230</p>
-                <p className="text-xs text-muted-foreground">77%</p>
+                <p className="text-xs text-muted-foreground uppercase">Absenteismo</p>
+                <p className="text-2xl font-bold">3.2%</p>
               </div>
-              <div className="h-10 w-10 rounded-full bg-emerald-500/10 flex items-center justify-center">
-                <Briefcase className="h-5 w-5 text-emerald-500" />
-              </div>
+              <Briefcase className="h-8 w-8 text-purple-500 opacity-50" />
             </div>
           </CardContent>
         </Card>
-
-        <Card className="bg-card border-border">
+        <Card className="bg-orange-500/10 border-orange-500/30">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs text-muted-foreground uppercase tracking-wide">Ef. Indireto</p>
-                <p className="text-2xl font-bold">70</p>
-                <p className="text-xs text-muted-foreground">23%</p>
+                <p className="text-xs text-orange-400 uppercase">Risco Juridico</p>
+                <p className="text-2xl font-bold text-orange-500">{riscoJuridicoAgregado}</p>
               </div>
-              <div className="h-10 w-10 rounded-full bg-purple-500/10 flex items-center justify-center">
-                <Building2 className="h-5 w-5 text-purple-500" />
-              </div>
+              <Scale className="h-8 w-8 text-orange-500 opacity-50" />
             </div>
           </CardContent>
         </Card>
@@ -474,10 +434,12 @@ function PeopleAnalyticsObraContent() {
         </CardContent>
       </Card>
 
-      {/* Rodape informativo */}
-      <div className="flex items-center justify-between text-xs text-muted-foreground pt-4 border-t border-border">
-        <span>Dados atualizados em tempo real</span>
-        <span>People Analytics — Visao da Obra</span>
+      {/* Aviso Analytics */}
+      <div className="flex items-center gap-2 p-3 rounded-lg bg-blue-500/10 border border-blue-500/30">
+        <Badge className="bg-blue-500/20 text-blue-400 border-blue-500/30">Info</Badge>
+        <span className="text-sm text-muted-foreground">
+          Esta tela e somente leitura. Para editar dados, acesse os menus operacionais (Pessoas, Conformidade, Ponto).
+        </span>
       </div>
     </div>
   )

@@ -17,6 +17,7 @@ import {
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { RHNav } from "@/components/rh/rh-nav"
 import {
   Search,
   Plus,
@@ -414,6 +415,7 @@ function ColaboradoresContent() {
   return (
     <div className="flex-1 space-y-4 p-6">
       {/* Header */}
+      <RHNav />
       <div className="flex flex-col gap-4">
         <div className="flex items-center justify-between">
           <div>

@@ -15,6 +15,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Alert, AlertDescription } from "@/components/ui/alert"
+import { RHNav } from "@/components/rh/rh-nav"
 import {
   ArrowLeft,
   Save,
@@ -274,6 +275,9 @@ function ProntuarioContent() {
           </Link>
         </Button>
       </div>
+
+      {/* RHNav */}
+      <RHNav />
 
       {/* WORKFLOW DE EFETIVAÇÃO */}
       <Card>

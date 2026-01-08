@@ -11,6 +11,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
+import { RHNav } from "@/components/rh/rh-nav"
 import {
   FileText,
   Search,
@@ -266,6 +267,7 @@ function ConvencoesContent() {
 
   return (
     <div className="flex-1 overflow-auto bg-background">
+      <RHNav />
       <div className="p-6 space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">

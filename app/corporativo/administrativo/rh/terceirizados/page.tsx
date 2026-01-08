@@ -9,6 +9,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Progress } from "@/components/ui/progress"
+import { RHNav } from "@/components/rh/rh-nav"
 import {
   Building2,
   Users,
@@ -418,6 +419,9 @@ function TerceirizadosContent() {
           <p className="text-sm text-muted-foreground">Controle de empresas terceirizadas e conformidade documental</p>
         </div>
       </div>
+
+      {/* RHNav */}
+      <RHNav />
 
       {/* Cards Resumo */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">

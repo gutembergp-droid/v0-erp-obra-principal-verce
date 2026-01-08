@@ -9,6 +9,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
+import { RHNav } from "@/components/rh/rh-nav"
 import {
   ArrowLeft,
   Search,
@@ -339,6 +340,8 @@ function CentralPendenciasContent() {
     <div className="flex-1 space-y-4 p-4 md:p-6">
       {/* Header */}
       <div className="flex flex-col gap-4">
+        <RHNav />
+
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <Link href="/obra/administrativo/rh" className="hover:text-foreground">
             RH

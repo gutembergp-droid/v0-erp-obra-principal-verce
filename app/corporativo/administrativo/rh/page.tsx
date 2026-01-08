@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { InfoTooltip } from "@/components/ui/info-tooltip"
+import { RHNav } from "@/components/rh/rh-nav"
 import {
   Users,
   UserCheck,
@@ -184,6 +185,9 @@ function RHCorporativoContent() {
           <InfoTooltip content="Visao executiva do efetivo de todas as obras e centros de custo" />
         </div>
       </div>
+
+      {/* RHNav Component */}
+      <RHNav />
 
       {/* Cards Executivos */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">

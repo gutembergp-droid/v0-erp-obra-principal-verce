@@ -18,6 +18,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { Separator } from "@/components/ui/separator"
+import { RHNav } from "@/components/rh/rh-nav" // Adicionando import do RHNav
 import {
   ChevronLeft,
   Search,
@@ -294,6 +295,7 @@ function ConsolidacaoContent() {
     <div className="flex-1 space-y-6 p-6">
       {/* Header */}
       <div className="flex flex-col gap-4">
+        <RHNav /> {/* Inserindo o RHNav aqui */}
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <Link href="/obra/administrativo/rh" className="hover:text-foreground">
             RH
@@ -301,7 +303,6 @@ function ConsolidacaoContent() {
           <span>/</span>
           <span>Consolidação</span>
         </div>
-
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div className="flex items-center gap-3">
             <Link href="/obra/administrativo/rh">
@@ -332,7 +333,6 @@ function ConsolidacaoContent() {
             </Button>
           </div>
         </div>
-
         {/* Badges de Status do Fluxo */}
         <div className="flex flex-wrap gap-4 p-4 bg-muted/30 rounded-lg">
           <div className="flex items-center gap-2">

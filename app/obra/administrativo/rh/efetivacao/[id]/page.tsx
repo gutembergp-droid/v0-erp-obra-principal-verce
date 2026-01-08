@@ -2,6 +2,7 @@
 
 import { Suspense, useState } from "react"
 import { useParams, useRouter } from "next/navigation"
+import { RHNav } from "@/components/rh/rh-nav"
 import {
   ArrowLeft,
   CheckCircle2,
@@ -317,6 +318,9 @@ function EfetivacaoContent() {
         <ArrowLeft className="h-4 w-4 mr-2" />
         Voltar
       </Button>
+
+      {/* RHNav */}
+      <RHNav />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Coluna principal */}

@@ -89,7 +89,7 @@ const corporativoNavigation: Section[] = [
       { name: "Planejamento Estrategico", href: "/corporativo/estrategico/planejamento", icon: Target },
       { name: "IAM & Matriz de Perfis", href: "/corporativo/estrategico/iam", icon: KeyRound },
       { name: "Alcadas & Governanca", href: "/corporativo/estrategico/alcadas", icon: Network },
-      { name: "Gestao de Acessos (Catraca)", href: "/corporativo/estrategico/acessos", icon: DoorOpen },
+      { name: "Gestao de Acessos (Catraca)", href: "/corporativo/estrategico/catraca", icon: DoorOpen },
       { name: "Analytics Corporativo", href: "/corporativo/estrategico/analytics", icon: BarChart3 },
     ],
   },
