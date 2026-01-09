@@ -16,7 +16,6 @@ import {
   Shield,
   UserCheck,
   BadgeCheck,
-  ExternalLink,
   Loader2,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -48,496 +47,428 @@ const colaboradorMock = {
   cpf: "123.456.789-00",
   vinculo: "CLT",
   obra: "Obra Alpha",
-  centroCusto: "CC-001",
-  cargo: "Armador",
-  funcao: "Armador de Ferragens",
-  salario: 3200.0,
-  convencao: "SINDUSCON-SP 2024",
-  jornada: "44h semanais",
-  escala: "5x2 (Seg-Sex)",
-  tipoEfetivo: "Direto",
-  statusAtual: "APROVADO",
+  funcao: "Armador",
+  setor: "Terraplenagem",
   dataAdmissao: "2024-01-15",
-  setor: "Producao",
-  // Checklist de conformidade
-  checklist: {
-    cadastroBasico: { ok: true, descricao: "Cadastro básico completo" },
-    documentacao: { ok: true, descricao: "Documentação obrigatória OK" },
-    sst: { ok: true, descricao: "SST (ASO / NRs) OK" },
-    aprovacoes: { ok: true, descricao: "Aprovações concluídas" },
-    bloqueios: { ok: true, descricao: "Sem bloqueios ativos" },
-  },
+  salarioBase: 2500,
+  statusWorkflow: "aguardando_aprovacao", // rascunho, docs_pendentes, sst_pendente, aguardando_aprovacao, efetivado, rejeitado
 }
 
-// Colaborador com pendencia para teste
-const colaboradorComPendencia = {
-  ...colaboradorMock,
-  id: "COL-002",
-  nome: "Maria Santos",
-  statusAtual: "PENDENTE",
-  checklist: {
-    cadastroBasico: { ok: true, descricao: "Cadastro básico completo" },
-    documentacao: {
-      ok: false,
-      descricao: "Documentação obrigatória OK",
-      motivo: "Falta certidão de nascimento",
-      link: "/obra/administrativo/rh/colaborador/COL-002?tab=documentacao",
-    },
-    sst: { ok: true, descricao: "SST (ASO / NRs) OK" },
-    aprovacoes: { ok: true, descricao: "Aprovações concluídas" },
-    bloqueios: { ok: true, descricao: "Sem bloqueios ativos" },
+// Checklist de documentos
+const documentosMock = [
+  { id: 1, nome: "RG", status: "ok", obrigatorio: true },
+  { id: 2, nome: "CPF", status: "ok", obrigatorio: true },
+  { id: 3, nome: "Carteira de Trabalho", status: "ok", obrigatorio: true },
+  { id: 4, nome: "Comprovante de Residência", status: "ok", obrigatorio: true },
+  { id: 5, nome: "Certidão de Nascimento/Casamento", status: "ok", obrigatorio: true },
+  { id: 6, nome: "Titulo de Eleitor", status: "ok", obrigatorio: true },
+  { id: 7, nome: "Certificado de Reservista", status: "pendente", obrigatorio: false },
+  { id: 8, nome: "Foto 3x4", status: "ok", obrigatorio: true },
+]
+
+// Checklist SST
+const sstMock = [
+  { id: 1, nome: "ASO Admissional", status: "ok", obrigatorio: true, validade: "2025-01-15" },
+  { id: 2, nome: "Ficha de EPI", status: "ok", obrigatorio: true },
+  { id: 3, nome: "Integração de Segurança", status: "ok", obrigatorio: true, data: "2024-01-10" },
+  { id: 4, nome: "NR-35 (Trabalho em Altura)", status: "pendente", obrigatorio: true },
+  { id: 5, nome: "NR-18 (Construção Civil)", status: "ok", obrigatorio: true, validade: "2025-06-20" },
+]
+
+// Histórico de aprovações
+const historicoMock = [
+  { data: "2024-01-08 14:30", usuario: "Maria (RH)", acao: "Cadastro criado", obs: "" },
+  { data: "2024-01-09 09:15", usuario: "Maria (RH)", acao: "Documentos enviados para validação", obs: "" },
+  { data: "2024-01-10 11:00", usuario: "Carlos (SST)", acao: "Integração realizada", obs: "Colaborador apto" },
+  {
+    data: "2024-01-12 16:45",
+    usuario: "Sistema",
+    acao: "Pendência identificada",
+    obs: "NR-35 obrigatório para função",
   },
-}
+]
 
 function EfetivacaoContent() {
   const params = useParams()
   const router = useRouter()
-  const id = params.id as string
+  const [colaborador] = useState(colaboradorMock)
+  const [documentos] = useState(documentosMock)
+  const [sst] = useState(sstMock)
+  const [historico] = useState(historicoMock)
 
-  // Simular colaborador com ou sem pendencia
-  const colaborador = id === "COL-002" ? colaboradorComPendencia : colaboradorMock
+  const [showApproveDialog, setShowApproveDialog] = useState(false)
+  const [showRejectDialog, setShowRejectDialog] = useState(false)
+  const [motivoRejeicao, setMotivoRejeicao] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
 
-  const [showConfirmDialog, setShowConfirmDialog] = useState(false)
-  const [observacao, setObservacao] = useState("")
-  const [isProcessing, setIsProcessing] = useState(false)
-  const [efetivado, setEfetivado] = useState(false)
-  const [matriculaGerada, setMatriculaGerada] = useState("")
-  const [dataEfetivacao, setDataEfetivacao] = useState("")
+  // Calcular status
+  const docsObrigatoriosOk = documentos.filter((d) => d.obrigatorio).every((d) => d.status === "ok")
+  const sstObrigatoriosOk = sst.filter((s) => s.obrigatorio).every((s) => s.status === "ok")
+  const podeEfetivar = docsObrigatoriosOk && sstObrigatoriosOk
 
-  // Verificar se todos os itens do checklist estao OK
-  const checklistItems = Object.entries(colaborador.checklist)
-  const todosOk = checklistItems.every(([_, item]) => item.ok)
-  const aptoParaEfetivacao = todosOk && colaborador.statusAtual === "APROVADO"
-
-  const handleEfetivar = () => {
-    setShowConfirmDialog(true)
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case "ok":
+        return (
+          <Badge className="bg-green-500/20 text-green-400 border-green-500/30">
+            <CheckCircle2 className="h-3 w-3 mr-1" />
+            OK
+          </Badge>
+        )
+      case "pendente":
+        return (
+          <Badge className="bg-yellow-500/20 text-yellow-400 border-yellow-500/30">
+            <Clock className="h-3 w-3 mr-1" />
+            Pendente
+          </Badge>
+        )
+      case "rejeitado":
+        return (
+          <Badge className="bg-red-500/20 text-red-400 border-red-500/30">
+            <XCircle className="h-3 w-3 mr-1" />
+            Rejeitado
+          </Badge>
+        )
+      default:
+        return <Badge variant="outline">{status}</Badge>
+    }
   }
 
-  const confirmarEfetivacao = async () => {
-    setIsProcessing(true)
-
-    // Simular processamento
-    await new Promise((resolve) => setTimeout(resolve, 2000))
-
-    // Gerar matricula
-    const matricula = `MAT-${new Date().getFullYear()}-${String(Math.floor(Math.random() * 9999)).padStart(4, "0")}`
-    const dataHora = new Date().toLocaleString("pt-BR")
-
-    setMatriculaGerada(matricula)
-    setDataEfetivacao(dataHora)
-    setEfetivado(true)
-    setIsProcessing(false)
-    setShowConfirmDialog(false)
+  const getWorkflowBadge = (status: string) => {
+    switch (status) {
+      case "rascunho":
+        return <Badge variant="outline">Rascunho</Badge>
+      case "docs_pendentes":
+        return <Badge className="bg-yellow-500/20 text-yellow-400 border-yellow-500/30">Docs Pendentes</Badge>
+      case "sst_pendente":
+        return <Badge className="bg-orange-500/20 text-orange-400 border-orange-500/30">SST Pendente</Badge>
+      case "aguardando_aprovacao":
+        return <Badge className="bg-blue-500/20 text-blue-400 border-blue-500/30">Aguardando Aprovação</Badge>
+      case "efetivado":
+        return (
+          <Badge className="bg-green-500/20 text-green-400 border-green-500/30">
+            <CheckCircle2 className="h-3 w-3 mr-1" />
+            Efetivado
+          </Badge>
+        )
+      case "rejeitado":
+        return (
+          <Badge className="bg-red-500/20 text-red-400 border-red-500/30">
+            <XCircle className="h-3 w-3 mr-1" />
+            Rejeitado
+          </Badge>
+        )
+      default:
+        return <Badge variant="outline">{status}</Badge>
+    }
   }
 
-  // Tela pos-efetivacao
-  if (efetivado) {
-    return (
-      <div className="p-6 space-y-6">
-        {/* Header */}
-        <div>
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink href="/obra/administrativo/rh">RH</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbLink href="/obra/administrativo/rh/colaboradores">Pessoas</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>Efetivação</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-          <h1 className="text-2xl font-bold mt-2">Efetivação do Colaborador</h1>
+  const handleAprovar = async () => {
+    setIsLoading(true)
+    // Simular chamada API
+    await new Promise((resolve) => setTimeout(resolve, 1500))
+    setIsLoading(false)
+    setShowApproveDialog(false)
+    // Redirecionar ou atualizar estado
+    alert("Colaborador efetivado com sucesso!")
+  }
+
+  const handleRejeitar = async () => {
+    if (!motivoRejeicao.trim()) {
+      alert("Motivo da rejeição é obrigatório")
+      return
+    }
+    setIsLoading(true)
+    await new Promise((resolve) => setTimeout(resolve, 1500))
+    setIsLoading(false)
+    setShowRejectDialog(false)
+    setMotivoRejeicao("")
+    alert("Efetivação rejeitada")
+  }
+
+  return (
+    <div className="flex-1 space-y-6 p-6">
+      <RHNav modulo="obra" />
+
+      {/* Breadcrumb */}
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/obra/administrativo/rh">RH</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/obra/administrativo/rh/colaboradores">Colaboradores</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>Efetivação</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <Button variant="ghost" size="icon" onClick={() => router.back()}>
+            <ArrowLeft className="h-5 w-5" />
+          </Button>
+          <div>
+            <h1 className="text-2xl font-bold flex items-center gap-3">
+              <UserCheck className="h-6 w-6" />
+              Efetivação de Colaborador
+            </h1>
+            <p className="text-muted-foreground">
+              {colaborador.nome} - {colaborador.cpf}
+            </p>
+          </div>
         </div>
+        {getWorkflowBadge(colaborador.statusWorkflow)}
+      </div>
 
-        {/* Card de sucesso */}
-        <Card className="border-green-500 bg-green-500/10">
-          <CardContent className="pt-6">
-            <div className="flex flex-col items-center text-center space-y-4">
-              <div className="h-20 w-20 rounded-full bg-green-500/20 flex items-center justify-center">
-                <CheckCircle2 className="h-12 w-12 text-green-500" />
+      {/* Cards de Resumo */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-lg bg-blue-500/10">
+                <User className="h-5 w-5 text-blue-400" />
               </div>
               <div>
-                <h2 className="text-2xl font-bold text-green-500">Colaborador Efetivado com Sucesso!</h2>
-                <p className="text-muted-foreground mt-2">
-                  {colaborador.nome} foi efetivado e está liberado para operação.
-                </p>
-              </div>
-
-              {/* Dados da efetivacao */}
-              <div className="grid grid-cols-2 gap-4 w-full max-w-md mt-4 p-4 bg-background rounded-lg border">
-                <div className="text-left">
-                  <p className="text-xs text-muted-foreground">Matrícula Gerada</p>
-                  <p className="font-mono font-bold text-lg">{matriculaGerada}</p>
-                </div>
-                <div className="text-left">
-                  <p className="text-xs text-muted-foreground">Data/Hora</p>
-                  <p className="font-medium">{dataEfetivacao}</p>
-                </div>
-                <div className="text-left">
-                  <p className="text-xs text-muted-foreground">Responsável</p>
-                  <p className="font-medium">Usuário Atual</p>
-                </div>
-                <div className="text-left">
-                  <p className="text-xs text-muted-foreground">Obra</p>
-                  <p className="font-medium">{colaborador.obra}</p>
-                </div>
-              </div>
-
-              {/* Liberacoes */}
-              <div className="flex flex-wrap gap-2 mt-4">
-                <Badge variant="outline" className="bg-green-500/10 text-green-500 border-green-500">
-                  <Clock className="h-3 w-3 mr-1" />
-                  Liberado para Ponto
-                </Badge>
-                <Badge variant="outline" className="bg-green-500/10 text-green-500 border-green-500">
-                  <Briefcase className="h-3 w-3 mr-1" />
-                  Liberado para Operação
-                </Badge>
-                <Badge variant="outline" className="bg-green-500/10 text-green-500 border-green-500">
-                  <DollarSign className="h-3 w-3 mr-1" />
-                  Liberado para Folha
-                </Badge>
-              </div>
-
-              {/* Botoes pos-efetivacao */}
-              <div className="flex gap-3 mt-6">
-                <Button variant="outline" onClick={() => router.push(`/obra/administrativo/rh/colaborador/${id}`)}>
-                  <User className="h-4 w-4 mr-2" />
-                  Abrir Prontuário
-                </Button>
-                <Button onClick={() => router.push("/obra/administrativo/rh/colaboradores")}>
-                  Ir para Lista de Colaboradores
-                </Button>
+                <p className="text-sm text-muted-foreground">Colaborador</p>
+                <p className="font-medium">{colaborador.nome}</p>
               </div>
             </div>
           </CardContent>
         </Card>
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-lg bg-purple-500/10">
+                <Briefcase className="h-5 w-5 text-purple-400" />
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">Função</p>
+                <p className="font-medium">{colaborador.funcao}</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-lg bg-green-500/10">
+                <DollarSign className="h-5 w-5 text-green-400" />
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">Salário Base</p>
+                <p className="font-medium">R$ {colaborador.salarioBase.toLocaleString("pt-BR")}</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-lg bg-amber-500/10">
+                <Clock className="h-5 w-5 text-amber-400" />
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">Admissão</p>
+                <p className="font-medium">{new Date(colaborador.dataAdmissao).toLocaleDateString("pt-BR")}</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
 
-        {/* Auditoria */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Checklist Documentos */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-sm flex items-center gap-2">
-              <Shield className="h-4 w-4" />
-              Registro de Auditoria
+            <CardTitle className="flex items-center gap-2">
+              <FileText className="h-5 w-5" />
+              Documentação
+              {docsObrigatoriosOk ? (
+                <Badge className="bg-green-500/20 text-green-400 ml-auto">Completo</Badge>
+              ) : (
+                <Badge className="bg-yellow-500/20 text-yellow-400 ml-auto">Pendente</Badge>
+              )}
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-              <div>
-                <p className="text-muted-foreground">Ação</p>
-                <p className="font-medium">EFETIVAÇÃO</p>
+            <div className="space-y-3">
+              {documentos.map((doc) => (
+                <div
+                  key={doc.id}
+                  className={`flex items-center justify-between p-3 rounded-lg border ${
+                    doc.status === "ok" ? "bg-green-500/5 border-green-500/20" : "bg-yellow-500/5 border-yellow-500/20"
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="font-medium">{doc.nome}</span>
+                    {doc.obrigatorio && (
+                      <Badge variant="outline" className="text-xs">
+                        Obrigatório
+                      </Badge>
+                    )}
+                  </div>
+                  {getStatusBadge(doc.status)}
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Checklist SST */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Shield className="h-5 w-5" />
+              SST (Saúde e Segurança)
+              {sstObrigatoriosOk ? (
+                <Badge className="bg-green-500/20 text-green-400 ml-auto">Completo</Badge>
+              ) : (
+                <Badge className="bg-yellow-500/20 text-yellow-400 ml-auto">Pendente</Badge>
+              )}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {sst.map((item) => (
+                <div
+                  key={item.id}
+                  className={`flex items-center justify-between p-3 rounded-lg border ${
+                    item.status === "ok" ? "bg-green-500/5 border-green-500/20" : "bg-yellow-500/5 border-yellow-500/20"
+                  }`}
+                >
+                  <div>
+                    <div className="flex items-center gap-3">
+                      <span className="font-medium">{item.nome}</span>
+                      {item.obrigatorio && (
+                        <Badge variant="outline" className="text-xs">
+                          Obrigatório
+                        </Badge>
+                      )}
+                    </div>
+                    {item.validade && (
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Validade: {new Date(item.validade).toLocaleDateString("pt-BR")}
+                      </p>
+                    )}
+                  </div>
+                  {getStatusBadge(item.status)}
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Histórico */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Clock className="h-5 w-5" />
+            Histórico do Processo
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            {historico.map((item, index) => (
+              <div key={index} className="flex gap-4 pb-4 border-b last:border-0 last:pb-0">
+                <div className="w-32 flex-shrink-0 text-sm text-muted-foreground">{item.data}</div>
+                <div className="flex-1">
+                  <p className="font-medium">{item.acao}</p>
+                  <p className="text-sm text-muted-foreground">{item.usuario}</p>
+                  {item.obs && <p className="text-sm text-muted-foreground mt-1 italic">{item.obs}</p>}
+                </div>
               </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Ações */}
+      {colaborador.statusWorkflow === "aguardando_aprovacao" && (
+        <Card className="border-primary/50">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
               <div>
-                <p className="text-muted-foreground">Usuário</p>
-                <p className="font-medium">admin@genesis.com</p>
-              </div>
-              <div>
-                <p className="text-muted-foreground">Data/Hora</p>
-                <p className="font-medium">{dataEfetivacao}</p>
-              </div>
-              <div>
-                <p className="text-muted-foreground">IP</p>
-                <p className="font-medium">192.168.1.100</p>
-              </div>
-              <div>
-                <p className="text-muted-foreground">Obra</p>
-                <p className="font-medium">{colaborador.obra}</p>
-              </div>
-              <div>
-                <p className="text-muted-foreground">Convenção</p>
-                <p className="font-medium">{colaborador.convencao}</p>
-              </div>
-              <div>
-                <p className="text-muted-foreground">Salário Efetivado</p>
-                <p className="font-medium">
-                  R$ {colaborador.salario.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
+                <h3 className="text-lg font-semibold flex items-center gap-2">
+                  <BadgeCheck className="h-5 w-5 text-primary" />
+                  Decisão de Efetivação
+                </h3>
+                <p className="text-muted-foreground mt-1">
+                  {podeEfetivar
+                    ? "Todos os requisitos foram atendidos. O colaborador pode ser efetivado."
+                    : "Existem pendências que impedem a efetivação."}
                 </p>
               </div>
-              <div>
-                <p className="text-muted-foreground">Matrícula</p>
-                <p className="font-mono font-medium">{matriculaGerada}</p>
+              <div className="flex items-center gap-3">
+                <Button variant="outline" onClick={() => setShowRejectDialog(true)}>
+                  <XCircle className="h-4 w-4 mr-2" />
+                  Rejeitar
+                </Button>
+                <Button disabled={!podeEfetivar} onClick={() => setShowApproveDialog(true)}>
+                  <CheckCircle2 className="h-4 w-4 mr-2" />
+                  Aprovar Efetivação
+                </Button>
               </div>
             </div>
-            {observacao && (
-              <div className="mt-4 pt-4 border-t">
-                <p className="text-muted-foreground text-sm">Observação</p>
-                <p className="font-medium">{observacao}</p>
+
+            {!podeEfetivar && (
+              <div className="mt-4 p-4 bg-yellow-500/10 border border-yellow-500/30 rounded-lg">
+                <div className="flex items-center gap-2 text-yellow-600">
+                  <AlertTriangle className="h-5 w-5" />
+                  <span className="font-medium">Pendências identificadas:</span>
+                </div>
+                <ul className="mt-2 text-sm text-yellow-600 list-disc list-inside">
+                  {!docsObrigatoriosOk && <li>Documentação incompleta</li>}
+                  {!sstObrigatoriosOk && <li>SST incompleto (verificar NRs obrigatórias)</li>}
+                </ul>
               </div>
             )}
           </CardContent>
         </Card>
-      </div>
-    )
-  }
+      )}
 
-  // Tela principal de efetivacao
-  return (
-    <div className="p-6 space-y-6">
-      {/* Header */}
-      <div className="flex items-start justify-between">
-        <div>
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink href="/obra/administrativo/rh">RH</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbLink href="/obra/administrativo/rh/colaboradores">Pessoas</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>Efetivação</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-          <h1 className="text-2xl font-bold mt-2">Efetivação do Colaborador</h1>
-        </div>
-
-        {/* Badge de status */}
-        {aptoParaEfetivacao ? (
-          <Badge className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 text-sm">
-            <CheckCircle2 className="h-4 w-4 mr-2" />
-            APTO PARA EFETIVAÇÃO
-          </Badge>
-        ) : (
-          <Badge variant="destructive" className="px-4 py-2 text-sm">
-            <XCircle className="h-4 w-4 mr-2" />
-            BLOQUEADO PARA EFETIVAÇÃO
-          </Badge>
-        )}
-      </div>
-
-      {/* Botao voltar */}
-      <Button variant="ghost" size="sm" onClick={() => router.back()}>
-        <ArrowLeft className="h-4 w-4 mr-2" />
-        Voltar
-      </Button>
-
-      {/* RHNav */}
-      <RHNav />
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Coluna principal */}
-        <div className="lg:col-span-2 space-y-6">
-          {/* Resumo do Colaborador */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <User className="h-5 w-5" />
-                Resumo do Colaborador (Conferência)
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                <div>
-                  <p className="text-xs text-muted-foreground">Nome Completo</p>
-                  <p className="font-medium">{colaborador.nome}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-muted-foreground">CPF</p>
-                  <p className="font-medium font-mono">{colaborador.cpf}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-muted-foreground">Vínculo</p>
-                  <Badge variant="outline">{colaborador.vinculo}</Badge>
-                </div>
-                <div>
-                  <p className="text-xs text-muted-foreground">Obra / Centro de Custo</p>
-                  <p className="font-medium">{colaborador.obra}</p>
-                  <p className="text-xs text-muted-foreground">{colaborador.centroCusto}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-muted-foreground">Cargo / Função</p>
-                  <p className="font-medium">{colaborador.cargo}</p>
-                  <p className="text-xs text-muted-foreground">{colaborador.funcao}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-muted-foreground">Salário Praticado</p>
-                  <p className="font-medium text-green-500">
-                    R$ {colaborador.salario.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-xs text-muted-foreground">Convenção Aplicada</p>
-                  <p className="font-medium">{colaborador.convencao}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-muted-foreground">Jornada / Escala</p>
-                  <p className="font-medium">{colaborador.jornada}</p>
-                  <p className="text-xs text-muted-foreground">{colaborador.escala}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-muted-foreground">Tipo de Efetivo</p>
-                  <Badge variant="secondary">{colaborador.tipoEfetivo}</Badge>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Checklist de Conformidade */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <BadgeCheck className="h-5 w-5" />
-                Checklist de Conformidade
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {checklistItems.map(([key, item]: [string, any]) => (
-                  <div
-                    key={key}
-                    className={`flex items-center justify-between p-3 rounded-lg border ${
-                      item.ok ? "bg-green-500/5 border-green-500/20" : "bg-red-500/10 border-red-500/30"
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      {item.ok ? (
-                        <CheckCircle2 className="h-5 w-5 text-green-500" />
-                      ) : (
-                        <XCircle className="h-5 w-5 text-red-500" />
-                      )}
-                      <div>
-                        <p className={`font-medium ${!item.ok && "text-red-500"}`}>{item.descricao}</p>
-                        {!item.ok && item.motivo && <p className="text-sm text-red-400">{item.motivo}</p>}
-                      </div>
-                    </div>
-                    {!item.ok && item.link && (
-                      <Button variant="outline" size="sm" onClick={() => router.push(item.link)}>
-                        <ExternalLink className="h-4 w-4 mr-2" />
-                        Ir para Pendência
-                      </Button>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Coluna lateral - Acoes */}
-        <div className="space-y-6">
-          {/* Card de Acao */}
-          <Card className={aptoParaEfetivacao ? "border-green-500/50" : "border-red-500/50"}>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <UserCheck className="h-5 w-5" />
-                Ações de Efetivação
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {aptoParaEfetivacao ? (
-                <>
-                  <p className="text-sm text-muted-foreground">
-                    Este colaborador passou por todas as etapas do workflow e está apto para efetivação.
-                  </p>
-                  <div className="p-3 bg-amber-500/10 border border-amber-500/30 rounded-lg">
-                    <div className="flex items-start gap-2">
-                      <AlertTriangle className="h-4 w-4 text-amber-500 mt-0.5" />
-                      <div className="text-sm">
-                        <p className="font-medium text-amber-500">Atenção</p>
-                        <p className="text-muted-foreground">
-                          A efetivação é <strong>irreversível</strong>. Após efetivado, o colaborador entrará no
-                          headcount, ponto e folha.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <Button className="w-full bg-green-500 hover:bg-green-600" size="lg" onClick={handleEfetivar}>
-                    <CheckCircle2 className="h-5 w-5 mr-2" />
-                    EFETIVAR COLABORADOR
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <p className="text-sm text-red-400">Este colaborador possui pendências que impedem a efetivação.</p>
-                  <div className="p-3 bg-red-500/10 border border-red-500/30 rounded-lg">
-                    <div className="flex items-start gap-2">
-                      <XCircle className="h-4 w-4 text-red-500 mt-0.5" />
-                      <div className="text-sm">
-                        <p className="font-medium text-red-500">Bloqueado</p>
-                        <p className="text-muted-foreground">
-                          Resolva todas as pendências antes de prosseguir com a efetivação.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <Button className="w-full" variant="destructive" size="lg" disabled>
-                    <XCircle className="h-5 w-5 mr-2" />
-                    EFETIVAÇÃO BLOQUEADA
-                  </Button>
-                </>
-              )}
-
-              <Button variant="outline" className="w-full bg-transparent" onClick={() => router.back()}>
-                Cancelar / Voltar
-              </Button>
-            </CardContent>
-          </Card>
-
-          {/* Informacoes importantes */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-sm flex items-center gap-2">
-                <FileText className="h-4 w-4" />
-                Após Efetivação
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="text-sm space-y-2 text-muted-foreground">
-              <p>O colaborador será:</p>
-              <ul className="list-disc list-inside space-y-1">
-                <li>Incluído no headcount da obra</li>
-                <li>Liberado para registro de ponto</li>
-                <li>Habilitado para eventos de folha</li>
-                <li>Vinculado à convenção coletiva</li>
-              </ul>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-
-      {/* Modal de Confirmacao */}
-      <Dialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
+      {/* Dialog Aprovar */}
+      <Dialog open={showApproveDialog} onOpenChange={setShowApproveDialog}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Confirmar Efetivação</DialogTitle>
             <DialogDescription>
-              Esta ação irá gerar matrícula e liberar o colaborador para operação e folha.
+              Você está prestes a efetivar o colaborador <strong>{colaborador.nome}</strong>.
             </DialogDescription>
           </DialogHeader>
-
-          <div className="space-y-4 py-4">
-            <div className="p-3 bg-muted rounded-lg">
-              <p className="font-medium">{colaborador.nome}</p>
-              <p className="text-sm text-muted-foreground">
-                {colaborador.cpf} • {colaborador.cargo}
+          <div className="py-4 space-y-4">
+            <div className="p-4 bg-muted/50 rounded-lg space-y-2">
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Função:</span>
+                <span className="font-medium">{colaborador.funcao}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Setor:</span>
+                <span className="font-medium">{colaborador.setor}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Salário:</span>
+                <span className="font-medium">R$ {colaborador.salarioBase.toLocaleString("pt-BR")}</span>
+              </div>
+            </div>
+            <div className="p-4 bg-green-500/10 border border-green-500/30 rounded-lg">
+              <p className="text-sm text-green-700">
+                Ao confirmar, o colaborador será efetivado e poderá iniciar suas atividades na obra.
               </p>
             </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="observacao">Observação (opcional)</Label>
-              <Textarea
-                id="observacao"
-                placeholder="Adicione uma observação sobre esta efetivação..."
-                value={observacao}
-                onChange={(e) => setObservacao(e.target.value)}
-                rows={3}
-              />
-            </div>
           </div>
-
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowConfirmDialog(false)} disabled={isProcessing}>
+            <Button variant="outline" onClick={() => setShowApproveDialog(false)} disabled={isLoading}>
               Cancelar
             </Button>
-            <Button className="bg-green-500 hover:bg-green-600" onClick={confirmarEfetivacao} disabled={isProcessing}>
-              {isProcessing ? (
+            <Button onClick={handleAprovar} disabled={isLoading}>
+              {isLoading ? (
                 <>
                   <Loader2 className="h-4 w-4 mr-2 animate-spin" />
                   Processando...
@@ -546,6 +477,54 @@ function EfetivacaoContent() {
                 <>
                   <CheckCircle2 className="h-4 w-4 mr-2" />
                   Confirmar Efetivação
+                </>
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Dialog Rejeitar */}
+      <Dialog open={showRejectDialog} onOpenChange={setShowRejectDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Rejeitar Efetivação</DialogTitle>
+            <DialogDescription>
+              Informe o motivo da rejeição da efetivação de <strong>{colaborador.nome}</strong>.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="py-4 space-y-4">
+            <div>
+              <Label htmlFor="motivo">Motivo da Rejeição *</Label>
+              <Textarea
+                id="motivo"
+                placeholder="Descreva o motivo da rejeição..."
+                value={motivoRejeicao}
+                onChange={(e) => setMotivoRejeicao(e.target.value)}
+                className="mt-2"
+                rows={4}
+              />
+            </div>
+            <div className="p-4 bg-red-500/10 border border-red-500/30 rounded-lg">
+              <p className="text-sm text-red-700">
+                Ao rejeitar, o processo voltará para correção e uma notificação será enviada ao responsável.
+              </p>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowRejectDialog(false)} disabled={isLoading}>
+              Cancelar
+            </Button>
+            <Button variant="destructive" onClick={handleRejeitar} disabled={isLoading || !motivoRejeicao.trim()}>
+              {isLoading ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Processando...
+                </>
+              ) : (
+                <>
+                  <XCircle className="h-4 w-4 mr-2" />
+                  Confirmar Rejeição
                 </>
               )}
             </Button>

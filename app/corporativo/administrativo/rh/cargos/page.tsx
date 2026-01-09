@@ -182,7 +182,7 @@ function CargosContent() {
     <div className="flex-1 space-y-6 p-6">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <RHNav />
+        <RHNav modulo="corporativo" />
         <div>
           <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
             <span>Corporativo</span> / <span>Administrativo</span> / <span>RH</span> /{" "}

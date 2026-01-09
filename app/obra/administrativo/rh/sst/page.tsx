@@ -228,7 +228,7 @@ function SSTContent() {
   return (
     <div className="flex-1 space-y-6 p-6">
       {/* Header */}
-      <RHNav />
+      <RHNav modulo="obra" />
       <div className="flex items-center justify-between">
         <div>
           <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">

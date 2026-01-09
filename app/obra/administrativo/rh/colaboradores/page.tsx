@@ -415,7 +415,7 @@ function ColaboradoresContent() {
   return (
     <div className="flex-1 space-y-4 p-6">
       {/* Header */}
-      <RHNav />
+      <RHNav modulo="obra" />
       <div className="flex flex-col gap-4">
         <div className="flex items-center justify-between">
           <div>

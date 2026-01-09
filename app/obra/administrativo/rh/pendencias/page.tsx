@@ -172,7 +172,7 @@ const pendenciasMock = [
   },
 ]
 
-function CentralPendenciasContent() {
+function PendenciasContent() {
   const [searchTerm, setSearchTerm] = useState("")
   const [filtrosAbertos, setFiltrosAbertos] = useState(false)
   const [filtroTipo, setFiltroTipo] = useState<string>("todos")
@@ -337,10 +337,10 @@ function CentralPendenciasContent() {
   }
 
   return (
-    <div className="flex-1 space-y-4 p-4 md:p-6">
+    <div className="flex-1 space-y-6 p-6">
       {/* Header */}
       <div className="flex flex-col gap-4">
-        <RHNav />
+        <RHNav modulo="obra" />
 
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <Link href="/obra/administrativo/rh" className="hover:text-foreground">
@@ -684,7 +684,7 @@ function CentralPendenciasContent() {
 export default function CentralPendenciasPage() {
   return (
     <Suspense fallback={null}>
-      <CentralPendenciasContent />
+      <PendenciasContent />
     </Suspense>
   )
 }
