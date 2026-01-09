@@ -1,0 +1,54 @@
+[00:00:01.385] Server  LOG     
+[00:00:01.385] Server  LOG        We detected TypeScript in your project and reconfigured your tsconfig.json file for you.
+[00:00:01.386] Server  LOG        The following suggested values were added to your tsconfig.json. These values can be changed to fit your project's needs:
+
+[00:00:01.387] Server  LOG        	- include was updated to add '.next/dev/types/**/*.ts'
+[00:00:01.387] Server  LOG     
+[00:00:01.387] Server  LOG        The following mandatory changes were made to your tsconfig.json:
+
+[00:00:01.388] Server  LOG        	- jsx was set to react-jsx (next.js uses the React automatic runtime)
+[00:00:01.389] Server  LOG     
+[00:00:01.998] Server  LOG      ✓ Ready in 1673ms
+[00:00:05.027] Server  LOG      ○ Compiling / ...
+[00:00:33.663] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:34.290] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:00:34.290] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/obra/producao/produtividade","route":"/obra/producao/produtividade"}
+[00:00:34.290] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/obra/producao/produtividade color: rgb(120, 120, 120) color: inherit {"dp":"/obra/producao/produtividade","o":"http://localhost:3000/obra/producao/produtividade","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1768001309841}
+[00:00:45.526] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/obra/producao/pds color: rgb(120, 120, 120) color: inherit {"dp":"/obra/producao/pds","o":"http://localhost:3000/obra/producao/pds","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1768001321056}
+[00:05:04.243] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/corporativo/comercial/clientes color: rgb(120, 120, 120) color: inherit {"dp":"/corporativo/comercial/clientes","o":"http://localhost:3000/corporativo/comercial/clientes","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1768001579734}
+[00:08:20.903] Server  LOG      ✓ Compiled in 285ms
+[00:09:05.522] Server  LOG      ✓ Compiled in 237ms
+[00:09:26.509] Server  LOG      ✓ Compiled in 227ms
+[00:09:36.066] Server  LOG      ✓ Compiled in 200ms
+[00:09:58.081] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/suporte color: rgb(120, 120, 120) color: inherit {"dp":"/suporte","o":"http://localhost:3000/suporte","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1768001873605}
+[00:10:01.647] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/ color: rgb(120, 120, 120) color: inherit {"dp":"/","o":"http://localhost:3000/","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1768001877164}
+[00:10:02.314] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/intranet color: rgb(120, 120, 120) color: inherit {"dp":"/intranet","o":"http://localhost:3000/intranet","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1768001877809}
+[00:10:05.163] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/corporativo/comercial/clientes color: rgb(120, 120, 120) color: inherit {"dp":"/corporativo/comercial/clientes","o":"http://localhost:3000/corporativo/comercial/clientes","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1768001880644}
+[00:10:18.613] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/corporativo/comercial/contratos color: rgb(120, 120, 120) color: inherit {"dp":"/corporativo/comercial/contratos","o":"http://localhost:3000/corporativo/comercial/contratos","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1768001894133}
+[00:11:46.542] Server  LOG      ✓ Compiled in 316ms
+[00:11:49.424] Server  LOG      ✓ Compiled in 227ms
+[00:11:52.187] Server  LOG      ✓ Compiled in 200ms
+[00:11:58.317] Server  LOG      ✓ Compiled in 199ms
+[00:12:00.570] Server  LOG      ✓ Compiled in 187ms
+[00:12:22.577] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:12:23.137] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:12:23.138] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/corporativo/comercial/contratos","route":"/corporativo/comercial/contratos"}
+[00:12:23.138] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/corporativo/comercial/contratos color: rgb(120, 120, 120) color: inherit {"dp":"/corporativo/comercial/contratos","o":"http://localhost:3000/corporativo/comercial/contratos","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1768002018614}
+[00:13:56.252] Server  LOG      ✓ Compiled in 560ms
+[00:13:59.921] Server  LOG      ✓ Compiled in 432ms
+[00:14:03.434] Server  LOG      ✓ Compiled in 685ms
+[00:14:06.305] Server  LOG      ✓ Compiled in 470ms
+[00:14:19.385] Server  LOG      ✓ Compiled in 494ms
+[00:14:22.716] Server  LOG      ✓ Compiled in 528ms
+[00:14:33.314] Server  LOG      ✓ Compiled in 412ms
+[00:14:41.122] Server  LOG      ✓ Compiled in 539ms
+[00:15:03.400] Server  LOG      ✓ Compiled in 350ms
+[00:15:05.528] Server  LOG      ✓ Compiled in 198ms
+[00:15:08.046] Server  LOG      ✓ Compiled in 255ms
+[00:15:09.929] Server  LOG      ✓ Compiled in 205ms
+[00:15:11.745] Server  LOG      ✓ Compiled in 199ms
+[00:15:13.043] Server  LOG      ✓ Compiled in 213ms
+[00:15:14.643] Server  LOG      ✓ Compiled in 225ms
+[00:15:16.438] Server  LOG      ✓ Compiled in 187ms
+[00:15:17.731] Server  LOG      ✓ Compiled in 215ms
+[00:15:19.425] Server  LOG      ✓ Compiled in 267ms

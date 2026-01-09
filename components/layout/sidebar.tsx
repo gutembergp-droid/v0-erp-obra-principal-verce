@@ -323,7 +323,36 @@ export function Sidebar() {
     [expandedMenus],
   )
 
-  const isActive = (href: string) => pathname === href
+  // Verifica se uma rota está ativa (exata ou começa com o href)
+  const isActive = useCallback((href: string) => {
+    if (!href) return false
+    return pathname === href || pathname.startsWith(`${href}/`)
+  }, [pathname])
+
+  // Verifica se algum filho de um item está ativo
+  const hasActiveChild = useCallback((item: MenuItem): boolean => {
+    if (!item.children || item.children.length === 0) {
+      if (item.href) {
+        return isActive(item.href)
+      }
+      return false
+    }
+    return item.children.some((child) => isActive(child.href))
+  }, [isActive])
+
+  // Verifica se alguma página de uma seção está ativa
+  const hasActiveSection = useCallback((section: Section): boolean => {
+    return section.submenu.some((item) => {
+      if (item.href) {
+        return isActive(item.href)
+      }
+      if (item.children) {
+        return item.children.some((child) => isActive(child.href))
+      }
+      return false
+    })
+  }, [isActive])
+
   const isConsoleActive = pathname.startsWith("/corporativo/console")
 
   const getMenuKey = useCallback((name: string, module: "corp" | "obra") => {
@@ -375,13 +404,19 @@ export function Sidebar() {
     if (item.children && item.children.length > 0) {
       const sectorKey = getSectorKey(deptName, item.name, module)
       const isSectorOpen = isMenuOpen(sectorKey)
+      const hasActive = hasActiveChild(item)
 
       return (
         <div key={item.name}>
           <button
             type="button"
             onClick={(e) => handleToggle(sectorKey, e)}
-            className="flex items-center justify-between w-full px-3 py-1.5 pl-9 text-sm text-sidebar-foreground/80 hover:bg-sidebar-accent"
+            className={cn(
+              "flex items-center justify-between w-full px-3 py-1.5 pl-9 text-sm transition-colors",
+              hasActive
+                ? "bg-sidebar-active text-sidebar-active-foreground font-medium border-l-2 border-sidebar-active-border"
+                : "text-sidebar-foreground/80 hover:bg-sidebar-accent",
+            )}
           >
             <div className="flex items-center gap-2">
               <item.icon className="w-4 h-4" />
@@ -389,7 +424,8 @@ export function Sidebar() {
             </div>
             <ChevronRight
               className={cn(
-                "w-3 h-3 text-sidebar-foreground/50 transition-transform duration-200",
+                "w-3 h-3 transition-transform duration-200",
+                hasActive ? "text-sidebar-active-foreground" : "text-sidebar-foreground/50",
                 isSectorOpen && "rotate-90",
               )}
             />
@@ -404,7 +440,7 @@ export function Sidebar() {
                   className={cn(
                     "flex items-center gap-2 px-3 py-1.5 pl-14 text-xs transition-colors",
                     isActive(child.href)
-                      ? "text-primary bg-primary/10 font-medium"
+                      ? "bg-sidebar-active text-sidebar-active-foreground font-medium border-l-2 border-sidebar-active-border"
                       : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground",
                   )}
                 >
@@ -418,14 +454,16 @@ export function Sidebar() {
       )
     }
 
+    const itemActive = isActive(item.href!)
+
     return (
       <Link
         key={item.href}
         href={item.href!}
         className={cn(
           "flex items-center gap-2 px-3 py-1.5 pl-9 text-sm transition-colors",
-          isActive(item.href!)
-            ? "text-primary bg-primary/10 font-medium"
+          itemActive
+            ? "bg-sidebar-active text-sidebar-active-foreground font-medium border-l-2 border-sidebar-active-border"
             : "text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-foreground",
         )}
       >
@@ -472,21 +510,28 @@ export function Sidebar() {
         {corporativoNavigation.map((section) => {
           const menuKey = getMenuKey(section.name, "corp")
           const isOpen = isMenuOpen(menuKey)
+          const sectionActive = hasActiveSection(section)
 
           return (
             <div key={menuKey}>
               <button
                 type="button"
                 onClick={(e) => handleToggle(menuKey, e)}
-                className="flex items-center justify-between w-full px-3 py-1.5 text-sm font-medium text-sidebar-foreground hover:bg-sidebar-accent"
+                className={cn(
+                  "flex items-center justify-between w-full px-3 py-1.5 text-sm font-medium transition-colors",
+                  sectionActive
+                    ? "bg-sidebar-active text-sidebar-active-foreground border-l-2 border-sidebar-active-border"
+                    : "text-sidebar-foreground hover:bg-sidebar-accent",
+                )}
               >
                 <div className="flex items-center gap-2">
-                  <section.icon className="w-4 h-4 text-sidebar-foreground/70" />
+                  <section.icon className={cn("w-4 h-4", sectionActive ? "text-sidebar-active-foreground" : "text-sidebar-foreground/70")} />
                   <span>{section.name}</span>
                 </div>
                 <ChevronDown
                   className={cn(
-                    "w-4 h-4 text-sidebar-foreground/50 transition-transform duration-200",
+                    "w-4 h-4 transition-transform duration-200",
+                    sectionActive ? "text-sidebar-active-foreground" : "text-sidebar-foreground/50",
                     isOpen && "rotate-180",
                   )}
                 />
@@ -509,21 +554,28 @@ export function Sidebar() {
         {obraNavigation.map((dept) => {
           const menuKey = getMenuKey(dept.name, "obra")
           const isOpen = isMenuOpen(menuKey)
+          const deptActive = hasActiveSection(dept)
 
           return (
             <div key={menuKey}>
               <button
                 type="button"
                 onClick={(e) => handleToggle(menuKey, e)}
-                className="flex items-center justify-between w-full px-3 py-1.5 text-sm font-medium text-sidebar-foreground hover:bg-sidebar-accent"
+                className={cn(
+                  "flex items-center justify-between w-full px-3 py-1.5 text-sm font-medium transition-colors",
+                  deptActive
+                    ? "bg-sidebar-active text-sidebar-active-foreground border-l-2 border-sidebar-active-border"
+                    : "text-sidebar-foreground hover:bg-sidebar-accent",
+                )}
               >
                 <div className="flex items-center gap-2">
-                  <dept.icon className="w-4 h-4 text-sidebar-foreground/70" />
+                  <dept.icon className={cn("w-4 h-4", deptActive ? "text-sidebar-active-foreground" : "text-sidebar-foreground/70")} />
                   <span>{dept.name}</span>
                 </div>
                 <ChevronDown
                   className={cn(
-                    "w-4 h-4 text-sidebar-foreground/50 transition-transform duration-200",
+                    "w-4 h-4 transition-transform duration-200",
+                    deptActive ? "text-sidebar-active-foreground" : "text-sidebar-foreground/50",
                     isOpen && "rotate-180",
                   )}
                 />

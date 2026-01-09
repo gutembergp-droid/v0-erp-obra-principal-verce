@@ -1,0 +1,159 @@
+---
+alwaysApply: true
+---
+# ERP-GNESIS — Regras de Negócio Oficiais
+
+CONTEXTO GERAL
+O ERP-GNESIS é um sistema ERP para construtoras, pertencente à empresa Aahbrant Engenharia e Construções.
+O sistema possui forte controle hierárquico, permissões extremamente granulares e separação rígida entre ambiente corporativo e operacional (obras).
+
+====================================================
+REGRA 1 — SEPARAÇÃO DE MÓDULOS
+====================================================
+1.1 Existem dois contextos principais:
+- Módulo Corporativo
+- Módulos Operacionais (Obras)
+
+1.2 O Console Administrativo existe SOMENTE no Módulo Corporativo.
+1.3 Usuários de obra NÃO podem acessar:
+- Configurações
+- Cadastros globais
+- Permissões
+- Hierarquia
+1.4 Usuários de obra solicitam qualquer alteração estrutural via Suporte.
+
+====================================================
+REGRA 2 — PERMISSÕES EXTREMAMENTE GRANULARES
+====================================================
+2.1 Toda permissão é definida por:
+- Módulo
+- Departamento
+- Rotina
+- Ação
+
+2.2 Ações padrão do sistema:
+- VIEW (visualizar)
+- CREATE (criar)
+- EDIT (editar)
+- DELETE (quando existir)
+- APPROVE (aprovar)
+- REJECT (reprovar)
+
+2.3 Nenhuma tela, botão ou ação pode existir sem:
+- Um ID de rotina único
+- Uma ação associada
+
+2.4 O front-end deve:
+- Ocultar menus sem permissão
+- Bloquear acesso direto à rota
+- Exibir mensagem clara de "Acesso negado" quando necessário
+
+====================================================
+REGRA 3 — IDs DE ROTINA (OBRIGATÓRIO)
+====================================================
+3.1 Toda rotina deve possuir um ID único e imutável.
+3.2 Padrão de nomenclatura:
+{MODULO}_{ENTIDADE}_{ACAO}
+
+Exemplos:
+- SUP_PEDIDO_LIST
+- SUP_PEDIDO_VIEW
+- SUP_PEDIDO_CREATE
+- SUP_PEDIDO_APPROVE
+
+3.3 IDs nunca devem ser strings soltas no código.
+3.4 Toda criação de ID deve ser registrada na Matriz de Permissões.
+
+====================================================
+REGRA 4 — MODELO HIERÁRQUICO
+====================================================
+4.1 Todo departamento possui um “Governante” (responsável máximo).
+4.2 Departamentos podem ser subordinados a outros departamentos.
+4.3 A hierarquia define:
+- Para quem aprovações sobem
+- Quem é responsável final por decisões
+
+4.4 O modelo hierárquico é organizacional, não técnico.
+4.5 Alterações na hierarquia só podem ser feitas no Módulo Corporativo.
+
+====================================================
+REGRA 5 — APROVAÇÕES
+====================================================
+5.1 Toda aprovação segue a hierarquia definida.
+5.2 Se o usuário não tiver permissão de APPROVE:
+- A ação deve ser bloqueada
+- O botão não deve aparecer
+
+5.3 Se o usuário tiver permissão, mas exceder limites:
+- A aprovação sobe automaticamente para o governante
+
+5.4 Toda decisão de aprovação ou reprovação deve registrar:
+- Usuário
+- Data/hora
+- Decisão
+- Justificativa (obrigatória na reprovação)
+
+====================================================
+REGRA 6 — SUPRIMENTOS (MVP)
+====================================================
+6.1 O módulo de Suprimentos é subordinado ao Departamento Comercial.
+6.2 Entidade principal do MVP: Pedido.
+
+6.3 Status possíveis do Pedido:
+- Rascunho
+- Enviado
+- Em Aprovação
+- Aprovado
+- Reprovado
+- Cancelado
+
+6.4 Regras por status:
+- Rascunho: pode editar e excluir
+- Enviado: não pode editar
+- Em Aprovação: somente aprovadores visualizam ações
+- Aprovado/Reprovado: somente leitura
+- Cancelado: somente leitura
+
+====================================================
+REGRA 7 — COMPORTAMENTO DE TELAS
+====================================================
+7.1 Toda tela DEVE possuir obrigatoriamente:
+- Loading state
+- Empty state
+- Error state
+- Permission Denied state
+
+7.2 A ausência de qualquer um desses estados invalida a tela.
+
+====================================================
+REGRA 8 — UX E SEGURANÇA
+====================================================
+8.1 Nenhuma ação crítica pode ocorrer sem confirmação.
+8.2 Botões desabilitados devem explicar o motivo.
+8.3 Mensagens de erro devem ser claras e orientativas.
+8.4 Nunca assumir permissões implícitas.
+
+====================================================
+REGRA 9 — DOCUMENTAÇÃO AUTOMÁTICA
+====================================================
+9.1 Toda mudança funcional exige atualização de documentação.
+9.2 Documentos obrigatórios afetados:
+- Mapa de Rotas
+- Matriz de Permissões
+- Documento do Módulo
+- Changelog
+
+9.3 Se algum documento estiver ausente ou desatualizado:
+- A IA deve avisar explicitamente
+- Criar o template com cabeçalho padrão
+- Solicitar validação antes de seguir
+
+9.4 A pasta para as documentações será a pasta /docs que ficará dentro da raiz do projeto.
+
+====================================================
+REGRA 10 — REGRA DE BLOQUEIO
+====================================================
+Se qualquer regra acima for violada:
+- A implementação deve ser interrompida
+- O problema deve ser explicado
+- A correção deve ser proposta antes de continuar

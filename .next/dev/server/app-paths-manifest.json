@@ -1,0 +1,12 @@
+{
+  "/corporativo/comercial/clientes/page": "app/corporativo/comercial/clientes/page.js",
+  "/corporativo/comercial/contratos/page": "app/corporativo/comercial/contratos/page.js",
+  "/intranet/page": "app/intranet/page.js",
+  "/obra/producao/diario/page": "app/obra/producao/diario/page.js",
+  "/obra/producao/eap/page": "app/obra/producao/eap/page.js",
+  "/obra/producao/page": "app/obra/producao/page.js",
+  "/obra/producao/pds/page": "app/obra/producao/pds/page.js",
+  "/obra/producao/produtividade/page": "app/obra/producao/produtividade/page.js",
+  "/page": "app/page.js",
+  "/suporte/page": "app/suporte/page.js"
+}
