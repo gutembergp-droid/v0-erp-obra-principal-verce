@@ -1,6 +1,6 @@
 "use client"
 
-import { Suspense, useState } from "react"
+import { Suspense, useState, useEffect } from "react"
 import Link from "next/link"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -214,6 +214,10 @@ function VisaoGeralContent() {
   const [graficoTipo, setGraficoTipo] = useState<"horasExtras" | "valorHE" | "turnover" | "efetivo" | "hibrido">(
     "horasExtras",
   )
+
+  useEffect(() => {
+    console.log("[v0] RH Visao Geral - Componente montado com sucesso")
+  }, [])
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat("pt-BR", {
@@ -1117,9 +1121,17 @@ function VisaoGeralContent() {
   )
 }
 
-export default function RHObraPage() {
+export default function RHVisaoGeralPage() {
+  console.log("[v0] RH Visao Geral Page - Renderizando...")
+
   return (
-    <Suspense fallback={null}>
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+        </div>
+      }
+    >
       <VisaoGeralContent />
     </Suspense>
   )
