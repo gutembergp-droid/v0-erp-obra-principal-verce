@@ -1,13 +1,14 @@
 "use client"
 
 import { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { Separator } from "@/components/ui/separator"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Checkbox } from "@/components/ui/checkbox"
 import {
   Users,
   Shield,
@@ -23,212 +24,234 @@ import {
   Search,
   Plus,
   AlertTriangle,
-  CheckCircle2,
   Clock,
-  UserPlus,
-  UserMinus,
   Lock,
   Unlock,
-  Edit,
-  Eye,
   MoreHorizontal,
   ChevronRight,
   Building2,
-  RefreshCw,
+  UserCheck,
+  UserX,
+  Mail,
+  Download,
+  Filter,
+  ArrowUpDown,
+  ExternalLink,
+  ShieldAlert,
+  Activity,
 } from "lucide-react"
 import Link from "next/link"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { usePathname } from "next/navigation"
+import { cn } from "@/lib/utils"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 // Navegacao do Console
 const consoleNavigation = [
-  { name: "Visao Geral", href: "/corporativo/console", icon: LayoutDashboard, active: true },
+  { name: "Visao Geral", href: "/corporativo/console", icon: LayoutDashboard },
   { name: "Usuarios", href: "/corporativo/console/usuarios", icon: Users },
   { name: "Perfis de Acesso", href: "/corporativo/console/perfis", icon: Shield },
   { name: "Permissoes", href: "/corporativo/console/permissoes", icon: Key },
-  { name: "Hierarquia & Aprovacoes", href: "/corporativo/console/hierarquia", icon: Network },
+  { name: "Alcadas & Aprovacoes", href: "/corporativo/console/alcadas", icon: Network },
+  { name: "Centros de Custo", href: "/corporativo/console/centros-custo", icon: Building2 },
   { name: "IAs & Agentes", href: "/corporativo/console/ias", icon: Bot },
   { name: "Limites & Custos", href: "/corporativo/console/limites", icon: DollarSign },
   { name: "Auditoria", href: "/corporativo/console/auditoria", icon: FileSearch },
+  { name: "Convites Pendentes", href: "/corporativo/console/convites", icon: Mail },
   { name: "Suporte", href: "/corporativo/console/suporte", icon: Headphones },
   { name: "Integracoes", href: "/corporativo/console/integracoes", icon: Plug },
   { name: "Parametros", href: "/corporativo/console/parametros", icon: Settings },
 ]
 
-// Mock data - KPIs
-const kpis = [
-  { label: "Usuarios Ativos", value: 347, icon: Users, trend: "+12", color: "text-emerald-600", bg: "bg-emerald-50" },
-  { label: "Usuarios Bloqueados", value: 8, icon: Lock, trend: "-2", color: "text-red-600", bg: "bg-red-50" },
-  { label: "Perfis de Acesso", value: 24, icon: Shield, trend: "+1", color: "text-blue-600", bg: "bg-blue-50" },
-  { label: "Permissoes Criticas", value: 156, icon: Key, trend: "0", color: "text-amber-600", bg: "bg-amber-50" },
-  { label: "Aprovacoes Pendentes", value: 23, icon: Clock, trend: "+5", color: "text-orange-600", bg: "bg-orange-50" },
-  { label: "Agentes IA Ativos", value: 12, icon: Bot, trend: "+3", color: "text-purple-600", bg: "bg-purple-50" },
-  {
-    label: "Consumo IA (mes)",
-    value: "R$ 4.2k",
-    icon: DollarSign,
-    trend: "+18%",
-    color: "text-cyan-600",
-    bg: "bg-cyan-50",
-  },
-  { label: "Alertas Seguranca", value: 3, icon: AlertTriangle, trend: "-1", color: "text-rose-600", bg: "bg-rose-50" },
-]
-
-// Mock data - Atividade recente
-const atividadeRecente = [
+// Mock data - Usuarios recentes
+const usuariosRecentes = [
   {
     id: 1,
-    tipo: "usuario_criado",
-    descricao: "Novo usuario criado: Maria Santos",
-    usuario: "Admin",
-    data: "09/01/2026 14:32",
-    icone: UserPlus,
-    cor: "text-emerald-600",
+    nome: "Ana Paula",
+    email: "ana.dp@empresa.com",
+    perfil: "DP - Cadastro de Funcionario",
+    departamento: "RH",
+    status: "ativo",
+    mfa: true,
+    tipo: "interno",
+    ultimoAcesso: "09/01/2026 14:32",
   },
   {
     id: 2,
-    tipo: "perfil_alterado",
-    descricao: "Perfil 'Gerente de Obra' atualizado - novas permissoes",
-    usuario: "Admin",
-    data: "09/01/2026 13:45",
-    icone: Edit,
-    cor: "text-blue-600",
+    nome: "Marcos Pereira",
+    email: "marcos.suprimentos@empresa.com",
+    perfil: "Suprimentos - Pedido",
+    departamento: "Suprimentos",
+    status: "ativo",
+    mfa: true,
+    tipo: "interno",
+    ultimoAcesso: "09/01/2026 13:45",
   },
   {
     id: 3,
-    tipo: "usuario_bloqueado",
-    descricao: "Usuario bloqueado: Jose Pereira (tentativas de login)",
-    usuario: "Sistema",
-    data: "09/01/2026 11:20",
-    icone: Lock,
-    cor: "text-red-600",
+    nome: "Joao Silva",
+    email: "joao.comercial@empresa.com",
+    perfil: "Comercial - Governante",
+    departamento: "Comercial",
+    status: "ativo",
+    mfa: true,
+    tipo: "interno",
+    ultimoAcesso: "09/01/2026 11:20",
   },
   {
     id: 4,
-    tipo: "aprovacao",
-    descricao: "Aprovacao de alcada concedida: R$ 500.000 para Carlos Silva",
-    usuario: "Diretor Financeiro",
-    data: "09/01/2026 10:15",
-    icone: CheckCircle2,
-    cor: "text-emerald-600",
+    nome: "Maria Souza",
+    email: "maria.suprimentos@empresa.com",
+    perfil: "Suprimentos - Governante",
+    departamento: "Suprimentos",
+    status: "ativo",
+    mfa: true,
+    tipo: "interno",
+    ultimoAcesso: "09/01/2026 10:15",
   },
   {
     id: 5,
-    tipo: "ia_config",
-    descricao: "Agente IA 'Hermes' configurado para obras do Nordeste",
-    usuario: "Admin",
-    data: "09/01/2026 09:30",
-    icone: Bot,
-    cor: "text-purple-600",
+    nome: "Carlos Lima",
+    email: "carlos.rh@empresa.com",
+    perfil: "RH - Governante",
+    departamento: "RH",
+    status: "ativo",
+    mfa: false,
+    tipo: "interno",
+    ultimoAcesso: "08/01/2026 17:30",
   },
   {
     id: 6,
-    tipo: "usuario_desbloqueado",
-    descricao: "Usuario desbloqueado: Ana Costa (solicitacao suporte)",
-    usuario: "Admin",
-    data: "08/01/2026 17:45",
-    icone: Unlock,
-    cor: "text-amber-600",
+    nome: "Roberto Engenheiro",
+    email: "roberto@terceiro.com",
+    perfil: "Engenheiro - Producao",
+    departamento: "Producao",
+    status: "pendente",
+    mfa: false,
+    tipo: "externo",
+    ultimoAcesso: "-",
   },
   {
     id: 7,
-    tipo: "permissao_critica",
-    descricao: "Permissao critica atribuida: 'Aprovar Medicoes > R$ 1M'",
-    usuario: "Admin",
-    data: "08/01/2026 16:20",
-    icone: Key,
-    cor: "text-rose-600",
+    nome: "Patricia Fiscal",
+    email: "patricia@consultoria.com",
+    perfil: "Fiscal - Leitura",
+    departamento: "Auditoria",
+    status: "ativo",
+    mfa: true,
+    tipo: "externo",
+    ultimoAcesso: "07/01/2026 09:00",
   },
   {
     id: 8,
-    tipo: "integracao",
-    descricao: "Integracao com SAP atualizada - sync de usuarios",
-    usuario: "Sistema",
-    data: "08/01/2026 14:00",
-    icone: Plug,
-    cor: "text-cyan-600",
-  },
-  {
-    id: 9,
-    tipo: "usuario_removido",
-    descricao: "Usuario desativado: Roberto Lima (desligamento)",
-    usuario: "RH",
-    data: "08/01/2026 11:30",
-    icone: UserMinus,
-    cor: "text-gray-600",
-  },
-  {
-    id: 10,
-    tipo: "parametro",
-    descricao: "Parametro 'Timeout Sessao' alterado: 30min -> 60min",
-    usuario: "Admin",
-    data: "08/01/2026 09:00",
-    icone: Settings,
-    cor: "text-slate-600",
+    nome: "Fernando Costa",
+    email: "fernando@empresa.com",
+    perfil: "Financeiro - Pagamentos",
+    departamento: "Financeiro",
+    status: "bloqueado",
+    mfa: true,
+    tipo: "interno",
+    ultimoAcesso: "05/01/2026 16:45",
   },
 ]
 
-// Mock data - Alertas de seguranca
-const alertasSeguranca = [
+// Mock data - Alertas
+const alertas = [
   {
     id: 1,
     tipo: "critico",
-    titulo: "Tentativas de login suspeitas",
-    descricao: "5 tentativas falhas do IP 192.168.1.100",
-    data: "09/01/2026 14:00",
+    titulo: "5 tentativas de login falhas",
+    descricao: "IP 192.168.1.100 - Usuario: fernando@empresa.com",
+    acao: "Bloquear IP",
   },
   {
     id: 2,
-    tipo: "medio",
-    titulo: "Permissao critica sem revisao",
-    descricao: "3 usuarios com acesso 'Super Admin' sem revisao ha 90 dias",
-    data: "09/01/2026 10:00",
+    tipo: "atencao",
+    titulo: "3 usuarios sem MFA",
+    descricao: "Usuarios com acesso a dados sensiveis sem autenticacao dupla",
+    acao: "Notificar",
   },
   {
     id: 3,
-    tipo: "baixo",
-    titulo: "Usuarios inativos",
-    descricao: "12 usuarios sem acesso ha mais de 60 dias",
-    data: "08/01/2026 08:00",
+    tipo: "info",
+    titulo: "12 convites pendentes",
+    descricao: "Usuarios externos aguardando ativacao ha mais de 7 dias",
+    acao: "Reenviar",
   },
 ]
 
+// Mock data - Atividade
+const atividadeRecente = [
+  { id: 1, acao: "Usuario criado", detalhes: "Ana Paula (ana.dp@empresa.com)", usuario: "Admin", data: "09/01 14:32" },
+  {
+    id: 2,
+    acao: "Perfil alterado",
+    detalhes: "Gerente de Obra - novas permissoes",
+    usuario: "Admin",
+    data: "09/01 13:45",
+  },
+  {
+    id: 3,
+    acao: "Usuario bloqueado",
+    detalhes: "Fernando Costa - tentativas de login",
+    usuario: "Sistema",
+    data: "09/01 11:20",
+  },
+  { id: 4, acao: "Alcada aprovada", detalhes: "R$ 500.000 para Carlos Silva", usuario: "Diretor", data: "09/01 10:15" },
+  { id: 5, acao: "Convite enviado", detalhes: "roberto@terceiro.com (Externo)", usuario: "Admin", data: "08/01 17:30" },
+]
+
 export default function ConsolePage() {
+  const pathname = usePathname()
   const [searchTerm, setSearchTerm] = useState("")
-  const [activeNav, setActiveNav] = useState("Visao Geral")
+  const [selectedUsers, setSelectedUsers] = useState<number[]>([])
+
+  const toggleUserSelection = (userId: number) => {
+    setSelectedUsers((prev) => (prev.includes(userId) ? prev.filter((id) => id !== userId) : [...prev, userId]))
+  }
+
+  const toggleAllUsers = () => {
+    setSelectedUsers((prev) => (prev.length === usuariosRecentes.length ? [] : usuariosRecentes.map((u) => u.id)))
+  }
 
   return (
     <div className="flex h-screen bg-muted/30">
       {/* Sidebar do Console */}
-      <aside className="w-64 bg-background border-r flex flex-col">
-        <div className="p-4 border-b">
+      <aside className="w-56 bg-background border-r flex flex-col">
+        <div className="p-3 border-b">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <Shield className="w-4 h-4 text-primary-foreground" />
+            <div className="w-7 h-7 bg-primary rounded flex items-center justify-center">
+              <Settings className="w-4 h-4 text-primary-foreground" />
             </div>
             <div>
-              <h1 className="font-semibold text-sm">Console Administrativo</h1>
-              <p className="text-xs text-muted-foreground">ERP Construcao Civil</p>
+              <h1 className="font-semibold text-sm">Console</h1>
+              <p className="text-[10px] text-muted-foreground">Administracao</p>
             </div>
           </div>
         </div>
 
-        <ScrollArea className="flex-1 py-2">
-          <nav className="px-2 space-y-1">
+        <ScrollArea className="flex-1 py-1">
+          <nav className="px-2 space-y-0.5">
             {consoleNavigation.map((item) => {
               const Icon = item.icon
-              const isActive = item.name === activeNav
+              const isActive = pathname === item.href
               return (
                 <Link
                   key={item.name}
                   href={item.href}
-                  onClick={() => setActiveNav(item.name)}
-                  className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors ${
+                  className={cn(
+                    "flex items-center gap-2 px-2 py-1.5 rounded text-xs transition-colors",
                     isActive
                       ? "bg-primary/10 text-primary font-medium"
-                      : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                  }`}
+                      : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                  )}
                 >
-                  <Icon className="w-4 h-4" />
+                  <Icon className="w-3.5 h-3.5" />
                   {item.name}
                 </Link>
               )
@@ -236,14 +259,14 @@ export default function ConsolePage() {
           </nav>
         </ScrollArea>
 
-        <div className="p-4 border-t">
-          <div className="flex items-center gap-2">
-            <Avatar className="w-8 h-8">
-              <AvatarFallback className="bg-primary/10 text-primary text-xs">AD</AvatarFallback>
+        <div className="p-2 border-t">
+          <div className="flex items-center gap-2 px-2 py-1">
+            <Avatar className="w-6 h-6">
+              <AvatarFallback className="bg-primary/10 text-primary text-[10px]">AD</AvatarFallback>
             </Avatar>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium truncate">Administrador</p>
-              <p className="text-xs text-muted-foreground truncate">admin@empresa.com</p>
+              <p className="text-xs font-medium truncate">Administrador</p>
+              <p className="text-[10px] text-muted-foreground truncate">Super Admin</p>
             </div>
           </div>
         </div>
@@ -251,342 +274,386 @@ export default function ConsolePage() {
 
       {/* Conteudo Principal */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Header */}
-        <header className="h-14 bg-background border-b flex items-center justify-between px-6">
-          <div className="flex items-center gap-4">
-            {/* Seletor de Contexto */}
-            <div className="flex items-center gap-2 px-3 py-1.5 bg-muted rounded-md">
-              <Building2 className="w-4 h-4 text-muted-foreground" />
-              <span className="text-sm font-medium">Corporativo</span>
-              <Badge variant="secondary" className="text-[10px] px-1.5">
-                Unico
-              </Badge>
+        {/* Header compacto */}
+        <header className="h-12 bg-background border-b flex items-center justify-between px-4">
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1.5 px-2 py-1 bg-muted rounded text-xs">
+              <Building2 className="w-3.5 h-3.5 text-muted-foreground" />
+              <span className="font-medium">Corporativo</span>
             </div>
 
-            {/* Busca Global */}
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <Search className="absolute left-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
               <Input
-                placeholder="Buscar usuarios, perfis, permissoes..."
+                placeholder="Buscar usuarios, perfis..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-80 pl-9 h-9"
+                className="w-64 pl-7 h-8 text-xs"
               />
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm" className="gap-2 bg-transparent">
-              <Plus className="w-4 h-4" />
-              Criar Usuario
+          <div className="flex items-center gap-1.5">
+            <Button variant="outline" size="sm" className="h-7 text-xs gap-1.5 bg-transparent">
+              <Plus className="w-3.5 h-3.5" />
+              Novo Usuario
             </Button>
-            <Button variant="outline" size="sm" className="gap-2 bg-transparent">
-              <Shield className="w-4 h-4" />
-              Criar Perfil
-            </Button>
-            <Button variant="outline" size="sm" className="gap-2 bg-transparent">
-              <FileSearch className="w-4 h-4" />
-              Auditoria
+            <Button variant="outline" size="sm" className="h-7 text-xs gap-1.5 bg-transparent">
+              <Download className="w-3.5 h-3.5" />
+              Exportar
             </Button>
           </div>
         </header>
 
         {/* Conteudo */}
-        <main className="flex-1 overflow-auto p-6">
-          <div className="max-w-[1600px] mx-auto space-y-6">
-            {/* Titulo */}
-            <div className="flex items-center justify-between">
-              <div>
-                <h1 className="text-2xl font-bold">Visao Geral</h1>
-                <p className="text-muted-foreground">Painel de controle administrativo do sistema</p>
-              </div>
-              <Button variant="ghost" size="sm" className="gap-2">
-                <RefreshCw className="w-4 h-4" />
-                Atualizar
-              </Button>
-            </div>
-
-            {/* KPIs */}
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
-              {kpis.map((kpi, index) => {
-                const Icon = kpi.icon
-                return (
-                  <Card key={index} className="relative overflow-hidden">
-                    <CardContent className="p-4">
-                      <div className={`w-8 h-8 rounded-lg ${kpi.bg} flex items-center justify-center mb-2`}>
-                        <Icon className={`w-4 h-4 ${kpi.color}`} />
-                      </div>
-                      <p className="text-2xl font-bold">{kpi.value}</p>
-                      <p className="text-xs text-muted-foreground">{kpi.label}</p>
-                      {kpi.trend !== "0" && (
-                        <Badge
-                          variant={kpi.trend.startsWith("+") ? "default" : "secondary"}
-                          className="absolute top-2 right-2 text-[10px] px-1.5"
-                        >
-                          {kpi.trend}
-                        </Badge>
-                      )}
-                    </CardContent>
-                  </Card>
-                )
-              })}
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {/* Atividade Recente */}
-              <Card className="lg:col-span-2">
-                <CardHeader className="pb-3">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <CardTitle className="text-base">Atividade Recente</CardTitle>
-                      <CardDescription>Ultimas 10 alteracoes administrativas</CardDescription>
-                    </div>
-                    <Button variant="ghost" size="sm" className="gap-1 text-xs">
-                      Ver todas <ChevronRight className="w-3 h-3" />
+        <main className="flex-1 overflow-auto p-4">
+          <div className="max-w-[1600px] mx-auto space-y-4">
+            {/* Alertas - Barra superior */}
+            {alertas.length > 0 && (
+              <div className="flex gap-2 overflow-x-auto pb-1">
+                {alertas.map((alerta) => (
+                  <div
+                    key={alerta.id}
+                    className={cn(
+                      "flex items-center gap-2 px-3 py-1.5 rounded-lg border text-xs whitespace-nowrap",
+                      alerta.tipo === "critico"
+                        ? "bg-red-50 border-red-200 text-red-700"
+                        : alerta.tipo === "atencao"
+                          ? "bg-amber-50 border-amber-200 text-amber-700"
+                          : "bg-blue-50 border-blue-200 text-blue-700",
+                    )}
+                  >
+                    {alerta.tipo === "critico" ? (
+                      <ShieldAlert className="w-3.5 h-3.5" />
+                    ) : alerta.tipo === "atencao" ? (
+                      <AlertTriangle className="w-3.5 h-3.5" />
+                    ) : (
+                      <Clock className="w-3.5 h-3.5" />
+                    )}
+                    <span className="font-medium">{alerta.titulo}</span>
+                    <span className="text-muted-foreground">-</span>
+                    <span>{alerta.descricao}</span>
+                    <Button variant="ghost" size="sm" className="h-5 px-2 text-[10px] ml-2">
+                      {alerta.acao}
                     </Button>
                   </div>
+                ))}
+              </div>
+            )}
+
+            {/* Metricas compactas */}
+            <div className="grid grid-cols-6 gap-3">
+              <Card className="p-3">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-2xl font-bold">347</p>
+                    <p className="text-[10px] text-muted-foreground">Usuarios Ativos</p>
+                  </div>
+                  <UserCheck className="w-5 h-5 text-emerald-600" />
+                </div>
+              </Card>
+              <Card className="p-3">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-2xl font-bold">8</p>
+                    <p className="text-[10px] text-muted-foreground">Bloqueados</p>
+                  </div>
+                  <UserX className="w-5 h-5 text-red-600" />
+                </div>
+              </Card>
+              <Card className="p-3">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-2xl font-bold">12</p>
+                    <p className="text-[10px] text-muted-foreground">Pendentes</p>
+                  </div>
+                  <Clock className="w-5 h-5 text-amber-600" />
+                </div>
+              </Card>
+              <Card className="p-3">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-2xl font-bold">24</p>
+                    <p className="text-[10px] text-muted-foreground">Perfis</p>
+                  </div>
+                  <Shield className="w-5 h-5 text-blue-600" />
+                </div>
+              </Card>
+              <Card className="p-3">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-2xl font-bold">156</p>
+                    <p className="text-[10px] text-muted-foreground">Permissoes</p>
+                  </div>
+                  <Key className="w-5 h-5 text-purple-600" />
+                </div>
+              </Card>
+              <Card className="p-3">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-2xl font-bold">23</p>
+                    <p className="text-[10px] text-muted-foreground">Aprovacoes</p>
+                  </div>
+                  <Network className="w-5 h-5 text-cyan-600" />
+                </div>
+              </Card>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+              {/* Tabela de Usuarios - Principal */}
+              <Card className="lg:col-span-3">
+                <CardHeader className="py-3 px-4">
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-sm font-medium">Usuarios Recentes</CardTitle>
+                    <div className="flex items-center gap-2">
+                      <Button variant="ghost" size="sm" className="h-7 text-xs gap-1">
+                        <Filter className="w-3 h-3" />
+                        Filtros
+                      </Button>
+                      <Button variant="ghost" size="sm" className="h-7 text-xs gap-1">
+                        <ArrowUpDown className="w-3 h-3" />
+                        Ordenar
+                      </Button>
+                      <Link href="/corporativo/console/usuarios">
+                        <Button variant="ghost" size="sm" className="h-7 text-xs gap-1">
+                          Ver todos
+                          <ChevronRight className="w-3 h-3" />
+                        </Button>
+                      </Link>
+                    </div>
+                  </div>
                 </CardHeader>
-                <CardContent>
-                  <ScrollArea className="h-[400px] pr-4">
-                    <div className="space-y-4">
-                      {atividadeRecente.map((atividade) => {
-                        const Icon = atividade.icone
-                        return (
-                          <div key={atividade.id} className="flex gap-3">
-                            <div
-                              className={`w-8 h-8 rounded-full bg-muted flex items-center justify-center flex-shrink-0`}
-                            >
-                              <Icon className={`w-4 h-4 ${atividade.cor}`} />
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <p className="text-sm">{atividade.descricao}</p>
-                              <div className="flex items-center gap-2 mt-1">
-                                <span className="text-xs text-muted-foreground">{atividade.usuario}</span>
-                                <span className="text-xs text-muted-foreground">•</span>
-                                <span className="text-xs text-muted-foreground">{atividade.data}</span>
+                <CardContent className="p-0">
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="hover:bg-transparent">
+                        <TableHead className="w-8 pl-4">
+                          <Checkbox
+                            checked={selectedUsers.length === usuariosRecentes.length}
+                            onCheckedChange={toggleAllUsers}
+                          />
+                        </TableHead>
+                        <TableHead className="text-xs">Usuario</TableHead>
+                        <TableHead className="text-xs">Perfil</TableHead>
+                        <TableHead className="text-xs">Departamento</TableHead>
+                        <TableHead className="text-xs">Tipo</TableHead>
+                        <TableHead className="text-xs">Status</TableHead>
+                        <TableHead className="text-xs">MFA</TableHead>
+                        <TableHead className="text-xs">Ultimo Acesso</TableHead>
+                        <TableHead className="w-8"></TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {usuariosRecentes.map((usuario) => (
+                        <TableRow key={usuario.id} className="text-xs">
+                          <TableCell className="pl-4">
+                            <Checkbox
+                              checked={selectedUsers.includes(usuario.id)}
+                              onCheckedChange={() => toggleUserSelection(usuario.id)}
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex items-center gap-2">
+                              <Avatar className="w-6 h-6">
+                                <AvatarFallback className="text-[10px] bg-muted">
+                                  {usuario.nome
+                                    .split(" ")
+                                    .map((n) => n[0])
+                                    .join("")
+                                    .slice(0, 2)}
+                                </AvatarFallback>
+                              </Avatar>
+                              <div>
+                                <p className="font-medium">{usuario.nome}</p>
+                                <p className="text-[10px] text-muted-foreground">{usuario.email}</p>
                               </div>
                             </div>
+                          </TableCell>
+                          <TableCell className="text-muted-foreground">{usuario.perfil}</TableCell>
+                          <TableCell>{usuario.departamento}</TableCell>
+                          <TableCell>
+                            <Badge
+                              variant={usuario.tipo === "interno" ? "secondary" : "outline"}
+                              className="text-[10px]"
+                            >
+                              {usuario.tipo === "interno" ? "Interno" : "Externo"}
+                            </Badge>
+                          </TableCell>
+                          <TableCell>
+                            <Badge
+                              variant={
+                                usuario.status === "ativo"
+                                  ? "default"
+                                  : usuario.status === "pendente"
+                                    ? "secondary"
+                                    : "destructive"
+                              }
+                              className="text-[10px]"
+                            >
+                              {usuario.status === "ativo"
+                                ? "Ativo"
+                                : usuario.status === "pendente"
+                                  ? "Pendente"
+                                  : "Bloqueado"}
+                            </Badge>
+                          </TableCell>
+                          <TableCell>
+                            {usuario.mfa ? (
+                              <Badge
+                                variant="outline"
+                                className="text-[10px] text-emerald-600 border-emerald-200 bg-emerald-50"
+                              >
+                                Ativo
+                              </Badge>
+                            ) : (
+                              <Badge
+                                variant="outline"
+                                className="text-[10px] text-amber-600 border-amber-200 bg-amber-50"
+                              >
+                                Inativo
+                              </Badge>
+                            )}
+                          </TableCell>
+                          <TableCell className="text-muted-foreground">{usuario.ultimoAcesso}</TableCell>
+                          <TableCell>
                             <DropdownMenu>
                               <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" size="icon" className="h-8 w-8">
-                                  <MoreHorizontal className="w-4 h-4" />
+                                <Button variant="ghost" size="icon" className="h-6 w-6">
+                                  <MoreHorizontal className="w-3.5 h-3.5" />
                                 </Button>
                               </DropdownMenuTrigger>
-                              <DropdownMenuContent align="end">
-                                <DropdownMenuItem>
-                                  <Eye className="w-4 h-4 mr-2" />
+                              <DropdownMenuContent align="end" className="text-xs">
+                                <DropdownMenuItem className="text-xs">
+                                  <ExternalLink className="w-3 h-3 mr-2" />
                                   Ver detalhes
                                 </DropdownMenuItem>
-                                <DropdownMenuItem>
-                                  <FileSearch className="w-4 h-4 mr-2" />
-                                  Ir para auditoria
+                                <DropdownMenuItem className="text-xs">
+                                  <Shield className="w-3 h-3 mr-2" />
+                                  Editar permissoes
                                 </DropdownMenuItem>
+                                <DropdownMenuItem className="text-xs">
+                                  <Key className="w-3 h-3 mr-2" />
+                                  Reset senha
+                                </DropdownMenuItem>
+                                <DropdownMenuSeparator />
+                                {usuario.status === "bloqueado" ? (
+                                  <DropdownMenuItem className="text-xs text-emerald-600">
+                                    <Unlock className="w-3 h-3 mr-2" />
+                                    Desbloquear
+                                  </DropdownMenuItem>
+                                ) : (
+                                  <DropdownMenuItem className="text-xs text-red-600">
+                                    <Lock className="w-3 h-3 mr-2" />
+                                    Bloquear
+                                  </DropdownMenuItem>
+                                )}
                               </DropdownMenuContent>
                             </DropdownMenu>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </CardContent>
+              </Card>
+
+              {/* Atividade Recente - Lateral */}
+              <Card>
+                <CardHeader className="py-3 px-4">
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-sm font-medium flex items-center gap-2">
+                      <Activity className="w-4 h-4" />
+                      Atividade
+                    </CardTitle>
+                    <Link href="/corporativo/console/auditoria">
+                      <Button variant="ghost" size="sm" className="h-6 text-[10px] gap-1">
+                        Ver mais
+                        <ChevronRight className="w-3 h-3" />
+                      </Button>
+                    </Link>
+                  </div>
+                </CardHeader>
+                <CardContent className="p-0">
+                  <ScrollArea className="h-[340px]">
+                    <div className="px-4 pb-4 space-y-3">
+                      {atividadeRecente.map((item) => (
+                        <div key={item.id} className="flex gap-2 text-xs">
+                          <div className="w-1 rounded-full bg-primary/20 flex-shrink-0" />
+                          <div className="flex-1 min-w-0">
+                            <p className="font-medium">{item.acao}</p>
+                            <p className="text-muted-foreground truncate">{item.detalhes}</p>
+                            <div className="flex items-center gap-1 mt-0.5 text-[10px] text-muted-foreground">
+                              <span>{item.usuario}</span>
+                              <span>•</span>
+                              <span>{item.data}</span>
+                            </div>
                           </div>
-                        )
-                      })}
+                        </div>
+                      ))}
                     </div>
                   </ScrollArea>
                 </CardContent>
               </Card>
-
-              {/* Alertas de Seguranca */}
-              <Card>
-                <CardHeader className="pb-3">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <CardTitle className="text-base">Alertas de Seguranca</CardTitle>
-                      <CardDescription>Itens que requerem atencao</CardDescription>
-                    </div>
-                    <Badge variant="destructive" className="text-[10px]">
-                      3
-                    </Badge>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {alertasSeguranca.map((alerta) => (
-                      <div
-                        key={alerta.id}
-                        className={`p-3 rounded-lg border ${
-                          alerta.tipo === "critico"
-                            ? "border-red-200 bg-red-50"
-                            : alerta.tipo === "medio"
-                              ? "border-amber-200 bg-amber-50"
-                              : "border-gray-200 bg-gray-50"
-                        }`}
-                      >
-                        <div className="flex items-start gap-2">
-                          <AlertTriangle
-                            className={`w-4 h-4 mt-0.5 ${
-                              alerta.tipo === "critico"
-                                ? "text-red-600"
-                                : alerta.tipo === "medio"
-                                  ? "text-amber-600"
-                                  : "text-gray-600"
-                            }`}
-                          />
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium">{alerta.titulo}</p>
-                            <p className="text-xs text-muted-foreground mt-0.5">{alerta.descricao}</p>
-                            <p className="text-xs text-muted-foreground mt-1">{alerta.data}</p>
-                          </div>
-                        </div>
-                        <div className="flex gap-2 mt-2">
-                          <Button variant="outline" size="sm" className="h-7 text-xs flex-1 bg-transparent">
-                            Ignorar
-                          </Button>
-                          <Button size="sm" className="h-7 text-xs flex-1">
-                            Resolver
-                          </Button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
             </div>
 
-            {/* Resumo por Area */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <Card>
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-medium flex items-center gap-2">
-                    <Users className="w-4 h-4 text-blue-600" />
-                    Usuarios por Perfil
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">Gerente de Obra</span>
-                      <span className="font-medium">45</span>
+            {/* Acesso Rapido */}
+            <div className="grid grid-cols-4 gap-3">
+              <Link href="/corporativo/console/usuarios">
+                <Card className="p-3 hover:bg-muted/50 transition-colors cursor-pointer">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded bg-blue-100 flex items-center justify-center">
+                      <Users className="w-4 h-4 text-blue-600" />
                     </div>
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">Engenheiro</span>
-                      <span className="font-medium">78</span>
+                    <div>
+                      <p className="text-sm font-medium">Gerenciar Usuarios</p>
+                      <p className="text-[10px] text-muted-foreground">Cadastro, edicao e remocao</p>
                     </div>
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">Administrativo</span>
-                      <span className="font-medium">120</span>
-                    </div>
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">Diretor</span>
-                      <span className="font-medium">12</span>
-                    </div>
-                    <Separator className="my-2" />
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">Outros</span>
-                      <span className="font-medium">92</span>
-                    </div>
+                    <ChevronRight className="w-4 h-4 text-muted-foreground ml-auto" />
                   </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-medium flex items-center gap-2">
-                    <Bot className="w-4 h-4 text-purple-600" />
-                    Agentes IA
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">Hermes (Assistente)</span>
-                      <Badge variant="default" className="text-[10px]">
-                        Ativo
-                      </Badge>
+                </Card>
+              </Link>
+              <Link href="/corporativo/console/perfis">
+                <Card className="p-3 hover:bg-muted/50 transition-colors cursor-pointer">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded bg-purple-100 flex items-center justify-center">
+                      <Shield className="w-4 h-4 text-purple-600" />
                     </div>
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">Analista de Docs</span>
-                      <Badge variant="default" className="text-[10px]">
-                        Ativo
-                      </Badge>
+                    <div>
+                      <p className="text-sm font-medium">Perfis & Permissoes</p>
+                      <p className="text-[10px] text-muted-foreground">Matriz de acesso granular</p>
                     </div>
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">Validador NFs</span>
-                      <Badge variant="default" className="text-[10px]">
-                        Ativo
-                      </Badge>
-                    </div>
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">Previsor de Custos</span>
-                      <Badge variant="secondary" className="text-[10px]">
-                        Parado
-                      </Badge>
-                    </div>
+                    <ChevronRight className="w-4 h-4 text-muted-foreground ml-auto" />
                   </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-medium flex items-center gap-2">
-                    <Plug className="w-4 h-4 text-cyan-600" />
-                    Integracoes
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">SAP</span>
-                      <Badge variant="default" className="text-[10px] bg-emerald-600">
-                        Conectado
-                      </Badge>
+                </Card>
+              </Link>
+              <Link href="/corporativo/console/alcadas">
+                <Card className="p-3 hover:bg-muted/50 transition-colors cursor-pointer">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded bg-emerald-100 flex items-center justify-center">
+                      <Network className="w-4 h-4 text-emerald-600" />
                     </div>
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">Banco (Pagamentos)</span>
-                      <Badge variant="default" className="text-[10px] bg-emerald-600">
-                        Conectado
-                      </Badge>
+                    <div>
+                      <p className="text-sm font-medium">Alcadas & Aprovacoes</p>
+                      <p className="text-[10px] text-muted-foreground">Regras por valor e tipo</p>
                     </div>
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">Ponto Eletronico</span>
-                      <Badge variant="default" className="text-[10px] bg-emerald-600">
-                        Conectado
-                      </Badge>
-                    </div>
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">eSocial</span>
-                      <Badge variant="secondary" className="text-[10px]">
-                        Pendente
-                      </Badge>
-                    </div>
+                    <ChevronRight className="w-4 h-4 text-muted-foreground ml-auto" />
                   </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-medium flex items-center gap-2">
-                    <Headphones className="w-4 h-4 text-orange-600" />
-                    Suporte
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">Tickets Abertos</span>
-                      <span className="font-medium">7</span>
+                </Card>
+              </Link>
+              <Link href="/corporativo/console/auditoria">
+                <Card className="p-3 hover:bg-muted/50 transition-colors cursor-pointer">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded bg-amber-100 flex items-center justify-center">
+                      <FileSearch className="w-4 h-4 text-amber-600" />
                     </div>
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">Aguardando Resp.</span>
-                      <span className="font-medium text-amber-600">3</span>
+                    <div>
+                      <p className="text-sm font-medium">Auditoria</p>
+                      <p className="text-[10px] text-muted-foreground">Log completo de acoes</p>
                     </div>
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">Resolvidos (mes)</span>
-                      <span className="font-medium text-emerald-600">42</span>
-                    </div>
-                    <Separator className="my-2" />
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">Tempo medio</span>
-                      <span className="font-medium">4.2h</span>
-                    </div>
+                    <ChevronRight className="w-4 h-4 text-muted-foreground ml-auto" />
                   </div>
-                </CardContent>
-              </Card>
+                </Card>
+              </Link>
             </div>
           </div>
         </main>

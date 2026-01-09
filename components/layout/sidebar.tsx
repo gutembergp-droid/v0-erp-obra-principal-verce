@@ -49,8 +49,6 @@ import {
   Cog,
   Gauge,
   CalendarCheck,
-  KeyRound,
-  Network,
   Activity,
   LayoutList,
   FileSignature,
@@ -73,7 +71,7 @@ interface MenuItem {
   name: string
   href?: string
   icon: React.ComponentType<{ className?: string }>
-  children?: SubMenuItem[] // Netos
+  children?: SubMenuItem[]
 }
 
 interface Section {
@@ -88,8 +86,6 @@ const corporativoNavigation: Section[] = [
     icon: Target,
     submenu: [
       { name: "Planejamento Estrategico", href: "/corporativo/estrategico/planejamento", icon: Target },
-      { name: "IAM & Matriz de Perfis", href: "/corporativo/estrategico/iam", icon: KeyRound },
-      { name: "Alcadas & Governanca", href: "/corporativo/estrategico/alcadas", icon: Network },
       { name: "Gestao de Acessos (Catraca)", href: "/corporativo/estrategico/catraca", icon: DoorOpen },
       { name: "Analytics Corporativo", href: "/corporativo/estrategico/analytics", icon: BarChart3 },
     ],
@@ -328,6 +324,7 @@ export function Sidebar() {
   )
 
   const isActive = (href: string) => pathname === href
+  const isConsoleActive = pathname.startsWith("/corporativo/console")
 
   const getMenuKey = useCallback((name: string, module: "corp" | "obra") => {
     if (name === "Comercial" || name === "Administrativo" || name === "Gestao Inteligente") {
@@ -375,14 +372,12 @@ export function Sidebar() {
   }
 
   const renderMenuItem = (item: MenuItem, deptName: string, module: "corp" | "obra") => {
-    // Se tem children, é um setor com netos
     if (item.children && item.children.length > 0) {
       const sectorKey = getSectorKey(deptName, item.name, module)
       const isSectorOpen = isMenuOpen(sectorKey)
 
       return (
         <div key={item.name}>
-          {/* Setor (Filho) - expansível */}
           <button
             type="button"
             onClick={(e) => handleToggle(sectorKey, e)}
@@ -400,7 +395,6 @@ export function Sidebar() {
             />
           </button>
 
-          {/* Netos */}
           {isSectorOpen && (
             <div className="pb-1">
               {item.children.map((child) => (
@@ -424,7 +418,6 @@ export function Sidebar() {
       )
     }
 
-    // Item simples (sem netos) - link direto
     return (
       <Link
         key={item.href}
@@ -446,7 +439,6 @@ export function Sidebar() {
     <aside className="flex flex-col h-screen w-64 bg-sidebar border-r border-sidebar-border">
       {/* Logo e Seletor de Obra */}
       <div className="border-b border-sidebar-border flex-shrink-0">
-        {/* Logo */}
         <div className="flex items-center gap-2 px-4 py-3">
           <div className="flex items-center justify-center w-8 h-8 rounded bg-primary">
             <HardHat className="w-5 h-5 text-primary-foreground" />
@@ -454,7 +446,6 @@ export function Sidebar() {
           <span className="font-bold text-sidebar-foreground">GENESIS</span>
         </div>
 
-        {/* Seletor de Obra */}
         <div className="px-3 pb-3">
           <div className="flex items-center gap-2 px-3 py-2 bg-sidebar-accent rounded-lg border border-sidebar-border">
             <div className="flex-1 min-w-0">
@@ -545,6 +536,25 @@ export function Sidebar() {
           )
         })}
       </nav>
+
+      {/* Console Administrativo */}
+      <div className="border-t border-sidebar-border p-3 flex-shrink-0">
+        <Link
+          href="/corporativo/console"
+          className={cn(
+            "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors",
+            isConsoleActive
+              ? "bg-primary text-primary-foreground"
+              : "bg-sidebar-accent hover:bg-sidebar-accent/80 text-sidebar-foreground",
+          )}
+        >
+          <Settings className="w-5 h-5" />
+          <div className="flex-1">
+            <span className="text-sm font-medium">Console</span>
+            <p className="text-xs opacity-70">Administracao do Sistema</p>
+          </div>
+        </Link>
+      </div>
     </aside>
   )
 }
