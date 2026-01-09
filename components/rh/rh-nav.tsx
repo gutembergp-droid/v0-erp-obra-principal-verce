@@ -4,7 +4,7 @@ import type React from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
-import { LayoutDashboard, Users, Briefcase, Gift, Award, ShieldCheck, Fingerprint, BarChart3 } from "lucide-react"
+import { LayoutDashboard, Users, ShieldCheck, Fingerprint, BarChart3 } from "lucide-react"
 
 interface NavItem {
   name: string
@@ -15,9 +15,6 @@ interface NavItem {
 const getNavItems = (baseUrl: string): NavItem[] => [
   { name: "Visão Geral", href: `${baseUrl}`, icon: LayoutDashboard },
   { name: "Pessoas", href: `${baseUrl}/pessoas`, icon: Users },
-  { name: "Cargos & Salários", href: `${baseUrl}/cargos-salarios`, icon: Briefcase },
-  { name: "Benefícios", href: `${baseUrl}/beneficios`, icon: Gift },
-  { name: "Prêmios & Bonificações", href: `${baseUrl}/premios`, icon: Award },
   { name: "Conformidade", href: `${baseUrl}/conformidade`, icon: ShieldCheck },
   { name: "Ponto", href: `${baseUrl}/ponto`, icon: Fingerprint },
   { name: "People Analytics", href: `${baseUrl}/analytics`, icon: BarChart3 },
@@ -47,7 +44,7 @@ export function RHNav({ modulo }: RHNavProps) {
   return (
     <div className="border-b border-border bg-card/95 backdrop-blur-sm sticky top-0 z-50 h-[72px] min-h-[72px] max-h-[72px]">
       <div className="h-full flex flex-col justify-center">
-        {/* Breadcrumb - altura fixa */}
+        {/* Breadcrumb */}
         <div className="px-4 h-[24px] flex items-center">
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <span>{moduloLabel}</span>
@@ -60,7 +57,7 @@ export function RHNav({ modulo }: RHNavProps) {
           </div>
         </div>
 
-        {/* Menu horizontal - altura fixa */}
+        {/* Menu horizontal */}
         <div className="flex items-center gap-1 px-4 h-[48px] overflow-x-auto scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent">
           {navItems.map((item) => {
             const active = isActive(item.href)
