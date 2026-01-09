@@ -9,7 +9,18 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
 import { Alert, AlertDescription } from "@/components/ui/alert"
+import { Textarea } from "@/components/ui/textarea"
+import { Label } from "@/components/ui/label"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { RHNav } from "@/components/rh/rh-nav"
 import {
   ShieldCheck,
@@ -27,9 +38,12 @@ import {
   Upload,
   Gavel,
   Info,
-  History,
-  ShieldAlert,
   Ban,
+  TrendingUp,
+  ClipboardList,
+  Send,
+  Unlock,
+  FileWarning,
 } from "lucide-react"
 
 // ============================================
@@ -40,7 +54,7 @@ const conformidadeMock = [
   {
     id: 1,
     colaborador: "Jose Silva Santos",
-    matricula: "1001",
+    matricula: "CLT-1001",
     tipo: "Documento",
     item: "CNH",
     obrigatorio: true,
@@ -48,11 +62,13 @@ const conformidadeMock = [
     status: "vencendo",
     impacto: "bloqueio_operacao",
     riscoJuridico: true,
+    tipoRisco: "vencimento_proximo",
+    planoAcao: null,
   },
   {
     id: 2,
     colaborador: "Jose Silva Santos",
-    matricula: "1001",
+    matricula: "CLT-1001",
     tipo: "ASO",
     item: "Periodico",
     obrigatorio: true,
@@ -60,11 +76,13 @@ const conformidadeMock = [
     status: "valido",
     impacto: null,
     riscoJuridico: false,
+    tipoRisco: null,
+    planoAcao: null,
   },
   {
     id: 3,
     colaborador: "Jose Silva Santos",
-    matricula: "1001",
+    matricula: "CLT-1001",
     tipo: "NR",
     item: "NR-35 Trabalho em Altura",
     obrigatorio: true,
@@ -72,11 +90,13 @@ const conformidadeMock = [
     status: "valido",
     impacto: null,
     riscoJuridico: false,
+    tipoRisco: null,
+    planoAcao: null,
   },
   {
     id: 4,
     colaborador: "Maria Aparecida Costa",
-    matricula: "1002",
+    matricula: "CLT-1002",
     tipo: "Documento",
     item: "CREA",
     obrigatorio: true,
@@ -84,11 +104,13 @@ const conformidadeMock = [
     status: "valido",
     impacto: null,
     riscoJuridico: false,
+    tipoRisco: null,
+    planoAcao: null,
   },
   {
     id: 5,
     colaborador: "Roberto Alves Souza",
-    matricula: "1003",
+    matricula: "CLT-1003",
     tipo: "ASO",
     item: "Admissional",
     obrigatorio: true,
@@ -96,11 +118,13 @@ const conformidadeMock = [
     status: "pendente",
     impacto: "bloqueio_efetivacao",
     riscoJuridico: true,
+    tipoRisco: "ausencia",
+    planoAcao: { id: 1, status: "em_andamento", responsavel: "RH", prazo: "2026-01-20" },
   },
   {
     id: 6,
     colaborador: "Roberto Alves Souza",
-    matricula: "1003",
+    matricula: "CLT-1003",
     tipo: "NR",
     item: "NR-35 Trabalho em Altura",
     obrigatorio: true,
@@ -108,11 +132,13 @@ const conformidadeMock = [
     status: "pendente",
     impacto: "bloqueio_operacao",
     riscoJuridico: true,
+    tipoRisco: "ausencia",
+    planoAcao: null,
   },
   {
     id: 7,
     colaborador: "Paulo Mendes Junior",
-    matricula: "1005",
+    matricula: "CLT-1005",
     tipo: "ASO",
     item: "Periodico",
     obrigatorio: true,
@@ -120,11 +146,13 @@ const conformidadeMock = [
     status: "vencendo",
     impacto: "bloqueio_operacao",
     riscoJuridico: true,
+    tipoRisco: "vencimento_proximo",
+    planoAcao: null,
   },
   {
     id: 8,
     colaborador: "Paulo Mendes Junior",
-    matricula: "1005",
+    matricula: "CLT-1005",
     tipo: "NR",
     item: "NR-10 Eletricidade",
     obrigatorio: true,
@@ -132,11 +160,13 @@ const conformidadeMock = [
     status: "vencendo",
     impacto: "bloqueio_operacao",
     riscoJuridico: true,
+    tipoRisco: "vencimento_proximo",
+    planoAcao: null,
   },
   {
     id: 9,
     colaborador: "Ana Paula Lima",
-    matricula: "1004",
+    matricula: "CLT-1004",
     tipo: "Treinamento",
     item: "Integracao SSMA",
     obrigatorio: true,
@@ -144,11 +174,13 @@ const conformidadeMock = [
     status: "valido",
     impacto: null,
     riscoJuridico: false,
+    tipoRisco: null,
+    planoAcao: null,
   },
   {
     id: 10,
     colaborador: "Carlos Eduardo Lima",
-    matricula: "1006",
+    matricula: "PJ-2001",
     tipo: "Documento",
     item: "Contrato PJ",
     obrigatorio: true,
@@ -156,14 +188,79 @@ const conformidadeMock = [
     status: "vencido",
     impacto: "bloqueio_pagamento",
     riscoJuridico: true,
+    tipoRisco: "documento_vencido",
+    planoAcao: { id: 2, status: "atrasado", responsavel: "Juridico", prazo: "2026-01-05" },
   },
 ]
 
 // Historico de conformidade
 const historicoConformidadeMock = [
-  { data: "2025-12-20", evento: "Documento vencido", item: "Contrato PJ", acao: "Bloqueio de pagamento ativado" },
-  { data: "2025-12-15", evento: "Alerta de vencimento", item: "CNH", acao: "Notificacao enviada ao colaborador" },
-  { data: "2025-11-01", evento: "ASO realizado", item: "Periodico", acao: "Documento anexado ao prontuario" },
+  {
+    data: "2026-01-08 14:30",
+    evento: "Plano de Acao criado",
+    item: "ASO Admissional",
+    usuario: "Ana RH",
+    detalhes: "Agendamento de exame para 15/01",
+  },
+  {
+    data: "2026-01-05 09:15",
+    evento: "Liberacao temporaria",
+    item: "Contrato PJ",
+    usuario: "Dr. Carlos (Juridico)",
+    detalhes: "Liberado por 15 dias para regularizacao",
+  },
+  {
+    data: "2025-12-31 23:59",
+    evento: "Documento vencido",
+    item: "Contrato PJ",
+    usuario: "Sistema",
+    detalhes: "Bloqueio de pagamento ativado automaticamente",
+  },
+  {
+    data: "2025-12-20 10:00",
+    evento: "Alerta de vencimento",
+    item: "CNH",
+    usuario: "Sistema",
+    detalhes: "Notificacao enviada ao colaborador",
+  },
+  {
+    data: "2025-11-01 08:30",
+    evento: "ASO realizado",
+    item: "Periodico",
+    usuario: "Clinica SESMT",
+    detalhes: "Documento anexado ao prontuario",
+  },
+]
+
+// Planos de acao
+const planosAcaoMock = [
+  {
+    id: 1,
+    itemId: 5,
+    titulo: "Regularizacao ASO Admissional",
+    descricao: "Colaborador Roberto Alves - agendamento de exame admissional",
+    responsavel: "Ana Santos (RH)",
+    prazo: "2026-01-20",
+    status: "em_andamento",
+    tratativas: [
+      { data: "2026-01-08 14:30", autor: "Ana Santos", mensagem: "Agendei exame para dia 15/01 na clinica SESMT" },
+      { data: "2026-01-08 10:00", autor: "Sistema", mensagem: "Plano de acao criado automaticamente" },
+    ],
+  },
+  {
+    id: 2,
+    itemId: 10,
+    titulo: "Renovacao Contrato PJ",
+    descricao: "Contrato PJ vencido - Carlos Eduardo Lima",
+    responsavel: "Dr. Carlos (Juridico)",
+    prazo: "2026-01-05",
+    status: "atrasado",
+    tratativas: [
+      { data: "2026-01-05 09:15", autor: "Dr. Carlos", mensagem: "Liberacao temporaria concedida por 15 dias" },
+      { data: "2026-01-03 16:00", autor: "Dr. Carlos", mensagem: "Aguardando retorno do fornecedor com novo contrato" },
+      { data: "2025-12-31 08:00", autor: "Sistema", mensagem: "Plano de acao criado - documento vencido" },
+    ],
+  },
 ]
 
 // ============================================
@@ -176,18 +273,40 @@ function ConformidadeContent() {
   const [filtroStatus, setFiltroStatus] = useState("todos")
   const [detalheAberto, setDetalheAberto] = useState(false)
   const [itemSelecionado, setItemSelecionado] = useState<(typeof conformidadeMock)[0] | null>(null)
+  const [planoAcaoAberto, setPlanoAcaoAberto] = useState(false)
+  const [planoSelecionado, setPlanoSelecionado] = useState<(typeof planosAcaoMock)[0] | null>(null)
+  const [liberacaoAberta, setLiberacaoAberta] = useState(false)
+  const [novoPlanoAberto, setNovoPlanoAberto] = useState(false)
+  const [novaTratativa, setNovaTratativa] = useState("")
 
-  // Contadores
-  const totalColaboradores = new Set(conformidadeMock.map((c) => c.matricula)).size
+  // Contadores enriquecidos
+  const totalItens = conformidadeMock.length
   const emConformidade = conformidadeMock.filter((c) => c.status === "valido").length
+  const percConformidade = Math.round((emConformidade / totalItens) * 100)
+
   const pendencias = conformidadeMock.filter(
     (c) => c.status === "pendente" || c.status === "vencendo" || c.status === "vencido",
-  ).length
-  const sstPendente = conformidadeMock.filter(
-    (c) => (c.tipo === "ASO" || c.tipo === "NR") && c.status !== "valido",
-  ).length
-  const riscoJuridico = conformidadeMock.filter((c) => c.riscoJuridico).length
-  const bloqueios = conformidadeMock.filter((c) => c.impacto).length
+  )
+  const pendenciasDoc = pendencias.filter((c) => c.tipo === "Documento").length
+  const pendenciasASO = pendencias.filter((c) => c.tipo === "ASO").length
+  const pendenciasNR = pendencias.filter((c) => c.tipo === "NR" || c.tipo === "Treinamento").length
+  const bloqueiaOperacao = pendencias.filter((c) => c.impacto === "bloqueio_operacao").length
+  const bloqueiaEfetivacao = pendencias.filter((c) => c.impacto === "bloqueio_efetivacao").length
+
+  const sstPendente = conformidadeMock.filter((c) => (c.tipo === "ASO" || c.tipo === "NR") && c.status !== "valido")
+  const sstVencendo30d = sstPendente.filter((c) => c.status === "vencendo").length
+  const colaboradoresSST = new Set(sstPendente.map((c) => c.matricula)).size
+
+  const riscoJuridico = conformidadeMock.filter((c) => c.riscoJuridico)
+  const riscoVencido = riscoJuridico.filter((c) => c.tipoRisco === "documento_vencido").length
+  const riscoAusencia = riscoJuridico.filter((c) => c.tipoRisco === "ausencia").length
+  const riscoRecorrencia = riscoJuridico.filter((c) => c.tipoRisco === "recorrencia").length
+  const bloqueiaPagamento = riscoJuridico.filter((c) => c.impacto === "bloqueio_pagamento").length
+
+  const bloqueios = conformidadeMock.filter((c) => c.impacto)
+  const bloqueiosOperacao = bloqueios.filter((c) => c.impacto === "bloqueio_operacao").length
+  const bloqueiosEfetivacao = bloqueios.filter((c) => c.impacto === "bloqueio_efetivacao").length
+  const bloqueiosPagamento = bloqueios.filter((c) => c.impacto === "bloqueio_pagamento").length
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -209,24 +328,51 @@ function ConformidadeContent() {
     switch (impacto) {
       case "bloqueio_efetivacao":
         return (
-          <Badge variant="outline" className="text-xs border-red-500/50 text-red-400">
-            <Lock className="h-3 w-3 mr-1" />
-            Bloqueia Efetivacao
-          </Badge>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Badge variant="outline" className="text-xs border-red-500/50 text-red-400 cursor-help">
+                  <Lock className="h-3 w-3 mr-1" />
+                  Efetivacao
+                </Badge>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Colaborador nao pode ser efetivado ate regularizacao</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         )
       case "bloqueio_operacao":
         return (
-          <Badge variant="outline" className="text-xs border-orange-500/50 text-orange-400">
-            <Ban className="h-3 w-3 mr-1" />
-            Bloqueia Operacao
-          </Badge>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Badge variant="outline" className="text-xs border-orange-500/50 text-orange-400 cursor-help">
+                  <Ban className="h-3 w-3 mr-1" />
+                  Operacao
+                </Badge>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Colaborador impedido de operar em campo</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         )
       case "bloqueio_pagamento":
         return (
-          <Badge variant="outline" className="text-xs border-purple-500/50 text-purple-400">
-            <Lock className="h-3 w-3 mr-1" />
-            Bloqueia Pagamento
-          </Badge>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Badge variant="outline" className="text-xs border-purple-500/50 text-purple-400 cursor-help">
+                  <Lock className="h-3 w-3 mr-1" />
+                  Pagamento
+                </Badge>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Pagamento bloqueado ate regularizacao documental</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         )
       default:
         return null
@@ -287,6 +433,22 @@ function ConformidadeContent() {
     setDetalheAberto(true)
   }
 
+  const abrirPlanoAcao = (item: (typeof conformidadeMock)[0]) => {
+    const plano = planosAcaoMock.find((p) => p.itemId === item.id)
+    if (plano) {
+      setPlanoSelecionado(plano)
+      setPlanoAcaoAberto(true)
+    } else {
+      setItemSelecionado(item)
+      setNovoPlanoAberto(true)
+    }
+  }
+
+  const abrirLiberacao = (item: (typeof conformidadeMock)[0]) => {
+    setItemSelecionado(item)
+    setLiberacaoAberta(true)
+  }
+
   return (
     <div className="flex-1 flex flex-col">
       <RHNav modulo="obra" />
@@ -300,9 +462,7 @@ function ConformidadeContent() {
             </div>
             <div>
               <h1 className="text-2xl font-bold">Conformidade</h1>
-              <p className="text-sm text-muted-foreground">
-                Documentos, ASO, NRs e Treinamentos - Base para defesa juridica
-              </p>
+              <p className="text-sm text-muted-foreground">Controle documental, SST e base para defesa juridica</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -313,55 +473,170 @@ function ConformidadeContent() {
           </div>
         </div>
 
-        {/* Cards de Visao */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-          <Card className="bg-green-500/10 border-green-500/30">
-            <CardContent className="p-4 text-center">
-              <CheckCircle2 className="h-5 w-5 mx-auto mb-1 text-green-500" />
-              <p className="text-2xl font-bold text-green-500">{emConformidade}</p>
-              <p className="text-xs text-green-400">Em Conformidade</p>
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+          {/* Card 1 - Em Conformidade */}
+          <Card className="border-green-500/30">
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between mb-2">
+                <CheckCircle2 className="h-5 w-5 text-green-500" />
+                <Badge variant="outline" className="text-xs text-green-500 border-green-500/30">
+                  <TrendingUp className="h-3 w-3 mr-1" />
+                  +2%
+                </Badge>
+              </div>
+              <p className="text-2xl font-bold">{emConformidade}</p>
+              <p className="text-xs text-muted-foreground">Em Conformidade</p>
+              <div className="mt-3 pt-3 border-t border-border/50 space-y-1">
+                <div className="flex justify-between text-xs">
+                  <span className="text-muted-foreground">% do efetivo</span>
+                  <span className="font-medium text-green-500">{percConformidade}%</span>
+                </div>
+                <div className="flex justify-between text-xs">
+                  <span className="text-muted-foreground">Ultima verificacao</span>
+                  <span>Hoje 08:00</span>
+                </div>
+              </div>
             </CardContent>
           </Card>
+
+          {/* Card 2 - Pendencias */}
           <Card
-            className="bg-yellow-500/10 border-yellow-500/30 cursor-pointer"
+            className="border-yellow-500/30 cursor-pointer hover:bg-yellow-500/5"
             onClick={() => setFiltroStatus("pendente")}
           >
-            <CardContent className="p-4 text-center">
-              <FileText className="h-5 w-5 mx-auto mb-1 text-yellow-500" />
-              <p className="text-2xl font-bold text-yellow-500">{pendencias}</p>
-              <p className="text-xs text-yellow-400">Pendencias</p>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between mb-2">
+                <FileWarning className="h-5 w-5 text-yellow-500" />
+                <span className="text-xs text-muted-foreground">{pendencias.length} itens</span>
+              </div>
+              <p className="text-2xl font-bold text-yellow-500">{pendencias.length}</p>
+              <p className="text-xs text-muted-foreground">Pendencias</p>
+              <div className="mt-3 pt-3 border-t border-border/50 space-y-1">
+                <div className="flex justify-between text-xs">
+                  <span className="text-muted-foreground">Documentos</span>
+                  <span>{pendenciasDoc}</span>
+                </div>
+                <div className="flex justify-between text-xs">
+                  <span className="text-muted-foreground">ASO</span>
+                  <span>{pendenciasASO}</span>
+                </div>
+                <div className="flex justify-between text-xs">
+                  <span className="text-muted-foreground">NR/Treinamento</span>
+                  <span>{pendenciasNR}</span>
+                </div>
+                <div className="flex justify-between text-xs mt-2 pt-2 border-t border-border/30">
+                  <span className="text-orange-400">Bloq. operacao</span>
+                  <span className="text-orange-400 font-medium">{bloqueiaOperacao}</span>
+                </div>
+                <div className="flex justify-between text-xs">
+                  <span className="text-red-400">Bloq. efetivacao</span>
+                  <span className="text-red-400 font-medium">{bloqueiaEfetivacao}</span>
+                </div>
+              </div>
             </CardContent>
           </Card>
-          <Card className="bg-orange-500/10 border-orange-500/30 cursor-pointer" onClick={() => setFiltroTipo("aso")}>
-            <CardContent className="p-4 text-center">
-              <Stethoscope className="h-5 w-5 mx-auto mb-1 text-orange-500" />
-              <p className="text-2xl font-bold text-orange-500">{sstPendente}</p>
-              <p className="text-xs text-orange-400">SST Pendente</p>
+
+          {/* Card 3 - SST Pendente */}
+          <Card
+            className="border-orange-500/30 cursor-pointer hover:bg-orange-500/5"
+            onClick={() => setFiltroTipo("aso")}
+          >
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between mb-2">
+                <Stethoscope className="h-5 w-5 text-orange-500" />
+                <Badge variant="outline" className="text-xs border-orange-500/30 text-orange-500">
+                  Risco Alto
+                </Badge>
+              </div>
+              <p className="text-2xl font-bold text-orange-500">{sstPendente.length}</p>
+              <p className="text-xs text-muted-foreground">SST Pendente</p>
+              <div className="mt-3 pt-3 border-t border-border/50 space-y-1">
+                <div className="flex justify-between text-xs">
+                  <span className="text-muted-foreground">Colaboradores</span>
+                  <span>{colaboradoresSST}</span>
+                </div>
+                <div className="flex justify-between text-xs">
+                  <span className="text-muted-foreground">Vence em 30d</span>
+                  <span className="text-yellow-500">{sstVencendo30d}</span>
+                </div>
+                <div className="flex justify-between text-xs">
+                  <span className="text-muted-foreground">Tipos comuns</span>
+                  <span>ASO, NR-35</span>
+                </div>
+              </div>
             </CardContent>
           </Card>
-          <Card className="bg-red-500/10 border-red-500/30">
-            <CardContent className="p-4 text-center">
-              <Scale className="h-5 w-5 mx-auto mb-1 text-red-500" />
-              <p className="text-2xl font-bold text-red-500">{riscoJuridico}</p>
-              <p className="text-xs text-red-400">Risco Juridico</p>
+
+          {/* Card 4 - Risco Juridico */}
+          <Card className="border-red-500/30">
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between mb-2">
+                <Scale className="h-5 w-5 text-red-500" />
+                <Badge variant="outline" className="text-xs border-red-500/30 text-red-500">
+                  Critico
+                </Badge>
+              </div>
+              <p className="text-2xl font-bold text-red-500">{riscoJuridico.length}</p>
+              <p className="text-xs text-muted-foreground">Risco Juridico</p>
+              <div className="mt-3 pt-3 border-t border-border/50 space-y-1">
+                <div className="flex justify-between text-xs">
+                  <span className="text-muted-foreground">Doc. vencido</span>
+                  <span className="text-red-400">{riscoVencido}</span>
+                </div>
+                <div className="flex justify-between text-xs">
+                  <span className="text-muted-foreground">Ausencia</span>
+                  <span className="text-red-400">{riscoAusencia}</span>
+                </div>
+                <div className="flex justify-between text-xs">
+                  <span className="text-muted-foreground">Recorrencia</span>
+                  <span>{riscoRecorrencia}</span>
+                </div>
+                <div className="flex justify-between text-xs mt-2 pt-2 border-t border-border/30">
+                  <span className="text-purple-400">Bloq. pagamento</span>
+                  <span className="text-purple-400 font-medium">{bloqueiaPagamento}</span>
+                </div>
+              </div>
             </CardContent>
           </Card>
-          <Card className="bg-purple-500/10 border-purple-500/30">
-            <CardContent className="p-4 text-center">
-              <Lock className="h-5 w-5 mx-auto mb-1 text-purple-500" />
-              <p className="text-2xl font-bold text-purple-500">{bloqueios}</p>
-              <p className="text-xs text-purple-400">Bloqueios Ativos</p>
+
+          {/* Card 5 - Bloqueios Ativos */}
+          <Card className="border-purple-500/30">
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between mb-2">
+                <Lock className="h-5 w-5 text-purple-500" />
+                <span className="text-xs text-muted-foreground">~3 dias</span>
+              </div>
+              <p className="text-2xl font-bold text-purple-500">{bloqueios.length}</p>
+              <p className="text-xs text-muted-foreground">Bloqueios Ativos</p>
+              <div className="mt-3 pt-3 border-t border-border/50 space-y-1">
+                <div className="flex justify-between text-xs">
+                  <span className="text-muted-foreground">Operacao</span>
+                  <span className="text-orange-400">{bloqueiosOperacao}</span>
+                </div>
+                <div className="flex justify-between text-xs">
+                  <span className="text-muted-foreground">Efetivacao</span>
+                  <span className="text-red-400">{bloqueiosEfetivacao}</span>
+                </div>
+                <div className="flex justify-between text-xs">
+                  <span className="text-muted-foreground">Pagamento</span>
+                  <span className="text-purple-400">{bloqueiosPagamento}</span>
+                </div>
+                <div className="flex justify-between text-xs mt-2 pt-2 border-t border-border/30">
+                  <span className="text-muted-foreground">Tempo medio</span>
+                  <span>3.2 dias</span>
+                </div>
+              </div>
             </CardContent>
           </Card>
         </div>
 
         {/* Alerta Juridico */}
-        {riscoJuridico > 0 && (
+        {riscoJuridico.length > 0 && (
           <Alert className="border-orange-500/50 bg-orange-500/10">
             <Gavel className="h-4 w-4 text-orange-500" />
             <AlertDescription className="text-orange-300">
-              <strong>{riscoJuridico} item(ns)</strong> com risco juridico identificado. Documentos vencidos ou ausentes
-              podem gerar passivo trabalhista e multas.
+              <strong>{riscoJuridico.length} item(ns)</strong> com risco juridico identificado. Documentos vencidos ou
+              ausentes podem gerar passivo trabalhista e multas.
             </AlertDescription>
           </Alert>
         )}
@@ -372,7 +647,7 @@ function ConformidadeContent() {
             <div className="flex items-center justify-between">
               <div>
                 <CardTitle className="text-lg">Tabela de Conformidade</CardTitle>
-                <CardDescription>Visao unificada de todos os requisitos</CardDescription>
+                <CardDescription>Visao unificada de todos os requisitos - base de defesa juridica</CardDescription>
               </div>
               <div className="flex items-center gap-2">
                 <div className="relative w-64">
@@ -429,12 +704,12 @@ function ConformidadeContent() {
                   <TableHead>Colaborador</TableHead>
                   <TableHead>Tipo</TableHead>
                   <TableHead>Item</TableHead>
-                  <TableHead className="text-center">Obrigatorio</TableHead>
+                  <TableHead className="text-center">Obrig.</TableHead>
                   <TableHead>Validade</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Impacto</TableHead>
-                  <TableHead className="text-center">Juridico</TableHead>
-                  <TableHead className="text-right">Acao</TableHead>
+                  <TableHead className="text-center">Jurid.</TableHead>
+                  <TableHead className="text-right">Acoes</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -463,17 +738,78 @@ function ConformidadeContent() {
                     <TableCell>{getStatusBadge(c.status)}</TableCell>
                     <TableCell>{getImpactoBadge(c.impacto)}</TableCell>
                     <TableCell className="text-center">
-                      {c.riscoJuridico && <AlertTriangle className="h-4 w-4 text-orange-500 mx-auto" />}
+                      {c.riscoJuridico && (
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <AlertTriangle className="h-4 w-4 text-orange-500 mx-auto cursor-help" />
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>Risco: {c.tipoRisco?.replace("_", " ")}</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      )}
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex items-center justify-end gap-1">
-                        <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => abrirDetalhe(c)}>
-                          <Eye className="h-4 w-4" />
-                        </Button>
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => abrirDetalhe(c)}>
+                                <Eye className="h-4 w-4" />
+                              </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>Ver detalhes</TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                        {c.status !== "valido" && (
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="h-8 w-8"
+                                  onClick={() => abrirPlanoAcao(c)}
+                                >
+                                  <ClipboardList className="h-4 w-4" />
+                                </Button>
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                {c.planoAcao ? "Ver Plano de Acao" : "Abrir Plano de Acao"}
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                        )}
+                        {c.impacto && (
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="h-8 w-8 text-yellow-500"
+                                  onClick={() => abrirLiberacao(c)}
+                                >
+                                  <Unlock className="h-4 w-4" />
+                                </Button>
+                              </TooltipTrigger>
+                              <TooltipContent>Solicitar Liberacao</TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                        )}
                         {(c.status === "pendente" || c.status === "vencido") && (
-                          <Button variant="ghost" size="icon" className="h-8 w-8">
-                            <Upload className="h-4 w-4" />
-                          </Button>
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <Button variant="ghost" size="icon" className="h-8 w-8">
+                                  <Upload className="h-4 w-4" />
+                                </Button>
+                              </TooltipTrigger>
+                              <TooltipContent>Anexar documento</TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
                         )}
                       </div>
                     </TableCell>
@@ -484,7 +820,7 @@ function ConformidadeContent() {
           </CardContent>
         </Card>
 
-        {/* Card Informativo - Regras */}
+        {/* Card Informativo */}
         <Card className="border-muted">
           <CardContent className="p-4">
             <div className="flex items-start gap-3">
@@ -493,6 +829,9 @@ function ConformidadeContent() {
                 <p>
                   <strong>Regras de Bloqueio:</strong> Documento vencido = alerta juridico. Documento obrigatorio
                   ausente = bloqueio automatico.
+                </p>
+                <p>
+                  <strong>Liberacoes:</strong> RH libera efetivacao | SST libera operacao | Juridico libera pagamento
                 </p>
                 <p>
                   <strong>Rastreabilidade:</strong> Historico nunca e apagado. Tudo e versionado e auditavel para fins
@@ -513,7 +852,7 @@ function ConformidadeContent() {
               {itemSelecionado?.riscoJuridico && <Scale className="h-5 w-5 text-red-500" />}
             </SheetTitle>
             <SheetDescription>
-              {itemSelecionado?.colaborador} - Mat. {itemSelecionado?.matricula}
+              {itemSelecionado?.colaborador} - {itemSelecionado?.matricula}
             </SheetDescription>
           </SheetHeader>
 
@@ -540,85 +879,266 @@ function ConformidadeContent() {
                 <Card>
                   <CardContent className="p-4">
                     <p className="text-xs text-muted-foreground">Validade</p>
-                    <p className="font-medium mt-1">{itemSelecionado?.validade || "Nao informada"}</p>
+                    <p className="font-medium mt-1">{itemSelecionado?.validade || "Nao informado"}</p>
                   </CardContent>
                 </Card>
                 <Card>
                   <CardContent className="p-4">
-                    <p className="text-xs text-muted-foreground">Obrigatorio</p>
-                    <p className="font-medium mt-1">{itemSelecionado?.obrigatorio ? "Sim" : "Nao"}</p>
+                    <p className="text-xs text-muted-foreground">Impacto</p>
+                    <div className="mt-1">
+                      {getImpactoBadge(itemSelecionado?.impacto || null) || (
+                        <span className="text-muted-foreground">Nenhum</span>
+                      )}
+                    </div>
                   </CardContent>
                 </Card>
               </div>
-
-              {itemSelecionado?.impacto && (
-                <Alert className="border-red-500/50 bg-red-500/10">
-                  <Lock className="h-4 w-4 text-red-500" />
-                  <AlertDescription className="text-red-300">
-                    <strong>Bloqueio ativo:</strong>{" "}
-                    {itemSelecionado.impacto.replace("bloqueio_", "").replace("_", " ")}
-                  </AlertDescription>
-                </Alert>
-              )}
-
-              {itemSelecionado?.riscoJuridico && (
-                <Card className="border-orange-500/30">
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-sm flex items-center gap-2">
-                      <ShieldAlert className="h-4 w-4 text-orange-500" />
-                      Risco Juridico Identificado
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="text-sm text-muted-foreground">
-                    Este item pode gerar passivo trabalhista. Regularize o mais rapido possivel.
+              {itemSelecionado?.planoAcao && (
+                <Card className="border-blue-500/30">
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-xs text-muted-foreground">Plano de Acao</p>
+                        <Badge
+                          className={
+                            itemSelecionado.planoAcao.status === "atrasado"
+                              ? "bg-red-500/20 text-red-400"
+                              : "bg-blue-500/20 text-blue-400"
+                          }
+                        >
+                          {itemSelecionado.planoAcao.status === "em_andamento" ? "Em Andamento" : "Atrasado"}
+                        </Badge>
+                      </div>
+                      <Button size="sm" variant="outline" onClick={() => abrirPlanoAcao(itemSelecionado)}>
+                        <ClipboardList className="h-4 w-4 mr-2" />
+                        Ver Plano
+                      </Button>
+                    </div>
                   </CardContent>
                 </Card>
               )}
-
-              <div className="flex gap-2">
-                <Button className="flex-1">
-                  <Upload className="h-4 w-4 mr-2" />
-                  Anexar Documento
-                </Button>
-                <Button variant="outline" className="flex-1 bg-transparent">
-                  <Download className="h-4 w-4 mr-2" />
-                  Exportar
-                </Button>
-              </div>
             </TabsContent>
 
             <TabsContent value="historico" className="mt-4">
-              <Card>
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-sm flex items-center gap-2">
-                    <History className="h-4 w-4" />
-                    Trilha de Auditoria
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {historicoConformidadeMock.map((h, i) => (
-                      <div key={i} className="flex gap-3 pb-3 border-b last:border-0">
-                        <div className="flex-shrink-0 w-2 h-2 rounded-full bg-primary mt-2" />
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2">
-                            <span className="text-xs text-muted-foreground">{h.data}</span>
-                            <Badge variant="outline" className="text-xs">
-                              {h.evento}
-                            </Badge>
-                          </div>
-                          <p className="text-sm mt-1">{h.item}</p>
-                          <p className="text-xs text-muted-foreground mt-1">Acao: {h.acao}</p>
-                        </div>
-                      </div>
-                    ))}
+              <div className="space-y-3">
+                {historicoConformidadeMock.map((h, i) => (
+                  <div key={i} className="flex gap-3 text-sm border-l-2 border-muted pl-4 py-2">
+                    <div className="flex-1">
+                      <p className="font-medium">{h.evento}</p>
+                      <p className="text-muted-foreground">{h.item}</p>
+                      <p className="text-xs text-muted-foreground mt-1">{h.detalhes}</p>
+                    </div>
+                    <div className="text-right text-xs text-muted-foreground">
+                      <p>{h.data}</p>
+                      <p>{h.usuario}</p>
+                    </div>
                   </div>
-                </CardContent>
-              </Card>
+                ))}
+              </div>
             </TabsContent>
           </Tabs>
         </SheetContent>
       </Sheet>
+
+      <Dialog open={planoAcaoAberto} onOpenChange={setPlanoAcaoAberto}>
+        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <ClipboardList className="h-5 w-5" />
+              Plano de Acao
+            </DialogTitle>
+            <DialogDescription>{planoSelecionado?.titulo}</DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4">
+            <div className="grid grid-cols-3 gap-4">
+              <Card>
+                <CardContent className="p-3">
+                  <p className="text-xs text-muted-foreground">Responsavel</p>
+                  <p className="font-medium text-sm">{planoSelecionado?.responsavel}</p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="p-3">
+                  <p className="text-xs text-muted-foreground">Prazo</p>
+                  <p className="font-medium text-sm">{planoSelecionado?.prazo}</p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="p-3">
+                  <p className="text-xs text-muted-foreground">Status</p>
+                  <Badge
+                    className={
+                      planoSelecionado?.status === "atrasado"
+                        ? "bg-red-500/20 text-red-400"
+                        : "bg-blue-500/20 text-blue-400"
+                    }
+                  >
+                    {planoSelecionado?.status === "em_andamento" ? "Em Andamento" : "Atrasado"}
+                  </Badge>
+                </CardContent>
+              </Card>
+            </div>
+
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm">Tratativas</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {planoSelecionado?.tratativas.map((t, i) => (
+                  <div key={i} className="flex gap-3 text-sm border-l-2 border-primary/50 pl-3 py-1">
+                    <div className="flex-1">
+                      <p className="font-medium">{t.autor}</p>
+                      <p className="text-muted-foreground">{t.mensagem}</p>
+                    </div>
+                    <span className="text-xs text-muted-foreground whitespace-nowrap">{t.data}</span>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+
+            <div className="flex gap-2">
+              <Textarea
+                placeholder="Adicionar tratativa..."
+                value={novaTratativa}
+                onChange={(e) => setNovaTratativa(e.target.value)}
+                className="flex-1"
+              />
+              <Button size="icon" disabled={!novaTratativa.trim()}>
+                <Send className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setPlanoAcaoAberto(false)}>
+              Fechar
+            </Button>
+            <Button className="bg-green-600 hover:bg-green-700">
+              <CheckCircle2 className="h-4 w-4 mr-2" />
+              Concluir Plano
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={novoPlanoAberto} onOpenChange={setNovoPlanoAberto}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Abrir Plano de Acao</DialogTitle>
+            <DialogDescription>
+              Registrar nao conformidade e acoes corretivas para {itemSelecionado?.item}
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4">
+            <div>
+              <Label>Descricao da Nao Conformidade</Label>
+              <Textarea placeholder="Descreva a situacao e o motivo da pendencia..." className="mt-1" />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label>Responsavel</Label>
+                <Select>
+                  <SelectTrigger className="mt-1">
+                    <SelectValue placeholder="Selecione..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="rh">Ana Santos (RH)</SelectItem>
+                    <SelectItem value="sst">Carlos Lima (SST)</SelectItem>
+                    <SelectItem value="juridico">Dr. Pedro (Juridico)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label>Prazo</Label>
+                <Input type="date" className="mt-1" />
+              </div>
+            </div>
+            <div>
+              <Label>Primeira Tratativa</Label>
+              <Textarea placeholder="Descreva a acao a ser tomada..." className="mt-1" />
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setNovoPlanoAberto(false)}>
+              Cancelar
+            </Button>
+            <Button>
+              <ClipboardList className="h-4 w-4 mr-2" />
+              Criar Plano
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={liberacaoAberta} onOpenChange={setLiberacaoAberta}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Unlock className="h-5 w-5 text-yellow-500" />
+              Solicitar Liberacao
+            </DialogTitle>
+            <DialogDescription>
+              Liberacao temporaria para {itemSelecionado?.colaborador} - {itemSelecionado?.item}
+            </DialogDescription>
+          </DialogHeader>
+
+          <Alert className="border-yellow-500/50 bg-yellow-500/10">
+            <AlertTriangle className="h-4 w-4 text-yellow-500" />
+            <AlertDescription className="text-yellow-300 text-sm">
+              Liberacoes sao registradas no historico e podem ser auditadas. Use apenas em casos excepcionais.
+            </AlertDescription>
+          </Alert>
+
+          <div className="space-y-4">
+            <div>
+              <Label>Tipo de Bloqueio</Label>
+              <p className="text-sm font-medium mt-1">
+                {itemSelecionado?.impacto === "bloqueio_operacao" && "Bloqueio de Operacao (requer SST)"}
+                {itemSelecionado?.impacto === "bloqueio_efetivacao" && "Bloqueio de Efetivacao (requer RH)"}
+                {itemSelecionado?.impacto === "bloqueio_pagamento" && "Bloqueio de Pagamento (requer Juridico)"}
+              </p>
+            </div>
+            <div>
+              <Label>Aprovador Necessario</Label>
+              <p className="text-sm font-medium mt-1">
+                {itemSelecionado?.impacto === "bloqueio_operacao" && "Coordenador SST"}
+                {itemSelecionado?.impacto === "bloqueio_efetivacao" && "Gerente RH"}
+                {itemSelecionado?.impacto === "bloqueio_pagamento" && "Gerente Juridico"}
+              </p>
+            </div>
+            <div>
+              <Label>Prazo da Liberacao</Label>
+              <Select>
+                <SelectTrigger className="mt-1">
+                  <SelectValue placeholder="Selecione..." />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="7">7 dias</SelectItem>
+                  <SelectItem value="15">15 dias</SelectItem>
+                  <SelectItem value="30">30 dias</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label>Justificativa (obrigatorio)</Label>
+              <Textarea placeholder="Explique o motivo da liberacao temporaria..." className="mt-1" />
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setLiberacaoAberta(false)}>
+              Cancelar
+            </Button>
+            <Button className="bg-yellow-600 hover:bg-yellow-700">
+              <Send className="h-4 w-4 mr-2" />
+              Enviar Solicitacao
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
