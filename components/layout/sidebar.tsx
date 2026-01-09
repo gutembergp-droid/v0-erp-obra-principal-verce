@@ -60,6 +60,7 @@ import {
   Building2,
   Settings,
   AlertTriangle,
+  CheckCircle,
 } from "lucide-react"
 
 interface SubMenuItem {
@@ -184,6 +185,9 @@ const obraNavigation: Section[] = [
           { name: "CM-02 Detalhe por Servico", href: "/obra/comercial/custo-detalhe", icon: FileText },
           { name: "CM-03 Metas Economicas", href: "/obra/comercial/metas-economicas", icon: Target },
           { name: "CM-04 Analise Desvios", href: "/obra/comercial/analise-desvios", icon: AlertTriangle },
+          { name: "CM-05 Analise MO", href: "/obra/comercial/custo/analise-mo", icon: Users },
+          { name: "CM-06 Rateios MO", href: "/obra/comercial/custo/rateios", icon: PieChart },
+          { name: "CM-07 Aprovacao Gerencial", href: "/obra/comercial/custo/aprovacao-gerencial", icon: CheckCircle },
         ],
       },
       {
@@ -230,7 +234,15 @@ const obraNavigation: Section[] = [
     icon: Wallet,
     submenu: [
       { name: "AD-01 RH", href: "/obra/administrativo/rh", icon: UserCog },
-      { name: "AD-02 Financeiro", href: "/obra/administrativo/financeiro", icon: DollarSign },
+      {
+        name: "AD-02 Financeiro",
+        icon: DollarSign,
+        children: [
+          { name: "FI-01 Visao Geral", href: "/obra/administrativo/financeiro", icon: DollarSign },
+          { name: "FI-02 Recebimento Folha", href: "/obra/administrativo/financeiro/folha", icon: FileText },
+          { name: "FI-03 Provisao Folha", href: "/obra/administrativo/financeiro/folha/provisao", icon: Calculator },
+        ],
+      },
       { name: "AD-03 Patrimonio", href: "/obra/administrativo/patrimonio", icon: Package },
       { name: "AD-04 Comunicacao", href: "/obra/administrativo/comunicacao", icon: Megaphone },
       { name: "AD-05 Configuracoes", href: "/obra/administrativo/configuracoes", icon: Settings },
