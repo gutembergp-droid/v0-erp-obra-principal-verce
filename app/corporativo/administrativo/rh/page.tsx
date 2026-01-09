@@ -5,6 +5,7 @@ import Link from "next/link"
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { RHNav } from "@/components/rh/rh-nav"
+import { PageContent } from "@/components/layout/page-content"
 import {
   Users,
   UserCheck,
@@ -180,7 +181,7 @@ function VisaoGeralCorporativoContent() {
     <div className="flex-1 flex flex-col min-h-screen">
       <RHNav modulo="corporativo" />
 
-      <div className="flex-1 space-y-6 p-6">
+      <PageContent className="flex-1">
         {/* ============================================ */}
         {/* HEADER */}
         {/* ============================================ */}
@@ -710,7 +711,7 @@ function VisaoGeralCorporativoContent() {
             </div>
           </CardContent>
         </Card>
-      </div>
+      </PageContent>
     </div>
   )
 }

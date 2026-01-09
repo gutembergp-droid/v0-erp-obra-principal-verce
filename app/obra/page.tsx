@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { PageContent, KPIGrid } from "@/components/layout/page-content"
 import {
   Factory,
   TrendingUp,
@@ -22,7 +23,7 @@ export default function ObraDashboard() {
     <div className="overflow-auto h-full">
       <Header title="Módulo Obra" description="Execução e Controle - Executar, Medir, Comparar, Corrigir" />
 
-      <div className="p-6 space-y-6">
+      <PageContent>
         {/* Seletor de Obra */}
         <Card>
           <CardContent className="pt-6">
@@ -49,8 +50,8 @@ export default function ObraDashboard() {
           </CardContent>
         </Card>
 
-        {/* Métricas da Obra */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* Métricas da Obra - usando KPIGrid padronizado */}
+        <KPIGrid>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">Avanço Físico</CardTitle>
@@ -99,7 +100,7 @@ export default function ObraDashboard() {
               <p className="text-xs text-muted-foreground mt-1">5 gates concluídos este mês</p>
             </CardContent>
           </Card>
-        </div>
+        </KPIGrid>
 
         {/* Status dos 9 Gates */}
         <Card>
@@ -319,7 +320,7 @@ export default function ObraDashboard() {
             </CardContent>
           </Card>
         </div>
-      </div>
+      </PageContent>
     </div>
   )
 }

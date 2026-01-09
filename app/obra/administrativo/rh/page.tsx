@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { RHNav } from "@/components/rh/rh-nav"
+import { PageContent, KPIGrid, Grid2 } from "@/components/layout/page-content"
 import {
   Users,
   UserCheck,
@@ -245,11 +246,11 @@ function VisaoGeralContent() {
     <div className="flex-1 flex flex-col min-h-screen">
       <RHNav modulo="obra" />
 
-      <div className="flex-1 space-y-6 p-6">
+      <PageContent className="flex-1">
         {/* ============================================ */}
         {/* HEADER COM INDICADORES RESUMIDOS */}
         {/* ============================================ */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
               <Users className="h-5 w-5 text-primary" />
@@ -260,7 +261,7 @@ function VisaoGeralContent() {
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <Link href="#alertas">
               <Badge className="bg-red-500/20 text-red-400 border-red-500/30 cursor-pointer hover:bg-red-500/30 transition-colors px-3 py-1">
                 <Gavel className="h-3 w-3 mr-1" />
@@ -289,7 +290,7 @@ function VisaoGeralContent() {
           <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-3">
             Panorama Geral de Pessoas
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <KPIGrid>
             <Card className="bg-card/50">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-3">
@@ -529,7 +530,46 @@ function VisaoGeralContent() {
                 </div>
               </CardContent>
             </Card>
-          </div>
+
+            <Card className="bg-card/50">
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <AlertTriangle className="h-5 w-5 text-red-500" />
+                  <Badge className="bg-red-500/20 text-red-400 border-red-500/30 text-xs">Pendencias & Risco</Badge>
+                </div>
+                <div className="space-y-1">
+                  <div className="flex items-baseline justify-between">
+                    <span className="text-xs text-muted-foreground">Pendencias Criticas</span>
+                    <span className="text-lg font-bold text-red-500">{pendenciasRisco.pendenciasCriticas}</span>
+                  </div>
+                  <div className="pl-3 space-y-0.5">
+                    <div className="flex items-baseline justify-between">
+                      <span className="text-[10px] text-muted-foreground">• Pessoas</span>
+                      <span className="text-[10px]">{pendenciasRisco.detalhePendencias.pessoas}</span>
+                    </div>
+                    <div className="flex items-baseline justify-between">
+                      <span className="text-[10px] text-muted-foreground">• Conformidade</span>
+                      <span className="text-[10px]">{pendenciasRisco.detalhePendencias.conformidade}</span>
+                    </div>
+                    <div className="flex items-baseline justify-between">
+                      <span className="text-[10px] text-muted-foreground">• Ponto</span>
+                      <span className="text-[10px]">{pendenciasRisco.detalhePendencias.ponto}</span>
+                    </div>
+                  </div>
+                  <div className="border-t pt-2 mt-2">
+                    <div className="flex items-baseline justify-between">
+                      <span className="text-xs text-muted-foreground">Riscos Juridicos</span>
+                      <span className="text-sm text-orange-500">{pendenciasRisco.riscosJuridicos}</span>
+                    </div>
+                    <div className="flex items-baseline justify-between">
+                      <span className="text-xs text-muted-foreground">% sobre Efetivo</span>
+                      <span className="text-xs">{pendenciasRisco.percentualEfetivo}%</span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </KPIGrid>
         </div>
 
         {/* ============================================ */}
@@ -542,7 +582,8 @@ function VisaoGeralContent() {
             </h2>
             <p className="text-xs text-muted-foreground mt-0.5">Panorama financeiro da mao de obra</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {/* Usando Grid2 padronizado */}
+          <Grid2>
             {/* Card 5 - Custo Total de Mao de Obra */}
             <Card className="bg-card/50">
               <CardContent className="p-4">
@@ -772,7 +813,7 @@ function VisaoGeralContent() {
                 </div>
               </CardContent>
             </Card>
-          </div>
+          </Grid2>
         </div>
 
         {/* ============================================ */}
@@ -1116,7 +1157,7 @@ function VisaoGeralContent() {
             </div>
           </CardContent>
         </Card>
-      </div>
+      </PageContent>
     </div>
   )
 }

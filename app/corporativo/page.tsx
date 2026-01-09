@@ -3,6 +3,7 @@ import { Header } from "@/components/layout/header"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { PageContent, KPIGrid } from "@/components/layout/page-content"
 import {
   Users,
   FileText,
@@ -27,7 +28,7 @@ export default function CorporativoDashboard() {
         description="Governança e Estratégia - O Corporativo Governa, a Obra Executa"
       />
 
-      <div className="p-6 space-y-6">
+      <PageContent>
         {/* Princípio Fundamental */}
         <Card className="border-primary/20 bg-primary/5">
           <CardContent className="pt-6">
@@ -45,8 +46,8 @@ export default function CorporativoDashboard() {
           </CardContent>
         </Card>
 
-        {/* Métricas Resumo */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* Métricas Resumo - usando KPIGrid padronizado */}
+        <KPIGrid>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">Clientes Ativos</CardTitle>
@@ -93,7 +94,7 @@ export default function CorporativoDashboard() {
               <p className="text-xs text-muted-foreground mt-1">Gate 1 aprovado</p>
             </CardContent>
           </Card>
-        </div>
+        </KPIGrid>
 
         {/* Fluxo do Módulo Corporativo */}
         <div>
@@ -293,7 +294,7 @@ export default function CorporativoDashboard() {
             </div>
           </CardContent>
         </Card>
-      </div>
+      </PageContent>
     </AppLayout>
   )
 }
