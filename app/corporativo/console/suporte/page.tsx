@@ -15,10 +15,8 @@ import {
   AlertCircle,
   XCircle,
   Loader2,
-  ChevronRight,
   FileText,
   ImageIcon,
-  X,
   Send,
   Building2,
   Package,
@@ -28,8 +26,15 @@ import {
   HelpCircle,
   Lightbulb,
   Bug,
+  Filter,
+  ArrowUpDown,
+  ChevronRight,
+  Ticket,
+  MessageCircle,
+  CheckCircle,
+  AlertTriangle,
 } from "lucide-react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
@@ -39,7 +44,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
 
@@ -61,14 +65,19 @@ const modulos = [
 ]
 
 // Status possiveis
-const statusConfig: Record<string, { label: string; color: string; icon: React.ElementType }> = {
-  aberto: { label: "Aberto", color: "bg-blue-100 text-blue-800", icon: Clock },
-  em_analise: { label: "Em análise", color: "bg-purple-100 text-purple-800", icon: Loader2 },
-  aguardando_usuario: { label: "Aguardando usuário", color: "bg-amber-100 text-amber-800", icon: AlertCircle },
-  em_desenvolvimento: { label: "Em desenvolvimento", color: "bg-indigo-100 text-indigo-800", icon: Loader2 },
-  em_validacao: { label: "Em validação", color: "bg-cyan-100 text-cyan-800", icon: Eye },
-  concluido: { label: "Concluído", color: "bg-green-100 text-green-800", icon: CheckCircle2 },
-  recusado: { label: "Recusado", color: "bg-red-100 text-red-800", icon: XCircle },
+const statusConfig: Record<string, { label: string; color: string; bgColor: string; icon: React.ElementType }> = {
+  aberto: { label: "Aberto", color: "text-blue-700", bgColor: "bg-blue-50", icon: Clock },
+  em_analise: { label: "Em análise", color: "text-purple-700", bgColor: "bg-purple-50", icon: Loader2 },
+  aguardando_usuario: {
+    label: "Aguardando usuário",
+    color: "text-amber-700",
+    bgColor: "bg-amber-50",
+    icon: AlertCircle,
+  },
+  em_desenvolvimento: { label: "Em desenvolvimento", color: "text-indigo-700", bgColor: "bg-indigo-50", icon: Loader2 },
+  em_validacao: { label: "Em validação", color: "text-cyan-700", bgColor: "bg-cyan-50", icon: Eye },
+  concluido: { label: "Concluído", color: "text-green-700", bgColor: "bg-green-50", icon: CheckCircle2 },
+  recusado: { label: "Recusado", color: "text-red-700", bgColor: "bg-red-50", icon: XCircle },
 }
 
 // Dados de exemplo - Chamados
@@ -232,6 +241,36 @@ const chamadosExemplo = [
   },
 ]
 
+// Atividades recentes para timeline
+const atividadesRecentes = [
+  {
+    tipo: "resposta",
+    titulo: "Resposta do suporte",
+    descricao: "SUP-2024-0001 - Correção identificada",
+    data: "09/01 14:20",
+  },
+  { tipo: "status", titulo: "Status alterado", descricao: "SUP-2024-0003 - Em desenvolvimento", data: "09/01 11:00" },
+  { tipo: "abertura", titulo: "Novo chamado", descricao: "SUP-2024-0001 - Erro relatório", data: "08/01 10:30" },
+  {
+    tipo: "resposta",
+    titulo: "Resposta do usuário",
+    descricao: "SUP-2024-0002 - Aguardando info",
+    data: "08/01 10:00",
+  },
+  {
+    tipo: "concluido",
+    titulo: "Chamado concluído",
+    descricao: "SUP-2024-0004 - Lentidão corrigida",
+    data: "04/01 16:00",
+  },
+  {
+    tipo: "concluido",
+    titulo: "Chamado concluído",
+    descricao: "SUP-2024-0005 - Dúvida esclarecida",
+    data: "02/01 15:00",
+  },
+]
+
 export default function SuportePage() {
   const [activeTab, setActiveTab] = useState("chamados")
   const [filtroStatus, setFiltroStatus] = useState("todos")
@@ -242,6 +281,7 @@ export default function SuportePage() {
   const [novaResposta, setNovaResposta] = useState("")
   const [enviandoSolicitacao, setEnviandoSolicitacao] = useState(false)
   const [solicitacaoEnviada, setSolicitacaoEnviada] = useState(false)
+  const [modalNovaSolicitacao, setModalNovaSolicitacao] = useState(false)
 
   // Form nova solicitacao
   const [formTipo, setFormTipo] = useState("")
@@ -279,6 +319,7 @@ export default function SuportePage() {
     setTimeout(() => {
       setEnviandoSolicitacao(false)
       setSolicitacaoEnviada(true)
+      setModalNovaSolicitacao(false)
       // Reset form
       setFormTipo("")
       setFormModulo("")
@@ -314,485 +355,531 @@ export default function SuportePage() {
   }
 
   return (
-    <div className="flex-1 flex flex-col h-full">
-      {/* Header */}
-      <div className="border-b bg-card px-6 py-4">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-xl font-semibold">Central de Suporte — ERP-GNESIS</h1>
-            <p className="text-sm text-muted-foreground mt-1">
-              Utilize este canal para reportar problemas, tirar dúvidas ou sugerir melhorias. Todas as solicitações são
-              registradas e acompanhadas até a conclusão.
-            </p>
+    <div className="flex-1 flex flex-col h-full bg-muted/30">
+      {/* Header compacto */}
+      <div className="h-14 border-b bg-card px-4 flex items-center justify-between shrink-0">
+        <div>
+          <h1 className="text-base font-semibold">Central de Suporte</h1>
+          <p className="text-xs text-muted-foreground">Chamados, dúvidas e sugestões</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="relative w-64">
+            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+            <Input
+              placeholder="Buscar chamados..."
+              className="h-8 pl-8 text-sm"
+              value={busca}
+              onChange={(e) => setBusca(e.target.value)}
+            />
           </div>
-          <Button
-            onClick={() => {
-              setActiveTab("nova")
-              setSolicitacaoEnviada(false)
-            }}
-          >
-            <Plus className="h-4 w-4 mr-2" />
+          <Button size="sm" className="h-8" onClick={() => setModalNovaSolicitacao(true)}>
+            <Plus className="h-3.5 w-3.5 mr-1.5" />
             Nova Solicitação
           </Button>
         </div>
       </div>
 
-      {/* Content */}
-      <div className="flex-1 p-6 overflow-auto">
-        <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="mb-4">
-            <TabsTrigger value="chamados">Meus Chamados</TabsTrigger>
-            <TabsTrigger value="nova">Nova Solicitação</TabsTrigger>
-          </TabsList>
+      {/* Barra de alertas - chamados aguardando */}
+      {contadores.aguardando > 0 && (
+        <div className="h-9 bg-amber-50 border-b border-amber-200 px-4 flex items-center gap-6 text-xs shrink-0">
+          <div className="flex items-center gap-2 text-amber-800">
+            <AlertTriangle className="h-3.5 w-3.5" />
+            <span className="font-medium">{contadores.aguardando} chamado(s) aguardando sua resposta</span>
+            <Button
+              variant="link"
+              className="h-auto p-0 text-xs text-amber-800 underline"
+              onClick={() => setFiltroStatus("aguardando_usuario")}
+            >
+              Ver chamados
+            </Button>
+          </div>
+        </div>
+      )}
 
-          {/* Tab: Meus Chamados */}
-          <TabsContent value="chamados" className="space-y-4">
-            {/* Resumo */}
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-              <Card className="p-3">
-                <div className="text-2xl font-bold">{contadores.total}</div>
-                <div className="text-xs text-muted-foreground">Total</div>
-              </Card>
-              <Card className="p-3">
-                <div className="text-2xl font-bold text-blue-600">{contadores.abertos}</div>
-                <div className="text-xs text-muted-foreground">Abertos</div>
-              </Card>
-              <Card className="p-3">
-                <div className="text-2xl font-bold text-purple-600">{contadores.emAndamento}</div>
-                <div className="text-xs text-muted-foreground">Em Andamento</div>
-              </Card>
-              <Card className="p-3">
-                <div className="text-2xl font-bold text-amber-600">{contadores.aguardando}</div>
-                <div className="text-xs text-muted-foreground">Aguardando Você</div>
-              </Card>
-              <Card className="p-3">
-                <div className="text-2xl font-bold text-green-600">{contadores.concluidos}</div>
-                <div className="text-xs text-muted-foreground">Concluídos</div>
-              </Card>
+      {/* Metricas compactas */}
+      <div className="px-4 py-3 border-b bg-card shrink-0">
+        <div className="grid grid-cols-5 gap-3">
+          <div className="flex items-center justify-between p-3 rounded-lg border bg-background">
+            <div>
+              <div className="text-2xl font-bold">{contadores.total}</div>
+              <div className="text-xs text-muted-foreground">Total</div>
             </div>
+            <Ticket className="h-5 w-5 text-muted-foreground" />
+          </div>
+          <div className="flex items-center justify-between p-3 rounded-lg border bg-background">
+            <div>
+              <div className="text-2xl font-bold text-blue-600">{contadores.abertos}</div>
+              <div className="text-xs text-muted-foreground">Abertos</div>
+            </div>
+            <Clock className="h-5 w-5 text-blue-600" />
+          </div>
+          <div className="flex items-center justify-between p-3 rounded-lg border bg-background">
+            <div>
+              <div className="text-2xl font-bold text-purple-600">{contadores.emAndamento}</div>
+              <div className="text-xs text-muted-foreground">Em Andamento</div>
+            </div>
+            <Loader2 className="h-5 w-5 text-purple-600" />
+          </div>
+          <div className="flex items-center justify-between p-3 rounded-lg border bg-background">
+            <div>
+              <div className="text-2xl font-bold text-amber-600">{contadores.aguardando}</div>
+              <div className="text-xs text-muted-foreground">Aguardando Você</div>
+            </div>
+            <AlertCircle className="h-5 w-5 text-amber-600" />
+          </div>
+          <div className="flex items-center justify-between p-3 rounded-lg border bg-background">
+            <div>
+              <div className="text-2xl font-bold text-green-600">{contadores.concluidos}</div>
+              <div className="text-xs text-muted-foreground">Concluídos</div>
+            </div>
+            <CheckCircle className="h-5 w-5 text-green-600" />
+          </div>
+        </div>
+      </div>
 
-            {/* Filtros */}
-            <Card>
-              <CardContent className="p-4">
-                <div className="flex flex-wrap gap-3 items-center">
-                  <div className="flex-1 min-w-[200px]">
-                    <div className="relative">
-                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                      <Input
-                        placeholder="Buscar por ID ou título..."
-                        className="pl-9"
-                        value={busca}
-                        onChange={(e) => setBusca(e.target.value)}
-                      />
-                    </div>
-                  </div>
-                  <Select value={filtroStatus} onValueChange={setFiltroStatus}>
-                    <SelectTrigger className="w-[180px]">
-                      <SelectValue placeholder="Status" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="todos">Todos os status</SelectItem>
-                      {Object.entries(statusConfig).map(([key, config]) => (
-                        <SelectItem key={key} value={key}>
-                          {config.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <Select value={filtroTipo} onValueChange={setFiltroTipo}>
-                    <SelectTrigger className="w-[180px]">
-                      <SelectValue placeholder="Tipo" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="todos">Todos os tipos</SelectItem>
-                      {tiposSolicitacao.map((tipo) => (
-                        <SelectItem key={tipo.value} value={tipo.value}>
-                          {tipo.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </CardContent>
-            </Card>
+      {/* Area principal - 75% tabela / 25% timeline */}
+      <div className="flex-1 flex overflow-hidden">
+        {/* Tabela de chamados - 75% */}
+        <div className="flex-1 flex flex-col border-r">
+          {/* Filtros inline */}
+          <div className="h-12 border-b bg-card px-4 flex items-center justify-between shrink-0">
+            <div className="flex items-center gap-2 text-sm font-medium">
+              <Ticket className="h-4 w-4" />
+              Meus Chamados
+            </div>
+            <div className="flex items-center gap-2">
+              <Button variant="ghost" size="sm" className="h-7 text-xs gap-1.5">
+                <Filter className="h-3 w-3" />
+                Filtros
+              </Button>
+              <Select value={filtroStatus} onValueChange={setFiltroStatus}>
+                <SelectTrigger className="h-7 w-[140px] text-xs">
+                  <SelectValue placeholder="Status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="todos">Todos os status</SelectItem>
+                  {Object.entries(statusConfig).map(([key, config]) => (
+                    <SelectItem key={key} value={key}>
+                      {config.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <Select value={filtroTipo} onValueChange={setFiltroTipo}>
+                <SelectTrigger className="h-7 w-[140px] text-xs">
+                  <SelectValue placeholder="Tipo" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="todos">Todos os tipos</SelectItem>
+                  {tiposSolicitacao.map((tipo) => (
+                    <SelectItem key={tipo.value} value={tipo.value}>
+                      {tipo.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <Button variant="ghost" size="sm" className="h-7 text-xs gap-1.5">
+                <ArrowUpDown className="h-3 w-3" />
+                Ordenar
+              </Button>
+            </div>
+          </div>
 
-            {/* Tabela de Chamados */}
-            <Card>
-              <Table>
-                <TableHeader>
+          {/* Tabela */}
+          <ScrollArea className="flex-1">
+            <Table>
+              <TableHeader>
+                <TableRow className="bg-muted/50">
+                  <TableHead className="w-[110px] text-xs">ID</TableHead>
+                  <TableHead className="w-[90px] text-xs">Tipo</TableHead>
+                  <TableHead className="text-xs">Título</TableHead>
+                  <TableHead className="w-[110px] text-xs">Módulo</TableHead>
+                  <TableHead className="w-[130px] text-xs">Status</TableHead>
+                  <TableHead className="w-[90px] text-xs">Abertura</TableHead>
+                  <TableHead className="w-[90px] text-xs">Atualização</TableHead>
+                  <TableHead className="w-[50px]"></TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {chamadosFiltrados.length === 0 ? (
                   <TableRow>
-                    <TableHead className="w-[120px]">ID</TableHead>
-                    <TableHead className="w-[100px]">Tipo</TableHead>
-                    <TableHead>Título</TableHead>
-                    <TableHead className="w-[120px]">Módulo</TableHead>
-                    <TableHead className="w-[140px]">Status</TableHead>
-                    <TableHead className="w-[100px]">Abertura</TableHead>
-                    <TableHead className="w-[100px]">Atualização</TableHead>
-                    <TableHead className="w-[60px]"></TableHead>
+                    <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
+                      Nenhum chamado encontrado.
+                    </TableCell>
                   </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {chamadosFiltrados.length === 0 ? (
-                    <TableRow>
-                      <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
-                        Nenhum chamado encontrado com os filtros selecionados.
-                      </TableCell>
-                    </TableRow>
-                  ) : (
-                    chamadosFiltrados.map((chamado) => {
-                      const tipoInfo = tiposSolicitacao.find((t) => t.value === chamado.tipo)
-                      const moduloInfo = modulos.find((m) => m.value === chamado.modulo)
-                      const statusInfo = statusConfig[chamado.status]
-                      const TipoIcon = tipoInfo?.icon || HelpCircle
+                ) : (
+                  chamadosFiltrados.map((chamado) => {
+                    const tipoInfo = tiposSolicitacao.find((t) => t.value === chamado.tipo)
+                    const moduloInfo = modulos.find((m) => m.value === chamado.modulo)
+                    const statusInfo = statusConfig[chamado.status]
+                    const TipoIcon = tipoInfo?.icon || HelpCircle
 
-                      return (
-                        <TableRow
-                          key={chamado.id}
-                          className="cursor-pointer hover:bg-muted/50"
-                          onClick={() => handleVerDetalhes(chamado)}
-                        >
-                          <TableCell className="font-mono text-xs">{chamado.id}</TableCell>
-                          <TableCell>
-                            <div className="flex items-center gap-1.5">
-                              <TipoIcon className={`h-3.5 w-3.5 ${tipoInfo?.color}`} />
-                              <span className="text-xs">{tipoInfo?.label.split(" ")[0]}</span>
-                            </div>
-                          </TableCell>
-                          <TableCell className="font-medium">{chamado.titulo}</TableCell>
-                          <TableCell className="text-sm">{moduloInfo?.label}</TableCell>
-                          <TableCell>
-                            <Badge variant="secondary" className={`text-xs ${statusInfo.color}`}>
-                              {statusInfo.label}
-                            </Badge>
-                          </TableCell>
-                          <TableCell className="text-xs text-muted-foreground">
-                            {formatarDataCurta(chamado.dataAbertura)}
-                          </TableCell>
-                          <TableCell className="text-xs text-muted-foreground">
-                            {formatarDataCurta(chamado.ultimaAtualizacao)}
-                          </TableCell>
-                          <TableCell>
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-                                <Button variant="ghost" size="icon" className="h-8 w-8">
-                                  <MoreHorizontal className="h-4 w-4" />
-                                </Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent align="end">
-                                <DropdownMenuItem onClick={() => handleVerDetalhes(chamado)}>
-                                  <Eye className="h-4 w-4 mr-2" />
-                                  Ver detalhes
-                                </DropdownMenuItem>
-                                <DropdownMenuItem>
-                                  <MessageSquare className="h-4 w-4 mr-2" />
-                                  Responder
-                                </DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
-                          </TableCell>
-                        </TableRow>
-                      )
-                    })
-                  )}
-                </TableBody>
-              </Table>
-            </Card>
-          </TabsContent>
-
-          {/* Tab: Nova Solicitação */}
-          <TabsContent value="nova">
-            {solicitacaoEnviada ? (
-              <Card className="max-w-2xl mx-auto">
-                <CardContent className="p-8 text-center">
-                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <CheckCircle2 className="h-8 w-8 text-green-600" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2">Solicitação enviada com sucesso!</h3>
-                  <p className="text-muted-foreground mb-6">
-                    Um chamado foi aberto e você será notificado sobre cada atualização por e-mail e pelo sistema.
-                  </p>
-                  <div className="flex justify-center gap-3">
-                    <Button variant="outline" onClick={() => setActiveTab("chamados")}>
-                      Ver meus chamados
-                    </Button>
-                    <Button onClick={() => setSolicitacaoEnviada(false)}>Abrir nova solicitação</Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ) : (
-              <Card className="max-w-2xl mx-auto">
-                <CardHeader>
-                  <CardTitle>Nova Solicitação</CardTitle>
-                  <CardDescription>
-                    Preencha os campos abaixo para abrir um chamado. Quanto mais detalhes, mais rápido poderemos ajudar.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label>Tipo de solicitação *</Label>
-                      <Select value={formTipo} onValueChange={setFormTipo}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Selecione o tipo" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {tiposSolicitacao.map((tipo) => (
-                            <SelectItem key={tipo.value} value={tipo.value}>
-                              <div className="flex items-center gap-2">
-                                <tipo.icon className={`h-4 w-4 ${tipo.color}`} />
-                                {tipo.label}
-                              </div>
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Módulo relacionado *</Label>
-                      <Select value={formModulo} onValueChange={setFormModulo}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Selecione o módulo" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {modulos.map((modulo) => (
-                            <SelectItem key={modulo.value} value={modulo.value}>
-                              <div className="flex items-center gap-2">
-                                <modulo.icon className="h-4 w-4" />
-                                {modulo.label}
-                              </div>
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label>Título da solicitação *</Label>
-                    <Input
-                      placeholder="Descreva em poucas palavras o problema ou dúvida"
-                      value={formTitulo}
-                      onChange={(e) => setFormTitulo(e.target.value)}
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label>Descrição detalhada *</Label>
-                    <Textarea
-                      placeholder="Descreva com detalhes o problema, dúvida ou sugestão. Inclua passos para reproduzir o erro, se aplicável."
-                      className="min-h-[150px] resize-y"
-                      value={formDescricao}
-                      onChange={(e) => setFormDescricao(e.target.value)}
-                    />
-                    <p className="text-xs text-muted-foreground">
-                      Dica: Quanto mais detalhes, mais rápido poderemos ajudar.
-                    </p>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label>Anexos</Label>
-                    <div className="border-2 border-dashed rounded-lg p-6 text-center hover:border-primary/50 transition-colors cursor-pointer">
-                      <Upload className="h-8 w-8 mx-auto text-muted-foreground mb-2" />
-                      <p className="text-sm text-muted-foreground">Arraste arquivos aqui ou clique para selecionar</p>
-                      <p className="text-xs text-muted-foreground mt-1">
-                        Imagens, PDFs, prints de tela são aceitos (máx. 10MB cada)
-                      </p>
-                      <input type="file" multiple className="hidden" />
-                    </div>
-                    {formAnexos.length > 0 && (
-                      <div className="flex flex-wrap gap-2 mt-2">
-                        {formAnexos.map((file, idx) => (
-                          <Badge key={idx} variant="secondary" className="gap-1">
-                            <FileText className="h-3 w-3" />
-                            {file.name}
-                            <button onClick={() => setFormAnexos(formAnexos.filter((_, i) => i !== idx))}>
-                              <X className="h-3 w-3" />
-                            </button>
+                    return (
+                      <TableRow
+                        key={chamado.id}
+                        className="cursor-pointer hover:bg-muted/50"
+                        onClick={() => handleVerDetalhes(chamado)}
+                      >
+                        <TableCell className="font-mono text-xs py-2">{chamado.id}</TableCell>
+                        <TableCell className="py-2">
+                          <div className="flex items-center gap-1.5">
+                            <TipoIcon className={`h-3.5 w-3.5 ${tipoInfo?.color}`} />
+                            <span className="text-xs">{tipoInfo?.label.split(" ")[0]}</span>
+                          </div>
+                        </TableCell>
+                        <TableCell className="font-medium text-sm py-2">{chamado.titulo}</TableCell>
+                        <TableCell className="text-xs py-2">{moduloInfo?.label}</TableCell>
+                        <TableCell className="py-2">
+                          <Badge
+                            variant="secondary"
+                            className={`text-xs ${statusInfo.color} ${statusInfo.bgColor} border-0`}
+                          >
+                            {statusInfo.label}
                           </Badge>
-                        ))}
+                        </TableCell>
+                        <TableCell className="text-xs text-muted-foreground py-2">
+                          {formatarDataCurta(chamado.dataAbertura)}
+                        </TableCell>
+                        <TableCell className="text-xs text-muted-foreground py-2">
+                          {formatarDataCurta(chamado.ultimaAtualizacao)}
+                        </TableCell>
+                        <TableCell className="py-2">
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+                              <Button variant="ghost" size="icon" className="h-7 w-7">
+                                <MoreHorizontal className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuItem onClick={() => handleVerDetalhes(chamado)}>
+                                <Eye className="h-4 w-4 mr-2" />
+                                Ver detalhes
+                              </DropdownMenuItem>
+                              <DropdownMenuItem>
+                                <MessageSquare className="h-4 w-4 mr-2" />
+                                Responder
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </TableCell>
+                      </TableRow>
+                    )
+                  })
+                )}
+              </TableBody>
+            </Table>
+          </ScrollArea>
+        </div>
+
+        {/* Timeline de atividade - 25% */}
+        <div className="w-72 flex flex-col bg-card shrink-0">
+          <div className="h-12 border-b px-4 flex items-center justify-between shrink-0">
+            <div className="flex items-center gap-2 text-sm font-medium">
+              <MessageCircle className="h-4 w-4" />
+              Atividade
+            </div>
+            <Button variant="link" className="h-auto p-0 text-xs">
+              Ver mais <ChevronRight className="h-3 w-3 ml-1" />
+            </Button>
+          </div>
+          <ScrollArea className="flex-1">
+            <div className="p-3 space-y-3">
+              {atividadesRecentes.map((atividade, index) => (
+                <div key={index} className="flex gap-3 text-xs">
+                  <div
+                    className={`mt-0.5 w-2 h-2 rounded-full shrink-0 ${
+                      atividade.tipo === "concluido"
+                        ? "bg-green-500"
+                        : atividade.tipo === "resposta"
+                          ? "bg-blue-500"
+                          : atividade.tipo === "status"
+                            ? "bg-purple-500"
+                            : "bg-amber-500"
+                    }`}
+                  />
+                  <div className="flex-1 min-w-0">
+                    <div className="font-medium truncate">{atividade.titulo}</div>
+                    <div className="text-muted-foreground truncate">{atividade.descricao}</div>
+                    <div className="text-muted-foreground/70 mt-0.5">{atividade.data}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </ScrollArea>
+        </div>
+      </div>
+
+      {/* Cards de acao rapida no rodape */}
+      <div className="h-16 border-t bg-card px-4 flex items-center gap-3 shrink-0">
+        <Card
+          className="flex-1 h-12 flex items-center px-4 cursor-pointer hover:bg-muted/50 transition-colors"
+          onClick={() => setModalNovaSolicitacao(true)}
+        >
+          <Plus className="h-4 w-4 text-primary mr-3" />
+          <div className="flex-1">
+            <div className="text-sm font-medium">Nova Solicitação</div>
+            <div className="text-xs text-muted-foreground">Abrir chamado</div>
+          </div>
+          <ChevronRight className="h-4 w-4 text-muted-foreground" />
+        </Card>
+        <Card
+          className="flex-1 h-12 flex items-center px-4 cursor-pointer hover:bg-muted/50 transition-colors"
+          onClick={() => setFiltroStatus("aguardando_usuario")}
+        >
+          <AlertCircle className="h-4 w-4 text-amber-600 mr-3" />
+          <div className="flex-1">
+            <div className="text-sm font-medium">Aguardando Resposta</div>
+            <div className="text-xs text-muted-foreground">{contadores.aguardando} chamado(s)</div>
+          </div>
+          <ChevronRight className="h-4 w-4 text-muted-foreground" />
+        </Card>
+        <Card
+          className="flex-1 h-12 flex items-center px-4 cursor-pointer hover:bg-muted/50 transition-colors"
+          onClick={() => setFiltroStatus("em_analise")}
+        >
+          <Loader2 className="h-4 w-4 text-purple-600 mr-3" />
+          <div className="flex-1">
+            <div className="text-sm font-medium">Em Andamento</div>
+            <div className="text-xs text-muted-foreground">{contadores.emAndamento} chamado(s)</div>
+          </div>
+          <ChevronRight className="h-4 w-4 text-muted-foreground" />
+        </Card>
+        <Card
+          className="flex-1 h-12 flex items-center px-4 cursor-pointer hover:bg-muted/50 transition-colors"
+          onClick={() => setFiltroStatus("concluido")}
+        >
+          <CheckCircle className="h-4 w-4 text-green-600 mr-3" />
+          <div className="flex-1">
+            <div className="text-sm font-medium">Concluídos</div>
+            <div className="text-xs text-muted-foreground">{contadores.concluidos} chamado(s)</div>
+          </div>
+          <ChevronRight className="h-4 w-4 text-muted-foreground" />
+        </Card>
+      </div>
+
+      {/* Modal Nova Solicitacao */}
+      <Dialog open={modalNovaSolicitacao} onOpenChange={setModalNovaSolicitacao}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Nova Solicitação</DialogTitle>
+            <DialogDescription>Preencha os campos abaixo para abrir um novo chamado.</DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label className="text-sm">Tipo de solicitação *</Label>
+              <Select value={formTipo} onValueChange={setFormTipo}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Selecione o tipo" />
+                </SelectTrigger>
+                <SelectContent>
+                  {tiposSolicitacao.map((tipo) => (
+                    <SelectItem key={tipo.value} value={tipo.value}>
+                      <div className="flex items-center gap-2">
+                        <tipo.icon className={`h-4 w-4 ${tipo.color}`} />
+                        {tipo.label}
                       </div>
-                    )}
-                  </div>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label className="text-sm">Módulo relacionado *</Label>
+              <Select value={formModulo} onValueChange={setFormModulo}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Selecione o módulo" />
+                </SelectTrigger>
+                <SelectContent>
+                  {modulos.map((modulo) => (
+                    <SelectItem key={modulo.value} value={modulo.value}>
+                      <div className="flex items-center gap-2">
+                        <modulo.icon className="h-4 w-4" />
+                        {modulo.label}
+                      </div>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label className="text-sm">Título *</Label>
+              <Input
+                placeholder="Descreva brevemente o problema ou dúvida"
+                value={formTitulo}
+                onChange={(e) => setFormTitulo(e.target.value)}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label className="text-sm">Descrição detalhada *</Label>
+              <Textarea
+                placeholder="Descreva com detalhes o problema, passos para reproduzir, etc."
+                rows={4}
+                value={formDescricao}
+                onChange={(e) => setFormDescricao(e.target.value)}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label className="text-sm">Anexos (opcional)</Label>
+              <div className="border-2 border-dashed rounded-lg p-4 text-center cursor-pointer hover:bg-muted/50 transition-colors">
+                <Upload className="h-6 w-6 mx-auto text-muted-foreground mb-2" />
+                <div className="text-sm text-muted-foreground">Arraste arquivos ou clique para selecionar</div>
+                <div className="text-xs text-muted-foreground mt-1">PNG, JPG, PDF até 10MB</div>
+              </div>
+            </div>
+          </div>
+          <div className="flex justify-end gap-2">
+            <Button variant="outline" onClick={() => setModalNovaSolicitacao(false)}>
+              Cancelar
+            </Button>
+            <Button
+              onClick={handleEnviarSolicitacao}
+              disabled={!formTipo || !formModulo || !formTitulo || !formDescricao || enviandoSolicitacao}
+            >
+              {enviandoSolicitacao ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Enviando...
+                </>
+              ) : (
+                <>
+                  <Send className="h-4 w-4 mr-2" />
+                  Enviar Solicitação
+                </>
+              )}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
 
-                  <Separator />
-
-                  <div className="flex justify-end gap-3">
-                    <Button variant="outline" onClick={() => setActiveTab("chamados")}>
-                      Cancelar
-                    </Button>
-                    <Button
-                      onClick={handleEnviarSolicitacao}
-                      disabled={!formTipo || !formModulo || !formTitulo || !formDescricao || enviandoSolicitacao}
-                    >
-                      {enviandoSolicitacao ? (
-                        <>
-                          <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                          Enviando...
-                        </>
-                      ) : (
-                        <>
-                          <Send className="h-4 w-4 mr-2" />
-                          Enviar Solicitação
-                        </>
-                      )}
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-          </TabsContent>
-        </Tabs>
-      </div>
-
-      {/* Rodape */}
-      <div className="border-t bg-muted/30 px-6 py-3">
-        <p className="text-xs text-muted-foreground text-center">
-          Este canal é exclusivo para usuários do ERP-GNESIS e garante controle, rastreabilidade e evolução do sistema.
-        </p>
-      </div>
-
-      {/* Modal: Detalhes do Chamado */}
+      {/* Modal Detalhes do Chamado */}
       <Dialog open={modalDetalhes} onOpenChange={setModalDetalhes}>
-        <DialogContent className="max-w-3xl max-h-[90vh] overflow-hidden flex flex-col">
+        <DialogContent className="max-w-2xl max-h-[85vh] flex flex-col">
           {chamadoSelecionado && (
             <>
               <DialogHeader>
                 <div className="flex items-start justify-between">
                   <div>
-                    <DialogTitle className="flex items-center gap-2">
-                      <span className="font-mono text-sm text-muted-foreground">{chamadoSelecionado.id}</span>
-                      <ChevronRight className="h-4 w-4 text-muted-foreground" />
-                      <span>{chamadoSelecionado.titulo}</span>
-                    </DialogTitle>
-                    <DialogDescription className="flex items-center gap-3 mt-2">
-                      <Badge variant="secondary" className={statusConfig[chamadoSelecionado.status].color}>
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="font-mono text-xs text-muted-foreground">{chamadoSelecionado.id}</span>
+                      <Badge
+                        variant="secondary"
+                        className={`text-xs ${statusConfig[chamadoSelecionado.status].color} ${statusConfig[chamadoSelecionado.status].bgColor} border-0`}
+                      >
                         {statusConfig[chamadoSelecionado.status].label}
                       </Badge>
-                      <span className="text-xs">Aberto em {formatarData(chamadoSelecionado.dataAbertura)}</span>
-                    </DialogDescription>
+                    </div>
+                    <DialogTitle className="text-lg">{chamadoSelecionado.titulo}</DialogTitle>
                   </div>
                 </div>
               </DialogHeader>
-
-              <ScrollArea className="flex-1 -mx-6 px-6">
-                <div className="space-y-4 py-4">
+              <div className="flex-1 overflow-auto">
+                <div className="space-y-4">
                   {/* Informacoes */}
-                  <Card>
-                    <CardHeader className="py-3">
-                      <CardTitle className="text-sm">Informações</CardTitle>
-                    </CardHeader>
-                    <CardContent className="py-3">
-                      <div className="grid grid-cols-3 gap-4 text-sm">
-                        <div>
-                          <span className="text-muted-foreground">Tipo:</span>
-                          <p className="font-medium">
-                            {tiposSolicitacao.find((t) => t.value === chamadoSelecionado.tipo)?.label}
-                          </p>
-                        </div>
-                        <div>
-                          <span className="text-muted-foreground">Módulo:</span>
-                          <p className="font-medium">
-                            {modulos.find((m) => m.value === chamadoSelecionado.modulo)?.label}
-                          </p>
-                        </div>
-                        <div>
-                          <span className="text-muted-foreground">Última atualização:</span>
-                          <p className="font-medium">{formatarData(chamadoSelecionado.ultimaAtualizacao)}</p>
-                        </div>
+                  <div className="grid grid-cols-4 gap-4 text-sm">
+                    <div>
+                      <div className="text-muted-foreground text-xs">Tipo</div>
+                      <div className="font-medium">
+                        {tiposSolicitacao.find((t) => t.value === chamadoSelecionado.tipo)?.label}
                       </div>
-                    </CardContent>
-                  </Card>
+                    </div>
+                    <div>
+                      <div className="text-muted-foreground text-xs">Módulo</div>
+                      <div className="font-medium">
+                        {modulos.find((m) => m.value === chamadoSelecionado.modulo)?.label}
+                      </div>
+                    </div>
+                    <div>
+                      <div className="text-muted-foreground text-xs">Abertura</div>
+                      <div className="font-medium">{formatarData(chamadoSelecionado.dataAbertura)}</div>
+                    </div>
+                    <div>
+                      <div className="text-muted-foreground text-xs">Última atualização</div>
+                      <div className="font-medium">{formatarData(chamadoSelecionado.ultimaAtualizacao)}</div>
+                    </div>
+                  </div>
 
-                  {/* Descricao original */}
-                  <Card>
-                    <CardHeader className="py-3">
-                      <CardTitle className="text-sm">Descrição Original</CardTitle>
-                    </CardHeader>
-                    <CardContent className="py-3">
-                      <p className="text-sm">{chamadoSelecionado.descricao}</p>
-                      {chamadoSelecionado.anexos.length > 0 && (
-                        <div className="mt-3 pt-3 border-t">
-                          <span className="text-xs text-muted-foreground">Anexos:</span>
-                          <div className="flex flex-wrap gap-2 mt-2">
-                            {chamadoSelecionado.anexos.map((anexo, idx) => (
-                              <Badge key={idx} variant="outline" className="gap-1.5 cursor-pointer hover:bg-muted">
-                                {anexo.tipo === "image" ? (
-                                  <ImageIcon className="h-3 w-3" />
-                                ) : (
-                                  <FileText className="h-3 w-3" />
-                                )}
-                                {anexo.nome}
-                                <span className="text-muted-foreground">({anexo.tamanho})</span>
-                              </Badge>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </CardContent>
-                  </Card>
+                  <Separator />
 
-                  {/* Historico */}
-                  <Card>
-                    <CardHeader className="py-3">
-                      <CardTitle className="text-sm">Histórico de Comunicação</CardTitle>
-                    </CardHeader>
-                    <CardContent className="py-3">
-                      <div className="space-y-4">
-                        {chamadoSelecionado.historico.map((item, idx) => (
-                          <div key={idx} className="flex gap-3">
-                            <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0" />
-                            <div className="flex-1">
-                              <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                                <span className="font-medium text-foreground">{item.autor}</span>
-                                <span>•</span>
-                                <span>{formatarData(item.data)}</span>
-                                {item.tipo === "status" && (
-                                  <Badge variant="outline" className="text-[10px] h-4">
-                                    Alteração de status
-                                  </Badge>
-                                )}
-                              </div>
-                              <p className="text-sm mt-1">{item.mensagem}</p>
-                            </div>
+                  {/* Descricao */}
+                  <div>
+                    <div className="text-sm font-medium mb-2">Descrição</div>
+                    <p className="text-sm text-muted-foreground">{chamadoSelecionado.descricao}</p>
+                  </div>
+
+                  {/* Anexos */}
+                  {chamadoSelecionado.anexos.length > 0 && (
+                    <div>
+                      <div className="text-sm font-medium mb-2">Anexos</div>
+                      <div className="flex flex-wrap gap-2">
+                        {chamadoSelecionado.anexos.map((anexo, index) => (
+                          <div key={index} className="flex items-center gap-2 bg-muted rounded px-2 py-1 text-xs">
+                            {anexo.tipo === "image" ? (
+                              <ImageIcon className="h-3 w-3" />
+                            ) : (
+                              <FileText className="h-3 w-3" />
+                            )}
+                            {anexo.nome}
+                            <span className="text-muted-foreground">({anexo.tamanho})</span>
                           </div>
                         ))}
                       </div>
+                    </div>
+                  )}
 
-                      {/* Campo de resposta */}
-                      {chamadoSelecionado.status !== "concluido" && chamadoSelecionado.status !== "recusado" && (
-                        <div className="mt-4 pt-4 border-t">
-                          <Label className="text-xs">Responder</Label>
-                          <div className="flex gap-2 mt-2">
-                            <Textarea
-                              placeholder="Digite sua resposta..."
-                              className="min-h-[60px] resize-none"
-                              value={novaResposta}
-                              onChange={(e) => setNovaResposta(e.target.value)}
-                            />
-                            <Button size="icon" className="flex-shrink-0" disabled={!novaResposta}>
-                              <Send className="h-4 w-4" />
-                            </Button>
-                          </div>
-                          <p className="text-xs text-muted-foreground mt-2">
-                            Toda a comunicação fica registrada neste chamado.
-                          </p>
-                        </div>
-                      )}
+                  <Separator />
 
-                      {/* Mensagem de encerramento */}
-                      {chamadoSelecionado.status === "concluido" && (
-                        <div className="mt-4 pt-4 border-t bg-green-50 -mx-3 px-3 py-3 rounded-lg">
-                          <div className="flex items-center gap-2 text-green-800">
-                            <CheckCircle2 className="h-4 w-4" />
-                            <span className="font-medium text-sm">Chamado encerrado</span>
+                  {/* Historico */}
+                  <div>
+                    <div className="text-sm font-medium mb-3">Histórico de comunicação</div>
+                    <div className="space-y-3">
+                      {chamadoSelecionado.historico.map((item, index) => (
+                        <div key={index} className="flex gap-3">
+                          <div
+                            className={`mt-1 w-2 h-2 rounded-full shrink-0 ${
+                              item.tipo === "abertura"
+                                ? "bg-blue-500"
+                                : item.tipo === "status"
+                                  ? "bg-purple-500"
+                                  : item.autor === "Suporte"
+                                    ? "bg-green-500"
+                                    : "bg-amber-500"
+                            }`}
+                          />
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 text-xs">
+                              <span className="font-medium">{item.autor}</span>
+                              <span className="text-muted-foreground">{formatarData(item.data)}</span>
+                            </div>
+                            <p className="text-sm text-muted-foreground mt-0.5">{item.mensagem}</p>
                           </div>
-                          <p className="text-xs text-green-700 mt-1">Caso precise, abra uma nova solicitação.</p>
                         </div>
-                      )}
-                    </CardContent>
-                  </Card>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Campo de resposta */}
+                  {chamadoSelecionado.status !== "concluido" && chamadoSelecionado.status !== "recusado" && (
+                    <>
+                      <Separator />
+                      <div>
+                        <div className="text-sm font-medium mb-2">Adicionar resposta</div>
+                        <Textarea
+                          placeholder="Digite sua mensagem..."
+                          rows={3}
+                          value={novaResposta}
+                          onChange={(e) => setNovaResposta(e.target.value)}
+                        />
+                        <div className="flex justify-end mt-2">
+                          <Button size="sm" disabled={!novaResposta.trim()}>
+                            <Send className="h-3.5 w-3.5 mr-1.5" />
+                            Enviar
+                          </Button>
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </div>
-              </ScrollArea>
+              </div>
             </>
           )}
         </DialogContent>
