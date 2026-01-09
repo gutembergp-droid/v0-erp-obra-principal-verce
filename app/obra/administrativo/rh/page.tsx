@@ -1,9 +1,10 @@
 "use client"
 
-import { Suspense } from "react"
+import { Suspense, useState } from "react"
 import Link from "next/link"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { RHNav } from "@/components/rh/rh-nav"
 import {
   Users,
@@ -26,71 +27,126 @@ import {
   FileText,
   Calendar,
   Stethoscope,
+  Gift,
+  GraduationCap,
+  UserPlus,
+  Info,
+  BarChart3,
 } from "lucide-react"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Line,
+  ComposedChart,
+  Legend,
+} from "recharts"
 
 // ============================================
 // DADOS MOCKADOS - VISAO GERAL
 // ============================================
 
-// FAIXA 1 - Panorama Geral de Pessoas
-const panoramaPessoas = {
-  efetivoAtual: {
-    total: 300,
-    previsto: 320,
-    gap: -20,
+const indicadoresHeader = {
+  juridico: 3,
+  atencao: 8,
+  informativo: 5,
+}
+
+const efetivoMovimento = {
+  efetivoAtual: 300,
+  previsto: 320,
+  gap: -20,
+  admissoesMes: 18,
+  demissoesMes: 10,
+  turnoverMensal: 3.3,
+  diretos: 240,
+  indiretos: 60,
+  tendencia: "up" as const, // up, stable, down
+}
+
+// Faixa 1 - Card 2 - Composicao
+const composicaoEfetivo = {
+  clt: { qtd: 210, percentual: 70 },
+  pj: { qtd: 20, percentual: 7 },
+  terceirizados: { qtd: 70, percentual: 23 },
+}
+
+// Faixa 1 - Card 3 - Status Operacional detalhado
+const statusOperacional = {
+  ativos: { qtd: 285, percentual: 95 },
+  afastados: {
+    total: 9,
+    percentual: 3,
+    medico: 6,
+    acidente: 3,
   },
-  composicao: {
-    clt: 210,
-    pj: 20,
-    terceirizados: 70,
+  bloqueados: {
+    total: 6,
+    percentual: 2,
+    documentos: 4,
+    juridico: 2,
   },
-  statusOperacional: {
-    ativos: 285,
-    afastados: 9,
-    bloqueados: 6,
+}
+
+// Faixa 1 - Card 4 - Pendencias & Risco
+const pendenciasRisco = {
+  pendenciasCriticas: 12,
+  detalhePendencias: {
+    pessoas: 4,
+    conformidade: 5,
+    ponto: 3,
   },
-  riscoPendencias: {
-    pendenciasCriticas: 12,
-    riscosJuridicos: 3,
-  },
+  riscosJuridicos: 3,
+  percentualEfetivo: 4,
 }
 
 // FAIXA 2 - Custo & Jornada
 const custoJornada = {
-  // Card 1 - Custo Total de Mao de Obra
   custoMO: {
-    clt: 980000,
-    pj: 150000,
-    terceiros: 120000, // apenas quando o custo e nosso
+    clt: { qtd: 210, valor: 980000, percentual: 78 },
+    pj: { qtd: 20, valor: 150000, percentual: 12 },
+    terceiros: { qtd: 70, valor: 120000, percentual: 10 },
     totalGeral: 1250000,
   },
-  // Card 2 - Composicao da Folha
   composicaoFolha: {
-    folhaBase: 980000,
-    horasExtras: 120000,
-    encargos: 320000,
-    bonificacoes: 30000,
+    folhaBase: { valor: 980000, percentual: 68 },
+    horasExtras: { valor: 120000, percentual: 8 },
+    encargos: { valor: 320000, percentual: 22 },
+    bonificacoes: { valor: 30000, percentual: 2 },
     totalFolha: 1450000,
   },
-  // Card 3 - Proporcao de Custos
   proporcaoCustos: {
     direto: { valor: 850000, percentual: 68 },
     indireto: { valor: 280000, percentual: 22 },
     terceiros: { valor: 120000, percentual: 10 },
   },
-  // Card 4 - Jornada & Impacto Financeiro
   jornadaImpacto: {
     horasNormais: 980000,
     horasExtras: 120000,
     totalHE: 1240,
+    tetoHE: 1000,
+    estouro: 240,
     colaboradoresAcimaLimite: 5,
-    tendencia: "up" as const, // up, stable, down
-    status: "medio" as const, // baixo, medio, alto
+    tendencia: "up" as const,
+    status: "medio" as const,
   },
 }
 
-// FAIXA 3 - Alertas
+const dadosGrafico = [
+  { mes: "Ago", horasExtras: 980, valorHE: 95000, turnover: 2.8, efetivo: 285 },
+  { mes: "Set", horasExtras: 1050, valorHE: 102000, turnover: 3.1, efetivo: 290 },
+  { mes: "Out", horasExtras: 1120, valorHE: 108000, turnover: 2.5, efetivo: 295 },
+  { mes: "Nov", horasExtras: 1180, valorHE: 115000, turnover: 3.5, efetivo: 298 },
+  { mes: "Dez", horasExtras: 1200, valorHE: 118000, turnover: 4.0, efetivo: 295 },
+  { mes: "Jan", horasExtras: 1240, valorHE: 120000, turnover: 3.3, efetivo: 300 },
+]
+
+// Faixa 4 - Alertas e Temas
 const alertasImportantes = [
   {
     tipo: "critico",
@@ -133,7 +189,14 @@ const temasComPendencia = [
   { label: "Pessoas", pendencias: 6, href: "/obra/administrativo/rh/pessoas", icon: Users },
   { label: "Conformidade", pendencias: 15, href: "/obra/administrativo/rh/conformidade", icon: ShieldAlert },
   { label: "Ponto", pendencias: 5, href: "/obra/administrativo/rh/ponto", icon: Clock },
-  { label: "Premios", pendencias: 2, href: "/obra/administrativo/rh/premios", icon: TrendingUp },
+  { label: "Premios", pendencias: 2, href: "/obra/administrativo/rh/premios", icon: Gift },
+]
+
+const agendaRH = [
+  { tipo: "aniversario", label: "Aniversariantes", qtd: 4, icon: Gift },
+  { tipo: "treinamento", label: "Treinamentos", qtd: 2, icon: GraduationCap },
+  { tipo: "avaliacao", label: "Avaliacoes", qtd: 3, icon: FileText },
+  { tipo: "onboarding", label: "Integracoes", qtd: 1, icon: UserPlus },
 ]
 
 // RODAPE - Indicadores Juridicos
@@ -148,6 +211,10 @@ const indicadoresJuridicos = {
 // ============================================
 
 function VisaoGeralContent() {
+  const [graficoTipo, setGraficoTipo] = useState<"horasExtras" | "valorHE" | "turnover" | "efetivo" | "hibrido">(
+    "horasExtras",
+  )
+
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat("pt-BR", {
       style: "currency",
@@ -176,15 +243,38 @@ function VisaoGeralContent() {
 
       <div className="flex-1 space-y-6 p-6">
         {/* ============================================ */}
-        {/* HEADER */}
+        {/* HEADER COM INDICADORES RESUMIDOS */}
         {/* ============================================ */}
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-            <Users className="h-5 w-5 text-primary" />
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+              <Users className="h-5 w-5 text-primary" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold">Visao Geral do RH</h1>
+              <p className="text-sm text-muted-foreground">BR-101 LOTE 2 - Janeiro/2026</p>
+            </div>
           </div>
-          <div>
-            <h1 className="text-2xl font-bold">Visao Geral do RH</h1>
-            <p className="text-sm text-muted-foreground">BR-101 LOTE 2 - Janeiro/2026</p>
+
+          <div className="flex items-center gap-2">
+            <Link href="#alertas">
+              <Badge className="bg-red-500/20 text-red-400 border-red-500/30 cursor-pointer hover:bg-red-500/30 transition-colors px-3 py-1">
+                <Gavel className="h-3 w-3 mr-1" />
+                Juridico ({indicadoresHeader.juridico})
+              </Badge>
+            </Link>
+            <Link href="#alertas">
+              <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/30 cursor-pointer hover:bg-amber-500/30 transition-colors px-3 py-1">
+                <AlertTriangle className="h-3 w-3 mr-1" />
+                Atencao ({indicadoresHeader.atencao})
+              </Badge>
+            </Link>
+            <Link href="#alertas">
+              <Badge className="bg-blue-500/20 text-blue-400 border-blue-500/30 cursor-pointer hover:bg-blue-500/30 transition-colors px-3 py-1">
+                <Info className="h-3 w-3 mr-1" />
+                Info ({indicadoresHeader.informativo})
+              </Badge>
+            </Link>
           </div>
         </div>
 
@@ -196,37 +286,60 @@ function VisaoGeralContent() {
             Panorama Geral de Pessoas
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {/* Card 1 - Efetivo Atual */}
             <Card className="bg-card/50">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-3">
                   <Users className="h-5 w-5 text-blue-500" />
                   <Badge variant="outline" className="text-xs">
-                    Efetivo
+                    Efetivo & Movimento
                   </Badge>
                 </div>
                 <div className="space-y-1">
                   <div className="flex items-baseline justify-between">
-                    <span className="text-xs text-muted-foreground">Total</span>
-                    <span className="text-2xl font-bold">{panoramaPessoas.efetivoAtual.total}</span>
+                    <span className="text-xs text-muted-foreground">Efetivo Atual</span>
+                    <span className="text-2xl font-bold">{efetivoMovimento.efetivoAtual}</span>
                   </div>
                   <div className="flex items-baseline justify-between">
                     <span className="text-xs text-muted-foreground">Previsto</span>
-                    <span className="text-sm">{panoramaPessoas.efetivoAtual.previsto}</span>
+                    <span className="text-sm">{efetivoMovimento.previsto}</span>
                   </div>
                   <div className="flex items-baseline justify-between">
                     <span className="text-xs text-muted-foreground">Gap</span>
                     <span
-                      className={`text-sm font-medium ${panoramaPessoas.efetivoAtual.gap < 0 ? "text-red-500" : "text-emerald-500"}`}
+                      className={`text-sm font-medium ${efetivoMovimento.gap < 0 ? "text-red-500" : "text-emerald-500"}`}
                     >
-                      {panoramaPessoas.efetivoAtual.gap}
+                      {efetivoMovimento.gap}
                     </span>
+                  </div>
+                  <div className="border-t pt-2 mt-2 space-y-1">
+                    <div className="flex items-baseline justify-between">
+                      <span className="text-xs text-muted-foreground">Admissoes</span>
+                      <span className="text-xs text-emerald-500">+{efetivoMovimento.admissoesMes}</span>
+                    </div>
+                    <div className="flex items-baseline justify-between">
+                      <span className="text-xs text-muted-foreground">Demissoes</span>
+                      <span className="text-xs text-red-500">-{efetivoMovimento.demissoesMes}</span>
+                    </div>
+                    <div className="flex items-baseline justify-between">
+                      <span className="text-xs text-muted-foreground">Turnover</span>
+                      <span className="text-xs">{efetivoMovimento.turnoverMensal}%</span>
+                    </div>
+                    <div className="flex items-baseline justify-between">
+                      <span className="text-xs text-muted-foreground">Diretos | Indiretos</span>
+                      <span className="text-xs">
+                        {efetivoMovimento.diretos} | {efetivoMovimento.indiretos}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-end pt-1">
+                    {efetivoMovimento.tendencia === "up" && <TrendingUp className="h-4 w-4 text-emerald-500" />}
+                    {efetivoMovimento.tendencia === "down" && <TrendingDown className="h-4 w-4 text-red-500" />}
+                    {efetivoMovimento.tendencia === "stable" && <span className="text-muted-foreground">→</span>}
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Card 2 - Composicao */}
             <Card className="bg-card/50">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-3">
@@ -239,68 +352,175 @@ function VisaoGeralContent() {
                     Composicao
                   </Badge>
                 </div>
-                <div className="space-y-1">
-                  <div className="flex items-baseline justify-between">
-                    <span className="text-xs text-muted-foreground">CLT</span>
-                    <span className="text-lg font-bold text-emerald-500">{panoramaPessoas.composicao.clt}</span>
+                {/* Mini donut visual */}
+                <div className="flex items-center gap-4 mb-3">
+                  <div className="relative h-16 w-16">
+                    <svg viewBox="0 0 36 36" className="h-full w-full -rotate-90">
+                      <circle
+                        cx="18"
+                        cy="18"
+                        r="15.9"
+                        fill="none"
+                        stroke="currentColor"
+                        className="text-muted/30"
+                        strokeWidth="3"
+                      />
+                      <circle
+                        cx="18"
+                        cy="18"
+                        r="15.9"
+                        fill="none"
+                        stroke="currentColor"
+                        className="text-emerald-500"
+                        strokeWidth="3"
+                        strokeDasharray={`${composicaoEfetivo.clt.percentual} ${100 - composicaoEfetivo.clt.percentual}`}
+                      />
+                      <circle
+                        cx="18"
+                        cy="18"
+                        r="15.9"
+                        fill="none"
+                        stroke="currentColor"
+                        className="text-purple-500"
+                        strokeWidth="3"
+                        strokeDasharray={`${composicaoEfetivo.pj.percentual} ${100 - composicaoEfetivo.pj.percentual}`}
+                        strokeDashoffset={`-${composicaoEfetivo.clt.percentual}`}
+                      />
+                      <circle
+                        cx="18"
+                        cy="18"
+                        r="15.9"
+                        fill="none"
+                        stroke="currentColor"
+                        className="text-orange-500"
+                        strokeWidth="3"
+                        strokeDasharray={`${composicaoEfetivo.terceirizados.percentual} ${100 - composicaoEfetivo.terceirizados.percentual}`}
+                        strokeDashoffset={`-${composicaoEfetivo.clt.percentual + composicaoEfetivo.pj.percentual}`}
+                      />
+                    </svg>
                   </div>
-                  <div className="flex items-baseline justify-between">
-                    <span className="text-xs text-muted-foreground">PJ</span>
-                    <span className="text-sm text-purple-500">{panoramaPessoas.composicao.pj}</span>
-                  </div>
-                  <div className="flex items-baseline justify-between">
-                    <span className="text-xs text-muted-foreground">Terceirizados</span>
-                    <span className="text-sm text-orange-500">{panoramaPessoas.composicao.terceirizados}</span>
+                  <div className="space-y-1 flex-1">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-1">
+                        <div className="w-2 h-2 rounded-full bg-emerald-500" />
+                        <span className="text-xs text-muted-foreground">CLT</span>
+                      </div>
+                      <span className="text-sm font-bold text-emerald-500">
+                        {composicaoEfetivo.clt.qtd} ({composicaoEfetivo.clt.percentual}%)
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-1">
+                        <div className="w-2 h-2 rounded-full bg-purple-500" />
+                        <span className="text-xs text-muted-foreground">PJ</span>
+                      </div>
+                      <span className="text-sm text-purple-500">
+                        {composicaoEfetivo.pj.qtd} ({composicaoEfetivo.pj.percentual}%)
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-1">
+                        <div className="w-2 h-2 rounded-full bg-orange-500" />
+                        <span className="text-xs text-muted-foreground">Terc.</span>
+                      </div>
+                      <span className="text-sm text-orange-500">
+                        {composicaoEfetivo.terceirizados.qtd} ({composicaoEfetivo.terceirizados.percentual}%)
+                      </span>
+                    </div>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Card 3 - Status Operacional */}
             <Card className="bg-card/50">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-3">
                   <AlertCircle className="h-5 w-5 text-amber-500" />
                   <Badge variant="outline" className="text-xs">
-                    Status
+                    Status Operacional
                   </Badge>
                 </div>
                 <div className="space-y-1">
                   <div className="flex items-baseline justify-between">
                     <span className="text-xs text-muted-foreground">Ativos</span>
                     <span className="text-lg font-bold text-emerald-500">
-                      {panoramaPessoas.statusOperacional.ativos}
+                      {statusOperacional.ativos.qtd} ({statusOperacional.ativos.percentual}%)
                     </span>
                   </div>
-                  <div className="flex items-baseline justify-between">
-                    <span className="text-xs text-muted-foreground">Afastados</span>
-                    <span className="text-sm text-amber-500">{panoramaPessoas.statusOperacional.afastados}</span>
+                  <div className="border-t pt-2 mt-2">
+                    <div className="flex items-baseline justify-between">
+                      <span className="text-xs text-muted-foreground">Afastados</span>
+                      <span className="text-sm text-amber-500">
+                        {statusOperacional.afastados.total} ({statusOperacional.afastados.percentual}%)
+                      </span>
+                    </div>
+                    <div className="pl-3 space-y-0.5 mt-1">
+                      <div className="flex items-baseline justify-between">
+                        <span className="text-[10px] text-muted-foreground">• Medico</span>
+                        <span className="text-[10px]">{statusOperacional.afastados.medico}</span>
+                      </div>
+                      <div className="flex items-baseline justify-between">
+                        <span className="text-[10px] text-muted-foreground">• Acidente</span>
+                        <span className="text-[10px]">{statusOperacional.afastados.acidente}</span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex items-baseline justify-between">
-                    <span className="text-xs text-muted-foreground">Bloqueados</span>
-                    <span className="text-sm text-red-500">{panoramaPessoas.statusOperacional.bloqueados}</span>
+                  <div className="border-t pt-2 mt-2">
+                    <div className="flex items-baseline justify-between">
+                      <span className="text-xs text-muted-foreground">Bloqueados</span>
+                      <span className="text-sm text-red-500">
+                        {statusOperacional.bloqueados.total} ({statusOperacional.bloqueados.percentual}%)
+                      </span>
+                    </div>
+                    <div className="pl-3 space-y-0.5 mt-1">
+                      <div className="flex items-baseline justify-between">
+                        <span className="text-[10px] text-muted-foreground">• Documentos</span>
+                        <span className="text-[10px]">{statusOperacional.bloqueados.documentos}</span>
+                      </div>
+                      <div className="flex items-baseline justify-between">
+                        <span className="text-[10px] text-muted-foreground">• Juridico</span>
+                        <span className="text-[10px]">{statusOperacional.bloqueados.juridico}</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Card 4 - Risco & Pendencias */}
             <Card className="bg-red-500/5 border-red-500/20">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-3">
                   <AlertTriangle className="h-5 w-5 text-red-500" />
-                  <Badge className="bg-red-500/20 text-red-400 border-red-500/30 text-xs">Risco</Badge>
+                  <Badge className="bg-red-500/20 text-red-400 border-red-500/30 text-xs">Pendencias & Risco</Badge>
                 </div>
                 <div className="space-y-1">
                   <div className="flex items-baseline justify-between">
                     <span className="text-xs text-muted-foreground">Pendencias Criticas</span>
-                    <span className="text-lg font-bold text-red-500">
-                      {panoramaPessoas.riscoPendencias.pendenciasCriticas}
-                    </span>
+                    <span className="text-lg font-bold text-red-500">{pendenciasRisco.pendenciasCriticas}</span>
                   </div>
-                  <div className="flex items-baseline justify-between">
-                    <span className="text-xs text-muted-foreground">Riscos Juridicos</span>
-                    <span className="text-sm text-orange-500">{panoramaPessoas.riscoPendencias.riscosJuridicos}</span>
+                  <div className="pl-3 space-y-0.5">
+                    <div className="flex items-baseline justify-between">
+                      <span className="text-[10px] text-muted-foreground">• Pessoas</span>
+                      <span className="text-[10px]">{pendenciasRisco.detalhePendencias.pessoas}</span>
+                    </div>
+                    <div className="flex items-baseline justify-between">
+                      <span className="text-[10px] text-muted-foreground">• Conformidade</span>
+                      <span className="text-[10px]">{pendenciasRisco.detalhePendencias.conformidade}</span>
+                    </div>
+                    <div className="flex items-baseline justify-between">
+                      <span className="text-[10px] text-muted-foreground">• Ponto</span>
+                      <span className="text-[10px]">{pendenciasRisco.detalhePendencias.ponto}</span>
+                    </div>
+                  </div>
+                  <div className="border-t pt-2 mt-2">
+                    <div className="flex items-baseline justify-between">
+                      <span className="text-xs text-muted-foreground">Riscos Juridicos</span>
+                      <span className="text-sm text-orange-500">{pendenciasRisco.riscosJuridicos}</span>
+                    </div>
+                    <div className="flex items-baseline justify-between">
+                      <span className="text-xs text-muted-foreground">% sobre Efetivo</span>
+                      <span className="text-xs">{pendenciasRisco.percentualEfetivo}%</span>
+                    </div>
                   </div>
                 </div>
               </CardContent>
@@ -319,7 +539,7 @@ function VisaoGeralContent() {
             <p className="text-xs text-muted-foreground mt-0.5">Panorama financeiro da mao de obra</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {/* Card 1 - Custo Total de Mao de Obra */}
+            {/* Card 5 - Custo Total de Mao de Obra */}
             <Card className="bg-card/50">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-3">
@@ -329,17 +549,34 @@ function VisaoGeralContent() {
                   </Badge>
                 </div>
                 <div className="space-y-1.5">
-                  <div className="flex items-baseline justify-between">
-                    <span className="text-xs text-muted-foreground">CLT</span>
-                    <span className="text-sm">{formatCurrency(custoJornada.custoMO.clt)}</span>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-muted-foreground">CLT ({custoJornada.custoMO.clt.qtd})</span>
+                    <div className="text-right">
+                      <span className="text-sm">{formatCurrency(custoJornada.custoMO.clt.valor)}</span>
+                      <span className="text-[10px] text-muted-foreground ml-1">
+                        {custoJornada.custoMO.clt.percentual}%
+                      </span>
+                    </div>
                   </div>
-                  <div className="flex items-baseline justify-between">
-                    <span className="text-xs text-muted-foreground">PJ</span>
-                    <span className="text-sm">{formatCurrency(custoJornada.custoMO.pj)}</span>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-muted-foreground">PJ ({custoJornada.custoMO.pj.qtd})</span>
+                    <div className="text-right">
+                      <span className="text-sm">{formatCurrency(custoJornada.custoMO.pj.valor)}</span>
+                      <span className="text-[10px] text-muted-foreground ml-1">
+                        {custoJornada.custoMO.pj.percentual}%
+                      </span>
+                    </div>
                   </div>
-                  <div className="flex items-baseline justify-between">
-                    <span className="text-xs text-muted-foreground">Terceiros</span>
-                    <span className="text-sm">{formatCurrency(custoJornada.custoMO.terceiros)}</span>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-muted-foreground">
+                      Terceiros ({custoJornada.custoMO.terceiros.qtd})
+                    </span>
+                    <div className="text-right">
+                      <span className="text-sm">{formatCurrency(custoJornada.custoMO.terceiros.valor)}</span>
+                      <span className="text-[10px] text-muted-foreground ml-1">
+                        {custoJornada.custoMO.terceiros.percentual}%
+                      </span>
+                    </div>
                   </div>
                 </div>
                 <div className="border-t mt-3 pt-3">
@@ -353,31 +590,51 @@ function VisaoGeralContent() {
               </CardContent>
             </Card>
 
-            {/* Card 2 - Composicao da Folha */}
+            {/* Card 6 - Composicao da Folha */}
             <Card className="bg-card/50">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-3">
                   <Wallet className="h-5 w-5 text-blue-500" />
                   <Badge variant="outline" className="text-xs">
-                    Composicao
+                    Composicao Folha
                   </Badge>
                 </div>
                 <div className="space-y-1.5">
-                  <div className="flex items-baseline justify-between">
+                  <div className="flex items-center justify-between">
                     <span className="text-xs text-muted-foreground">Folha Base</span>
-                    <span className="text-sm">{formatCurrency(custoJornada.composicaoFolha.folhaBase)}</span>
+                    <div className="text-right">
+                      <span className="text-sm">{formatCurrency(custoJornada.composicaoFolha.folhaBase.valor)}</span>
+                      <span className="text-[10px] text-muted-foreground ml-1">
+                        {custoJornada.composicaoFolha.folhaBase.percentual}%
+                      </span>
+                    </div>
                   </div>
-                  <div className="flex items-baseline justify-between">
+                  <div className="flex items-center justify-between">
                     <span className="text-xs text-muted-foreground">Horas Extras</span>
-                    <span className="text-sm">{formatCurrency(custoJornada.composicaoFolha.horasExtras)}</span>
+                    <div className="text-right">
+                      <span className="text-sm">{formatCurrency(custoJornada.composicaoFolha.horasExtras.valor)}</span>
+                      <span className="text-[10px] text-muted-foreground ml-1">
+                        {custoJornada.composicaoFolha.horasExtras.percentual}%
+                      </span>
+                    </div>
                   </div>
-                  <div className="flex items-baseline justify-between">
+                  <div className="flex items-center justify-between">
                     <span className="text-xs text-muted-foreground">Encargos</span>
-                    <span className="text-sm">{formatCurrency(custoJornada.composicaoFolha.encargos)}</span>
+                    <div className="text-right">
+                      <span className="text-sm">{formatCurrency(custoJornada.composicaoFolha.encargos.valor)}</span>
+                      <span className="text-[10px] text-muted-foreground ml-1">
+                        {custoJornada.composicaoFolha.encargos.percentual}%
+                      </span>
+                    </div>
                   </div>
-                  <div className="flex items-baseline justify-between">
+                  <div className="flex items-center justify-between">
                     <span className="text-xs text-muted-foreground">Bonificacoes</span>
-                    <span className="text-sm">{formatCurrency(custoJornada.composicaoFolha.bonificacoes)}</span>
+                    <div className="text-right">
+                      <span className="text-sm">{formatCurrency(custoJornada.composicaoFolha.bonificacoes.valor)}</span>
+                      <span className="text-[10px] text-muted-foreground ml-1">
+                        {custoJornada.composicaoFolha.bonificacoes.percentual}%
+                      </span>
+                    </div>
                   </div>
                 </div>
                 <div className="border-t mt-3 pt-3">
@@ -391,7 +648,7 @@ function VisaoGeralContent() {
               </CardContent>
             </Card>
 
-            {/* Card 3 - Proporcao de Custos */}
+            {/* Card 7 - Proporcao de Custos */}
             <Card className="bg-card/50">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-3">
@@ -401,61 +658,56 @@ function VisaoGeralContent() {
                   </Badge>
                 </div>
                 <div className="space-y-2">
-                  {/* Grafico de barras horizontal simplificado */}
-                  <div className="space-y-2">
-                    <div>
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="text-xs text-muted-foreground">Direto</span>
-                        <span className="text-xs font-medium">{custoJornada.proporcaoCustos.direto.percentual}%</span>
-                      </div>
-                      <div className="h-2 bg-muted rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-emerald-500 rounded-full"
-                          style={{ width: `${custoJornada.proporcaoCustos.direto.percentual}%` }}
-                        />
-                      </div>
-                      <span className="text-[10px] text-muted-foreground">
-                        {formatCurrency(custoJornada.proporcaoCustos.direto.valor)}
-                      </span>
+                  <div>
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs text-muted-foreground">Direto</span>
+                      <span className="text-xs font-medium">{custoJornada.proporcaoCustos.direto.percentual}%</span>
                     </div>
-                    <div>
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="text-xs text-muted-foreground">Indireto</span>
-                        <span className="text-xs font-medium">{custoJornada.proporcaoCustos.indireto.percentual}%</span>
-                      </div>
-                      <div className="h-2 bg-muted rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-blue-500 rounded-full"
-                          style={{ width: `${custoJornada.proporcaoCustos.indireto.percentual}%` }}
-                        />
-                      </div>
-                      <span className="text-[10px] text-muted-foreground">
-                        {formatCurrency(custoJornada.proporcaoCustos.indireto.valor)}
-                      </span>
+                    <div className="h-2 bg-muted rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-emerald-500 rounded-full"
+                        style={{ width: `${custoJornada.proporcaoCustos.direto.percentual}%` }}
+                      />
                     </div>
-                    <div>
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="text-xs text-muted-foreground">Terceiros</span>
-                        <span className="text-xs font-medium">
-                          {custoJornada.proporcaoCustos.terceiros.percentual}%
-                        </span>
-                      </div>
-                      <div className="h-2 bg-muted rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-orange-500 rounded-full"
-                          style={{ width: `${custoJornada.proporcaoCustos.terceiros.percentual}%` }}
-                        />
-                      </div>
-                      <span className="text-[10px] text-muted-foreground">
-                        {formatCurrency(custoJornada.proporcaoCustos.terceiros.valor)}
-                      </span>
+                    <span className="text-[10px] text-muted-foreground">
+                      {formatCurrency(custoJornada.proporcaoCustos.direto.valor)}
+                    </span>
+                  </div>
+                  <div>
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs text-muted-foreground">Indireto</span>
+                      <span className="text-xs font-medium">{custoJornada.proporcaoCustos.indireto.percentual}%</span>
                     </div>
+                    <div className="h-2 bg-muted rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-blue-500 rounded-full"
+                        style={{ width: `${custoJornada.proporcaoCustos.indireto.percentual}%` }}
+                      />
+                    </div>
+                    <span className="text-[10px] text-muted-foreground">
+                      {formatCurrency(custoJornada.proporcaoCustos.indireto.valor)}
+                    </span>
+                  </div>
+                  <div>
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs text-muted-foreground">Terceiros</span>
+                      <span className="text-xs font-medium">{custoJornada.proporcaoCustos.terceiros.percentual}%</span>
+                    </div>
+                    <div className="h-2 bg-muted rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-orange-500 rounded-full"
+                        style={{ width: `${custoJornada.proporcaoCustos.terceiros.percentual}%` }}
+                      />
+                    </div>
+                    <span className="text-[10px] text-muted-foreground">
+                      {formatCurrency(custoJornada.proporcaoCustos.terceiros.valor)}
+                    </span>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Card 4 - Jornada & Impacto Financeiro */}
+            {/* Card 8 - Jornada & Impacto Financeiro */}
             <Card
               className={`${custoJornada.jornadaImpacto.status !== "baixo" ? "bg-amber-500/5 border-amber-500/20" : "bg-card/50"}`}
             >
@@ -478,11 +730,19 @@ function VisaoGeralContent() {
                     </span>
                   </div>
                   <div className="flex items-baseline justify-between">
-                    <span className="text-xs text-muted-foreground">Total HE (horas)</span>
+                    <span className="text-xs text-muted-foreground">Total HE</span>
                     <span className="text-sm font-medium">{custoJornada.jornadaImpacto.totalHE}h</span>
                   </div>
                   <div className="flex items-baseline justify-between">
-                    <span className="text-xs text-muted-foreground">Acima do limite</span>
+                    <span className="text-xs text-muted-foreground">Teto HE</span>
+                    <span className="text-sm">{custoJornada.jornadaImpacto.tetoHE}h</span>
+                  </div>
+                  <div className="flex items-baseline justify-between">
+                    <span className="text-xs text-muted-foreground">Estouro</span>
+                    <span className="text-sm text-red-500">+{custoJornada.jornadaImpacto.estouro}h</span>
+                  </div>
+                  <div className="flex items-baseline justify-between">
+                    <span className="text-xs text-muted-foreground">Acima limite</span>
                     <span className="text-sm text-red-500">
                       {custoJornada.jornadaImpacto.colaboradoresAcimaLimite} colab.
                     </span>
@@ -498,23 +758,10 @@ function VisaoGeralContent() {
                       {custoJornada.jornadaImpacto.tendencia === "down" && (
                         <TrendingDown className="h-4 w-4 text-emerald-500" />
                       )}
-                      {custoJornada.jornadaImpacto.tendencia === "stable" && (
-                        <span className="text-muted-foreground">→</span>
-                      )}
                       <span
-                        className={`text-xs font-medium ${
-                          custoJornada.jornadaImpacto.tendencia === "up"
-                            ? "text-red-500"
-                            : custoJornada.jornadaImpacto.tendencia === "down"
-                              ? "text-emerald-500"
-                              : "text-muted-foreground"
-                        }`}
+                        className={`text-xs font-medium ${custoJornada.jornadaImpacto.tendencia === "up" ? "text-red-500" : "text-emerald-500"}`}
                       >
-                        {custoJornada.jornadaImpacto.tendencia === "up"
-                          ? "Aumentando"
-                          : custoJornada.jornadaImpacto.tendencia === "down"
-                            ? "Diminuindo"
-                            : "Estavel"}
+                        {custoJornada.jornadaImpacto.tendencia === "up" ? "Aumentando" : "Diminuindo"}
                       </span>
                     </div>
                   </div>
@@ -525,9 +772,140 @@ function VisaoGeralContent() {
         </div>
 
         {/* ============================================ */}
-        {/* FAIXA 3 - ALERTAS & DIRECIONAMENTO */}
         {/* ============================================ */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <Card>
+          <CardHeader className="pb-3">
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-base font-medium flex items-center gap-2">
+                <BarChart3 className="h-4 w-4 text-primary" />
+                Evolucao Operacional & Financeira
+              </CardTitle>
+              <div className="flex gap-1">
+                <Button
+                  variant={graficoTipo === "horasExtras" ? "default" : "outline"}
+                  size="sm"
+                  className="text-xs h-7"
+                  onClick={() => setGraficoTipo("horasExtras")}
+                >
+                  HE (horas)
+                </Button>
+                <Button
+                  variant={graficoTipo === "valorHE" ? "default" : "outline"}
+                  size="sm"
+                  className="text-xs h-7"
+                  onClick={() => setGraficoTipo("valorHE")}
+                >
+                  HE (R$)
+                </Button>
+                <Button
+                  variant={graficoTipo === "turnover" ? "default" : "outline"}
+                  size="sm"
+                  className="text-xs h-7"
+                  onClick={() => setGraficoTipo("turnover")}
+                >
+                  Turnover
+                </Button>
+                <Button
+                  variant={graficoTipo === "efetivo" ? "default" : "outline"}
+                  size="sm"
+                  className="text-xs h-7"
+                  onClick={() => setGraficoTipo("efetivo")}
+                >
+                  Efetivo
+                </Button>
+                <Button
+                  variant={graficoTipo === "hibrido" ? "default" : "outline"}
+                  size="sm"
+                  className="text-xs h-7"
+                  onClick={() => setGraficoTipo("hibrido")}
+                >
+                  Hibrido
+                </Button>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="h-[280px]">
+              <ResponsiveContainer width="100%" height="100%">
+                {graficoTipo === "hibrido" ? (
+                  <ComposedChart data={dadosGrafico}>
+                    <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
+                    <XAxis dataKey="mes" tick={{ fontSize: 12 }} className="text-muted-foreground" />
+                    <YAxis yAxisId="left" tick={{ fontSize: 12 }} className="text-muted-foreground" />
+                    <YAxis
+                      yAxisId="right"
+                      orientation="right"
+                      tick={{ fontSize: 12 }}
+                      className="text-muted-foreground"
+                    />
+                    <Tooltip
+                      contentStyle={{ backgroundColor: "hsl(var(--card))", border: "1px solid hsl(var(--border))" }}
+                    />
+                    <Legend />
+                    <Bar
+                      yAxisId="left"
+                      dataKey="horasExtras"
+                      name="Horas Extras"
+                      fill="hsl(var(--primary))"
+                      radius={[4, 4, 0, 0]}
+                    />
+                    <Line
+                      yAxisId="right"
+                      type="monotone"
+                      dataKey="efetivo"
+                      name="Efetivo"
+                      stroke="#10b981"
+                      strokeWidth={2}
+                      dot={{ fill: "#10b981" }}
+                    />
+                  </ComposedChart>
+                ) : (
+                  <BarChart data={dadosGrafico}>
+                    <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
+                    <XAxis dataKey="mes" tick={{ fontSize: 12 }} className="text-muted-foreground" />
+                    <YAxis tick={{ fontSize: 12 }} className="text-muted-foreground" />
+                    <Tooltip
+                      contentStyle={{ backgroundColor: "hsl(var(--card))", border: "1px solid hsl(var(--border))" }}
+                      formatter={(value: number) =>
+                        graficoTipo === "valorHE"
+                          ? formatCurrency(value)
+                          : graficoTipo === "turnover"
+                            ? `${value}%`
+                            : value
+                      }
+                    />
+                    <Bar
+                      dataKey={
+                        graficoTipo === "valorHE"
+                          ? "valorHE"
+                          : graficoTipo === "turnover"
+                            ? "turnover"
+                            : graficoTipo === "efetivo"
+                              ? "efetivo"
+                              : "horasExtras"
+                      }
+                      name={
+                        graficoTipo === "valorHE"
+                          ? "Valor HE (R$)"
+                          : graficoTipo === "turnover"
+                            ? "Turnover (%)"
+                            : graficoTipo === "efetivo"
+                              ? "Efetivo"
+                              : "Horas Extras"
+                      }
+                      fill="hsl(var(--primary))"
+                      radius={[4, 4, 0, 0]}
+                    />
+                  </BarChart>
+                )}
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* ============================================ */}
+        {/* ============================================ */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6" id="alertas">
           {/* Alertas Importantes */}
           <Card className="lg:col-span-2">
             <CardHeader className="pb-3">
@@ -538,7 +916,6 @@ function VisaoGeralContent() {
             </CardHeader>
             <CardContent>
               <Accordion type="single" collapsible className="w-full">
-                {/* Criticos */}
                 <AccordionItem value="criticos">
                   <AccordionTrigger className="hover:no-underline">
                     <div className="flex items-center gap-2">
@@ -572,8 +949,6 @@ function VisaoGeralContent() {
                     </div>
                   </AccordionContent>
                 </AccordionItem>
-
-                {/* Atencao */}
                 <AccordionItem value="atencao">
                   <AccordionTrigger className="hover:no-underline">
                     <div className="flex items-center gap-2">
@@ -607,8 +982,6 @@ function VisaoGeralContent() {
                     </div>
                   </AccordionContent>
                 </AccordionItem>
-
-                {/* Informativos */}
                 <AccordionItem value="info">
                   <AccordionTrigger className="hover:no-underline">
                     <div className="flex items-center gap-2">
@@ -642,30 +1015,52 @@ function VisaoGeralContent() {
             </CardContent>
           </Card>
 
-          {/* Temas com Pendencia */}
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base font-medium">Temas com Pendencia</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              {temasComPendencia.map((item) => (
-                <Link key={item.href} href={item.href}>
-                  <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors cursor-pointer group">
-                    <div className="flex h-9 w-9 items-center justify-center rounded-md bg-primary/10">
-                      <item.icon className="h-4 w-4 text-primary" />
+          {/* Temas & Agenda */}
+          <div className="space-y-4">
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base font-medium">Temas com Pendencia</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                {temasComPendencia.map((item) => (
+                  <Link key={item.href} href={item.href}>
+                    <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors cursor-pointer group">
+                      <div className="flex h-9 w-9 items-center justify-center rounded-md bg-primary/10">
+                        <item.icon className="h-4 w-4 text-primary" />
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-sm font-medium">{item.label}</p>
+                      </div>
+                      <Badge variant="destructive" className="text-xs">
+                        {item.pendencias}
+                      </Badge>
+                      <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
                     </div>
-                    <div className="flex-1">
-                      <p className="text-sm font-medium">{item.label}</p>
-                    </div>
-                    <Badge variant="destructive" className="text-xs">
-                      {item.pendencias}
+                  </Link>
+                ))}
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base font-medium flex items-center gap-2">
+                  <Calendar className="h-4 w-4 text-primary" />
+                  Agenda RH
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                {agendaRH.map((item) => (
+                  <div key={item.tipo} className="flex items-center gap-3 p-2 rounded-lg bg-muted/30">
+                    <item.icon className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-sm flex-1">{item.label}</span>
+                    <Badge variant="outline" className="text-xs">
+                      {item.qtd}
                     </Badge>
-                    <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
                   </div>
-                </Link>
-              ))}
-            </CardContent>
-          </Card>
+                ))}
+              </CardContent>
+            </Card>
+          </div>
         </div>
 
         {/* ============================================ */}
@@ -683,7 +1078,6 @@ function VisaoGeralContent() {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {/* Risco Trabalhista */}
               <div className="flex items-center justify-between p-4 rounded-lg bg-background/50">
                 <div>
                   <p className="text-sm text-muted-foreground">Risco Trabalhista</p>
@@ -693,8 +1087,6 @@ function VisaoGeralContent() {
                   {indicadoresJuridicos.riscoTrabalhista.nivel}
                 </Badge>
               </div>
-
-              {/* Passivo Potencial */}
               <div className="flex items-center justify-between p-4 rounded-lg bg-background/50">
                 <div>
                   <p className="text-sm text-muted-foreground">Passivo Potencial</p>
@@ -708,8 +1100,6 @@ function VisaoGeralContent() {
                   )}
                 </div>
               </div>
-
-              {/* Processos Ativos */}
               <div className="flex items-center justify-between p-4 rounded-lg bg-background/50">
                 <div>
                   <p className="text-sm text-muted-foreground">Processos Ativos</p>
