@@ -36,8 +36,18 @@ import {
   RotateCcw,
   MessageSquare,
   Info,
+  ExternalLink,
+  Scale,
+  DollarSign,
 } from "lucide-react"
 import Link from "next/link"
+
+const statusFluxo = [
+  { id: "recebida", label: "Recebida", descricao: "Aguardando analise" },
+  { id: "em_analise", label: "Em Analise", descricao: "Gerencia analisando" },
+  { id: "aprovada", label: "Aprovada", descricao: "Enviada ao Financeiro" },
+  { id: "devolvida", label: "Devolvida", descricao: "Retornou para Custos" },
+]
 
 // Dados mockados
 const aprovacoesData = [
@@ -50,11 +60,16 @@ const aprovacoesData = [
     desvio: 70000,
     desvioPercent: 3.78,
     status: "pendente",
+    statusFluxo: "recebida",
     enviadoEm: "2026-01-05",
     enviadoPor: "Maria Silva (Custos)",
     observacoesCustos: "Aumento de HE devido a aceleracao de cronograma",
     centrosCusto: 8,
     colaboradores: 285,
+    previaFolhaId: "PF-001",
+    analiseMoId: "AM-001",
+    riscoJuridico: false,
+    alertas: [],
   },
   {
     id: "APR-002",
@@ -65,6 +80,7 @@ const aprovacoesData = [
     desvio: -50000,
     desvioPercent: -2.38,
     status: "aprovado",
+    statusFluxo: "aprovada",
     enviadoEm: "2026-01-03",
     enviadoPor: "Carlos Santos (Custos)",
     aprovadoEm: "2026-01-04",
@@ -72,6 +88,10 @@ const aprovacoesData = [
     observacoesCustos: "Economia com reducao de terceirizados",
     centrosCusto: 12,
     colaboradores: 420,
+    previaFolhaId: "PF-002",
+    analiseMoId: "AM-002",
+    riscoJuridico: false,
+    alertas: [],
   },
   {
     id: "APR-003",
@@ -82,6 +102,7 @@ const aprovacoesData = [
     desvio: 450000,
     desvioPercent: 14.06,
     status: "devolvido",
+    statusFluxo: "devolvida",
     enviadoEm: "2026-01-02",
     enviadoPor: "Ana Costa (Custos)",
     devolvidoEm: "2026-01-03",
@@ -90,6 +111,10 @@ const aprovacoesData = [
     observacoesCustos: "Contratacao emergencial para atender prazo",
     centrosCusto: 15,
     colaboradores: 580,
+    previaFolhaId: "PF-003",
+    analiseMoId: "AM-003",
+    riscoJuridico: true,
+    alertas: ["HE recorrente detectada", "Passivo trabalhista potencial"],
   },
   {
     id: "APR-004",
@@ -100,11 +125,16 @@ const aprovacoesData = [
     desvio: 30000,
     desvioPercent: 3.06,
     status: "pendente",
+    statusFluxo: "em_analise",
     enviadoEm: "2026-01-06",
     enviadoPor: "Pedro Lima (Custos)",
     observacoesCustos: "Ajuste de enquadramento salarial",
     centrosCusto: 5,
     colaboradores: 145,
+    previaFolhaId: "PF-004",
+    analiseMoId: "AM-004",
+    riscoJuridico: false,
+    alertas: ["Desvio de funcao identificado"],
   },
 ]
 
@@ -148,6 +178,7 @@ function AprovacaoGerencialContent() {
   const [showDevolverDialog, setShowDevolverDialog] = useState(false)
   const [showObservacaoDialog, setShowObservacaoDialog] = useState(false)
   const [showHistoricoSheet, setShowHistoricoSheet] = useState(false)
+  const [showDetalheSheet, setShowDetalheSheet] = useState(false)
   const [observacao, setObservacao] = useState("")
   const [motivoDevolucao, setMotivoDevolucao] = useState("")
 
@@ -163,6 +194,7 @@ function AprovacaoGerencialContent() {
     devolvidos: aprovacoesData.filter((a) => a.status === "devolvido").length,
     valorTotal: aprovacoesData.reduce((acc, a) => acc + a.valorRealizado, 0),
     desvioTotal: aprovacoesData.reduce((acc, a) => acc + a.desvio, 0),
+    comRiscoJuridico: aprovacoesData.filter((a) => a.riscoJuridico).length,
   }
 
   const formatCurrency = (value: number) => {
@@ -195,6 +227,47 @@ function AprovacaoGerencialContent() {
       default:
         return <Badge variant="outline">{status}</Badge>
     }
+  }
+
+  const renderStepper = (currentStatus: string) => {
+    const currentIndex = statusFluxo.findIndex((s) => s.id === currentStatus)
+    return (
+      <div className="flex items-center gap-1">
+        {statusFluxo.map((step, index) => {
+          const isActive = index === currentIndex
+          const isCompleted = index < currentIndex
+          const isDevolvida = currentStatus === "devolvida" && step.id === "devolvida"
+          return (
+            <div key={step.id} className="flex items-center">
+              <Tooltip>
+                <TooltipTrigger>
+                  <div
+                    className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium ${
+                      isDevolvida
+                        ? "bg-red-500 text-white"
+                        : isActive
+                          ? "bg-amber-500 text-white"
+                          : isCompleted
+                            ? "bg-green-500 text-white"
+                            : "bg-muted text-muted-foreground"
+                    }`}
+                  >
+                    {isCompleted ? <CheckCircle2 className="w-3 h-3" /> : index + 1}
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="font-medium">{step.label}</p>
+                  <p className="text-xs text-muted-foreground">{step.descricao}</p>
+                </TooltipContent>
+              </Tooltip>
+              {index < statusFluxo.length - 1 && (
+                <div className={`w-4 h-0.5 ${isCompleted ? "bg-green-500" : "bg-muted"}`} />
+              )}
+            </div>
+          )
+        })}
+      </div>
+    )
   }
 
   const handleAprovar = () => {
@@ -240,16 +313,36 @@ function AprovacaoGerencialContent() {
               </p>
             </div>
 
-            <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm" onClick={() => setShowHistoricoSheet(true)}>
-                <History className="w-4 h-4 mr-2" />
-                Historico
-              </Button>
-              <Button variant="outline" size="sm">
-                <Download className="w-4 h-4 mr-2" />
-                Exportar
-              </Button>
+            <div className="flex items-center gap-2 flex-wrap">
+              <Tooltip>
+                <TooltipTrigger>
+                  <Link href="/obra/comercial/custo/analise-mo">
+                    <Badge variant="outline" className="cursor-pointer hover:bg-muted">
+                      <ExternalLink className="w-3 h-3 mr-1" />
+                      Origem: Analise MO
+                    </Badge>
+                  </Link>
+                </TooltipTrigger>
+                <TooltipContent>Ir para tela de Analise de MO (Custos)</TooltipContent>
+              </Tooltip>
+              {totais.comRiscoJuridico > 0 && (
+                <Badge className="bg-red-500/10 text-red-500 border-red-500/20">
+                  <Scale className="w-3 h-3 mr-1" />
+                  {totais.comRiscoJuridico} com Risco Juridico
+                </Badge>
+              )}
             </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <Button variant="outline" size="sm" onClick={() => setShowHistoricoSheet(true)}>
+              <History className="w-4 h-4 mr-2" />
+              Historico
+            </Button>
+            <Button variant="outline" size="sm">
+              <Download className="w-4 h-4 mr-2" />
+              Exportar
+            </Button>
           </div>
 
           {/* Filtros */}
@@ -289,6 +382,32 @@ function AprovacaoGerencialContent() {
             </div>
           </div>
         </div>
+
+        <Card>
+          <CardContent className="py-4">
+            <div className="flex items-center justify-center gap-4 text-sm">
+              <div className="flex items-center gap-2 px-3 py-1.5 bg-green-500/10 border border-green-500/30 rounded">
+                <CheckCircle2 className="w-4 h-4 text-green-500" />
+                <span>RH Consolida</span>
+              </div>
+              <div className="w-8 h-px bg-green-500" />
+              <div className="flex items-center gap-2 px-3 py-1.5 bg-green-500/10 border border-green-500/30 rounded">
+                <CheckCircle2 className="w-4 h-4 text-green-500" />
+                <span>Custos Valida</span>
+              </div>
+              <div className="w-8 h-px bg-amber-500" />
+              <div className="flex items-center gap-2 px-3 py-1.5 bg-amber-500/10 border border-amber-500/30 rounded">
+                <Clock className="w-4 h-4 text-amber-500" />
+                <span className="font-medium">Gerencia Aprova</span>
+              </div>
+              <div className="w-8 h-px bg-muted" />
+              <div className="flex items-center gap-2 px-3 py-1.5 bg-muted rounded text-muted-foreground">
+                <DollarSign className="w-4 h-4" />
+                <span>Financeiro</span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Cards Resumo */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -382,6 +501,7 @@ function AprovacaoGerencialContent() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Obra</TableHead>
+                  <TableHead>Fluxo</TableHead>
                   <TableHead className="text-right">Valor Orcado</TableHead>
                   <TableHead className="text-right">Valor Realizado</TableHead>
                   <TableHead className="text-right">
@@ -396,7 +516,7 @@ function AprovacaoGerencialContent() {
                     </Tooltip>
                   </TableHead>
                   <TableHead>Status</TableHead>
-                  <TableHead>Enviado por</TableHead>
+                  <TableHead>Origem</TableHead>
                   <TableHead className="text-right">Acao</TableHead>
                 </TableRow>
               </TableHeader>
@@ -405,17 +525,41 @@ function AprovacaoGerencialContent() {
                   <TableRow
                     key={item.id}
                     className={
-                      item.status === "devolvido" ? "bg-red-500/5" : item.desvioPercent > 10 ? "bg-amber-500/5" : ""
+                      item.status === "devolvido"
+                        ? "bg-red-500/5"
+                        : item.desvioPercent > 10
+                          ? "bg-amber-500/5"
+                          : item.riscoJuridico
+                            ? "bg-red-500/5"
+                            : ""
                     }
                   >
                     <TableCell>
                       <div>
-                        <div className="font-medium">{item.obra}</div>
+                        <div className="font-medium flex items-center gap-2">
+                          {item.obra}
+                          {item.riscoJuridico && (
+                            <Tooltip>
+                              <TooltipTrigger>
+                                <Scale className="w-4 h-4 text-red-500" />
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p className="font-medium">Risco Juridico</p>
+                                <ul className="text-xs mt-1">
+                                  {item.alertas.map((a, i) => (
+                                    <li key={i}>• {a}</li>
+                                  ))}
+                                </ul>
+                              </TooltipContent>
+                            </Tooltip>
+                          )}
+                        </div>
                         <div className="text-xs text-muted-foreground">
-                          {item.centrosCusto} centros de custo | {item.colaboradores} colaboradores
+                          {item.centrosCusto} CC | {item.colaboradores} colab | {item.enviadoPor}
                         </div>
                       </div>
                     </TableCell>
+                    <TableCell>{renderStepper(item.statusFluxo)}</TableCell>
                     <TableCell className="text-right font-mono">{formatCurrency(item.valorOrcado)}</TableCell>
                     <TableCell className="text-right font-mono">{formatCurrency(item.valorRealizado)}</TableCell>
                     <TableCell className="text-right">
@@ -436,8 +580,32 @@ function AprovacaoGerencialContent() {
                     </TableCell>
                     <TableCell>{getStatusBadge(item.status)}</TableCell>
                     <TableCell>
-                      <div className="text-sm">{item.enviadoPor}</div>
-                      <div className="text-xs text-muted-foreground">{item.enviadoEm}</div>
+                      <div className="flex flex-col gap-1">
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Link
+                              href={`/obra/comercial/custo/analise-mo?id=${item.analiseMoId}`}
+                              className="text-xs text-blue-500 hover:underline flex items-center gap-1"
+                            >
+                              <ExternalLink className="w-3 h-3" />
+                              Analise MO
+                            </Link>
+                          </TooltipTrigger>
+                          <TooltipContent>Ver analise de MO em Custos</TooltipContent>
+                        </Tooltip>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Link
+                              href={`/obra/administrativo/rh/previa-folha?id=${item.previaFolhaId}`}
+                              className="text-xs text-blue-500 hover:underline flex items-center gap-1"
+                            >
+                              <ExternalLink className="w-3 h-3" />
+                              Previa Folha
+                            </Link>
+                          </TooltipTrigger>
+                          <TooltipContent>Ver previa de folha no RH</TooltipContent>
+                        </Tooltip>
+                      </div>
                     </TableCell>
                     <TableCell className="text-right">
                       <DropdownMenu>
@@ -447,7 +615,12 @@ function AprovacaoGerencialContent() {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <DropdownMenuItem onClick={() => setSelectedAprovacao(item)}>
+                          <DropdownMenuItem
+                            onClick={() => {
+                              setSelectedAprovacao(item)
+                              setShowDetalheSheet(true)
+                            }}
+                          >
                             <FileText className="w-4 h-4 mr-2" />
                             Ver Detalhes
                           </DropdownMenuItem>
@@ -461,7 +634,7 @@ function AprovacaoGerencialContent() {
                                 className="text-green-500"
                               >
                                 <CheckCircle2 className="w-4 h-4 mr-2" />
-                                Aprovar
+                                Aprovar e Enviar ao Financeiro
                               </DropdownMenuItem>
                               <DropdownMenuItem
                                 onClick={() => {
@@ -474,6 +647,22 @@ function AprovacaoGerencialContent() {
                                 Devolver para Custos
                               </DropdownMenuItem>
                             </>
+                          )}
+                          {item.status === "devolvido" && (
+                            <DropdownMenuItem asChild>
+                              <Link href={`/obra/comercial/custo/analise-mo?id=${item.analiseMoId}`}>
+                                <ExternalLink className="w-4 h-4 mr-2" />
+                                Acompanhar em Custos
+                              </Link>
+                            </DropdownMenuItem>
+                          )}
+                          {item.status === "aprovado" && (
+                            <DropdownMenuItem asChild>
+                              <Link href="/obra/administrativo/rh/consolidacao/recebimento">
+                                <ExternalLink className="w-4 h-4 mr-2" />
+                                Ver no Financeiro
+                              </Link>
+                            </DropdownMenuItem>
                           )}
                           <DropdownMenuItem
                             onClick={() => {
@@ -491,33 +680,6 @@ function AprovacaoGerencialContent() {
                 ))}
               </TableBody>
             </Table>
-          </CardContent>
-        </Card>
-
-        {/* Fluxo Visual */}
-        <Card>
-          <CardContent className="py-4">
-            <div className="flex items-center justify-center gap-2 text-sm">
-              <div className="flex items-center gap-2 px-3 py-1.5 bg-muted rounded">
-                <CheckCircle2 className="w-4 h-4 text-green-500" />
-                <span>RH Consolida</span>
-              </div>
-              <div className="w-8 h-px bg-border" />
-              <div className="flex items-center gap-2 px-3 py-1.5 bg-muted rounded">
-                <CheckCircle2 className="w-4 h-4 text-green-500" />
-                <span>Custos Valida</span>
-              </div>
-              <div className="w-8 h-px bg-border" />
-              <div className="flex items-center gap-2 px-3 py-1.5 bg-amber-500/10 border border-amber-500/30 rounded">
-                <Clock className="w-4 h-4 text-amber-500" />
-                <span className="font-medium">Gerencia Aprova</span>
-              </div>
-              <div className="w-8 h-px bg-border" />
-              <div className="flex items-center gap-2 px-3 py-1.5 bg-muted rounded text-muted-foreground">
-                <Clock className="w-4 h-4" />
-                <span>Financeiro</span>
-              </div>
-            </div>
           </CardContent>
         </Card>
 
@@ -552,6 +714,19 @@ function AprovacaoGerencialContent() {
                     </span>
                   </div>
                 </div>
+                {selectedAprovacao.riscoJuridico && (
+                  <div className="flex items-start gap-2 p-3 bg-red-500/10 border border-red-500/20 rounded-lg">
+                    <Scale className="w-4 h-4 text-red-500 mt-0.5" />
+                    <div className="text-sm">
+                      <p className="font-medium text-red-500">Atencao: Risco Juridico Identificado</p>
+                      <ul className="text-xs text-muted-foreground mt-1">
+                        {selectedAprovacao.alertas.map((a, i) => (
+                          <li key={i}>• {a}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                )}
                 <div className="space-y-2">
                   <Label>Observacao (opcional)</Label>
                   <Textarea
@@ -657,6 +832,101 @@ function AprovacaoGerencialContent() {
             </DialogFooter>
           </DialogContent>
         </Dialog>
+
+        {/* Sheet Detalhe */}
+        <Sheet open={showDetalheSheet} onOpenChange={setShowDetalheSheet}>
+          <SheetContent className="w-[600px] sm:max-w-[600px]">
+            <SheetHeader>
+              <SheetTitle className="flex items-center gap-2">
+                <FileText className="w-5 h-5" />
+                Detalhes da Solicitacao
+              </SheetTitle>
+              <SheetDescription>{selectedAprovacao?.obra}</SheetDescription>
+            </SheetHeader>
+            {selectedAprovacao && (
+              <div className="mt-6 space-y-6">
+                {/* Status e Fluxo */}
+                <div className="p-4 bg-muted rounded-lg">
+                  <div className="text-sm font-medium mb-3">Status do Fluxo</div>
+                  <div className="flex justify-center">{renderStepper(selectedAprovacao.statusFluxo)}</div>
+                </div>
+
+                {/* Valores */}
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="p-4 bg-muted rounded-lg">
+                    <div className="text-sm text-muted-foreground">Valor Orcado</div>
+                    <div className="text-xl font-bold font-mono">{formatCurrency(selectedAprovacao.valorOrcado)}</div>
+                  </div>
+                  <div className="p-4 bg-muted rounded-lg">
+                    <div className="text-sm text-muted-foreground">Valor Realizado</div>
+                    <div className="text-xl font-bold font-mono">
+                      {formatCurrency(selectedAprovacao.valorRealizado)}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Desvio */}
+                <div
+                  className={`p-4 rounded-lg ${selectedAprovacao.desvio >= 0 ? "bg-red-500/10" : "bg-green-500/10"}`}
+                >
+                  <div className="text-sm text-muted-foreground">Desvio</div>
+                  <div
+                    className={`text-2xl font-bold font-mono ${selectedAprovacao.desvio >= 0 ? "text-red-500" : "text-green-500"}`}
+                  >
+                    {selectedAprovacao.desvio >= 0 ? "+" : ""}
+                    {formatCurrency(selectedAprovacao.desvio)} ({selectedAprovacao.desvioPercent.toFixed(1)}%)
+                  </div>
+                </div>
+
+                {/* Risco Juridico */}
+                {selectedAprovacao.riscoJuridico && (
+                  <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
+                    <div className="flex items-center gap-2 text-red-500 font-medium">
+                      <Scale className="w-4 h-4" />
+                      Risco Juridico Identificado
+                    </div>
+                    <ul className="mt-2 text-sm text-muted-foreground">
+                      {selectedAprovacao.alertas.map((a, i) => (
+                        <li key={i}>• {a}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* Observacoes de Custos */}
+                <div className="p-4 bg-muted rounded-lg">
+                  <div className="text-sm font-medium mb-2">Observacoes de Custos</div>
+                  <p className="text-sm text-muted-foreground">{selectedAprovacao.observacoesCustos}</p>
+                </div>
+
+                {/* Links de Origem */}
+                <div className="space-y-2">
+                  <div className="text-sm font-medium">Rastreabilidade</div>
+                  <div className="flex gap-2">
+                    <Link href={`/obra/comercial/custo/analise-mo?id=${selectedAprovacao.analiseMoId}`}>
+                      <Button variant="outline" size="sm">
+                        <ExternalLink className="w-4 h-4 mr-2" />
+                        Ver Analise MO
+                      </Button>
+                    </Link>
+                    <Link href={`/obra/administrativo/rh/previa-folha?id=${selectedAprovacao.previaFolhaId}`}>
+                      <Button variant="outline" size="sm">
+                        <ExternalLink className="w-4 h-4 mr-2" />
+                        Ver Previa Folha
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+
+                {/* Metadados */}
+                <div className="text-xs text-muted-foreground border-t pt-4">
+                  <div>Enviado por: {selectedAprovacao.enviadoPor}</div>
+                  <div>Data: {selectedAprovacao.enviadoEm}</div>
+                </div>
+              </div>
+            )}
+          </SheetContent>
+        </Sheet>
 
         {/* Sheet Historico */}
         <Sheet open={showHistoricoSheet} onOpenChange={setShowHistoricoSheet}>

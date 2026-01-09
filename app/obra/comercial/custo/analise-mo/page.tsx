@@ -20,6 +20,7 @@ import {
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
   TrendingUp,
   TrendingDown,
@@ -36,81 +37,115 @@ import {
   History,
   Target,
   BarChart3,
+  ExternalLink,
+  RotateCcw,
+  Users,
+  Scale,
+  Link2,
 } from "lucide-react"
 
-// Dados mockados
+const statusAnalise = {
+  atual: "em_analise",
+  etapas: [
+    { id: "recebida", label: "Recebida", concluida: true },
+    { id: "em_analise", label: "Em Análise", concluida: true },
+    { id: "justificada", label: "Justificada", concluida: false },
+    { id: "enviada_aprovacao", label: "Enviada Aprovação", concluida: false },
+    { id: "aprovada", label: "Aprovada", concluida: false },
+    { id: "devolvida", label: "Devolvida", concluida: false },
+  ],
+}
+
 const analiseData = [
   {
     id: 1,
     obra: "BR-101 LOTE 2",
     centroCusto: "CC-001 - Terraplenagem",
     funcao: "Operador de Escavadeira",
+    qtdColaboradores: 8,
     orcado: 185000,
     realizado: 198500,
     desvio: 13500,
     desvioPercent: 7.3,
     status: "atencao",
     justificativa: null,
+    origemPreviaId: "PF-2026-01-001",
+    origemRH: "/obra/administrativo/rh/previa-folha",
   },
   {
     id: 2,
     obra: "BR-101 LOTE 2",
     centroCusto: "CC-002 - Pavimentacao",
     funcao: "Operador de Rolo",
+    qtdColaboradores: 5,
     orcado: 142000,
     realizado: 138200,
     desvio: -3800,
     desvioPercent: -2.7,
     status: "ok",
     justificativa: null,
+    origemPreviaId: "PF-2026-01-001",
+    origemRH: "/obra/administrativo/rh/previa-folha",
   },
   {
     id: 3,
     obra: "BR-101 LOTE 2",
     centroCusto: "CC-001 - Terraplenagem",
     funcao: "Encarregado",
+    qtdColaboradores: 3,
     orcado: 95000,
     realizado: 118000,
     desvio: 23000,
     desvioPercent: 24.2,
     status: "critico",
     justificativa: "Necessidade de contratacao adicional devido ao aumento de frentes de servico",
+    origemPreviaId: "PF-2026-01-001",
+    origemRH: "/obra/administrativo/rh/previa-folha",
   },
   {
     id: 4,
     obra: "BR-101 LOTE 2",
     centroCusto: "CC-003 - Drenagem",
     funcao: "Pedreiro",
+    qtdColaboradores: 12,
     orcado: 78000,
     realizado: 82400,
     desvio: 4400,
     desvioPercent: 5.6,
     status: "atencao",
     justificativa: null,
+    origemPreviaId: "PF-2026-01-001",
+    origemRH: "/obra/administrativo/rh/previa-folha",
   },
   {
     id: 5,
     obra: "BR-101 LOTE 2",
     centroCusto: "CC-004 - OAE",
     funcao: "Armador",
+    qtdColaboradores: 6,
     orcado: 156000,
     realizado: 148900,
     desvio: -7100,
     desvioPercent: -4.6,
     status: "ok",
     justificativa: null,
+    origemPreviaId: "PF-2026-01-001",
+    origemRH: "/obra/administrativo/rh/previa-folha",
   },
   {
     id: 6,
     obra: "BR-101 LOTE 2",
     centroCusto: "CC-002 - Pavimentacao",
     funcao: "Motorista",
+    qtdColaboradores: 4,
     orcado: 112000,
     realizado: 135600,
     desvio: 23600,
     desvioPercent: 21.1,
     status: "critico",
     justificativa: null,
+    origemPreviaId: "PF-2026-01-001",
+    origemRH: "/obra/administrativo/rh/previa-folha",
   },
 ]
 
@@ -121,6 +156,7 @@ const historicoVersoes = [
     usuario: "Carlos Silva",
     status: "atual",
     obs: "Ajuste pos-aprovacao gerencial",
+    acao: "Analise revisada",
   },
   {
     versao: "v2",
@@ -128,8 +164,16 @@ const historicoVersoes = [
     usuario: "Maria Santos",
     status: "aprovada",
     obs: "Inclusao de justificativas",
+    acao: "Justificativas adicionadas",
   },
-  { versao: "v1", data: "02/01/2026 09:00", usuario: "Joao Pereira", status: "inicial", obs: "Primeira consolidacao" },
+  {
+    versao: "v1",
+    data: "02/01/2026 09:00",
+    usuario: "Joao Pereira",
+    status: "inicial",
+    obs: "Primeira consolidacao",
+    acao: "Recebida do RH",
+  },
 ]
 
 function AnaliseMOContent() {
@@ -142,15 +186,20 @@ function AnaliseMOContent() {
   const [showSolicitarAjuste, setShowSolicitarAjuste] = useState(false)
   const [showHistorico, setShowHistorico] = useState(false)
   const [showEnviarAprovacao, setShowEnviarAprovacao] = useState(false)
+  const [showDevolver, setShowDevolver] = useState(false)
   const [justificativa, setJustificativa] = useState("")
   const [observacaoAjuste, setObservacaoAjuste] = useState("")
   const [observacaoAprovacao, setObservacaoAprovacao] = useState("")
+  const [motivoDevolucao, setMotivoDevolucao] = useState("")
 
   // Calculos
   const totalOrcado = analiseData.reduce((acc, item) => acc + item.orcado, 0)
   const totalRealizado = analiseData.reduce((acc, item) => acc + item.realizado, 0)
   const totalDesvio = totalRealizado - totalOrcado
   const totalDesvioPercent = ((totalDesvio / totalOrcado) * 100).toFixed(1)
+  const totalColaboradores = analiseData.reduce((acc, item) => acc + item.qtdColaboradores, 0)
+  const itensCriticos = analiseData.filter((item) => item.status === "critico").length
+  const itensSemJustificativa = analiseData.filter((item) => item.status === "critico" && !item.justificativa).length
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat("pt-BR", {
@@ -191,6 +240,9 @@ function AnaliseMOContent() {
     setShowSolicitarAjuste(true)
   }
 
+  const podeEnviarAprovacao = statusAnalise.atual === "em_analise" || statusAnalise.atual === "justificada"
+  const podeDevolver = statusAnalise.atual === "em_analise"
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -206,7 +258,13 @@ function AnaliseMOContent() {
           </div>
           <h1 className="text-2xl font-bold text-foreground">Análise de Mão de Obra</h1>
           <p className="text-sm text-muted-foreground">
-            Comparativo Orçado x Realizado a partir da Prévia de Folha enviada pelo RH
+            Comparativo Orçado x Realizado • Origem:
+            <a
+              href="/obra/administrativo/rh/previa-folha"
+              className="text-primary hover:underline ml-1 inline-flex items-center gap-1"
+            >
+              Prévia de Folha (RH) <ExternalLink className="w-3 h-3" />
+            </a>
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -218,12 +276,50 @@ function AnaliseMOContent() {
             <Download className="w-4 h-4 mr-2" />
             Exportar
           </Button>
-          <Button size="sm" onClick={() => setShowEnviarAprovacao(true)}>
-            <Send className="w-4 h-4 mr-2" />
-            Enviar para Aprovação
-          </Button>
+          {podeDevolver && (
+            <Button variant="outline" size="sm" onClick={() => setShowDevolver(true)}>
+              <RotateCcw className="w-4 h-4 mr-2" />
+              Devolver ao RH
+            </Button>
+          )}
+          {podeEnviarAprovacao && (
+            <Button size="sm" onClick={() => setShowEnviarAprovacao(true)} disabled={itensSemJustificativa > 0}>
+              <Send className="w-4 h-4 mr-2" />
+              Enviar para Aprovação
+            </Button>
+          )}
         </div>
       </div>
+
+      <Card>
+        <CardContent className="pt-4">
+          <div className="flex items-center justify-between">
+            {statusAnalise.etapas.slice(0, 5).map((etapa, index) => (
+              <div key={etapa.id} className="flex items-center">
+                <div className="flex flex-col items-center">
+                  <div
+                    className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
+                      etapa.concluida
+                        ? "bg-primary text-primary-foreground"
+                        : statusAnalise.atual === etapa.id
+                          ? "bg-primary/20 text-primary border-2 border-primary"
+                          : "bg-muted text-muted-foreground"
+                    }`}
+                  >
+                    {etapa.concluida ? <CheckCircle2 className="w-4 h-4" /> : index + 1}
+                  </div>
+                  <span
+                    className={`text-xs mt-1 ${statusAnalise.atual === etapa.id ? "text-primary font-medium" : "text-muted-foreground"}`}
+                  >
+                    {etapa.label}
+                  </span>
+                </div>
+                {index < 4 && <div className={`w-16 h-0.5 mx-2 ${etapa.concluida ? "bg-primary" : "bg-muted"}`} />}
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Filtros */}
       <Card>
@@ -264,8 +360,7 @@ function AnaliseMOContent() {
         </CardContent>
       </Card>
 
-      {/* Cards Superiores */}
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-5 gap-4">
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
@@ -288,7 +383,10 @@ function AnaliseMOContent() {
           </CardHeader>
           <CardContent>
             <p className="text-2xl font-bold text-primary">{formatCurrency(totalRealizado)}</p>
-            <p className="text-xs text-muted-foreground mt-1">Prévia de Folha consolidada</p>
+            <div className="flex items-center gap-1 mt-1">
+              <Users className="w-3 h-3 text-muted-foreground" />
+              <span className="text-xs text-muted-foreground">{totalColaboradores} colaboradores</span>
+            </div>
           </CardContent>
         </Card>
 
@@ -334,15 +432,43 @@ function AnaliseMOContent() {
             <p className="text-xs text-muted-foreground mt-1">Variação na margem do projeto</p>
           </CardContent>
         </Card>
+
+        <Card className={itensSemJustificativa > 0 ? "border-red-500/30" : "border-green-500/30"}>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+              <AlertTriangle className={`w-4 h-4 ${itensSemJustificativa > 0 ? "text-red-500" : "text-green-500"}`} />
+              Pendências
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className={`text-2xl font-bold ${itensSemJustificativa > 0 ? "text-red-500" : "text-green-500"}`}>
+              {itensSemJustificativa}
+            </p>
+            <p className="text-xs text-muted-foreground mt-1">
+              {itensSemJustificativa > 0
+                ? `${itensCriticos} críticos, ${itensSemJustificativa} sem justificativa`
+                : "Todos justificados"}
+            </p>
+          </CardContent>
+        </Card>
       </div>
 
-      {/* Aviso somente leitura */}
-      <div className="flex items-center gap-2 p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
-        <Info className="w-4 h-4 text-blue-500" />
-        <span className="text-sm text-blue-700">
-          Dados somente leitura. A edição de valores é feita no RH (Prévia de Folha). Aqui é possível apenas justificar
-          desvios ou solicitar ajustes.
-        </span>
+      {/* Aviso somente leitura com link para origem */}
+      <div className="flex items-center justify-between p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+        <div className="flex items-center gap-2">
+          <Info className="w-4 h-4 text-blue-500" />
+          <span className="text-sm text-blue-700">
+            Dados somente leitura. A edição de valores é feita no RH (Prévia de Folha). Aqui é possível apenas
+            justificar desvios ou solicitar ajustes.
+          </span>
+        </div>
+        <a
+          href="/obra/administrativo/rh/previa-folha"
+          className="text-sm text-primary hover:underline flex items-center gap-1"
+        >
+          <Link2 className="w-4 h-4" />
+          Ver Prévia de Folha
+        </a>
       </div>
 
       {/* Tabela Orçado x Realizado */}
@@ -355,23 +481,24 @@ function AnaliseMOContent() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Obra</TableHead>
                 <TableHead>Centro de Custo</TableHead>
                 <TableHead>Função</TableHead>
+                <TableHead className="text-center">Qtd</TableHead>
                 <TableHead className="text-right">Orçado (R$)</TableHead>
                 <TableHead className="text-right">Realizado (R$)</TableHead>
                 <TableHead className="text-right">Desvio (R$)</TableHead>
                 <TableHead className="text-right">Desvio (%)</TableHead>
                 <TableHead className="text-center">Status</TableHead>
+                <TableHead className="text-center">Origem</TableHead>
                 <TableHead className="text-center">Ação</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {analiseData.map((item) => (
                 <TableRow key={item.id} className={item.status === "critico" ? "bg-red-500/5" : ""}>
-                  <TableCell className="font-medium">{item.obra}</TableCell>
-                  <TableCell>{item.centroCusto}</TableCell>
+                  <TableCell className="font-medium">{item.centroCusto}</TableCell>
                   <TableCell>{item.funcao}</TableCell>
+                  <TableCell className="text-center">{item.qtdColaboradores}</TableCell>
                   <TableCell className="text-right">{formatCurrency(item.orcado)}</TableCell>
                   <TableCell className="text-right font-medium">{formatCurrency(item.realizado)}</TableCell>
                   <TableCell
@@ -411,6 +538,23 @@ function AnaliseMOContent() {
                     )}
                   </TableCell>
                   <TableCell className="text-center">
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <a
+                            href={item.origemRH}
+                            className="text-primary hover:underline inline-flex items-center gap-1"
+                          >
+                            <ExternalLink className="w-3 h-3" />
+                          </a>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Ver origem no RH: {item.origemPreviaId}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </TableCell>
+                  <TableCell className="text-center">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button variant="ghost" size="sm">
@@ -429,6 +573,12 @@ function AnaliseMOContent() {
                         <DropdownMenuItem onClick={() => handleSolicitarAjuste(item)}>
                           <Send className="w-4 h-4 mr-2" />
                           Solicitar Ajuste ao RH
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                          <a href={item.origemRH} className="flex items-center">
+                            <ExternalLink className="w-4 h-4 mr-2" />
+                            Ver Origem (RH)
+                          </a>
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -471,7 +621,7 @@ function AnaliseMOContent() {
       <Card>
         <CardHeader className="pb-2">
           <CardTitle className="text-sm font-medium flex items-center gap-2">
-            <AlertTriangle className="w-4 h-4 text-amber-500" />
+            <Scale className="w-4 h-4 text-amber-500" />
             Regras de Governança
           </CardTitle>
         </CardHeader>
@@ -481,6 +631,7 @@ function AnaliseMOContent() {
             <li>• Todas as justificativas são registradas com data, hora e usuário</li>
             <li>• Solicitações de ajuste ao RH geram notificação automática</li>
             <li>• Histórico versionado mantido para auditoria</li>
+            <li>• Devolução ao RH requer motivo obrigatório</li>
           </ul>
         </CardContent>
       </Card>
@@ -496,51 +647,108 @@ function AnaliseMOContent() {
           </SheetHeader>
           {selectedItem && (
             <div className="space-y-6 mt-6">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <p className="text-sm text-muted-foreground">Obra</p>
-                  <p className="font-medium">{selectedItem.obra}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Centro de Custo</p>
-                  <p className="font-medium">{selectedItem.centroCusto}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Função</p>
-                  <p className="font-medium">{selectedItem.funcao}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Status</p>
-                  {getStatusBadge(selectedItem.status)}
-                </div>
-              </div>
-
-              <div className="space-y-3 p-4 bg-muted/50 rounded-lg">
-                <div className="flex justify-between">
-                  <span className="text-sm text-muted-foreground">Orçado</span>
-                  <span className="font-medium">{formatCurrency(selectedItem.orcado)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-sm text-muted-foreground">Realizado</span>
-                  <span className="font-medium">{formatCurrency(selectedItem.realizado)}</span>
-                </div>
-                <div className="flex justify-between border-t border-border pt-2">
-                  <span className="text-sm font-medium">Desvio</span>
-                  <span className={`font-bold ${selectedItem.desvio > 0 ? "text-red-500" : "text-green-500"}`}>
-                    {formatCurrency(selectedItem.desvio)} ({selectedItem.desvio > 0 ? "+" : ""}
-                    {selectedItem.desvioPercent.toFixed(1)}%)
-                  </span>
-                </div>
-              </div>
-
-              {selectedItem.justificativa && (
-                <div className="space-y-2">
-                  <p className="text-sm font-medium">Justificativa Registrada</p>
-                  <div className="p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
-                    <p className="text-sm">{selectedItem.justificativa}</p>
+              <Tabs defaultValue="resumo">
+                <TabsList className="w-full">
+                  <TabsTrigger value="resumo" className="flex-1">
+                    Resumo
+                  </TabsTrigger>
+                  <TabsTrigger value="origem" className="flex-1">
+                    Origem
+                  </TabsTrigger>
+                  <TabsTrigger value="historico" className="flex-1">
+                    Histórico
+                  </TabsTrigger>
+                </TabsList>
+                <TabsContent value="resumo" className="space-y-4 mt-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-sm text-muted-foreground">Centro de Custo</p>
+                      <p className="font-medium">{selectedItem.centroCusto}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">Função</p>
+                      <p className="font-medium">{selectedItem.funcao}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">Colaboradores</p>
+                      <p className="font-medium">{selectedItem.qtdColaboradores}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">Status</p>
+                      {getStatusBadge(selectedItem.status)}
+                    </div>
                   </div>
-                </div>
-              )}
+
+                  <div className="space-y-3 p-4 bg-muted/50 rounded-lg">
+                    <div className="flex justify-between">
+                      <span className="text-sm text-muted-foreground">Orçado</span>
+                      <span className="font-medium">{formatCurrency(selectedItem.orcado)}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm text-muted-foreground">Realizado</span>
+                      <span className="font-medium">{formatCurrency(selectedItem.realizado)}</span>
+                    </div>
+                    <div className="flex justify-between border-t border-border pt-2">
+                      <span className="text-sm font-medium">Desvio</span>
+                      <span className={`font-bold ${selectedItem.desvio > 0 ? "text-red-500" : "text-green-500"}`}>
+                        {formatCurrency(selectedItem.desvio)} ({selectedItem.desvio > 0 ? "+" : ""}
+                        {selectedItem.desvioPercent.toFixed(1)}%)
+                      </span>
+                    </div>
+                  </div>
+
+                  {selectedItem.justificativa && (
+                    <div className="space-y-2">
+                      <p className="text-sm font-medium">Justificativa Registrada</p>
+                      <div className="p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+                        <p className="text-sm">{selectedItem.justificativa}</p>
+                      </div>
+                    </div>
+                  )}
+                </TabsContent>
+                <TabsContent value="origem" className="space-y-4 mt-4">
+                  <div className="p-4 bg-muted/50 rounded-lg space-y-3">
+                    <div className="flex justify-between">
+                      <span className="text-sm text-muted-foreground">Prévia de Folha</span>
+                      <span className="font-medium">{selectedItem.origemPreviaId}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm text-muted-foreground">Origem</span>
+                      <span className="font-medium">RH - Consolidação</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm text-muted-foreground">Data Envio</span>
+                      <span className="font-medium">02/01/2026 09:00</span>
+                    </div>
+                  </div>
+                  <Button variant="outline" className="w-full bg-transparent" asChild>
+                    <a href={selectedItem.origemRH} className="flex items-center justify-center gap-2">
+                      <ExternalLink className="w-4 h-4" />
+                      Abrir Prévia de Folha (RH)
+                    </a>
+                  </Button>
+                </TabsContent>
+                <TabsContent value="historico" className="space-y-4 mt-4">
+                  <div className="space-y-3">
+                    <div className="p-3 bg-muted/50 rounded-lg">
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-sm font-medium">Recebida do RH</span>
+                        <span className="text-xs text-muted-foreground">02/01/2026 09:00</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground">Sistema</p>
+                    </div>
+                    {selectedItem.justificativa && (
+                      <div className="p-3 bg-blue-500/10 rounded-lg">
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-sm font-medium">Justificativa adicionada</span>
+                          <span className="text-xs text-muted-foreground">05/01/2026 10:15</span>
+                        </div>
+                        <p className="text-xs text-muted-foreground">Maria Santos</p>
+                      </div>
+                    )}
+                  </div>
+                </TabsContent>
+              </Tabs>
 
               <div className="flex gap-2">
                 <Button
@@ -666,6 +874,40 @@ function AnaliseMOContent() {
         </DialogContent>
       </Dialog>
 
+      <Dialog open={showDevolver} onOpenChange={setShowDevolver}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Devolver ao RH</DialogTitle>
+            <DialogDescription>A análise será devolvida para o RH revisar a Prévia de Folha</DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="p-3 bg-amber-500/10 border border-amber-500/20 rounded-lg">
+              <p className="text-sm text-amber-700">
+                Ao devolver, o RH receberá uma notificação para revisar e reenviar a Prévia de Folha.
+              </p>
+            </div>
+            <div className="space-y-2">
+              <Label>Motivo da Devolução *</Label>
+              <Textarea
+                value={motivoDevolucao}
+                onChange={(e) => setMotivoDevolucao(e.target.value)}
+                placeholder="Descreva o motivo da devolução..."
+                rows={4}
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowDevolver(false)}>
+              Cancelar
+            </Button>
+            <Button variant="destructive" onClick={() => setShowDevolver(false)} disabled={!motivoDevolucao.trim()}>
+              <RotateCcw className="w-4 h-4 mr-2" />
+              Devolver ao RH
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
       {/* Dialog Enviar para Aprovação */}
       <Dialog open={showEnviarAprovacao} onOpenChange={setShowEnviarAprovacao}>
         <DialogContent>
@@ -693,11 +935,11 @@ function AnaliseMOContent() {
             </div>
 
             {/* Verificação de justificativas */}
-            {analiseData.some((item) => item.status === "critico" && !item.justificativa) && (
+            {itensSemJustificativa > 0 && (
               <div className="flex items-center gap-2 p-3 bg-red-500/10 border border-red-500/20 rounded-lg">
                 <AlertTriangle className="w-4 h-4 text-red-500" />
                 <span className="text-xs text-red-700">
-                  Existem desvios críticos sem justificativa. Justifique antes de enviar.
+                  Existem {itensSemJustificativa} desvios críticos sem justificativa. Justifique antes de enviar.
                 </span>
               </div>
             )}
@@ -716,10 +958,7 @@ function AnaliseMOContent() {
             <Button variant="outline" onClick={() => setShowEnviarAprovacao(false)}>
               Cancelar
             </Button>
-            <Button
-              onClick={() => setShowEnviarAprovacao(false)}
-              disabled={analiseData.some((item) => item.status === "critico" && !item.justificativa)}
-            >
+            <Button onClick={() => setShowEnviarAprovacao(false)} disabled={itensSemJustificativa > 0}>
               <Send className="w-4 h-4 mr-2" />
               Enviar para Aprovação
             </Button>
@@ -732,7 +971,7 @@ function AnaliseMOContent() {
         <SheetContent className="sm:max-w-lg">
           <SheetHeader>
             <SheetTitle>Histórico de Versões</SheetTitle>
-            <SheetDescription>Registro de todas as consolidações</SheetDescription>
+            <SheetDescription>Registro de todas as ações e alterações</SheetDescription>
           </SheetHeader>
           <div className="space-y-4 mt-6">
             {historicoVersoes.map((versao) => (
@@ -752,7 +991,8 @@ function AnaliseMOContent() {
                   </div>
                   <span className="text-xs text-muted-foreground">{versao.data}</span>
                 </div>
-                <p className="text-sm">{versao.obs}</p>
+                <p className="text-sm font-medium">{versao.acao}</p>
+                <p className="text-sm text-muted-foreground">{versao.obs}</p>
                 <p className="text-xs text-muted-foreground mt-1">Por: {versao.usuario}</p>
               </div>
             ))}
