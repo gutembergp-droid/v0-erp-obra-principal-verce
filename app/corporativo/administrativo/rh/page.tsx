@@ -2,7 +2,7 @@
 
 import { Suspense } from "react"
 import Link from "next/link"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { RHNav } from "@/components/rh/rh-nav"
 import {
@@ -23,100 +23,102 @@ import {
   Timer,
   Gavel,
   Building2,
-  Factory,
   ExternalLink,
+  CheckCircle2,
+  XCircle,
+  Send,
+  Banknote,
+  FileCheck,
+  ClipboardCheck,
 } from "lucide-react"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
+import { Progress } from "@/components/ui/progress"
 
 // ============================================
 // DADOS MOCKADOS - VISAO GERAL CORPORATIVO
 // ============================================
 
+const rhInternoCorporativo = {
+  efetivo: { total: 15, clt: 12, pj: 3 },
+  status: { ativos: 14, afastados: 1, bloqueados: 0 },
+  pendencias: { docs: 1, aso: 1, total: 2 },
+  custoMensal: 283425,
+}
+
 // FAIXA 1 - Panorama Geral de Pessoas (Consolidado)
 const panoramaPessoas = {
-  efetivoAtual: {
-    total: 1000,
-    previsto: 1050,
-    gap: -50,
-  },
-  composicao: {
-    clt: 700,
-    pj: 100,
-    terceirizados: 200,
-  },
-  statusOperacional: {
-    ativos: 960,
-    afastados: 28,
-    bloqueados: 12,
-  },
-  riscoPendencias: {
-    pendenciasCriticas: 35,
-    riscosJuridicos: 8,
-  },
+  efetivoAtual: { total: 1000, previsto: 1050, gap: -50 },
+  composicao: { clt: 700, pj: 100, terceirizados: 200 },
+  statusOperacional: { ativos: 960, afastados: 28, bloqueados: 12 },
+  riscoPendencias: { pendenciasCriticas: 35, riscosJuridicos: 8 },
 }
 
 // FAIXA 2 - Custo & Jornada (Consolidado)
 const custoJornada = {
-  custoMO: {
-    total: 4500000,
-    clt: 3500000,
-    pjTerceiros: 1000000,
-  },
-  folhaEncargos: {
-    folhaBase: 3500000,
-    encargos: 1150000,
-    totalGeral: 4650000,
-  },
-  mediaSalarial: {
-    geral: 4500,
-    diretos: 3600,
-    indiretos: 6800,
-  },
-  jornadaBH: {
-    horasExtras: 4200,
-    acimaLimite: 18,
-    riscoJuridico: "medio",
-  },
+  custoMO: { total: 4500000, clt: 3500000, pjTerceiros: 1000000 },
+  folhaEncargos: { folhaBase: 3500000, encargos: 1150000, totalGeral: 4650000 },
+  mediaSalarial: { geral: 4500, diretos: 3600, indiretos: 6800 },
+  jornadaBH: { horasExtras: 4200, acimaLimite: 18, riscoJuridico: "medio" },
 }
 
-// Obras / Centros de Custo
-const obrasCentroCusto = [
+const statusFechamentoObras = [
   {
     id: 1,
     nome: "BR-101 Duplicacao - Lote 2",
-    tipo: "Obra",
-    total: 450,
-    clt: 310,
-    pj: 50,
-    terc: 90,
-    status: "ok",
-    alertas: 0,
+    pontoFechado: true,
+    folhaConsolidada: true,
+    enviadoCustos: true,
+    aprovadoGerencia: true,
+    enviadoFinanceiro: true,
+    status: "concluido",
+    valorFolha: 1850000,
   },
   {
     id: 2,
     nome: "Rodovia SC-401 - Trecho Norte",
-    tipo: "Obra",
-    total: 300,
-    clt: 210,
-    pj: 20,
-    terc: 70,
-    status: "atencao",
-    alertas: 2,
+    pontoFechado: true,
+    folhaConsolidada: true,
+    enviadoCustos: true,
+    aprovadoGerencia: false,
+    enviadoFinanceiro: false,
+    status: "em_aprovacao",
+    valorFolha: 1200000,
   },
   {
     id: 3,
     nome: "Ponte Rio-Niteroi - Manutencao",
-    tipo: "Obra",
-    total: 200,
-    clt: 130,
-    pj: 30,
-    terc: 40,
-    status: "critico",
-    alertas: 5,
+    pontoFechado: true,
+    folhaConsolidada: false,
+    enviadoCustos: false,
+    aprovadoGerencia: false,
+    enviadoFinanceiro: false,
+    status: "pendente",
+    valorFolha: 850000,
   },
-  { id: 4, nome: "Sede Corporativa", tipo: "Corp", total: 50, clt: 50, pj: 0, terc: 0, status: "ok", alertas: 0 },
+  {
+    id: 4,
+    nome: "Sede Corporativa",
+    pontoFechado: true,
+    folhaConsolidada: true,
+    enviadoCustos: false,
+    aprovadoGerencia: false,
+    enviadoFinanceiro: false,
+    status: "em_aprovacao",
+    valorFolha: 283425,
+  },
 ]
+
+const consolidacaoPagamento = {
+  totalObras: 4,
+  obrasFinalizadas: 1,
+  obrasPendentes: 3,
+  totalAPagar: 4183425,
+  totalAprovado: 1850000,
+  totalPendente: 2333425,
+  dataPagamento: "05/02/2026",
+  statusBanco: "aguardando_aprovacoes",
+}
 
 // Indicadores Juridicos
 const indicadoresJuridicos = {
@@ -130,7 +132,6 @@ const temasComPendencia = [
   { label: "Pessoas", pendencias: 18, href: "/corporativo/administrativo/rh/pessoas", icon: Users },
   { label: "Conformidade", pendencias: 42, href: "/corporativo/administrativo/rh/conformidade", icon: ShieldAlert },
   { label: "Ponto", pendencias: 15, href: "/corporativo/administrativo/rh/ponto", icon: Clock },
-  { label: "Premios", pendencias: 6, href: "/corporativo/administrativo/rh/premios", icon: TrendingUp },
 ]
 
 // ============================================
@@ -162,16 +163,18 @@ function VisaoGeralCorporativoContent() {
 
   const getStatusBadge = (status: string) => {
     switch (status) {
-      case "ok":
-        return <Badge className="bg-emerald-500/20 text-emerald-400 border-emerald-500/30">OK</Badge>
-      case "atencao":
-        return <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/30">Atencao</Badge>
-      case "critico":
-        return <Badge className="bg-red-500/20 text-red-400 border-red-500/30">Critico</Badge>
+      case "concluido":
+        return <Badge className="bg-emerald-500/20 text-emerald-600">Concluido</Badge>
+      case "em_aprovacao":
+        return <Badge className="bg-blue-500/20 text-blue-600">Em Aprovacao</Badge>
+      case "pendente":
+        return <Badge className="bg-amber-500/20 text-amber-600">Pendente</Badge>
       default:
         return <Badge variant="outline">-</Badge>
     }
   }
+
+  const progressoPagamento = (consolidacaoPagamento.obrasFinalizadas / consolidacaoPagamento.totalObras) * 100
 
   return (
     <div className="flex-1 flex flex-col min-h-screen">
@@ -192,11 +195,212 @@ function VisaoGeralCorporativoContent() {
         </div>
 
         {/* ============================================ */}
-        {/* FAIXA 1 - PANORAMA GERAL DE PESSOAS */}
+        {/* BLOCO 1 - RH INTERNO CORPORATIVO */}
+        {/* ============================================ */}
+        <Card className="border-primary/20 bg-primary/5">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base font-medium flex items-center gap-2">
+              <Building2 className="h-4 w-4 text-primary" />
+              RH Interno - Escritorio Central
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="p-3 rounded-lg bg-background/50">
+                <p className="text-xs text-muted-foreground">Efetivo</p>
+                <p className="text-xl font-bold">{rhInternoCorporativo.efetivo.total}</p>
+                <p className="text-xs text-muted-foreground">
+                  CLT: {rhInternoCorporativo.efetivo.clt} | PJ: {rhInternoCorporativo.efetivo.pj}
+                </p>
+              </div>
+              <div className="p-3 rounded-lg bg-background/50">
+                <p className="text-xs text-muted-foreground">Status</p>
+                <p className="text-xl font-bold text-emerald-600">{rhInternoCorporativo.status.ativos} ativos</p>
+                <p className="text-xs text-muted-foreground">
+                  Afastados: {rhInternoCorporativo.status.afastados} | Bloq: {rhInternoCorporativo.status.bloqueados}
+                </p>
+              </div>
+              <div className="p-3 rounded-lg bg-background/50">
+                <p className="text-xs text-muted-foreground">Pendencias</p>
+                <p className="text-xl font-bold text-amber-600">{rhInternoCorporativo.pendencias.total}</p>
+                <p className="text-xs text-muted-foreground">
+                  Docs: {rhInternoCorporativo.pendencias.docs} | ASO: {rhInternoCorporativo.pendencias.aso}
+                </p>
+              </div>
+              <div className="p-3 rounded-lg bg-background/50">
+                <p className="text-xs text-muted-foreground">Custo Mensal</p>
+                <p className="text-xl font-bold">{formatCurrency(rhInternoCorporativo.custoMensal)}</p>
+                <p className="text-xs text-muted-foreground">Folha + Encargos + Beneficios</p>
+              </div>
+            </div>
+          </CardContent>
+          <CardFooter className="border-t pt-3">
+            <Button variant="outline" size="sm" asChild>
+              <Link href="/corporativo/administrativo/rh/pessoas">
+                Ver Detalhes do RH Corporativo
+                <ChevronRight className="h-4 w-4 ml-1" />
+              </Link>
+            </Button>
+          </CardFooter>
+        </Card>
+
+        {/* ============================================ */}
+        {/* BLOCO 2 - STATUS DE FECHAMENTO DAS OBRAS */}
+        {/* ============================================ */}
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base font-medium flex items-center gap-2">
+              <ClipboardCheck className="h-4 w-4" />
+              Status de Fechamento - Todas as Obras
+              <Badge variant="outline" className="ml-2">
+                Janeiro/2026
+              </Badge>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="rounded-md border">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Obra</TableHead>
+                    <TableHead className="text-center">Ponto</TableHead>
+                    <TableHead className="text-center">Folha</TableHead>
+                    <TableHead className="text-center">Custos</TableHead>
+                    <TableHead className="text-center">Gerencia</TableHead>
+                    <TableHead className="text-center">Financeiro</TableHead>
+                    <TableHead className="text-right">Valor</TableHead>
+                    <TableHead className="text-center">Status</TableHead>
+                    <TableHead className="text-center">Acao</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {statusFechamentoObras.map((obra) => (
+                    <TableRow key={obra.id}>
+                      <TableCell className="font-medium">{obra.nome}</TableCell>
+                      <TableCell className="text-center">
+                        {obra.pontoFechado ? (
+                          <CheckCircle2 className="h-4 w-4 text-emerald-500 mx-auto" />
+                        ) : (
+                          <XCircle className="h-4 w-4 text-red-500 mx-auto" />
+                        )}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {obra.folhaConsolidada ? (
+                          <CheckCircle2 className="h-4 w-4 text-emerald-500 mx-auto" />
+                        ) : (
+                          <XCircle className="h-4 w-4 text-red-500 mx-auto" />
+                        )}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {obra.enviadoCustos ? (
+                          <CheckCircle2 className="h-4 w-4 text-emerald-500 mx-auto" />
+                        ) : (
+                          <Clock className="h-4 w-4 text-amber-500 mx-auto" />
+                        )}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {obra.aprovadoGerencia ? (
+                          <CheckCircle2 className="h-4 w-4 text-emerald-500 mx-auto" />
+                        ) : (
+                          <Clock className="h-4 w-4 text-amber-500 mx-auto" />
+                        )}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {obra.enviadoFinanceiro ? (
+                          <CheckCircle2 className="h-4 w-4 text-emerald-500 mx-auto" />
+                        ) : (
+                          <Clock className="h-4 w-4 text-muted-foreground mx-auto" />
+                        )}
+                      </TableCell>
+                      <TableCell className="text-right font-medium">{formatCurrency(obra.valorFolha)}</TableCell>
+                      <TableCell className="text-center">{getStatusBadge(obra.status)}</TableCell>
+                      <TableCell className="text-center">
+                        <Button variant="ghost" size="sm" asChild>
+                          <Link href="/obra/administrativo/rh">
+                            <ExternalLink className="h-3 w-3" />
+                          </Link>
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* ============================================ */}
+        {/* BLOCO 3 - CONSOLIDACAO / PAGAMENTO */}
+        {/* ============================================ */}
+        <Card className="border-emerald-500/20 bg-emerald-500/5">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base font-medium flex items-center gap-2">
+              <Banknote className="h-4 w-4 text-emerald-600" />
+              Consolidacao de Pagamento - Janeiro/2026
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {/* Progress */}
+            <div className="space-y-2">
+              <div className="flex justify-between text-sm">
+                <span className="text-muted-foreground">Progresso de Fechamento</span>
+                <span className="font-medium">
+                  {consolidacaoPagamento.obrasFinalizadas} de {consolidacaoPagamento.totalObras} obras
+                </span>
+              </div>
+              <Progress value={progressoPagamento} className="h-2" />
+            </div>
+
+            {/* Cards de Pagamento */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="p-3 rounded-lg bg-background/50">
+                <p className="text-xs text-muted-foreground">Total a Pagar</p>
+                <p className="text-xl font-bold">{formatCurrency(consolidacaoPagamento.totalAPagar)}</p>
+              </div>
+              <div className="p-3 rounded-lg bg-background/50">
+                <p className="text-xs text-muted-foreground">Aprovado</p>
+                <p className="text-xl font-bold text-emerald-600">
+                  {formatCurrency(consolidacaoPagamento.totalAprovado)}
+                </p>
+              </div>
+              <div className="p-3 rounded-lg bg-background/50">
+                <p className="text-xs text-muted-foreground">Pendente Aprovacao</p>
+                <p className="text-xl font-bold text-amber-600">
+                  {formatCurrency(consolidacaoPagamento.totalPendente)}
+                </p>
+              </div>
+              <div className="p-3 rounded-lg bg-background/50">
+                <p className="text-xs text-muted-foreground">Data Pagamento</p>
+                <p className="text-xl font-bold">{consolidacaoPagamento.dataPagamento}</p>
+              </div>
+            </div>
+
+            {/* Status do Banco */}
+            <div className="flex items-center justify-between p-3 rounded-lg bg-background/50 border">
+              <div className="flex items-center gap-2">
+                <FileCheck className="h-5 w-5 text-blue-500" />
+                <div>
+                  <p className="text-sm font-medium">Status do Pagamento</p>
+                  <p className="text-xs text-muted-foreground">Arquivo de pagamento para o banco</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <Badge className="bg-amber-500/20 text-amber-600">Aguardando Aprovacoes</Badge>
+                <Button size="sm" disabled>
+                  <Send className="h-4 w-4 mr-2" />
+                  Gerar Arquivo Banco
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* ============================================ */}
+        {/* FAIXA - PANORAMA CONSOLIDADO (TODAS AS OBRAS) */}
         {/* ============================================ */}
         <div>
           <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-3">
-            Panorama Geral de Pessoas
+            Panorama Consolidado - Todas as Obras
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {/* Card 1 - Efetivo Atual */}
@@ -312,14 +516,14 @@ function VisaoGeralCorporativoContent() {
         </div>
 
         {/* ============================================ */}
-        {/* FAIXA 2 - CUSTO & JORNADA */}
+        {/* FAIXA - CUSTO & JORNADA */}
         {/* ============================================ */}
         <div>
           <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-3">
-            Custo & Jornada (Camada Financeira)
+            Custo & Jornada (Consolidado)
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {/* Card 5 - Custo de MO */}
+            {/* Card - Custo de MO */}
             <Card className="bg-card/50">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-3">
@@ -345,7 +549,7 @@ function VisaoGeralCorporativoContent() {
               </CardContent>
             </Card>
 
-            {/* Card 6 - Folha & Encargos */}
+            {/* Card - Folha & Encargos */}
             <Card className="bg-card/50">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-3">
@@ -364,14 +568,14 @@ function VisaoGeralCorporativoContent() {
                     <span className="text-sm">{formatCurrency(custoJornada.folhaEncargos.encargos)}</span>
                   </div>
                   <div className="flex items-baseline justify-between border-t pt-1 mt-1">
-                    <span className="text-xs text-muted-foreground font-medium">Total Geral</span>
+                    <span className="text-xs text-muted-foreground font-medium">Total</span>
                     <span className="text-lg font-bold">{formatCurrency(custoJornada.folhaEncargos.totalGeral)}</span>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Card 7 - Media Salarial */}
+            {/* Card - Media Salarial */}
             <Card className="bg-card/50">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-3">
@@ -397,7 +601,7 @@ function VisaoGeralCorporativoContent() {
               </CardContent>
             </Card>
 
-            {/* Card 8 - Jornada & BH */}
+            {/* Card - Jornada & BH */}
             <Card
               className={`${custoJornada.jornadaBH.riscoJuridico !== "baixo" ? "bg-amber-500/5 border-amber-500/20" : "bg-card/50"}`}
             >
@@ -417,10 +621,6 @@ function VisaoGeralCorporativoContent() {
                     <span className="text-xs text-muted-foreground">Acima do limite</span>
                     <span className="text-sm text-amber-500">{custoJornada.jornadaBH.acimaLimite} colab.</span>
                   </div>
-                  <div className="flex items-baseline justify-between">
-                    <span className="text-xs text-muted-foreground">Risco Juridico</span>
-                    <span className="text-sm capitalize">{custoJornada.jornadaBH.riscoJuridico}</span>
-                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -428,76 +628,14 @@ function VisaoGeralCorporativoContent() {
         </div>
 
         {/* ============================================ */}
-        {/* TABELA DE OBRAS */}
-        {/* ============================================ */}
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-base font-medium flex items-center gap-2">
-              <Factory className="h-4 w-4" />
-              Distribuicao por Obra / Centro de Custo
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="rounded-md border">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Nome</TableHead>
-                    <TableHead className="text-center">Tipo</TableHead>
-                    <TableHead className="text-right">Total</TableHead>
-                    <TableHead className="text-right">CLT</TableHead>
-                    <TableHead className="text-right">PJ</TableHead>
-                    <TableHead className="text-right">Terc.</TableHead>
-                    <TableHead className="text-center">Status</TableHead>
-                    <TableHead className="text-center">Acao</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {obrasCentroCusto.map((obra) => (
-                    <TableRow key={obra.id}>
-                      <TableCell className="font-medium">
-                        <div className="flex items-center gap-2">
-                          {obra.nome}
-                          {obra.alertas > 0 && (
-                            <Badge variant="destructive" className="text-xs">
-                              {obra.alertas}
-                            </Badge>
-                          )}
-                        </div>
-                      </TableCell>
-                      <TableCell className="text-center">
-                        <Badge variant="outline">{obra.tipo}</Badge>
-                      </TableCell>
-                      <TableCell className="text-right font-semibold">{obra.total}</TableCell>
-                      <TableCell className="text-right">{obra.clt}</TableCell>
-                      <TableCell className="text-right">{obra.pj}</TableCell>
-                      <TableCell className="text-right">{obra.terc}</TableCell>
-                      <TableCell className="text-center">{getStatusBadge(obra.status)}</TableCell>
-                      <TableCell className="text-center">
-                        <Button variant="ghost" size="sm" asChild>
-                          <Link href="/obra/administrativo/rh">
-                            <ExternalLink className="h-3 w-3 mr-1" />
-                            Acessar
-                          </Link>
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* ============================================ */}
-        {/* FAIXA 3 - TEMAS COM PENDENCIA */}
+        {/* TEMAS COM PENDENCIA */}
         {/* ============================================ */}
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-base font-medium">Temas com Pendencia</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-3 gap-4">
               {temasComPendencia.map((item) => (
                 <Link key={item.href} href={item.href}>
                   <div className="flex items-center gap-3 p-4 rounded-lg border hover:bg-muted/50 transition-colors cursor-pointer group">

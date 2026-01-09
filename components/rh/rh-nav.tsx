@@ -4,7 +4,16 @@ import type React from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
-import { LayoutDashboard, Users, ShieldCheck, Fingerprint, BarChart3, FileSpreadsheet, ChevronDown } from "lucide-react"
+import {
+  LayoutDashboard,
+  Users,
+  ShieldCheck,
+  Fingerprint,
+  BarChart3,
+  FileSpreadsheet,
+  ChevronDown,
+  Landmark,
+} from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 
 interface NavItem {
@@ -15,21 +24,36 @@ interface NavItem {
   submenu?: { name: string; href: string }[]
 }
 
-const getNavItems = (baseUrl: string): NavItem[] => [
+const getNavItemsObra = (baseUrl: string): NavItem[] => [
   { name: "Visão Geral", href: `${baseUrl}`, icon: LayoutDashboard },
   { name: "Pessoas", href: `${baseUrl}/pessoas`, icon: Users },
   { name: "Conformidade", href: `${baseUrl}/conformidade`, icon: ShieldCheck },
   { name: "Ponto", href: `${baseUrl}/ponto`, icon: Fingerprint },
   {
     name: "Consolidação",
-    href: `${baseUrl}/consolidacao`,
+    href: `${baseUrl}/previa-folha`,
     icon: FileSpreadsheet,
-    hasSubmenu: true,
-    submenu: [
-      { name: "Prévia de Folha", href: `${baseUrl}/consolidacao` },
-      { name: "Recebimento Folha", href: `${baseUrl}/consolidacao/recebimento` },
-      { name: "Provisão Folha", href: `${baseUrl}/consolidacao/provisao` },
-    ],
+    hasSubmenu: false, // Obra: só Prévia de Folha, sem submenu
+  },
+  { name: "People Analytics", href: `${baseUrl}/analytics`, icon: BarChart3 },
+]
+
+const getNavItemsCorporativo = (baseUrl: string): NavItem[] => [
+  { name: "Visão Geral", href: `${baseUrl}`, icon: LayoutDashboard },
+  { name: "Pessoas", href: `${baseUrl}/pessoas`, icon: Users },
+  { name: "Conformidade", href: `${baseUrl}/conformidade`, icon: ShieldCheck },
+  { name: "Ponto", href: `${baseUrl}/ponto`, icon: Fingerprint },
+  {
+    name: "Consolidação",
+    href: `${baseUrl}/previa-folha`,
+    icon: FileSpreadsheet,
+    hasSubmenu: false, // Corporativo: Prévia de Folha simples
+  },
+  {
+    name: "Pagamento",
+    href: `${baseUrl}/pagamento`,
+    icon: Landmark,
+    hasSubmenu: false, // Corporativo: Central de Pagamento (recebimento, provisão, pagamento banco)
   },
   { name: "People Analytics", href: `${baseUrl}/analytics`, icon: BarChart3 },
 ]
@@ -41,7 +65,7 @@ interface RHNavProps {
 export function RHNav({ modulo }: RHNavProps) {
   const pathname = usePathname()
   const baseUrl = modulo === "obra" ? "/obra/administrativo/rh" : "/corporativo/administrativo/rh"
-  const navItems = getNavItems(baseUrl)
+  const navItems = modulo === "obra" ? getNavItemsObra(baseUrl) : getNavItemsCorporativo(baseUrl)
 
   const isActive = (href: string) => {
     if (href === pathname) return true
