@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { AppLayout } from "@/components/layout/app-layout"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { InfoTooltip } from "@/components/ui/info-tooltip"
 import { Badge } from "@/components/ui/badge"
@@ -98,343 +99,345 @@ export default function AnalyticsCorporativoPage() {
   }
 
   return (
-    <div className="space-y-6 overflow-y-auto">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-primary/10">
-            <BarChart3 className="w-5 h-5 text-primary" />
+    <AppLayout>
+      <div className="space-y-6">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-primary/10">
+              <BarChart3 className="w-5 h-5 text-primary" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold text-foreground">Analytics Corporativo</h1>
+              <p className="text-sm text-muted-foreground">Visao consolidada de todas as operacoes</p>
+            </div>
+            <InfoTooltip
+              title="Analytics Corporativo"
+              description="Dashboard executivo com KPIs consolidados de todas as obras."
+            />
           </div>
-          <div>
-            <h1 className="text-2xl font-bold text-foreground">Analytics Corporativo</h1>
-            <p className="text-sm text-muted-foreground">Visao consolidada de todas as operacoes</p>
-          </div>
-          <InfoTooltip
-            title="Analytics Corporativo"
-            description="Dashboard executivo com KPIs consolidados de todas as obras."
-          />
+          <Select value={periodo} onValueChange={setPeriodo}>
+            <SelectTrigger className="w-[120px]">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="2024">2024</SelectItem>
+              <SelectItem value="2023">2023</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
-        <Select value={periodo} onValueChange={setPeriodo}>
-          <SelectTrigger className="w-[120px]">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="2024">2024</SelectItem>
-            <SelectItem value="2023">2023</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
 
-      {/* KPIs Principais */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs text-muted-foreground">Obras Ativas</p>
-                <p className="text-2xl font-bold text-foreground">5</p>
+        {/* KPIs Principais */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs text-muted-foreground">Obras Ativas</p>
+                  <p className="text-2xl font-bold text-foreground">5</p>
+                </div>
+                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                  <Building className="w-5 h-5 text-primary" />
+                </div>
               </div>
-              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                <Building className="w-5 h-5 text-primary" />
+              <div className="flex items-center gap-1 mt-2 text-xs text-success">
+                <ArrowUpRight className="w-3 h-3" />
+                <span>+2 vs 2023</span>
               </div>
-            </div>
-            <div className="flex items-center gap-1 mt-2 text-xs text-success">
-              <ArrowUpRight className="w-3 h-3" />
-              <span>+2 vs 2023</span>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
 
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs text-muted-foreground">Colaboradores</p>
-                <p className="text-2xl font-bold text-foreground">1.050</p>
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs text-muted-foreground">Colaboradores</p>
+                  <p className="text-2xl font-bold text-foreground">1.050</p>
+                </div>
+                <div className="w-10 h-10 rounded-full bg-info/10 flex items-center justify-center">
+                  <Users className="w-5 h-5 text-info" />
+                </div>
               </div>
-              <div className="w-10 h-10 rounded-full bg-info/10 flex items-center justify-center">
-                <Users className="w-5 h-5 text-info" />
+              <div className="flex items-center gap-1 mt-2 text-xs text-success">
+                <ArrowUpRight className="w-3 h-3" />
+                <span>+15% vs mes anterior</span>
               </div>
-            </div>
-            <div className="flex items-center gap-1 mt-2 text-xs text-success">
-              <ArrowUpRight className="w-3 h-3" />
-              <span>+15% vs mes anterior</span>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
 
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs text-muted-foreground">Receita Total</p>
-                <p className="text-2xl font-bold text-foreground">R$ {totalReceita}M</p>
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs text-muted-foreground">Receita Total</p>
+                  <p className="text-2xl font-bold text-foreground">R$ {totalReceita}M</p>
+                </div>
+                <div className="w-10 h-10 rounded-full bg-success/10 flex items-center justify-center">
+                  <DollarSign className="w-5 h-5 text-success" />
+                </div>
               </div>
-              <div className="w-10 h-10 rounded-full bg-success/10 flex items-center justify-center">
-                <DollarSign className="w-5 h-5 text-success" />
+              <div className="flex items-center gap-1 mt-2 text-xs text-success">
+                <ArrowUpRight className="w-3 h-3" />
+                <span>+8% vs meta</span>
               </div>
-            </div>
-            <div className="flex items-center gap-1 mt-2 text-xs text-success">
-              <ArrowUpRight className="w-3 h-3" />
-              <span>+8% vs meta</span>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
 
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs text-muted-foreground">Margem Global</p>
-                <p className="text-2xl font-bold text-foreground">{margemPercent}%</p>
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs text-muted-foreground">Margem Global</p>
+                  <p className="text-2xl font-bold text-foreground">{margemPercent}%</p>
+                </div>
+                <div className="w-10 h-10 rounded-full bg-warning/10 flex items-center justify-center">
+                  <Target className="w-5 h-5 text-warning" />
+                </div>
               </div>
-              <div className="w-10 h-10 rounded-full bg-warning/10 flex items-center justify-center">
-                <Target className="w-5 h-5 text-warning" />
+              <div className="flex items-center gap-1 mt-2 text-xs text-destructive">
+                <ArrowDownRight className="w-3 h-3" />
+                <span>-1.2% vs meta</span>
               </div>
-            </div>
-            <div className="flex items-center gap-1 mt-2 text-xs text-destructive">
-              <ArrowDownRight className="w-3 h-3" />
-              <span>-1.2% vs meta</span>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+            </CardContent>
+          </Card>
+        </div>
 
-      {/* Graficos Principais */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        {/* Evolucao Receita x Custo */}
-        <Card className="lg:col-span-2">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium flex items-center gap-2">
-              <TrendingUp className="w-4 h-4 text-primary" />
-              Evolucao Receita x Custo
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="h-[280px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <ComposedChart data={evolucaoMensal}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-                  <XAxis dataKey="mes" tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }} />
-                  <YAxis tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }} />
-                  <Tooltip content={<CustomTooltip />} />
-                  <Legend />
-                  <Area
-                    type="monotone"
-                    dataKey="margem"
-                    fill="hsl(var(--success) / 0.2)"
-                    stroke="hsl(var(--success))"
-                    name="Margem"
-                  />
-                  <Bar dataKey="receita" fill="hsl(var(--primary))" name="Receita" radius={[4, 4, 0, 0]} />
-                  <Line
-                    type="monotone"
-                    dataKey="custo"
-                    stroke="hsl(var(--destructive))"
-                    strokeWidth={2}
-                    dot={{ fill: "hsl(var(--destructive))" }}
-                    name="Custo"
-                  />
-                </ComposedChart>
-              </ResponsiveContainer>
-            </div>
-          </CardContent>
-        </Card>
+        {/* Graficos Principais */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          {/* Evolucao Receita x Custo */}
+          <Card className="lg:col-span-2">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium flex items-center gap-2">
+                <TrendingUp className="w-4 h-4 text-primary" />
+                Evolucao Receita x Custo
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="h-[280px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <ComposedChart data={evolucaoMensal}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                    <XAxis dataKey="mes" tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }} />
+                    <YAxis tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }} />
+                    <Tooltip content={<CustomTooltip />} />
+                    <Legend />
+                    <Area
+                      type="monotone"
+                      dataKey="margem"
+                      fill="hsl(var(--success) / 0.2)"
+                      stroke="hsl(var(--success))"
+                      name="Margem"
+                    />
+                    <Bar dataKey="receita" fill="hsl(var(--primary))" name="Receita" radius={[4, 4, 0, 0]} />
+                    <Line
+                      type="monotone"
+                      dataKey="custo"
+                      stroke="hsl(var(--destructive))"
+                      strokeWidth={2}
+                      dot={{ fill: "hsl(var(--destructive))" }}
+                      name="Custo"
+                    />
+                  </ComposedChart>
+                </ResponsiveContainer>
+              </div>
+            </CardContent>
+          </Card>
 
-        {/* Distribuicao por Status */}
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium flex items-center gap-2">
-              <Target className="w-4 h-4 text-primary" />
-              Status das Obras
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="h-[200px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={distribuicaoStatus}
+          {/* Distribuicao por Status */}
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium flex items-center gap-2">
+                <Target className="w-4 h-4 text-primary" />
+                Status das Obras
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="h-[200px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={distribuicaoStatus}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={50}
+                      outerRadius={80}
+                      paddingAngle={5}
+                      dataKey="value"
+                    >
+                      {distribuicaoStatus.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+              <div className="flex justify-center gap-4 mt-2">
+                {distribuicaoStatus.map((item, index) => (
+                  <div key={index} className="flex items-center gap-1 text-xs">
+                    <div className="w-2 h-2 rounded-full" style={{ backgroundColor: item.color }} />
+                    <span className="text-muted-foreground">
+                      {item.name}: {item.value}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Performance e Efetivo */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          {/* Efetivo por Obra */}
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium flex items-center gap-2">
+                <Users className="w-4 h-4 text-primary" />
+                Efetivo por Obra
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="h-[220px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={colaboradoresPorObra} layout="vertical">
+                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                    <XAxis type="number" tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }} />
+                    <YAxis
+                      dataKey="obra"
+                      type="category"
+                      tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }}
+                      width={60}
+                    />
+                    <Tooltip />
+                    <Bar dataKey="efetivo" fill="hsl(var(--info))" radius={[0, 4, 4, 0]} name="Colaboradores" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Indicadores de Performance */}
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium flex items-center gap-2">
+                <Target className="w-4 h-4 text-primary" />
+                Performance Media (IDP/IDC)
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="h-[220px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <RadialBarChart
                     cx="50%"
                     cy="50%"
-                    innerRadius={50}
-                    outerRadius={80}
-                    paddingAngle={5}
-                    dataKey="value"
+                    innerRadius="30%"
+                    outerRadius="90%"
+                    data={performanceGeral}
+                    startAngle={180}
+                    endAngle={0}
                   >
-                    {distribuicaoStatus.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <Tooltip />
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
-            <div className="flex justify-center gap-4 mt-2">
-              {distribuicaoStatus.map((item, index) => (
-                <div key={index} className="flex items-center gap-1 text-xs">
-                  <div className="w-2 h-2 rounded-full" style={{ backgroundColor: item.color }} />
-                  <span className="text-muted-foreground">
-                    {item.name}: {item.value}
-                  </span>
+                    <RadialBar minAngle={15} background clockWise dataKey="value" cornerRadius={10} />
+                    <Tooltip />
+                    <Legend />
+                  </RadialBarChart>
+                </ResponsiveContainer>
+              </div>
+              <div className="flex justify-center gap-6 mt-2">
+                <div className="text-center">
+                  <p className="text-2xl font-bold text-primary">0.97</p>
+                  <p className="text-xs text-muted-foreground">IDP Medio</p>
                 </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+                <div className="text-center">
+                  <p className="text-2xl font-bold text-info">0.99</p>
+                  <p className="text-xs text-muted-foreground">IDC Medio</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
 
-      {/* Performance e Efetivo */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {/* Efetivo por Obra */}
+        {/* Ranking de Obras */}
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium flex items-center gap-2">
-              <Users className="w-4 h-4 text-primary" />
-              Efetivo por Obra
+              <BarChart3 className="w-4 h-4 text-primary" />
+              Ranking de Performance das Obras
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="h-[220px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={colaboradoresPorObra} layout="vertical">
-                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-                  <XAxis type="number" tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }} />
-                  <YAxis
-                    dataKey="obra"
-                    type="category"
-                    tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }}
-                    width={60}
-                  />
-                  <Tooltip />
-                  <Bar dataKey="efetivo" fill="hsl(var(--info))" radius={[0, 4, 4, 0]} name="Colaboradores" />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Indicadores de Performance */}
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium flex items-center gap-2">
-              <Target className="w-4 h-4 text-primary" />
-              Performance Media (IDP/IDC)
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="h-[220px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <RadialBarChart
-                  cx="50%"
-                  cy="50%"
-                  innerRadius="30%"
-                  outerRadius="90%"
-                  data={performanceGeral}
-                  startAngle={180}
-                  endAngle={0}
-                >
-                  <RadialBar background dataKey="value" cornerRadius={10} />
-                  <Tooltip />
-                  <Legend />
-                </RadialBarChart>
-              </ResponsiveContainer>
-            </div>
-            <div className="flex justify-center gap-6 mt-2">
-              <div className="text-center">
-                <p className="text-2xl font-bold text-primary">0.97</p>
-                <p className="text-xs text-muted-foreground">IDP Medio</p>
-              </div>
-              <div className="text-center">
-                <p className="text-2xl font-bold text-info">0.99</p>
-                <p className="text-xs text-muted-foreground">IDC Medio</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Ranking de Obras */}
-      <Card>
-        <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-medium flex items-center gap-2">
-            <BarChart3 className="w-4 h-4 text-primary" />
-            Ranking de Performance das Obras
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-border">
-                  <th className="text-left py-3 font-medium text-muted-foreground">Obra</th>
-                  <th className="text-center py-3 font-medium text-muted-foreground">Avanco</th>
-                  <th className="text-center py-3 font-medium text-muted-foreground">IDP</th>
-                  <th className="text-center py-3 font-medium text-muted-foreground">IDC</th>
-                  <th className="text-right py-3 font-medium text-muted-foreground">Valor (M)</th>
-                  <th className="text-center py-3 font-medium text-muted-foreground">Status</th>
-                  <th className="text-center py-3 font-medium text-muted-foreground">Acao</th>
-                </tr>
-              </thead>
-              <tbody>
-                {obrasData
-                  .sort((a, b) => b.idp * b.idc - a.idp * a.idc)
-                  .map((obra, idx) => (
-                    <tr key={idx} className="border-b border-border/50 hover:bg-muted/30 transition-colors">
-                      <td className="py-3 text-foreground font-medium">{obra.nome}</td>
-                      <td className="py-3 text-center">
-                        <div className="flex items-center justify-center gap-2">
-                          <div className="w-16 h-2 bg-muted rounded-full overflow-hidden">
-                            <div className="h-full bg-primary rounded-full" style={{ width: `${obra.avanco}%` }} />
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-border">
+                    <th className="text-left py-3 font-medium text-muted-foreground">Obra</th>
+                    <th className="text-center py-3 font-medium text-muted-foreground">Avanco</th>
+                    <th className="text-center py-3 font-medium text-muted-foreground">IDP</th>
+                    <th className="text-center py-3 font-medium text-muted-foreground">IDC</th>
+                    <th className="text-right py-3 font-medium text-muted-foreground">Valor (M)</th>
+                    <th className="text-center py-3 font-medium text-muted-foreground">Status</th>
+                    <th className="text-center py-3 font-medium text-muted-foreground">Acao</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {obrasData
+                    .sort((a, b) => b.idp * b.idc - a.idp * a.idc)
+                    .map((obra, idx) => (
+                      <tr key={idx} className="border-b border-border/50 hover:bg-muted/30 transition-colors">
+                        <td className="py-3 text-foreground font-medium">{obra.nome}</td>
+                        <td className="py-3 text-center">
+                          <div className="flex items-center justify-center gap-2">
+                            <div className="w-16 h-2 bg-muted rounded-full overflow-hidden">
+                              <div className="h-full bg-primary rounded-full" style={{ width: `${obra.avanco}%` }} />
+                            </div>
+                            <span className="text-xs text-muted-foreground">{obra.avanco}%</span>
                           </div>
-                          <span className="text-xs text-muted-foreground">{obra.avanco}%</span>
-                        </div>
-                      </td>
-                      <td
-                        className={`py-3 text-center font-medium ${obra.idp >= 1 ? "text-success" : obra.idp >= 0.95 ? "text-warning" : "text-destructive"}`}
-                      >
-                        {obra.idp.toFixed(2)}
-                      </td>
-                      <td
-                        className={`py-3 text-center font-medium ${obra.idc >= 1 ? "text-success" : obra.idc >= 0.95 ? "text-warning" : "text-destructive"}`}
-                      >
-                        {obra.idc.toFixed(2)}
-                      </td>
-                      <td className="py-3 text-right text-foreground">R$ {obra.valor}</td>
-                      <td className="py-3 text-center">
-                        <Badge
-                          variant="outline"
-                          className={
-                            obra.status === "otimo"
-                              ? "bg-success/10 text-success border-success/20"
-                              : obra.status === "normal"
-                                ? "bg-primary/10 text-primary border-primary/20"
-                                : obra.status === "atencao"
-                                  ? "bg-warning/10 text-warning border-warning/20"
-                                  : "bg-destructive/10 text-destructive border-destructive/20"
-                          }
+                        </td>
+                        <td
+                          className={`py-3 text-center font-medium ${obra.idp >= 1 ? "text-success" : obra.idp >= 0.95 ? "text-warning" : "text-destructive"}`}
                         >
-                          {obra.status === "otimo"
-                            ? "Otimo"
-                            : obra.status === "normal"
-                              ? "Normal"
-                              : obra.status === "atencao"
-                                ? "Atencao"
-                                : "Critico"}
-                        </Badge>
-                      </td>
-                      <td className="py-3 text-center">
-                        <Button variant="ghost" size="sm">
-                          <ChevronRight className="w-4 h-4" />
-                        </Button>
-                      </td>
-                    </tr>
-                  ))}
-              </tbody>
-            </table>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+                          {obra.idp.toFixed(2)}
+                        </td>
+                        <td
+                          className={`py-3 text-center font-medium ${obra.idc >= 1 ? "text-success" : obra.idc >= 0.95 ? "text-warning" : "text-destructive"}`}
+                        >
+                          {obra.idc.toFixed(2)}
+                        </td>
+                        <td className="py-3 text-right text-foreground">R$ {obra.valor}</td>
+                        <td className="py-3 text-center">
+                          <Badge
+                            variant="outline"
+                            className={
+                              obra.status === "otimo"
+                                ? "bg-success/10 text-success border-success/20"
+                                : obra.status === "normal"
+                                  ? "bg-primary/10 text-primary border-primary/20"
+                                  : obra.status === "atencao"
+                                    ? "bg-warning/10 text-warning border-warning/20"
+                                    : "bg-destructive/10 text-destructive border-destructive/20"
+                            }
+                          >
+                            {obra.status === "otimo"
+                              ? "Otimo"
+                              : obra.status === "normal"
+                                ? "Normal"
+                                : obra.status === "atencao"
+                                  ? "Atencao"
+                                  : "Critico"}
+                          </Badge>
+                        </td>
+                        <td className="py-3 text-center">
+                          <Button variant="ghost" size="sm">
+                            <ChevronRight className="w-4 h-4" />
+                          </Button>
+                        </td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </AppLayout>
   )
 }
