@@ -234,15 +234,7 @@ const obraNavigation: Section[] = [
     icon: Wallet,
     submenu: [
       { name: "AD-01 RH", href: "/obra/administrativo/rh", icon: UserCog },
-      {
-        name: "AD-02 Financeiro",
-        icon: DollarSign,
-        children: [
-          { name: "FI-01 Visao Geral", href: "/obra/administrativo/financeiro", icon: DollarSign },
-          { name: "FI-02 Recebimento Folha", href: "/obra/administrativo/financeiro/folha", icon: FileText },
-          { name: "FI-03 Provisao Folha", href: "/obra/administrativo/financeiro/folha/provisao", icon: Calculator },
-        ],
-      },
+      { name: "AD-02 Financeiro", href: "/obra/administrativo/financeiro", icon: DollarSign },
       { name: "AD-03 Patrimonio", href: "/obra/administrativo/patrimonio", icon: Package },
       { name: "AD-04 Comunicacao", href: "/obra/administrativo/comunicacao", icon: Megaphone },
       { name: "AD-05 Configuracoes", href: "/obra/administrativo/configuracoes", icon: Settings },
