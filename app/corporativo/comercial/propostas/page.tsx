@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Plus, Search, Eye, FileText } from "lucide-react"
 import { ComercialSidebar } from "../_components/comercial-sidebar"
 import { ComercialTopBar } from "../_components/comercial-top-bar"
@@ -79,7 +78,6 @@ type StatusProposta = "em_cadastro" | "em_revisao" | "em_analise" | "consolidada
 export default function PropostasPage() {
   const router = useRouter()
   const [busca, setBusca] = useState("")
-  const [cadastroOpen, setCadastroOpen] = useState(false)
 
   // Filtrar propostas
   const propostasFiltradas = propostasMock.filter(p => 
@@ -157,102 +155,11 @@ export default function PropostasPage() {
                     </div>
 
                     {/* Botão Nova Proposta */}
-                    <Dialog open={cadastroOpen} onOpenChange={setCadastroOpen}>
-                      <DialogTrigger asChild>
-                        <Button className="gap-2">
-                          <Plus className="w-4 h-4" />
-                          Nova Proposta
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-                        <DialogHeader>
-                          <DialogTitle className="text-xl font-bold">Cadastrar Nova Proposta</DialogTitle>
-                          <p className="text-sm text-muted-foreground">
-                            Preencha os dados e faça upload da documentação
-                          </p>
-                        </DialogHeader>
-                        
-                        {/* FORMULÁRIO DE CADASTRO */}
-                        <div className="space-y-6 py-4">
-                          {/* Seção 1: Dados Básicos */}
-                          <div className="space-y-4">
-                            <h3 className="font-semibold text-sm border-b pb-2">Dados Básicos</h3>
-                            <div className="grid grid-cols-2 gap-4">
-                              <div className="space-y-2">
-                                <label className="text-xs font-medium">Cliente *</label>
-                                <Input placeholder="Selecione ou cadastre" />
-                              </div>
-                              <div className="space-y-2">
-                                <label className="text-xs font-medium">Nome da Obra *</label>
-                                <Input placeholder="Ex: Ponte Rio Grande" />
-                              </div>
-                              <div className="space-y-2">
-                                <label className="text-xs font-medium">Tipo de Obra *</label>
-                                <Input placeholder="Infraestrutura, Edificação..." />
-                              </div>
-                              <div className="space-y-2">
-                                <label className="text-xs font-medium">Localização *</label>
-                                <Input placeholder="Cidade, Estado" />
-                              </div>
-                              <div className="space-y-2">
-                                <label className="text-xs font-medium">Valor Estimado</label>
-                                <Input placeholder="R$ 0,00" type="number" />
-                              </div>
-                              <div className="space-y-2">
-                                <label className="text-xs font-medium">Prazo</label>
-                                <Input type="date" />
-                              </div>
-                            </div>
-                          </div>
-
-                          {/* Seção 2: Upload de Documentos */}
-                          <div className="space-y-4">
-                            <h3 className="font-semibold text-sm border-b pb-2">Documentação</h3>
-                            <div className="border-2 border-dashed rounded-lg p-8 text-center hover:border-primary/50 transition-colors cursor-pointer">
-                              <FileText className="w-8 h-8 mx-auto text-muted-foreground mb-2" />
-                              <p className="text-sm font-medium">Arraste arquivos ou clique para fazer upload</p>
-                              <p className="text-xs text-muted-foreground mt-1">
-                                Editais, projetos, memoriais, planilhas...
-                              </p>
-                            </div>
-                          </div>
-
-                          {/* Seção 3: Responsáveis */}
-                          <div className="space-y-4">
-                            <h3 className="font-semibold text-sm border-b pb-2">Atribuição</h3>
-                            <div className="grid grid-cols-2 gap-4">
-                              <div className="space-y-2">
-                                <label className="text-xs font-medium">Responsável Comercial *</label>
-                                <Input placeholder="Selecione" />
-                              </div>
-                              <div className="space-y-2">
-                                <label className="text-xs font-medium">Departamentos Envolvidos *</label>
-                                <Input placeholder="Técnico, Custos, Jurídico..." />
-                              </div>
-                            </div>
-                          </div>
-
-                          {/* Botões */}
-                          <div className="flex items-center justify-end gap-3 pt-4 border-t">
-                            <Button variant="outline" onClick={() => setCadastroOpen(false)}>
-                              Cancelar
-                            </Button>
-                            <Button 
-                              onClick={() => {
-                                // Aqui vai a lógica de salvar
-                                setCadastroOpen(false)
-                                // TODO: Notificar departamentos
-                              }}
-                            >
-                              Salvar e Notificar Departamentos
-                            </Button>
-                          </div>
-                        </div>
-                      </DialogContent>
-                    </Dialog>
+                    <Button className="gap-2" onClick={() => router.push("/corporativo/comercial/propostas/nova")}>
+                      <Plus className="w-4 h-4" />
+                      Nova Proposta
+                    </Button>
                   </div>
-                </div>
-              </CardHeader>
 
               <CardContent className="p-0">
                 <Table>
