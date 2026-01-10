@@ -90,31 +90,39 @@ export function KPIsPropostas({ kpis }: KPIPropostasProps) {
   // ============================================================================
   // COMPONENTE DE TIMELINE MENSAL (Reutilizável)
   // ============================================================================
-  const MonthlyTimeline = ({ data, color }: { data: typeof timelineTotal, color: string }) => {
+  const MonthlyTimeline = ({ data, color, label }: { data: typeof timelineTotal, color: string, label: string }) => {
     const maxValue = Math.max(...data.map(d => d.valor), 1)
     
     return (
-      <div className="border-t border-border pt-2">
-        <div className="flex items-end justify-between gap-1 h-12">
+      <div className="border-t border-border pt-3">
+        <p className="text-[10px] font-semibold text-muted-foreground mb-2 uppercase tracking-wide">
+          Evolução Mensal (6 meses)
+        </p>
+        <div className="flex items-end justify-between gap-1.5 h-14">
           {data.map((item, idx) => {
             const heightPercent = (item.valor / maxValue) * 100
             return (
-              <div key={idx} className="flex-1 flex flex-col items-center gap-1 group cursor-pointer">
+              <div key={idx} className="flex-1 flex flex-col items-center gap-1 group cursor-pointer relative">
+                {/* Tooltip value on hover - ACIMA da barra */}
+                <div className="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-popover border-2 border-primary rounded-lg px-2.5 py-1.5 shadow-xl transition-all duration-200 pointer-events-none z-20 whitespace-nowrap">
+                  <p className="text-sm font-black text-primary">{item.valor}</p>
+                  <p className="text-[9px] text-muted-foreground">{label}</p>
+                  {/* Seta apontando para baixo */}
+                  <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-popover border-r-2 border-b-2 border-primary rotate-45" />
+                </div>
+                
                 {/* Barra */}
-                <div className="w-full flex items-end justify-center" style={{ height: '32px' }}>
+                <div className="w-full flex items-end justify-center" style={{ height: '36px' }}>
                   <div 
-                    className={`w-full ${color} rounded-t transition-all group-hover:opacity-80`}
-                    style={{ height: `${heightPercent}%`, minHeight: item.valor > 0 ? '4px' : '0px' }}
+                    className={`w-full ${color} rounded-t transition-all group-hover:opacity-90 group-hover:brightness-110`}
+                    style={{ height: `${heightPercent}%`, minHeight: item.valor > 0 ? '6px' : '0px' }}
                   />
                 </div>
+                
                 {/* Label do mês */}
-                <span className="text-[9px] font-medium text-muted-foreground group-hover:text-foreground transition-colors">
+                <span className="text-[10px] font-bold text-muted-foreground group-hover:text-foreground transition-colors">
                   {item.mes}
                 </span>
-                {/* Tooltip value on hover */}
-                <div className="opacity-0 group-hover:opacity-100 absolute -translate-y-16 bg-background border rounded px-2 py-1 shadow-lg transition-opacity pointer-events-none z-10">
-                  <p className="text-xs font-bold">{item.valor}</p>
-                </div>
               </div>
             )
           })}
@@ -151,7 +159,7 @@ export function KPIsPropostas({ kpis }: KPIPropostasProps) {
           </div>
 
           {/* TIMELINE MENSAL */}
-          <MonthlyTimeline data={timelineTotal} color="bg-blue-500" />
+          <MonthlyTimeline data={timelineTotal} color="bg-blue-500" label="propostas" />
           
           {/* Sparkline (7 dias) */}
           <div className="h-10 pt-2 border-t">
@@ -202,7 +210,7 @@ export function KPIsPropostas({ kpis }: KPIPropostasProps) {
           </div>
 
           {/* TIMELINE MENSAL */}
-          <MonthlyTimeline data={timelineProgresso} color="bg-amber-500" />
+          <MonthlyTimeline data={timelineProgresso} color="bg-amber-500" label="em progresso" />
           
           <div className="h-10 pt-2 border-t">
             <ResponsiveContainer width="100%" height="100%">
@@ -251,7 +259,7 @@ export function KPIsPropostas({ kpis }: KPIPropostasProps) {
           </div>
 
           {/* TIMELINE MENSAL */}
-          <MonthlyTimeline data={timelineConsolidadas} color="bg-emerald-500" />
+          <MonthlyTimeline data={timelineConsolidadas} color="bg-emerald-500" label="consolidadas" />
           
           <div className="h-10 pt-2 border-t">
             <ResponsiveContainer width="100%" height="100%">
@@ -299,7 +307,7 @@ export function KPIsPropostas({ kpis }: KPIPropostasProps) {
           </div>
 
           {/* TIMELINE MENSAL */}
-          <MonthlyTimeline data={timelineEnviadas} color="bg-purple-500" />
+          <MonthlyTimeline data={timelineEnviadas} color="bg-purple-500" label="enviadas" />
           
           <div className="h-10 pt-2 border-t">
             <ResponsiveContainer width="100%" height="100%">
