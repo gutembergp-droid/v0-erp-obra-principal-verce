@@ -28,8 +28,8 @@ export function CardProspeccaoV2({ dados }: { dados: DadosProspeccao }) {
   const impactoPipeline60dias = deficit * 25000000 // Estimativa de valor por prospecção
 
   return (
-    <Card className="border hover:border-primary/50 transition-colors">
-      <CardHeader className="pb-3 space-y-2">
+    <Card className="border hover:border-primary/50 transition-colors h-full flex flex-col">
+      <CardHeader className="pb-2 space-y-1.5">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Users className="w-4 h-4 text-blue-600" />
@@ -42,7 +42,7 @@ export function CardProspeccaoV2({ dados }: { dados: DadosProspeccao }) {
         <p className="text-xs text-muted-foreground">Futuro da receita • Geração de pipeline</p>
       </CardHeader>
 
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-3 flex-1 flex flex-col">
         {/* Indicador Principal com Contexto */}
         <div className="space-y-2">
           <div className="flex items-baseline justify-between">

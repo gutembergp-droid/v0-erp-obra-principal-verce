@@ -29,8 +29,8 @@ export function CardConsolidadoV2({ dados }: { dados: DadosConsolidado }) {
   const percentualMeta = ((projecaoAnual / metaAnual) * 100).toFixed(0)
 
   return (
-    <Card className="border hover:border-primary/50 transition-colors">
-      <CardHeader className="pb-3 space-y-2">
+    <Card className="border hover:border-primary/50 transition-colors h-full flex flex-col">
+      <CardHeader className="pb-2 space-y-1.5">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <TrendingUp className="w-4 h-4 text-emerald-600" />
@@ -43,7 +43,7 @@ export function CardConsolidadoV2({ dados }: { dados: DadosConsolidado }) {
         <p className="text-xs text-muted-foreground">Resultado • Qualidade comercial</p>
       </CardHeader>
 
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-3 flex-1 flex flex-col">
         {/* Ganho vs Perdido */}
         <div className="space-y-2">
           <p className="text-xs font-medium">Performance Competitiva</p>

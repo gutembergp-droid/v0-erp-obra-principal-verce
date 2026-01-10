@@ -38,8 +38,8 @@ export function KPIInteligente({ tipo, dados }: KPIInteligenteProps) {
     const vencendo7dias = 120000000
 
     return (
-      <Card className="border-l-4 border-l-blue-600 hover:shadow-lg transition-all">
-        <div className="p-4 space-y-3">
+      <Card className="border-l-4 border-l-blue-600 hover:shadow-lg transition-all h-full">
+        <div className="p-3 space-y-2.5 h-full flex flex-col">
           {/* Header */}
           <div className="flex items-start justify-between">
             <div>
@@ -110,8 +110,8 @@ export function KPIInteligente({ tipo, dados }: KPIInteligenteProps) {
     const percentualProjecao = ((projecao / metaAnual) * 100).toFixed(0)
 
     return (
-      <Card className="border-l-4 border-l-emerald-600 hover:shadow-lg transition-all">
-        <div className="p-4 space-y-3">
+      <Card className="border-l-4 border-l-emerald-600 hover:shadow-lg transition-all h-full">
+        <div className="p-3 space-y-2.5 h-full flex flex-col">
           {/* Header */}
           <div className="flex items-start justify-between">
             <div>
@@ -183,8 +183,8 @@ export function KPIInteligente({ tipo, dados }: KPIInteligenteProps) {
     const propostasParadas = 3
 
     return (
-      <Card className="border-l-4 border-l-red-600 hover:shadow-lg transition-all">
-        <div className="p-4 space-y-3">
+      <Card className="border-l-4 border-l-red-600 hover:shadow-lg transition-all h-full">
+        <div className="p-3 space-y-2.5 h-full flex flex-col">
           {/* Header */}
           <div className="flex items-start justify-between">
             <div>
@@ -261,8 +261,8 @@ export function KPIInteligente({ tipo, dados }: KPIInteligenteProps) {
     const riscoTotal = 890000000
 
     return (
-      <Card className="border-l-4 border-l-orange-600 hover:shadow-lg transition-all animate-pulse">
-        <div className="p-4 space-y-3">
+      <Card className="border-l-4 border-l-orange-600 hover:shadow-lg transition-all animate-pulse h-full">
+        <div className="p-3 space-y-2.5 h-full flex flex-col">
           {/* Header */}
           <div className="flex items-start justify-between">
             <div>

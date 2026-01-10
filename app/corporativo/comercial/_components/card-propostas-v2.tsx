@@ -26,8 +26,8 @@ export function CardPropostasV2({ dados }: { dados: DadosPropostasAndamento }) {
   const valorTravado = etapaTravada ? 280000000 : 0
 
   return (
-    <Card className="border hover:border-primary/50 transition-colors">
-      <CardHeader className="pb-3 space-y-2">
+    <Card className="border hover:border-primary/50 transition-colors h-full flex flex-col">
+      <CardHeader className="pb-2 space-y-1.5">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <FileText className="w-4 h-4 text-purple-600" />
@@ -40,7 +40,7 @@ export function CardPropostasV2({ dados }: { dados: DadosPropostasAndamento }) {
         <p className="text-xs text-muted-foreground">Disputando agora • Controle de execução</p>
       </CardHeader>
 
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-3 flex-1 flex flex-col">
         {/* Indicadores Principais */}
         <div className="grid grid-cols-2 gap-3">
           <div className="space-y-1">
