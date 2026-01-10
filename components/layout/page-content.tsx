@@ -19,32 +19,84 @@ const maxWidthClasses = {
 
 const paddingClasses = {
   none: "p-0",
-  sm: "p-4",
-  md: "p-6",
-  lg: "p-8",
+  sm: "px-2 py-3 sm:px-4 sm:py-4",
+  md: "px-3 py-4 sm:px-4 sm:py-5 md:px-6 md:py-6",
+  lg: "px-4 py-5 sm:px-6 sm:py-6 md:px-8 md:py-8",
 }
 
 export function PageContent({ children, className, maxWidth = "2xl", padding = "md" }: PageContentProps) {
   return (
-    <div className={cn("w-full mx-auto", maxWidthClasses[maxWidth], paddingClasses[padding], "space-y-6", className)}>
+    <div
+      className={cn(
+        "w-full mx-auto",
+        "px-[var(--container-padding-x)]",
+        maxWidthClasses[maxWidth],
+        paddingClasses[padding],
+        "space-y-4 sm:space-y-5 md:space-y-6",
+        "min-w-0", // Previne overflow horizontal
+        className
+      )}
+    >
       {children}
     </div>
   )
 }
 
-// Grid padrao para KPIs (4 colunas em desktop)
+// Grid padrao para KPIs (4 colunas em desktop, responsivo)
 export function KPIGrid({ children, className }: { children: React.ReactNode; className?: string }) {
-  return <div className={cn("grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4", className)}>{children}</div>
+  return (
+    <div
+      className={cn(
+        "grid",
+        "grid-cols-1",
+        "sm:grid-cols-2",
+        "lg:grid-cols-3",
+        "xl:grid-cols-4",
+        "gap-3 sm:gap-4 md:gap-5",
+        "auto-rows-fr",
+        className
+      )}
+    >
+      {children}
+    </div>
+  )
 }
 
 // Grid para 2 colunas
 export function Grid2({ children, className }: { children: React.ReactNode; className?: string }) {
-  return <div className={cn("grid grid-cols-1 md:grid-cols-2 gap-4", className)}>{children}</div>
+  return (
+    <div
+      className={cn(
+        "grid",
+        "grid-cols-1",
+        "md:grid-cols-2",
+        "gap-3 sm:gap-4 md:gap-5",
+        "auto-rows-fr",
+        className
+      )}
+    >
+      {children}
+    </div>
+  )
 }
 
 // Grid para 3 colunas
 export function Grid3({ children, className }: { children: React.ReactNode; className?: string }) {
-  return <div className={cn("grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4", className)}>{children}</div>
+  return (
+    <div
+      className={cn(
+        "grid",
+        "grid-cols-1",
+        "sm:grid-cols-2",
+        "lg:grid-cols-3",
+        "gap-3 sm:gap-4 md:gap-5",
+        "auto-rows-fr",
+        className
+      )}
+    >
+      {children}
+    </div>
+  )
 }
 
 // Grid flexivel (auto-fit)
@@ -71,5 +123,19 @@ export function GridAuto({
 
 // Container para tabelas com scroll horizontal
 export function TableContainer({ children, className }: { children: React.ReactNode; className?: string }) {
-  return <div className={cn("w-full overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0", className)}>{children}</div>
+  return (
+    <div
+      className={cn(
+        "w-full",
+        "overflow-x-auto",
+        "-mx-2 sm:-mx-3 md:-mx-4",
+        "px-2 sm:px-3 md:px-4",
+        "lg:mx-0 lg:px-0",
+        "scrollbar-thin scrollbar-thumb-muted-foreground/30 scrollbar-track-transparent",
+        className
+      )}
+    >
+      {children}
+    </div>
+  )
 }

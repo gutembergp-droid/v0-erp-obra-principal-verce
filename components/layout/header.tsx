@@ -6,15 +6,21 @@ import { Input } from "@/components/ui/input"
 
 interface HeaderProps {
   title: string
+  subtitle?: string
   description?: string
 }
 
-export function Header({ title, description }: HeaderProps) {
+export function Header({ title, subtitle, description }: HeaderProps) {
+  // Use subtitle se fornecido, senão description (retrocompatibilidade)
+  const secondaryText = subtitle || description
+
   return (
     <header className="flex items-center justify-between h-16 px-6 border-b border-border bg-background">
-      <div>
-        <h1 className="text-xl font-semibold text-foreground">{title}</h1>
-        {description && <p className="text-sm text-muted-foreground">{description}</p>}
+      <div className="min-h-[40px] flex flex-col justify-center">
+        <h1 className="text-lg font-semibold text-foreground leading-tight">{title}</h1>
+        {secondaryText && (
+          <p className="text-xs text-muted-foreground leading-tight mt-0.5">{secondaryText}</p>
+        )}
       </div>
 
       <div className="flex items-center gap-4">

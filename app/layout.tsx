@@ -5,6 +5,7 @@ import { Analytics } from "@vercel/analytics/next"
 import { AuthProvider } from "@/contexts/auth-context"
 import { ThemeProvider } from "@/contexts/theme-context"
 import { LanguageProvider } from "@/contexts/language-context"
+import { Toaster } from "sonner"
 import "./globals.css"
 
 const montserrat = Montserrat({
@@ -22,6 +23,12 @@ export const metadata: Metadata = {
   title: "ERP GENESIS - Plataforma de Gestao de Obras",
   description: "Sistema ERP para engenharia pesada e infraestrutura - O Corporativo Governa, a Obra Executa",
   generator: "v0.dev",
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 5,
+    userScalable: true,
+  },
   icons: {
     icon: [
       {
@@ -49,13 +56,14 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className="bg-background" suppressHydrationWarning>
       <body
-        className={`${montserrat.variable} ${bebasNeue.variable} font-sans antialiased bg-background text-foreground min-h-screen`}
+        className={`${montserrat.variable} ${bebasNeue.variable} font-sans antialiased bg-background text-foreground min-h-screen w-full`}
       >
         <ThemeProvider>
           <LanguageProvider>
             <AuthProvider>{children}</AuthProvider>
           </LanguageProvider>
         </ThemeProvider>
+        <Toaster position="top-right" richColors />
         <Analytics />
       </body>
     </html>

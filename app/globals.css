@@ -51,11 +51,50 @@
   --transition-slow: 300ms ease;
   --transition-theme: 350ms ease;
 
-  /* Variaveis de responsividade */
-  --content-max-width: 1600px;
-  --content-padding: 1.5rem;
+  /* Variaveis de responsividade - Mobile First */
+  --content-max-width: 100%;
+  --content-padding: clamp(0.75rem, 2vw, 1.5rem);
+  --content-padding-sm: clamp(0.5rem, 1.5vw, 1rem);
+  --content-padding-md: clamp(1rem, 2.5vw, 1.5rem);
+  --content-padding-lg: clamp(1.5rem, 3vw, 2rem);
   --card-min-width: 280px;
-  --card-max-width: 400px;
+  --card-max-width: 100%;
+  
+  /* Breakpoints customizados (para uso em media queries CSS) */
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+  
+  /* Escala de container responsivo */
+  --container-padding-x: clamp(0.75rem, 4vw, 2rem);
+  --container-max-width-sm: 640px;
+  --container-max-width-md: 768px;
+  --container-max-width-lg: 1024px;
+  --container-max-width-xl: 1280px;
+  --container-max-width-2xl: 1600px;
+  
+  /* Tipografia fluida - escala automática baseada na largura da viewport */
+  --text-scale-ratio: clamp(0.875, 0.875 + ((1vw - 0.4rem) * 0.15), 1);
+  --text-xs-fluid: clamp(0.6875rem, 0.6875rem + 0.25vw, 0.75rem);
+  --text-sm-fluid: clamp(0.8125rem, 0.8125rem + 0.25vw, 0.875rem);
+  --text-base-fluid: clamp(0.875rem, 0.875rem + 0.25vw, 1rem);
+  --text-md-fluid: clamp(1rem, 1rem + 0.5vw, 1.125rem);
+  --text-lg-fluid: clamp(1.125rem, 1.125rem + 0.5vw, 1.25rem);
+  --text-xl-fluid: clamp(1.25rem, 1.25rem + 0.75vw, 1.5rem);
+  --text-2xl-fluid: clamp(1.5rem, 1.5rem + 1vw, 2rem);
+  --text-3xl-fluid: clamp(1.875rem, 1.875rem + 1.25vw, 2.5rem);
+  --text-4xl-fluid: clamp(2.25rem, 2.25rem + 1.5vw, 3rem);
+  --text-5xl-fluid: clamp(3rem, 3rem + 2vw, 4rem);
+  
+  /* Espaçamentos fluidos */
+  --space-fluid-xs: clamp(0.25rem, 0.25rem + 0.5vw, 0.5rem);
+  --space-fluid-sm: clamp(0.5rem, 0.5rem + 0.75vw, 1rem);
+  --space-fluid-md: clamp(0.75rem, 0.75rem + 1vw, 1.5rem);
+  --space-fluid-lg: clamp(1rem, 1rem + 1.5vw, 2rem);
+  --space-fluid-xl: clamp(1.5rem, 1.5rem + 2vw, 3rem);
+  --space-fluid-2xl: clamp(2rem, 2rem + 3vw, 4rem);
 }
 
 /* ========================================
@@ -473,15 +512,82 @@ html.dark,
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    box-sizing: border-box;
+  }
+
+  html {
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    text-size-adjust: 100%;
   }
 
   body {
     @apply bg-background text-foreground;
+    width: 100%;
+    min-height: 100vh;
     font-feature-settings: "rlig" 1, "calt" 1;
     transition: background-color var(--transition-theme), color var(--transition-theme);
+    overflow-x: hidden;
+    position: relative;
   }
-
-  /* Scrollbar personalizada */
+  
+  /* Container responsivo padrão */
+  .container-responsive {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--container-padding-x);
+    padding-right: var(--container-padding-x);
+  }
+  
+  /* Media queries para containers responsivos */
+  @media (min-width: 640px) {
+    .container-responsive {
+      max-width: var(--container-max-width-sm);
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .container-responsive {
+      max-width: var(--container-max-width-md);
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .container-responsive {
+      max-width: var(--container-max-width-lg);
+    }
+  }
+  
+  @media (min-width: 1280px) {
+    .container-responsive {
+      max-width: var(--container-max-width-xl);
+    }
+  }
+  
+  @media (min-width: 1536px) {
+    .container-responsive {
+      max-width: var(--container-max-width-2xl);
+    }
+  }
+  
+  /* Prevenir quebra de layout em telas pequenas */
+  img, video, iframe, embed, object {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  /* Prevenir overflow horizontal */
+  table {
+    width: 100%;
+    table-layout: auto;
+  }
+  
+  /* Scrollbar personalizada - Desktop */
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
@@ -500,6 +606,14 @@ html.dark,
   ::-webkit-scrollbar-thumb:hover {
     background: var(--foreground);
     opacity: 0.5;
+  }
+  
+  /* Scrollbar responsiva - Mobile */
+  @media (max-width: 768px) {
+    ::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
   }
 }
 
