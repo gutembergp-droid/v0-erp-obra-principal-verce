@@ -20,13 +20,14 @@ interface ComercialTopBarProps {
     variant?: "default" | "secondary" | "destructive" | "outline"
   }>
   alertasCriticos?: AlertasCriticosType
+  hideNovaPropostaButton?: boolean
 }
 
 // ============================================================================
 // COMPONENT
 // ============================================================================
 
-export function ComercialTopBar({ titulo = "Comercial", badges = [], alertasCriticos }: ComercialTopBarProps) {
+export function ComercialTopBar({ titulo = "Comercial", badges = [], alertasCriticos, hideNovaPropostaButton = false }: ComercialTopBarProps) {
   const [searchTerm, setSearchTerm] = useState("")
   const [helpOpen, setHelpOpen] = useState(false)
   const [alertasOpen, setAlertasOpen] = useState(false)
@@ -82,11 +83,13 @@ export function ComercialTopBar({ titulo = "Comercial", badges = [], alertasCrit
             <HelpCircle className="w-4 h-4" />
           </Button>
 
-          {/* Nova Proposta */}
-          <Button size="sm" className="gap-1.5">
-            <Plus className="w-4 h-4" />
-            Nova Proposta
-          </Button>
+          {/* Nova Proposta (Condicional) */}
+          {!hideNovaPropostaButton && (
+            <Button size="sm" className="gap-1.5">
+              <Plus className="w-4 h-4" />
+              Nova Proposta
+            </Button>
+          )}
         </div>
       </div>
 
