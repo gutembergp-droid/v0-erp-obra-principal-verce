@@ -182,6 +182,31 @@ export default function NovaPropostaPage() {
       toast.error("Atribua pelo menos um responsável")
       return
     }
+
+    // Criar objeto da proposta
+    const novaProposta = {
+      id: `PROP-2026-${String(Date.now()).slice(-3)}`,
+      cliente: clienteSelecionado || "Novo Cliente",
+      obra: nomeObra,
+      tipoObra: tipoObra,
+      localizacao: localizacao,
+      status: "em_cadastro",
+      valorInicial: tipoValor === "definido" ? parseFloat(valorProposta) || 0 : 0,
+      valorFinal: 0,
+      tipoValor: tipoValor,
+      dataInicio: new Date().toISOString().split('T')[0],
+      responsavel: responsaveis.find(r => r.nome)?.nome || "Não atribuído",
+      observacoes: observacoes,
+      documentos: documentos,
+      responsaveis: responsaveis.filter(r => r.nome),
+      dataCriacao: new Date().toISOString()
+    }
+
+    // Salvar no LocalStorage
+    const propostasExistentes = JSON.parse(localStorage.getItem("propostas") || "[]")
+    propostasExistentes.push(novaProposta)
+    localStorage.setItem("propostas", JSON.stringify(propostasExistentes))
+
     toast.success("Proposta cadastrada com sucesso!")
     router.push("/corporativo/comercial/propostas")
   }

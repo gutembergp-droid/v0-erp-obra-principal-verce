@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -78,9 +78,19 @@ type StatusProposta = "em_cadastro" | "em_revisao" | "em_analise" | "consolidada
 export default function PropostasPage() {
   const router = useRouter()
   const [busca, setBusca] = useState("")
+  const [propostas, setPropostas] = useState(propostasMock)
+
+  // Carregar propostas do LocalStorage
+  useEffect(() => {
+    const propostasLocalStorage = JSON.parse(localStorage.getItem("propostas") || "[]")
+    if (propostasLocalStorage.length > 0) {
+      // Combinar propostas do LocalStorage com as mock
+      setPropostas([...propostasLocalStorage, ...propostasMock])
+    }
+  }, [])
 
   // Filtrar propostas
-  const propostasFiltradas = propostasMock.filter(p => 
+  const propostasFiltradas = propostas.filter(p => 
     p.cliente.toLowerCase().includes(busca.toLowerCase()) ||
     p.obra.toLowerCase().includes(busca.toLowerCase()) ||
     p.id.toLowerCase().includes(busca.toLowerCase())
@@ -88,15 +98,15 @@ export default function PropostasPage() {
 
   // Calcular KPIs
   const kpis = {
-    total: propostasMock.length,
-    emProgresso: propostasMock.filter(p => p.status === "em_cadastro" || p.status === "em_revisao" || p.status === "em_analise").length,
-    consolidadas: propostasMock.filter(p => p.status === "consolidada").length,
-    enviadas: propostasMock.filter(p => p.status === "enviada").length,
-    valorTotal: propostasMock.reduce((acc, p) => acc + p.valorInicial, 0),
+    total: propostas.length,
+    emProgresso: propostas.filter(p => p.status === "em_cadastro" || p.status === "em_revisao" || p.status === "em_analise").length,
+    consolidadas: propostas.filter(p => p.status === "consolidada").length,
+    enviadas: propostas.filter(p => p.status === "enviada").length,
+    valorTotal: propostas.reduce((acc, p) => acc + p.valorInicial, 0),
     // Breakdown por status
-    valorEnviado: propostasMock.filter(p => p.status === "enviada").reduce((acc, p) => acc + p.valorInicial, 0),
-    valorElaboracao: propostasMock.filter(p => p.status === "em_cadastro" || p.status === "em_revisao").reduce((acc, p) => acc + p.valorInicial, 0),
-    valorMonitoramento: propostasMock.filter(p => p.status === "em_analise" || p.status === "consolidada").reduce((acc, p) => acc + p.valorInicial, 0),
+    valorEnviado: propostas.filter(p => p.status === "enviada").reduce((acc, p) => acc + p.valorInicial, 0),
+    valorElaboracao: propostas.filter(p => p.status === "em_cadastro" || p.status === "em_revisao").reduce((acc, p) => acc + p.valorInicial, 0),
+    valorMonitoramento: propostas.filter(p => p.status === "em_analise" || p.status === "consolidada").reduce((acc, p) => acc + p.valorInicial, 0),
   }
 
   // Config de status
