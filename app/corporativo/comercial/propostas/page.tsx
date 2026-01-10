@@ -160,6 +160,8 @@ export default function PropostasPage() {
                       Nova Proposta
                     </Button>
                   </div>
+                </div>
+              </CardHeader>
 
               <CardContent className="p-0">
                 <Table>
