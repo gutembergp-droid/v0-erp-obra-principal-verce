@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 4, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/gpontes/Documents/v0-erp-obra-principal-verce/app/corporativo/administrativo/rh/convencoes/loading.tsx"],"sourcesContent":["export default function Loading() {\r\n  return (\r\n    <div className=\"flex-1 flex items-center justify-center bg-background\">\r\n      <div className=\"animate-spin rounded-full h-8 w-8 border-b-2 border-primary\"></div>\r\n    </div>\r\n  )\r\n}\r\n"],"names":[],"mappings":";;;;;;AAAe,SAAS;IACtB,qBACE,sSAAC;QAAI,WAAU;kBACb,cAAA,sSAAC;YAAI,WAAU;;;;;;;;;;;AAGrB"}}]
-}

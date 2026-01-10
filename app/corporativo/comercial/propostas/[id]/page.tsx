@@ -82,6 +82,13 @@ export default function PropostaDetalhesPage({
                 <Badge variant="outline" className="text-sm px-3 py-1">
                   Em Análise
                 </Badge>
+                <Button 
+                  size="sm"
+                  onClick={() => router.push(`/corporativo/comercial/propostas/${id}/elaboracao`)}
+                >
+                  <FileText className="w-4 h-4 mr-2" />
+                  Ir para Elaboração
+                </Button>
                 <Button variant="outline" size="sm">
                   <FileText className="w-4 h-4 mr-2" />
                   Exportar PDF

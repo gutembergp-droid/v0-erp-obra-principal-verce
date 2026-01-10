@@ -1,12 +1,5 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
-  "/corporativo/comercial/analytics/page": "app/corporativo/comercial/analytics/page.js",
-  "/corporativo/comercial/clientes/page": "app/corporativo/comercial/clientes/page.js",
-  "/corporativo/comercial/contratos/page": "app/corporativo/comercial/contratos/page.js",
   "/corporativo/comercial/page": "app/corporativo/comercial/page.js",
-  "/corporativo/comercial/portfolio/page": "app/corporativo/comercial/portfolio/page.js",
   "/corporativo/comercial/propostas/[id]/page": "app/corporativo/comercial/propostas/[id]/page.js",
-  "/corporativo/comercial/propostas/nova/page": "app/corporativo/comercial/propostas/nova/page.js",
-  "/corporativo/comercial/propostas/page": "app/corporativo/comercial/propostas/page.js",
-  "/intranet/page": "app/intranet/page.js"
+  "/corporativo/comercial/propostas/page": "app/corporativo/comercial/propostas/page.js"
 }

@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 4, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/gpontes/Documents/v0-erp-obra-principal-verce/app/corporativo/console/perfis/loading.tsx"],"sourcesContent":["import { Skeleton } from \"@/components/ui/skeleton\"\r\n\r\nexport default function Loading() {\r\n  return (\r\n    <div className=\"space-y-6\">\r\n      <div className=\"flex items-center justify-between\">\r\n        <div className=\"space-y-2\">\r\n          <Skeleton className=\"h-8 w-64\" />\r\n          <Skeleton className=\"h-4 w-96\" />\r\n        </div>\r\n        <div className=\"flex gap-2\">\r\n          <Skeleton className=\"h-10 w-32\" />\r\n          <Skeleton className=\"h-10 w-32\" />\r\n        </div>\r\n      </div>\r\n      <Skeleton className=\"h-10 w-96\" />\r\n      <Skeleton className=\"h-[600px] w-full\" />\r\n    </div>\r\n  )\r\n}\r\n"],"names":[],"mappings":";;;;;AAAA;;;AAEe,SAAS;IACtB,qBACE,sSAAC;QAAI,WAAU;;0BACb,sSAAC;gBAAI,WAAU;;kCACb,sSAAC;wBAAI,WAAU;;0CACb,sSAAC,iMAAQ;gCAAC,WAAU;;;;;;0CACpB,sSAAC,iMAAQ;gCAAC,WAAU;;;;;;;;;;;;kCAEtB,sSAAC;wBAAI,WAAU;;0CACb,sSAAC,iMAAQ;gCAAC,WAAU;;;;;;0CACpB,sSAAC,iMAAQ;gCAAC,WAAU;;;;;;;;;;;;;;;;;;0BAGxB,sSAAC,iMAAQ;gBAAC,WAAU;;;;;;0BACpB,sSAAC,iMAAQ;gBAAC,WAAU;;;;;;;;;;;;AAG1B"}}]
-}
