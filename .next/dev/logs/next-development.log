@@ -32289,3 +32289,198 @@ Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
 [04:34:52.641] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/analytics. Please move it to viewport export instead.
 Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
 [04:34:52.859] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/corporativo/comercial/analytics color: rgb(120, 120, 120) color: inherit {"dp":"/corporativo/comercial/analytics","o":"http://localhost:3000/corporativo/comercial/analytics","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1768024691005}
+[04:38:16.443] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/propostas. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[04:38:16.626] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/corporativo/comercial/propostas color: rgb(120, 120, 120) color: inherit {"dp":"/corporativo/comercial/propostas","o":"http://localhost:3000/corporativo/comercial/propostas","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1768024894783}
+[04:38:22.742] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/propostas. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[04:39:45.355] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /_not-found. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[04:39:45.527] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /_not-found. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[04:39:45.875] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[04:39:46.029] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[04:39:46.029] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/corporativo/estrategico/catraca","route":"/corporativo/estrategico/catraca"}
+[04:39:46.029] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/corporativo/estrategico/catraca color: rgb(120, 120, 120) color: inherit {"dp":"/corporativo/estrategico/catraca","o":"http://localhost:3000/corporativo/estrategico/catraca","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1768024984190}
+[04:39:48.007] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/propostas. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[04:39:48.950] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[04:39:49.364] Browser ERROR   A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+%s%s https://react.dev/link/hydration-mismatch 
+
+  ...
+    <div className="flex items...">
+      <div>
+      <Tooltip>
+      ...
+        <Slot aria-describedby={undefined} data-state="closed" data-slot="tooltip-tr..." ...>
+          <SlotClone aria-describedby={undefined} data-state="closed" data-slot="tooltip-tr..." ...>
+            <DropdownMenuTrigger asChild={true} aria-describedby={undefined} data-state="closed" ...>
+              <DropdownMenuTrigger data-slot="tooltip-tr..." asChild={true} aria-describedby={undefined} ...>
+                <MenuAnchor asChild={true} __scopeMenu={{Menu:[...], ...}}>
+                  <PopperAnchor __scopePopper={{Menu:[...], ...}} asChild={true} ref={null}>
+                    <Primitive.div asChild={true} ref={function}>
+                      <Slot ref={function}>
+                        <SlotClone ref={function}>
+                          <Primitive.button type="button" id="radix-_R_1..." aria-haspopup="menu" aria-expanded={false} ...>
+                            <Slot type="button" id="radix-_R_1..." aria-haspopup="menu" aria-expanded={false} ...>
+                              <SlotClone type="button" id="radix-_R_1..." aria-haspopup="menu" aria-expanded={false} ...>
+                                <Button variant="ghost" size="sm" className="h-7 w-7 p-..." type="button" ...>
+                                  <button
+                                    data-slot="tooltip-trigger"
+                                    className={"inline-flex items-center justify-center whitespace-nowrap text-sm fon..."}
+                                    type="button"
++                                   id="radix-_R_1tkndlb_"
+-                                   id="radix-_R_7mkndlb_"
+                                    aria-haspopup="menu"
+                                    aria-expanded={false}
+                                    aria-controls={undefined}
+                                    data-state="closed"
+                                    data-disabled={undefined}
+                                    disabled={false}
+                                    aria-describedby={undefined}
+                                    onPointerMove={function handleEvent}
+                                    onPointerLeave={function handleEvent}
+                                    onPointerDown={function handleEvent}
+                                    onFocus={function handleEvent}
+                                    onBlur={function handleEvent}
+                                    onClick={function handleEvent}
+                                    onKeyDown={function handleEvent}
+                                    ref={function}
+                                  >
+      ...
+        <MenuProvider scope={{Menu:[...], ...}} onClose={function Menu.useCallback} isUsingKeyboardRef={{current:false}} ...>
+          <DropdownMenuTrigger asChild={true}>
+            <DropdownMenuTrigger data-slot="dropdown-m..." asChild={true}>
+              <MenuAnchor asChild={true} __scopeMenu={{Menu:[...], ...}}>
+                <PopperAnchor __scopePopper={{Menu:[...], ...}} asChild={true} ref={null}>
+                  <Primitive.div asChild={true} ref={function}>
+                    <Slot ref={function}>
+                      <SlotClone ref={function}>
+                        <Primitive.button type="button" id="radix-_R_2..." aria-haspopup="menu" aria-expanded={false} ...>
+                          <Slot type="button" id="radix-_R_2..." aria-haspopup="menu" aria-expanded={false} ...>
+                            <SlotClone type="button" id="radix-_R_2..." aria-haspopup="menu" aria-expanded={false} ...>
+                              <Button variant="ghost" className="flex items..." type="button" id="radix-_R_2..." ...>
+                                <button
+                                  data-slot="dropdown-menu-trigger"
+                                  className={"justify-center whitespace-nowrap text-sm font-medium disabled:pointer-e..."}
+                                  type="button"
++                                 id="radix-_R_2dkndlb_"
+-                                 id="radix-_R_9mkndlb_"
+                                  aria-haspopup="menu"
+                                  aria-expanded={false}
+                                  aria-controls={undefined}
+                                  data-state="closed"
+                                  data-disabled={undefined}
+                                  disabled={false}
+                                  onPointerDown={function handleEvent}
+                                  onKeyDown={function handleEvent}
+                                  ref={function}
+                                >
+          ...
+
+[04:39:49.364] Browser ERROR   A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+%s%s https://react.dev/link/hydration-mismatch 
+
+  ...
+    <PropostasPage params={Promise} searchParams={Promise}>
+      <div className="flex h-scr...">
+        <aside>
+        <div className="flex-1 fle...">
+          <header className="h-12 bg-ba...">
+            <div>
+            <div className="flex items...">
+              <Button>
+              <Button>
+              <Dialog open={false} onOpenChange={function bound dispatchSetState}>
+                <Dialog data-slot="dialog" open={false} onOpenChange={function bound dispatchSetState}>
+                  <DialogProvider scope={undefined} triggerRef={{current:null}} contentRef={{current:null}} ...>
+                    <DialogTrigger asChild={true}>
+                      <DialogTrigger data-slot="dialog-tri..." asChild={true}>
+                        <Primitive.button type="button" aria-haspopup="dialog" aria-expanded={false} ...>
+                          <Slot type="button" aria-haspopup="dialog" aria-expanded={false} aria-controls="radix-_R_3..." ...>
+                            <SlotClone type="button" aria-haspopup="dialog" aria-expanded={false} ...>
+                              <Button size="sm" className="h-7 text-x..." type="button" aria-haspopup="dialog" ...>
+                                <button
+                                  data-slot="dialog-trigger"
+                                  className={"inline-flex items-center justify-center whitespace-nowrap font-medium t..."}
+                                  type="button"
+                                  aria-haspopup="dialog"
+                                  aria-expanded={false}
++                                 aria-controls="radix-_R_3j9bn5rknekndlb_"
+-                                 aria-controls="radix-_R_ed5esneitqkndlb_"
+                                  data-state="closed"
+                                  onClick={function handleEvent}
+                                  ref={function}
+                                >
+                    ...
+          ...
+
+[04:39:49.745] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[04:39:49.745] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/corporativo/comercial/propostas","route":"/corporativo/comercial/propostas"}
+[04:39:49.745] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/corporativo/comercial/propostas color: rgb(120, 120, 120) color: inherit {"dp":"/corporativo/comercial/propostas","o":"http://localhost:3000/corporativo/comercial/propostas","r":"","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1768024987905}
+[04:40:35.769] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/propostas. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[04:40:35.790] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/propostas. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[04:40:36.518] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[04:40:38.682] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[04:40:38.682] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/corporativo/comercial/propostas","route":"/corporativo/comercial/propostas"}
+[04:40:38.683] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/corporativo/comercial/propostas color: rgb(120, 120, 120) color: inherit {"dp":"/corporativo/comercial/propostas","o":"http://localhost:3000/corporativo/comercial/propostas","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1768025036539}
+[04:40:55.598] Server  LOG      ✓ Compiled in 123ms
+[04:41:57.062] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/propostas. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[04:41:58.167] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[04:41:58.566] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[04:41:58.567] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/corporativo/comercial/propostas","route":"/corporativo/comercial/propostas"}
+[04:41:58.567] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/corporativo/comercial/propostas color: rgb(120, 120, 120) color: inherit {"dp":"/corporativo/comercial/propostas","o":"http://localhost:3000/corporativo/comercial/propostas","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1768025116691}
+[04:42:06.502] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[04:42:06.715] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/corporativo/comercial/clientes color: rgb(120, 120, 120) color: inherit {"dp":"/corporativo/comercial/clientes","o":"http://localhost:3000/corporativo/comercial/clientes","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1768025124871}
+[04:42:08.102] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/contratos. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[04:42:08.362] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/corporativo/comercial/contratos color: rgb(120, 120, 120) color: inherit {"dp":"/corporativo/comercial/contratos","o":"http://localhost:3000/corporativo/comercial/contratos","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1768025126518}
+[04:43:12.100] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/portfolio. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[04:43:12.391] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/corporativo/comercial/portfolio color: rgb(120, 120, 120) color: inherit {"dp":"/corporativo/comercial/portfolio","o":"http://localhost:3000/corporativo/comercial/portfolio","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1768025190548}
+[04:43:13.565] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/abertura-cc. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[04:43:13.821] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/corporativo/comercial/abertura-cc color: rgb(120, 120, 120) color: inherit {"dp":"/corporativo/comercial/abertura-cc","o":"http://localhost:3000/corporativo/comercial/abertura-cc","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1768025191972}
+[04:44:04.537] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/analytics. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[04:44:04.688] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/corporativo/comercial/analytics color: rgb(120, 120, 120) color: inherit {"dp":"/corporativo/comercial/analytics","o":"http://localhost:3000/corporativo/comercial/analytics","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1768025242848}
+[04:44:16.022] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/propostas. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[04:44:16.219] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/corporativo/comercial/propostas color: rgb(120, 120, 120) color: inherit {"dp":"/corporativo/comercial/propostas","o":"http://localhost:3000/corporativo/comercial/propostas","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1768025254366}
+[04:49:20.489] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/propostas. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[04:49:20.537] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/propostas. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[04:49:21.155] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[04:49:23.680] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[04:49:23.680] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/corporativo/comercial/propostas","route":"/corporativo/comercial/propostas"}
+[04:49:23.680] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/corporativo/comercial/propostas color: rgb(120, 120, 120) color: inherit {"dp":"/corporativo/comercial/propostas","o":"http://localhost:3000/corporativo/comercial/propostas","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1768025560863}
+[04:49:28.025] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/propostas. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[04:49:29.076] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[04:49:29.749] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[04:49:29.749] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/corporativo/comercial/propostas","route":"/corporativo/comercial/propostas"}
+[04:49:29.749] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/corporativo/comercial/propostas color: rgb(120, 120, 120) color: inherit {"dp":"/corporativo/comercial/propostas","o":"http://localhost:3000/corporativo/comercial/propostas","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1768025567794}
