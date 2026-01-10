@@ -130,7 +130,7 @@ export default function PropostasPage() {
         <main className="flex-1 overflow-auto p-6">
           <div className="max-w-[1800px] mx-auto space-y-6">
             {/* KPIs - CARDS NO TOPO */}
-            <div className="grid grid-cols-4 gap-4">
+            <div className="grid grid-cols-5 gap-4">
               {/* Total de Propostas */}
               <Card className="border hover:shadow-md transition-shadow">
                 <CardHeader className="pb-3">
@@ -187,109 +187,107 @@ export default function PropostasPage() {
                 </CardContent>
               </Card>
 
-            </div>
-
-            {/* CARD EXPANDIDO: PIPELINE POR STATUS */}
-            <Card className="border hover:shadow-md transition-shadow">
-              <CardHeader className="pb-3">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
+              {/* Pipeline - Velocímetro */}
+              <Card className="border hover:shadow-md transition-shadow group cursor-pointer relative">
+                <CardHeader className="pb-3">
+                  <div className="flex items-center justify-between">
                     <TrendingUp className="w-5 h-5 text-blue-600" />
-                    <CardTitle className="text-base font-bold">PIPELINE DE PROPOSTAS</CardTitle>
+                    <Badge variant="outline" className="text-xs">Pipeline</Badge>
                   </div>
-                  <Badge variant="default" className="text-xs bg-blue-600">
-                    {kpis.total} propostas
-                  </Badge>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {/* Valor Total */}
-                <div className="text-center pb-3 border-b">
-                  <p className="text-xs text-muted-foreground mb-1">Valor Total</p>
-                  <p className="text-3xl font-bold text-blue-600">{formatCurrency(kpis.valorTotal)}</p>
-                </div>
+                </CardHeader>
+                <CardContent>
+                  {/* Velocímetro Visual */}
+                  <div className="relative mb-4">
+                    {/* Semi-círculo (gauge) */}
+                    <div className="relative w-full aspect-[2/1] flex items-end justify-center">
+                      <svg viewBox="0 0 100 50" className="w-full">
+                        {/* Background arc */}
+                        <path
+                          d="M 10,50 A 40,40 0 0,1 90,50"
+                          fill="none"
+                          stroke="#e5e7eb"
+                          strokeWidth="8"
+                          strokeLinecap="round"
+                        />
+                        {/* Colored segments */}
+                        {/* Amarelo (Enviado) - 0-33% */}
+                        <path
+                          d="M 10,50 A 40,40 0 0,1 36.3,23.4"
+                          fill="none"
+                          stroke="#f59e0b"
+                          strokeWidth="8"
+                          strokeLinecap="round"
+                          opacity="0.6"
+                        />
+                        {/* Azul (Elaboração) - 33-66% */}
+                        <path
+                          d="M 36.3,23.4 A 40,40 0 0,1 63.7,23.4"
+                          fill="none"
+                          stroke="#3b82f6"
+                          strokeWidth="8"
+                          strokeLinecap="round"
+                          opacity="0.6"
+                        />
+                        {/* Verde (Monitoramento) - 66-100% */}
+                        <path
+                          d="M 63.7,23.4 A 40,40 0 0,1 90,50"
+                          fill="none"
+                          stroke="#10b981"
+                          strokeWidth="8"
+                          strokeLinecap="round"
+                          opacity="0.6"
+                        />
+                        {/* Needle (ponteiro) - apontando para ~80% */}
+                        <line
+                          x1="50"
+                          y1="50"
+                          x2="78"
+                          y2="30"
+                          stroke="#1e40af"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                        />
+                        <circle cx="50" cy="50" r="3" fill="#1e40af" />
+                      </svg>
+                    </div>
+                  </div>
 
-                {/* Breakdown por Status */}
-                <div className="space-y-3">
-                  <p className="text-xs font-semibold text-muted-foreground uppercase">Breakdown por Status:</p>
-                  
-                  {/* Enviado */}
-                  <div className="space-y-1.5">
-                    <div className="flex items-center justify-between text-xs">
-                      <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-amber-500" />
-                        <span className="font-medium">Enviado</span>
+                  {/* Valor */}
+                  <div className="text-center">
+                    <p className="text-2xl font-bold text-blue-600">{formatCurrency(kpis.valorTotal)}</p>
+                    <p className="text-xs text-muted-foreground mt-1">Pipeline Total</p>
+                  </div>
+
+                  {/* Tooltip on hover */}
+                  <div className="opacity-0 group-hover:opacity-100 absolute inset-0 bg-background/95 backdrop-blur-sm rounded-lg p-4 transition-opacity flex flex-col justify-center space-y-2">
+                    <p className="text-xs font-bold text-center mb-2">Breakdown:</p>
+                    <div className="space-y-1.5">
+                      <div className="flex items-center justify-between text-xs">
+                        <div className="flex items-center gap-1.5">
+                          <div className="w-2 h-2 rounded-full bg-amber-500" />
+                          <span>Enviado</span>
+                        </div>
+                        <span className="font-bold">{formatCurrency(kpis.valorEnviado)}</span>
                       </div>
-                      <span className="font-bold text-amber-600">{formatCurrency(kpis.valorEnviado)}</span>
-                    </div>
-                    <div className="h-2 rounded-full bg-muted overflow-hidden">
-                      <div 
-                        className="h-full bg-amber-500 transition-all duration-500" 
-                        style={{ width: `${(kpis.valorEnviado / kpis.valorTotal * 100).toFixed(0)}%` }}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Em Elaboração */}
-                  <div className="space-y-1.5">
-                    <div className="flex items-center justify-between text-xs">
-                      <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-blue-500" />
-                        <span className="font-medium">Em Elaboração</span>
+                      <div className="flex items-center justify-between text-xs">
+                        <div className="flex items-center gap-1.5">
+                          <div className="w-2 h-2 rounded-full bg-blue-500" />
+                          <span>Elaboração</span>
+                        </div>
+                        <span className="font-bold">{formatCurrency(kpis.valorElaboracao)}</span>
                       </div>
-                      <span className="font-bold text-blue-600">{formatCurrency(kpis.valorElaboracao)}</span>
-                    </div>
-                    <div className="h-2 rounded-full bg-muted overflow-hidden">
-                      <div 
-                        className="h-full bg-blue-500 transition-all duration-500" 
-                        style={{ width: `${(kpis.valorElaboracao / kpis.valorTotal * 100).toFixed(0)}%` }}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Sendo Monitorado */}
-                  <div className="space-y-1.5">
-                    <div className="flex items-center justify-between text-xs">
-                      <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-emerald-500" />
-                        <span className="font-medium">Sendo Monitorado</span>
+                      <div className="flex items-center justify-between text-xs">
+                        <div className="flex items-center gap-1.5">
+                          <div className="w-2 h-2 rounded-full bg-emerald-500" />
+                          <span>Monitoramento</span>
+                        </div>
+                        <span className="font-bold">{formatCurrency(kpis.valorMonitoramento)}</span>
                       </div>
-                      <span className="font-bold text-emerald-600">{formatCurrency(kpis.valorMonitoramento)}</span>
-                    </div>
-                    <div className="h-2 rounded-full bg-muted overflow-hidden">
-                      <div 
-                        className="h-full bg-emerald-500 transition-all duration-500" 
-                        style={{ width: `${(kpis.valorMonitoramento / kpis.valorTotal * 100).toFixed(0)}%` }}
-                      />
                     </div>
                   </div>
-                </div>
-
-                {/* Legenda */}
-                <div className="pt-3 border-t">
-                  <div className="grid grid-cols-3 gap-2 text-[10px]">
-                    <div className="text-center">
-                      <p className="text-amber-600 font-bold">
-                        {((kpis.valorEnviado / kpis.valorTotal) * 100).toFixed(0)}%
-                      </p>
-                      <p className="text-muted-foreground">Enviado</p>
-                    </div>
-                    <div className="text-center">
-                      <p className="text-blue-600 font-bold">
-                        {((kpis.valorElaboracao / kpis.valorTotal) * 100).toFixed(0)}%
-                      </p>
-                      <p className="text-muted-foreground">Elaboração</p>
-                    </div>
-                    <div className="text-center">
-                      <p className="text-emerald-600 font-bold">
-                        {((kpis.valorMonitoramento / kpis.valorTotal) * 100).toFixed(0)}%
-                      </p>
-                      <p className="text-muted-foreground">Monitoramento</p>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </div>
 
             {/* TABELA DE PROPOSTAS */}
             <Card className="border">
@@ -419,10 +417,10 @@ export default function PropostasPage() {
                       <TableHead className="w-32">ID</TableHead>
                       <TableHead>Cliente</TableHead>
                       <TableHead>Obra</TableHead>
-                      <TableHead className="text-center">Status</TableHead>
                       <TableHead className="text-right">Valor Inicial</TableHead>
                       <TableHead className="text-right">Valor Final</TableHead>
                       <TableHead>Responsável</TableHead>
+                      <TableHead className="text-center">Status</TableHead>
                       <TableHead className="text-center">Ações</TableHead>
                     </TableRow>
                   </TableHeader>
@@ -436,11 +434,6 @@ export default function PropostasPage() {
                           </TableCell>
                           <TableCell className="font-medium">{proposta.cliente}</TableCell>
                           <TableCell className="text-sm">{proposta.obra}</TableCell>
-                          <TableCell className="text-center">
-                            <Badge variant="outline" className={`text-xs ${config.bg} ${config.cor} border-0`}>
-                              {config.label}
-                            </Badge>
-                          </TableCell>
                           <TableCell className="text-right font-medium">
                             {formatCurrency(proposta.valorInicial)}
                           </TableCell>
@@ -448,6 +441,11 @@ export default function PropostasPage() {
                             {proposta.valorFinal > 0 ? formatCurrency(proposta.valorFinal) : "-"}
                           </TableCell>
                           <TableCell className="text-sm">{proposta.responsavel}</TableCell>
+                          <TableCell className="text-center">
+                            <Badge variant="outline" className={`text-xs ${config.bg} ${config.cor} border-0`}>
+                              {config.label}
+                            </Badge>
+                          </TableCell>
                           <TableCell className="text-center">
                             <Button
                               variant="ghost"

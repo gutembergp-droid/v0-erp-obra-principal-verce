@@ -3954,3 +3954,6 @@ Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
 [01:11:17.399] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/propostas. Please move it to viewport export instead.
 Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
 [01:11:17.401] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/corporativo/comercial/propostas color: rgb(120, 120, 120) color: inherit {"dp":"/corporativo/comercial/propostas","o":"http://localhost:3000/corporativo/comercial/propostas","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1768071249886}
+[01:14:24.321] Server  LOG      ✓ Compiled in 155ms
+[01:14:56.702] Server  LOG      ✓ Compiled in 231ms
+[01:15:16.174] Server  LOG      ✓ Compiled in 153ms
