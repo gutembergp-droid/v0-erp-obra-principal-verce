@@ -30,7 +30,6 @@ import {
   UserCog,
   Scale,
   Target,
-  DoorOpen,
   PieChart,
   BarChart3,
   Megaphone,
@@ -86,7 +85,6 @@ const corporativoNavigation: Section[] = [
     icon: Target,
     submenu: [
       { name: "Planejamento Estrategico", href: "/corporativo/estrategico/planejamento", icon: Target },
-      { name: "Gestao de Acessos (Catraca)", href: "/corporativo/estrategico/catraca", icon: DoorOpen },
       { name: "Analytics Corporativo", href: "/corporativo/estrategico/analytics", icon: BarChart3 },
     ],
   },
