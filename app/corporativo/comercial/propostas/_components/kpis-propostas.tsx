@@ -125,13 +125,13 @@ export function KPIsPropostas({ kpis }: KPIPropostasProps) {
         </CardHeader>
         
         <CardContent className="space-y-3">
-          {/* NÚMERO PRINCIPAL - DESTAQUE MÁXIMO */}
+          {/* NÚMERO PRINCIPAL - ACUMULADO */}
           <div className="text-center py-2">
             <p className="text-6xl font-black text-blue-600 leading-none tracking-tight">
-              {kpis.total}
+              {timelineTotal.reduce((acc, item) => acc + item.valor, 0)}
             </p>
             <p className="text-xs font-semibold text-muted-foreground mt-2 uppercase tracking-wide">
-              Total de Propostas
+              Total de Propostas (Acumulado)
             </p>
           </div>
 
@@ -167,13 +167,13 @@ export function KPIsPropostas({ kpis }: KPIPropostasProps) {
         </CardHeader>
         
         <CardContent className="space-y-3">
-          {/* NÚMERO PRINCIPAL */}
+          {/* NÚMERO PRINCIPAL - ACUMULADO */}
           <div className="text-center py-2">
             <p className="text-6xl font-black text-amber-600 leading-none tracking-tight">
-              {kpis.emProgresso}
+              {timelineProgresso.reduce((acc, item) => acc + item.valor, 0)}
             </p>
             <p className="text-xs font-semibold text-muted-foreground mt-2 uppercase tracking-wide">
-              Em Progresso
+              Em Progresso (Acumulado)
             </p>
           </div>
 
@@ -208,13 +208,13 @@ export function KPIsPropostas({ kpis }: KPIPropostasProps) {
         </CardHeader>
         
         <CardContent className="space-y-3">
-          {/* NÚMERO PRINCIPAL */}
+          {/* NÚMERO PRINCIPAL - ACUMULADO */}
           <div className="text-center py-2">
             <p className="text-6xl font-black text-emerald-600 leading-none tracking-tight">
-              {kpis.consolidadas}
+              {timelineConsolidadas.reduce((acc, item) => acc + item.valor, 0)}
             </p>
             <p className="text-xs font-semibold text-muted-foreground mt-2 uppercase tracking-wide">
-              Consolidadas
+              Consolidadas (Acumulado)
             </p>
           </div>
 
@@ -248,13 +248,13 @@ export function KPIsPropostas({ kpis }: KPIPropostasProps) {
         </CardHeader>
         
         <CardContent className="space-y-3">
-          {/* NÚMERO PRINCIPAL */}
+          {/* NÚMERO PRINCIPAL - ACUMULADO */}
           <div className="text-center py-2">
             <p className="text-6xl font-black text-purple-600 leading-none tracking-tight">
-              {kpis.enviadas}
+              {timelineEnviadas.reduce((acc, item) => acc + item.valor, 0)}
             </p>
             <p className="text-xs font-semibold text-muted-foreground mt-2 uppercase tracking-wide">
-              Enviadas
+              Enviadas (Acumulado)
             </p>
           </div>
 
