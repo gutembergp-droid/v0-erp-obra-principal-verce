@@ -177,3 +177,747 @@ Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
 Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
 [00:43:25.058] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/corporativo/comercial color: rgb(120, 120, 120) color: inherit {"dp":"/corporativo/comercial","o":"http://localhost:3000/corporativo/comercial","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1768069577554}
 [00:45:32.959] Server  LOG      ✓ Compiled in 215ms
+[00:47:07.992] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/propostas. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:47:08.190] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/corporativo/comercial/propostas color: rgb(120, 120, 120) color: inherit {"dp":"/corporativo/comercial/propostas","o":"http://localhost:3000/corporativo/comercial/propostas","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1768069800686}
+[00:48:34.027] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:48:34.260] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/corporativo/comercial/clientes color: rgb(120, 120, 120) color: inherit {"dp":"/corporativo/comercial/clientes","o":"http://localhost:3000/corporativo/comercial/clientes","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1768069886757}
+[00:48:59.102] Server  LOG      ✓ Compiled in 198ms
+[00:49:49.536] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:49.750] Server  LOG      ✓ Compiled in 279ms
+[00:49:50.076] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:50.117] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:50.163] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:50.214] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:50.277] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:50.316] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:50.357] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:50.390] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:50.425] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:50.476] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:50.505] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:50.539] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:50.596] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:50.653] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:50.719] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:50.773] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:50.814] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:50.854] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:50.885] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:50.924] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:50.959] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:50.993] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:51.026] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:51.062] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:51.095] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:51.129] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:51.157] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:51.191] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:51.223] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:51.254] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:51.286] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:51.321] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:51.362] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:51.395] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:51.427] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:51.460] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:51.500] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:51.545] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:51.610] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:51.662] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:51.697] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:51.731] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:51.761] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:51.793] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:51.825] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:51.857] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:51.892] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:51.932] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:51.970] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:52.004] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:52.038] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:52.070] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:52.110] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:52.137] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:52.168] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:52.198] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:52.230] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:52.261] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:52.292] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:52.330] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:52.363] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:52.400] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:52.448] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:52.491] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:52.531] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:52.574] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:52.616] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:52.691] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:52.768] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:52.827] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:52.879] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:53.028] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:53.071] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:53.126] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:53.174] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:53.223] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:53.270] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:53.327] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:53.363] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:53.397] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:53.445] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:53.475] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:53.507] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:53.537] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:53.593] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:53.637] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:53.703] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:53.763] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:53.815] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:53.862] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:53.927] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:53.966] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:54.004] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:54.040] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:54.083] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:54.117] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:54.165] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:54.198] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:54.230] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:54.262] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:54.290] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:54.323] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:54.370] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:54.402] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:54.437] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:54.473] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:54.510] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:54.571] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:54.609] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:54.639] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:54.674] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:54.710] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:54.758] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:54.807] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:54.841] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:54.877] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:54.910] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:54.954] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:55.016] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:55.095] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:55.138] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:55.192] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:55.256] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:55.313] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:55.371] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:55.451] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:55.521] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:55.563] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:55.602] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:55.688] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:55.783] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:55.866] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:55.924] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:55.973] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:56.026] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:56.061] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:56.087] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:56.123] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:56.162] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:56.199] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:56.240] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:56.275] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:56.303] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:56.335] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:56.368] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:56.408] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:56.444] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:56.479] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:56.526] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:56.558] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:56.591] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:56.623] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:56.664] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:56.764] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:56.822] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:56.863] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:56.925] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:56.970] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:57.010] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:57.073] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:57.151] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:57.233] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:57.316] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:57.419] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:57.481] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:57.552] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:57.624] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:57.679] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:57.738] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:57.801] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:57.849] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:57.890] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:57.933] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:57.983] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:58.027] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:58.088] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:58.119] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:58.159] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:58.199] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:58.235] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:58.266] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:58.338] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:58.377] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:58.418] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:58.457] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:58.495] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:58.533] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:58.574] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:58.622] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:58.702] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:58.768] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:58.827] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:58.878] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:58.918] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:58.958] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:58.994] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:59.031] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:59.063] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:59.101] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:59.133] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:59.169] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:59.223] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:59.262] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:59.312] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:59.353] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:59.390] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:59.428] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:59.465] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:59.499] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:59.543] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:59.602] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:59.651] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:59.700] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:59.737] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:59.777] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:59.829] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:59.870] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:59.936] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:49:59.998] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:00.070] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:00.108] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:00.148] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:00.186] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:00.226] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:00.281] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:00.316] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:00.362] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:00.421] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:00.465] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:00.504] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:00.591] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:00.669] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:00.712] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:00.750] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:00.789] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:00.822] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:00.865] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:00.899] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:00.937] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:00.971] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:01.000] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:01.034] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:01.070] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:01.106] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:01.137] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:01.181] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:01.211] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:01.254] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:01.287] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:01.322] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:01.359] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:01.401] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:01.474] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:01.506] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:01.540] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:01.568] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:01.601] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:01.632] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:01.676] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:01.759] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:01.797] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:01.828] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:01.861] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:01.891] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:01.938] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:01.991] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:02.023] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:02.057] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:02.092] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:02.132] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:02.168] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:02.208] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:02.247] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:02.288] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:02.317] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:02.358] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:02.403] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:02.452] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:02.495] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:02.532] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:02.575] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:02.614] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:02.646] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:02.695] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:02.730] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:02.762] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:02.810] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:02.865] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:02.923] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:02.964] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:03.009] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:03.052] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:03.095] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:03.138] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:03.180] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:03.228] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:03.283] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:03.339] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:03.405] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:03.449] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:03.491] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:03.551] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:03.605] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:03.654] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:03.768] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:03.799] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:03.829] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:03.861] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:03.888] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:03.924] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:03.962] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:03.998] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:04.051] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:04.099] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:04.133] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:04.182] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:04.212] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:04.244] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:04.278] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:04.316] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:04.347] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:04.380] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:04.419] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:04.463] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:04.529] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:04.566] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:04.624] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:04.660] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:04.692] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:04.732] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:04.770] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:04.801] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:04.835] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:04.872] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:04.905] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:04.939] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:04.973] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:05.005] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:05.044] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:05.114] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:05.150] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:05.203] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:05.263] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:05.322] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:05.366] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:05.400] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:05.450] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:05.483] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:05.516] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:05.563] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:05.664] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:05.711] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:05.759] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:05.798] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:05.837] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:05.879] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:05.934] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:06.001] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:06.040] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:06.084] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:06.130] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:06.170] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:06.243] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:06.272] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:06.303] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:06.368] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:50:06.419] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/clientes. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
