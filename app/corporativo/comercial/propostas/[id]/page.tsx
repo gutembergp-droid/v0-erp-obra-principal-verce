@@ -7,17 +7,28 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { AlertCircle, CheckCircle2, Clock, Lock, Save, Send, ChevronLeft, ChevronDown, ChevronUp } from "lucide-react"
+import { ArrowLeft, FileText, CheckCircle2, AlertCircle, Send } from "lucide-react"
 import { useState } from "react"
 import { ComercialSidebar } from "../../_components/comercial-sidebar"
 import { ComercialTopBar } from "../../_components/comercial-top-bar"
 import { RadarViabilidade } from "../_components/radar-viabilidade"
 import { MatrizRisco } from "../_components/matriz-risco"
-import type { PropostaCompleta, StatusBloco } from "@/lib/types/proposta"
-import { podeLiberarParaFunil } from "@/lib/types/proposta"
 
 // ============================================================================
-// COMPONENT - DETALHES DA PROPOSTA (ANÁLISE CORPORATIVA)
+// INTERFACES
+// ============================================================================
+
+interface Proposta {
+  id: string
+  cliente: string
+  obra: string
+  valor: number
+  status: string
+  progresso: number
+}
+
+// ============================================================================
+// COMPONENT
 // ============================================================================
 
 export default function PropostaDetalhesPage({
@@ -27,90 +38,21 @@ export default function PropostaDetalhesPage({
 }) {
   const { id } = use(params)
   const router = useRouter()
-  
-  const [expandido, setExpandido] = useState<Record<string, boolean>>({
-    cadastro: true,
-    juridica: false,
-  })
 
-  // Mock data (em produção viria do contexto/API baseado no ID)
-  const [proposta] = useState<PropostaCompleta>({
+  // Mock data da proposta
+  const proposta: Proposta = {
     id: id,
+    cliente: "Construtora ABC",
+    obra: "Ponte Rio Grande",
+    valor: 450000000,
     status: "em_analise",
-    statusBlocos: {
-      cadastro: "completo",
-      documentos: "em_andamento",
-      analiseViabilidade: "completo",
-      analiseJuridica: "completo",
-      analiseRisco: "completo",
-      decisao: "pendente",
-    },
-    cadastro: {
-      clienteId: "CLI-001",
-      clienteNome: "Construtora ABC",
-      nomeObra: "Ponte Rio Grande",
-      tipoObra: "infraestrutura",
-      localizacao: { cidade: "São Paulo", estado: "SP", regiao: "Sudeste" },
-      origem: "prospeccao",
-      valorPublico: true,
-      valor: 450000000,
-      regimeContratual: "Empreitada por preço global",
-    },
-    documentos: [],
-    analiseViabilidade: {
-      pilares: {
-        tecnica: { score: 8, comentario: "Capacidade técnica comprovada" },
-        operacional: { score: 7, comentario: "Equipe disponível" },
-        financeira: { score: 9, comentario: "Capital de giro adequado" },
-        economica: { score: 6, comentario: "Margem aceitável" },
-        juridica: { score: 8, comentario: "Sem restrições" },
-        risco: { score: 7, comentario: "Riscos gerenciáveis" },
-      },
-      conclusao: "viavel",
-      observacoes: "Projeto estratégico alinhado",
-    },
-    analiseJuridica: {
-      exigenciasConformes: true,
-      licencasOk: true,
-      clausulasAtipicas: false,
-      riscoRegulatorio: false,
-      parecer: "Contrato dentro dos padrões",
-      status: "seguro",
-    },
-    analiseRisco: {
-      riscos: [
-        {
-          id: "R1",
-          descricao: "Atraso em licenças ambientais",
-          categoria: "juridico",
-          probabilidade: 3,
-          impacto: 4,
-          classificacao: "medio",
-          mitigacao: "Antecipar processos",
-        },
-      ],
-      matrizResumo: { baixo: 0, medio: 1, alto: 0, critico: 0 },
-    },
-    criadoPor: "João Silva",
-    criadoEm: "2026-01-10T10:00:00Z",
-    modificadoEm: "2026-01-10T14:30:00Z",
-  })
-
-  const blocos = Object.values(proposta.statusBlocos)
-  const completos = blocos.filter(b => b === "completo").length
-  const progresso = (completos / blocos.length) * 100
-
-  const { pode: podeLiberar, motivos } = podeLiberarParaFunil(proposta)
-
-  const statusConfig: Record<StatusBloco, { icone: any; cor: string; bg: string; label: string }> = {
-    pendente: { icone: Clock, cor: "text-gray-500", bg: "bg-gray-100", label: "Pendente" },
-    em_andamento: { icone: Clock, cor: "text-blue-600", bg: "bg-blue-100", label: "Em Andamento" },
-    completo: { icone: CheckCircle2, cor: "text-emerald-600", bg: "bg-emerald-100", label: "Completo" },
-    bloqueado: { icone: Lock, cor: "text-red-600", bg: "bg-red-100", label: "Bloqueado" },
+    progresso: 65
   }
 
-  const toggleBloco = (bloco: string) => {
-    setExpandido(prev => ({ ...prev, [bloco]: !prev[bloco] }))
+  const formatCurrency = (value: number) => {
+    if (value >= 1000000000) return `R$ ${(value / 1000000000).toFixed(1)}Bi`
+    if (value >= 1000000) return `R$ ${(value / 1000000).toFixed(0)}Mi`
+    return `R$ ${value.toLocaleString("pt-BR")}`
   }
 
   return (
@@ -118,248 +60,272 @@ export default function PropostaDetalhesPage({
       <ComercialSidebar />
 
       <div className="flex-1 flex flex-col overflow-hidden">
-        <ComercialTopBar titulo="Análise de Proposta" />
+        <ComercialTopBar titulo={`Proposta ${id}`} hideNovaPropostaButton={true} />
 
-        {/* HEADER FIXO */}
-        <div className="sticky top-0 z-20 bg-background border-b shadow-sm">
-          <div className="p-4 space-y-3">
+        <main className="flex-1 overflow-auto">
+          <div className="max-w-[1600px] mx-auto p-6 space-y-6">
+            {/* Header Compacto */}
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => router.push("/corporativo/comercial/propostas")}
-                  className="gap-1.5"
-                >
-                  <ChevronLeft className="w-4 h-4" />
+              <div className="flex items-center gap-4">
+                <Button variant="ghost" size="sm" onClick={() => router.back()}>
+                  <ArrowLeft className="w-4 h-4 mr-2" />
                   Voltar
                 </Button>
-                <h2 className="text-xl font-bold">{proposta.id}</h2>
-                <Badge variant="outline">{proposta.cadastro.nomeObra}</Badge>
-                <Badge variant="secondary">{proposta.cadastro.clienteNome}</Badge>
-              </div>
-              <div className="flex items-center gap-2">
-                <Button variant="outline" size="sm" className="gap-1.5">
-                  <Save className="w-3 h-3" />
-                  Salvar
-                </Button>
-                <Button 
-                  variant={podeLiberar ? "default" : "secondary"} 
-                  size="sm" 
-                  disabled={!podeLiberar}
-                  className="gap-1.5"
-                >
-                  <Send className="w-3 h-3" />
-                  Liberar para Funil
-                </Button>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-4">
-              <div className="flex-1">
-                <div className="flex items-center justify-between text-xs mb-1">
-                  <span className="font-medium">Progresso</span>
-                  <span className="font-bold">{completos}/6 blocos</span>
+                <div className="h-6 w-px bg-border" />
+                <div>
+                  <h1 className="text-2xl font-bold">{proposta.id}</h1>
+                  <p className="text-sm text-muted-foreground">{proposta.cliente} • {proposta.obra}</p>
                 </div>
-                <Progress value={progresso} className="h-1.5" />
               </div>
-              {!podeLiberar && (
-                <Badge variant="destructive" className="text-xs">
-                  {motivos.length} pendência(s)
+              
+              <div className="flex items-center gap-3">
+                <Badge variant="outline" className="text-sm px-3 py-1">
+                  Em Análise
                 </Badge>
-              )}
+                <Button variant="outline" size="sm">
+                  <FileText className="w-4 h-4 mr-2" />
+                  Exportar PDF
+                </Button>
+              </div>
             </div>
-          </div>
-        </div>
 
-        {/* CONTEÚDO */}
-        <main className="flex-1 overflow-auto">
-          <Tabs defaultValue="analise" className="h-full">
-            <div className="sticky top-0 z-10 bg-background border-b px-4">
-              <TabsList className="h-12">
+            {/* Barra de Progresso */}
+            <Card>
+              <CardContent className="py-4">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm font-medium">Progresso da Análise</span>
+                  <span className="text-sm font-bold text-primary">{proposta.progresso}%</span>
+                </div>
+                <Progress value={proposta.progresso} className="h-2" />
+                <div className="flex items-center justify-between mt-2 text-xs text-muted-foreground">
+                  <span>4 de 6 etapas concluídas</span>
+                  <span>Estimativa: 2 dias restantes</span>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Tabs Principais */}
+            <Tabs defaultValue="analise" className="w-full">
+              <TabsList className="grid w-full grid-cols-3">
                 <TabsTrigger value="analise">Análise Corporativa</TabsTrigger>
                 <TabsTrigger value="documentos">Documentos</TabsTrigger>
                 <TabsTrigger value="decisao">Decisão</TabsTrigger>
               </TabsList>
-            </div>
 
-            <TabsContent value="analise" className="p-4 space-y-4 m-0">
-              <div className="max-w-[1400px] mx-auto grid grid-cols-2 gap-4">
-                <div className="space-y-4">
-                  <Card className="border">
-                    <CardHeader 
-                      className="pb-3 cursor-pointer hover:bg-muted/50 transition-colors"
-                      onClick={() => toggleBloco('cadastro')}
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          {(() => {
-                            const config = statusConfig[proposta.statusBlocos.cadastro]
-                            const Icon = config.icone
-                            return (
-                              <>
-                                <div className={`p-1.5 rounded ${config.bg}`}>
-                                  <Icon className={`w-4 h-4 ${config.cor}`} />
-                                </div>
-                                <CardTitle className="text-sm font-bold">CADASTRO</CardTitle>
-                              </>
-                            )
-                          })()}
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Badge variant="outline" className="text-xs">
-                            {statusConfig[proposta.statusBlocos.cadastro].label}
-                          </Badge>
-                          {expandido.cadastro ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                        </div>
-                      </div>
-                    </CardHeader>
-                    {expandido.cadastro && (
-                      <CardContent className="pt-0 space-y-2">
-                        <div className="grid grid-cols-2 gap-2 text-xs">
-                          <div>
-                            <span className="text-muted-foreground">Cliente:</span>
-                            <p className="font-medium">{proposta.cadastro.clienteNome}</p>
-                          </div>
-                          <div>
-                            <span className="text-muted-foreground">Obra:</span>
-                            <p className="font-medium">{proposta.cadastro.nomeObra}</p>
-                          </div>
-                          <div>
-                            <span className="text-muted-foreground">Tipo:</span>
-                            <p className="font-medium capitalize">{proposta.cadastro.tipoObra}</p>
-                          </div>
-                          <div>
-                            <span className="text-muted-foreground">Valor:</span>
-                            <p className="font-medium">R$ {(proposta.cadastro.valor! / 1000000).toFixed(0)}Mi</p>
-                          </div>
-                        </div>
-                      </CardContent>
-                    )}
-                  </Card>
-
-                  <Card className="border">
-                    <CardHeader 
-                      className="pb-3 cursor-pointer hover:bg-muted/50 transition-colors"
-                      onClick={() => toggleBloco('juridica')}
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          {(() => {
-                            const config = statusConfig[proposta.statusBlocos.analiseJuridica]
-                            const Icon = config.icone
-                            return (
-                              <>
-                                <div className={`p-1.5 rounded ${config.bg}`}>
-                                  <Icon className={`w-4 h-4 ${config.cor}`} />
-                                </div>
-                                <CardTitle className="text-sm font-bold">ANÁLISE JURÍDICA</CardTitle>
-                              </>
-                            )
-                          })()}
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Badge 
-                            variant={proposta.analiseJuridica.status === "seguro" ? "default" : "destructive"}
-                            className={`text-xs ${proposta.analiseJuridica.status === "seguro" ? "bg-emerald-600" : ""}`}
-                          >
-                            {proposta.analiseJuridica.status.toUpperCase()}
-                          </Badge>
-                          {expandido.juridica ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                        </div>
-                      </div>
-                    </CardHeader>
-                    {expandido.juridica && (
-                      <CardContent className="pt-0">
-                        <p className="text-xs text-muted-foreground">
-                          {proposta.analiseJuridica.parecer}
-                        </p>
-                      </CardContent>
-                    )}
-                  </Card>
-                </div>
-
-                <div className="space-y-4">
-                  <RadarViabilidade analise={proposta.analiseViabilidade} />
-                </div>
-              </div>
-
-              <div className="max-w-[1400px] mx-auto">
-                <MatrizRisco analise={proposta.analiseRisco} />
-              </div>
-            </TabsContent>
-
-            <TabsContent value="documentos" className="p-6 m-0">
-              <div className="max-w-[1400px] mx-auto">
+              {/* TAB: ANÁLISE CORPORATIVA */}
+              <TabsContent value="analise" className="space-y-6 mt-6">
+                {/* Resumo Executivo */}
                 <Card>
                   <CardHeader>
-                    <CardTitle>Documentos</CardTitle>
+                    <CardTitle className="text-lg">Resumo Executivo</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="p-12 border-2 border-dashed rounded-lg text-center">
-                      <p className="text-sm text-muted-foreground">Documentos carregados aparecerão aqui</p>
+                    <div className="grid grid-cols-4 gap-4">
+                      <div className="space-y-1">
+                        <p className="text-xs text-muted-foreground">Valor</p>
+                        <p className="text-lg font-bold">{formatCurrency(proposta.valor)}</p>
+                      </div>
+                      <div className="space-y-1">
+                        <p className="text-xs text-muted-foreground">Margem Estimada</p>
+                        <p className="text-lg font-bold text-emerald-600">12,5%</p>
+                      </div>
+                      <div className="space-y-1">
+                        <p className="text-xs text-muted-foreground">Prazo</p>
+                        <p className="text-lg font-bold">18 meses</p>
+                      </div>
+                      <div className="space-y-1">
+                        <p className="text-xs text-muted-foreground">Viabilidade</p>
+                        <p className="text-lg font-bold text-emerald-600">Viável</p>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
-              </div>
-            </TabsContent>
 
-            <TabsContent value="decisao" className="p-6 m-0">
-              <div className="max-w-[1000px] mx-auto">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Decisão Corporativa</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    {!podeLiberar && (
-                      <div className="p-3 rounded-lg bg-amber-50 border border-amber-300">
-                        <div className="flex items-start gap-2">
-                          <AlertCircle className="w-4 h-4 text-amber-600 mt-0.5" />
-                          <div>
-                            <p className="text-xs font-bold text-amber-900">Pendências:</p>
-                            <ul className="text-xs text-amber-700 mt-1">
-                              {motivos.map((m, i) => <li key={i}>• {m}</li>)}
-                            </ul>
-                          </div>
+                {/* Layout em 2 Colunas */}
+                <div className="grid grid-cols-2 gap-6">
+                  {/* Coluna Esquerda: Radar */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-lg">Análise de Viabilidade (6 Pilares)</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <RadarViabilidade 
+                        pilares={{
+                          tecnica: { score: 8, comentario: "Capacidade técnica comprovada" },
+                          operacional: { score: 7, comentario: "Equipe disponível" },
+                          financeira: { score: 9, comentario: "Capital adequado" },
+                          economica: { score: 6, comentario: "Margem aceitável" },
+                          juridica: { score: 8, comentario: "Sem restrições" },
+                          risco: { score: 7, comentario: "Riscos gerenciáveis" },
+                        }}
+                      />
+                      <div className="mt-4 p-3 bg-emerald-50 border border-emerald-200 rounded-lg">
+                        <div className="flex items-center gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                          <span className="text-sm font-medium text-emerald-900">
+                            Projeto estratégico alinhado
+                          </span>
                         </div>
                       </div>
-                    )}
+                    </CardContent>
+                  </Card>
 
-                    <div className="grid grid-cols-2 gap-3">
-                      <Button 
-                        variant="default" 
-                        className="h-20 bg-emerald-600 hover:bg-emerald-700"
-                        disabled={!podeLiberar}
-                      >
-                        <div className="text-center">
-                          <p className="font-bold text-base">Aprovar</p>
-                          <p className="text-xs opacity-90">Disputar obra</p>
+                  {/* Coluna Direita: Análise Jurídica + Matriz de Risco */}
+                  <div className="space-y-6">
+                    {/* Análise Jurídica */}
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="text-lg">Análise Jurídica</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-3">
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm">Exigências Conformes</span>
+                          <CheckCircle2 className="w-5 h-5 text-emerald-600" />
                         </div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm">Licenças OK</span>
+                          <CheckCircle2 className="w-5 h-5 text-emerald-600" />
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm">Cláusulas Atípicas</span>
+                          <CheckCircle2 className="w-5 h-5 text-emerald-600" />
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm">Risco Regulatório</span>
+                          <CheckCircle2 className="w-5 h-5 text-emerald-600" />
+                        </div>
+                        <div className="pt-3 border-t">
+                          <p className="text-xs text-muted-foreground mb-1">Parecer:</p>
+                          <p className="text-sm font-medium">Contrato dentro dos padrões</p>
+                        </div>
+                        <Badge variant="outline" className="w-full justify-center bg-emerald-50 text-emerald-700 border-emerald-300">
+                          Status: Seguro
+                        </Badge>
+                      </CardContent>
+                    </Card>
+
+                    {/* Resumo de Riscos */}
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="text-lg">Resumo de Riscos</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="grid grid-cols-4 gap-2 mb-4">
+                          <div className="text-center p-2 bg-emerald-50 border border-emerald-200 rounded">
+                            <p className="text-2xl font-bold text-emerald-600">0</p>
+                            <p className="text-xs text-emerald-700">Baixo</p>
+                          </div>
+                          <div className="text-center p-2 bg-amber-50 border border-amber-200 rounded">
+                            <p className="text-2xl font-bold text-amber-600">1</p>
+                            <p className="text-xs text-amber-700">Médio</p>
+                          </div>
+                          <div className="text-center p-2 bg-orange-50 border border-orange-200 rounded">
+                            <p className="text-2xl font-bold text-orange-600">0</p>
+                            <p className="text-xs text-orange-700">Alto</p>
+                          </div>
+                          <div className="text-center p-2 bg-red-50 border border-red-200 rounded">
+                            <p className="text-2xl font-bold text-red-600">0</p>
+                            <p className="text-xs text-red-700">Crítico</p>
+                          </div>
+                        </div>
+                        <div className="p-3 bg-muted rounded border">
+                          <p className="text-xs font-medium mb-1">Risco Identificado:</p>
+                          <p className="text-sm">Atraso em licenças ambientais</p>
+                          <p className="text-xs text-muted-foreground mt-1">Mitigação: Antecipar processos</p>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </div>
+
+                {/* Matriz de Risco (Full Width) */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg">Matriz de Risco (5x5)</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <MatrizRisco 
+                      riscos={[
+                        {
+                          id: "R1",
+                          descricao: "Atraso em licenças ambientais",
+                          categoria: "juridico",
+                          probabilidade: 3,
+                          impacto: 4,
+                          classificacao: "medio",
+                          mitigacao: "Antecipar processos",
+                        },
+                      ]}
+                    />
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              {/* TAB: DOCUMENTOS */}
+              <TabsContent value="documentos" className="space-y-6 mt-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg">Documentação da Proposta</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-center py-12 text-muted-foreground">
+                      <FileText className="w-12 h-12 mx-auto mb-3 opacity-50" />
+                      <p>Documentos serão listados aqui</p>
+                      <p className="text-sm mt-1">Editais, memoriais, projetos, etc.</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              {/* TAB: DECISÃO */}
+              <TabsContent value="decisao" className="space-y-6 mt-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg">Decisão Corporativa</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                    <div className="grid grid-cols-3 gap-4">
+                      <Button size="lg" className="h-24 flex-col gap-2">
+                        <CheckCircle2 className="w-6 h-6" />
+                        <span>Aprovar para Disputa</span>
                       </Button>
-                      <Button variant="outline" className="h-20" disabled={!podeLiberar}>
-                        <div className="text-center">
-                          <p className="font-bold text-base">Aprovar com Ressalvas</p>
-                          <p className="text-xs">Exige mitigação</p>
-                        </div>
+                      <Button size="lg" variant="outline" className="h-24 flex-col gap-2">
+                        <AlertCircle className="w-6 h-6" />
+                        <span>Aprovar com Ressalvas</span>
                       </Button>
-                      <Button variant="destructive" className="h-20">
-                        <div className="text-center">
-                          <p className="font-bold text-base">Reprovar</p>
-                          <p className="text-xs opacity-90">Não disputar</p>
-                        </div>
+                      <Button size="lg" variant="destructive" className="h-24 flex-col gap-2">
+                        <AlertCircle className="w-6 h-6" />
+                        <span>Reprovar/Arquivar</span>
                       </Button>
-                      <Button variant="secondary" className="h-20">
-                        <div className="text-center">
-                          <p className="font-bold text-base">Solicitar Exceção</p>
-                          <p className="text-xs">Escalar</p>
+                    </div>
+
+                    <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg">
+                      <div className="flex items-start gap-3">
+                        <AlertCircle className="w-5 h-5 text-amber-600 mt-0.5" />
+                        <div>
+                          <p className="font-medium text-sm text-amber-900">Pré-requisitos para Liberação</p>
+                          <ul className="text-sm text-amber-800 mt-2 space-y-1">
+                            <li>✓ Cadastro completo</li>
+                            <li>✓ Documentos mínimos OK</li>
+                            <li>✓ 6 pilares preenchidos</li>
+                            <li>✓ Status jurídico seguro</li>
+                            <li>✓ Matriz de risco preenchida</li>
+                          </ul>
                         </div>
+                      </div>
+                    </div>
+
+                    <div className="flex justify-center pt-4">
+                      <Button size="lg" className="gap-2">
+                        <Send className="w-5 h-5" />
+                        Liberar para Funil Competitivo
                       </Button>
                     </div>
                   </CardContent>
                 </Card>
-              </div>
-            </TabsContent>
-          </Tabs>
+              </TabsContent>
+            </Tabs>
+          </div>
         </main>
       </div>
     </div>

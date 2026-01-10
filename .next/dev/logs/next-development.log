@@ -8192,3 +8192,30 @@ Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
 [02:02:17.244] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/corporativo/comercial/propostas color: rgb(120, 120, 120) color: inherit {"dp":"/corporativo/comercial/propostas","o":"http://localhost:3000/corporativo/comercial/propostas","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1768074309741}
 [02:02:57.299] Server  LOG      ✓ Compiled in 122ms
 [02:03:13.668] Server  LOG      ✓ Compiled in 127ms
+[02:04:47.331] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/propostas. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[02:04:47.717] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[02:04:47.991] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[02:04:47.991] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/corporativo/comercial/propostas","route":"/corporativo/comercial/propostas"}
+[02:04:47.991] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/corporativo/comercial/propostas color: rgb(120, 120, 120) color: inherit {"dp":"/corporativo/comercial/propostas","o":"http://localhost:3000/corporativo/comercial/propostas","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1768074460492}
+[02:04:52.566] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/propostas/nova. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[02:04:52.763] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/corporativo/comercial/propostas/nova color: rgb(120, 120, 120) color: inherit {"dp":"/corporativo/comercial/propostas/nova","o":"http://localhost:3000/corporativo/comercial/propostas/nova","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1768074465243}
+[02:05:43.920] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/propostas. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[02:05:44.123] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/corporativo/comercial/propostas color: rgb(120, 120, 120) color: inherit {"dp":"/corporativo/comercial/propostas","o":"http://localhost:3000/corporativo/comercial/propostas","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1768074516602}
+[02:05:52.493] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/propostas/[id]. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[02:05:52.529] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/propostas/[id]. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[02:05:52.575] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/propostas/[id]. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[02:05:52.814] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/corporativo/comercial/propostas/PROP-2026-507 color: rgb(120, 120, 120) color: inherit {"dp":"/corporativo/comercial/propostas/[id]","o":"http://localhost:3000/corporativo/comercial/propostas/PROP-2026-507","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1768074525291}
+[02:07:26.615] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/propostas. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[02:07:26.828] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/corporativo/comercial/propostas color: rgb(120, 120, 120) color: inherit {"dp":"/corporativo/comercial/propostas","o":"http://localhost:3000/corporativo/comercial/propostas","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1768074619309}
+[02:07:36.685] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/propostas/[id]. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[02:07:36.905] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/corporativo/comercial/propostas/PROP-2026-507 color: rgb(120, 120, 120) color: inherit {"dp":"/corporativo/comercial/propostas/[id]","o":"http://localhost:3000/corporativo/comercial/propostas/PROP-2026-507","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1768074629388}
+[02:08:04.436] Server  LOG      ✓ Compiled in 270ms
+[02:08:04.562] Browser ERROR   uncaughtError: TypeError: Cannot read properties of undefined (reading 'pilares')
