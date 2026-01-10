@@ -1,46 +1,138 @@
 {
   "app": {
-    "[project]/Documents/v0-erp-obra-principal-verce/app/_not-found/page": [
+    "[project]/app/_not-found/page": [
       "static/media/e8f2fbee2754df70-s.p.9b7a96b4.woff2",
       "static/media/fabcf92ba1ccea36-s.p.19f28380.woff2"
     ],
-    "[project]/Documents/v0-erp-obra-principal-verce/app/corporativo/administrativo/rh/analytics/page": [
+    "[project]/app/corporativo/administrativo/rh/page": [
       "static/media/e8f2fbee2754df70-s.p.9b7a96b4.woff2",
       "static/media/fabcf92ba1ccea36-s.p.19f28380.woff2"
     ],
-    "[project]/Documents/v0-erp-obra-principal-verce/app/corporativo/administrativo/rh/conformidade/page": [
+    "[project]/app/corporativo/comercial/abertura-cc/page": [
       "static/media/e8f2fbee2754df70-s.p.9b7a96b4.woff2",
       "static/media/fabcf92ba1ccea36-s.p.19f28380.woff2"
     ],
-    "[project]/Documents/v0-erp-obra-principal-verce/app/corporativo/administrativo/rh/convencoes/page": [
+    "[project]/app/corporativo/comercial/analytics/page": [
       "static/media/e8f2fbee2754df70-s.p.9b7a96b4.woff2",
       "static/media/fabcf92ba1ccea36-s.p.19f28380.woff2"
     ],
-    "[project]/Documents/v0-erp-obra-principal-verce/app/corporativo/administrativo/rh/pagamento/page": [
+    "[project]/app/corporativo/comercial/clientes/page": [
       "static/media/e8f2fbee2754df70-s.p.9b7a96b4.woff2",
       "static/media/fabcf92ba1ccea36-s.p.19f28380.woff2"
     ],
-    "[project]/Documents/v0-erp-obra-principal-verce/app/corporativo/administrativo/rh/page": [
+    "[project]/app/corporativo/comercial/contratos/page": [
       "static/media/e8f2fbee2754df70-s.p.9b7a96b4.woff2",
       "static/media/fabcf92ba1ccea36-s.p.19f28380.woff2"
     ],
-    "[project]/Documents/v0-erp-obra-principal-verce/app/corporativo/administrativo/rh/pessoas/page": [
+    "[project]/app/corporativo/comercial/page": [
       "static/media/e8f2fbee2754df70-s.p.9b7a96b4.woff2",
       "static/media/fabcf92ba1ccea36-s.p.19f28380.woff2"
     ],
-    "[project]/Documents/v0-erp-obra-principal-verce/app/corporativo/administrativo/rh/ponto/page": [
+    "[project]/app/corporativo/comercial/portfolio/page": [
       "static/media/e8f2fbee2754df70-s.p.9b7a96b4.woff2",
       "static/media/fabcf92ba1ccea36-s.p.19f28380.woff2"
     ],
-    "[project]/Documents/v0-erp-obra-principal-verce/app/corporativo/administrativo/rh/previa-folha/page": [
+    "[project]/app/corporativo/comercial/propostas/page": [
       "static/media/e8f2fbee2754df70-s.p.9b7a96b4.woff2",
       "static/media/fabcf92ba1ccea36-s.p.19f28380.woff2"
     ],
-    "[project]/Documents/v0-erp-obra-principal-verce/app/intranet/page": [
+    "[project]/app/corporativo/console/auditoria/page": [
       "static/media/e8f2fbee2754df70-s.p.9b7a96b4.woff2",
       "static/media/fabcf92ba1ccea36-s.p.19f28380.woff2"
     ],
-    "[project]/Documents/v0-erp-obra-principal-verce/app/page": [
+    "[project]/app/corporativo/console/page": [
+      "static/media/e8f2fbee2754df70-s.p.9b7a96b4.woff2",
+      "static/media/fabcf92ba1ccea36-s.p.19f28380.woff2"
+    ],
+    "[project]/app/corporativo/estrategico/analytics/page": [
+      "static/media/e8f2fbee2754df70-s.p.9b7a96b4.woff2",
+      "static/media/fabcf92ba1ccea36-s.p.19f28380.woff2"
+    ],
+    "[project]/app/corporativo/estrategico/catraca/page": [
+      "static/media/e8f2fbee2754df70-s.p.9b7a96b4.woff2",
+      "static/media/fabcf92ba1ccea36-s.p.19f28380.woff2"
+    ],
+    "[project]/app/corporativo/estrategico/planejamento/[cicloId]/analytics/page": [
+      "static/media/e8f2fbee2754df70-s.p.9b7a96b4.woff2",
+      "static/media/fabcf92ba1ccea36-s.p.19f28380.woff2"
+    ],
+    "[project]/app/corporativo/estrategico/planejamento/[cicloId]/comercial/page": [
+      "static/media/e8f2fbee2754df70-s.p.9b7a96b4.woff2",
+      "static/media/fabcf92ba1ccea36-s.p.19f28380.woff2"
+    ],
+    "[project]/app/corporativo/estrategico/planejamento/[cicloId]/construcao/page": [
+      "static/media/e8f2fbee2754df70-s.p.9b7a96b4.woff2",
+      "static/media/fabcf92ba1ccea36-s.p.19f28380.woff2"
+    ],
+    "[project]/app/corporativo/estrategico/planejamento/[cicloId]/financeiro/page": [
+      "static/media/e8f2fbee2754df70-s.p.9b7a96b4.woff2",
+      "static/media/fabcf92ba1ccea36-s.p.19f28380.woff2"
+    ],
+    "[project]/app/corporativo/estrategico/planejamento/[cicloId]/operacoes/page": [
+      "static/media/e8f2fbee2754df70-s.p.9b7a96b4.woff2",
+      "static/media/fabcf92ba1ccea36-s.p.19f28380.woff2"
+    ],
+    "[project]/app/corporativo/estrategico/planejamento/[cicloId]/page": [
+      "static/media/e8f2fbee2754df70-s.p.9b7a96b4.woff2",
+      "static/media/fabcf92ba1ccea36-s.p.19f28380.woff2"
+    ],
+    "[project]/app/corporativo/estrategico/planejamento/[cicloId]/ti/page": [
+      "static/media/e8f2fbee2754df70-s.p.9b7a96b4.woff2",
+      "static/media/fabcf92ba1ccea36-s.p.19f28380.woff2"
+    ],
+    "[project]/app/corporativo/estrategico/planejamento/bcg/[cicloId]/page": [
+      "static/media/e8f2fbee2754df70-s.p.9b7a96b4.woff2",
+      "static/media/fabcf92ba1ccea36-s.p.19f28380.woff2"
+    ],
+    "[project]/app/corporativo/estrategico/planejamento/gut/[cicloId]/page": [
+      "static/media/e8f2fbee2754df70-s.p.9b7a96b4.woff2",
+      "static/media/fabcf92ba1ccea36-s.p.19f28380.woff2"
+    ],
+    "[project]/app/corporativo/estrategico/planejamento/monitoramento/[cicloId]/page": [
+      "static/media/e8f2fbee2754df70-s.p.9b7a96b4.woff2",
+      "static/media/fabcf92ba1ccea36-s.p.19f28380.woff2"
+    ],
+    "[project]/app/corporativo/estrategico/planejamento/novo/page": [
+      "static/media/e8f2fbee2754df70-s.p.9b7a96b4.woff2",
+      "static/media/fabcf92ba1ccea36-s.p.19f28380.woff2"
+    ],
+    "[project]/app/corporativo/estrategico/planejamento/okrs/[cicloId]/page": [
+      "static/media/e8f2fbee2754df70-s.p.9b7a96b4.woff2",
+      "static/media/fabcf92ba1ccea36-s.p.19f28380.woff2"
+    ],
+    "[project]/app/corporativo/estrategico/planejamento/page": [
+      "static/media/e8f2fbee2754df70-s.p.9b7a96b4.woff2",
+      "static/media/fabcf92ba1ccea36-s.p.19f28380.woff2"
+    ],
+    "[project]/app/corporativo/estrategico/planejamento/pestel/[cicloId]/page": [
+      "static/media/e8f2fbee2754df70-s.p.9b7a96b4.woff2",
+      "static/media/fabcf92ba1ccea36-s.p.19f28380.woff2"
+    ],
+    "[project]/app/corporativo/estrategico/planejamento/swot/[cicloId]/page": [
+      "static/media/e8f2fbee2754df70-s.p.9b7a96b4.woff2",
+      "static/media/fabcf92ba1ccea36-s.p.19f28380.woff2"
+    ],
+    "[project]/app/corporativo/qsms/qualidade/page": [
+      "static/media/e8f2fbee2754df70-s.p.9b7a96b4.woff2",
+      "static/media/fabcf92ba1ccea36-s.p.19f28380.woff2"
+    ],
+    "[project]/app/hub/page": [
+      "static/media/e8f2fbee2754df70-s.p.9b7a96b4.woff2",
+      "static/media/fabcf92ba1ccea36-s.p.19f28380.woff2"
+    ],
+    "[project]/app/intranet/page": [
+      "static/media/e8f2fbee2754df70-s.p.9b7a96b4.woff2",
+      "static/media/fabcf92ba1ccea36-s.p.19f28380.woff2"
+    ],
+    "[project]/app/obra/comercial/suprimentos/page": [
+      "static/media/e8f2fbee2754df70-s.p.9b7a96b4.woff2",
+      "static/media/fabcf92ba1ccea36-s.p.19f28380.woff2"
+    ],
+    "[project]/app/page": [
+      "static/media/e8f2fbee2754df70-s.p.9b7a96b4.woff2",
+      "static/media/fabcf92ba1ccea36-s.p.19f28380.woff2"
+    ],
+    "[project]/app/suporte/page": [
       "static/media/e8f2fbee2754df70-s.p.9b7a96b4.woff2",
       "static/media/fabcf92ba1ccea36-s.p.19f28380.woff2"
     ]

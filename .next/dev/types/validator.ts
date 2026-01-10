@@ -360,15 +360,6 @@ type LayoutConfig<Route extends LayoutRoutes = LayoutRoutes> = {
   type __Unused = __Check
 }
 
-// Validate ../../../app/corporativo/estrategico/catraca/page.tsx
-{
-  type __IsExpected<Specific extends AppPageConfig<"/corporativo/estrategico/catraca">> = Specific
-  const handler = {} as typeof import("../../../app/corporativo/estrategico/catraca/page.js")
-  type __Check = __IsExpected<typeof handler>
-  // @ts-ignore
-  type __Unused = __Check
-}
-
 // Validate ../../../app/corporativo/estrategico/controladoria/page.tsx
 {
   type __IsExpected<Specific extends AppPageConfig<"/corporativo/estrategico/controladoria">> = Specific
@@ -378,10 +369,154 @@ type LayoutConfig<Route extends LayoutRoutes = LayoutRoutes> = {
   type __Unused = __Check
 }
 
+// Validate ../../../app/corporativo/estrategico/planejamento/[cicloId]/analytics/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/corporativo/estrategico/planejamento/[cicloId]/analytics">> = Specific
+  const handler = {} as typeof import("../../../app/corporativo/estrategico/planejamento/[cicloId]/analytics/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../../app/corporativo/estrategico/planejamento/[cicloId]/comercial/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/corporativo/estrategico/planejamento/[cicloId]/comercial">> = Specific
+  const handler = {} as typeof import("../../../app/corporativo/estrategico/planejamento/[cicloId]/comercial/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../../app/corporativo/estrategico/planejamento/[cicloId]/construcao/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/corporativo/estrategico/planejamento/[cicloId]/construcao">> = Specific
+  const handler = {} as typeof import("../../../app/corporativo/estrategico/planejamento/[cicloId]/construcao/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../../app/corporativo/estrategico/planejamento/[cicloId]/financeiro/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/corporativo/estrategico/planejamento/[cicloId]/financeiro">> = Specific
+  const handler = {} as typeof import("../../../app/corporativo/estrategico/planejamento/[cicloId]/financeiro/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../../app/corporativo/estrategico/planejamento/[cicloId]/obras/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/corporativo/estrategico/planejamento/[cicloId]/obras">> = Specific
+  const handler = {} as typeof import("../../../app/corporativo/estrategico/planejamento/[cicloId]/obras/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../../app/corporativo/estrategico/planejamento/[cicloId]/operacoes/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/corporativo/estrategico/planejamento/[cicloId]/operacoes">> = Specific
+  const handler = {} as typeof import("../../../app/corporativo/estrategico/planejamento/[cicloId]/operacoes/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../../app/corporativo/estrategico/planejamento/[cicloId]/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/corporativo/estrategico/planejamento/[cicloId]">> = Specific
+  const handler = {} as typeof import("../../../app/corporativo/estrategico/planejamento/[cicloId]/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../../app/corporativo/estrategico/planejamento/[cicloId]/revisao/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/corporativo/estrategico/planejamento/[cicloId]/revisao">> = Specific
+  const handler = {} as typeof import("../../../app/corporativo/estrategico/planejamento/[cicloId]/revisao/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../../app/corporativo/estrategico/planejamento/[cicloId]/rh/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/corporativo/estrategico/planejamento/[cicloId]/rh">> = Specific
+  const handler = {} as typeof import("../../../app/corporativo/estrategico/planejamento/[cicloId]/rh/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../../app/corporativo/estrategico/planejamento/bcg/[cicloId]/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/corporativo/estrategico/planejamento/bcg/[cicloId]">> = Specific
+  const handler = {} as typeof import("../../../app/corporativo/estrategico/planejamento/bcg/[cicloId]/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../../app/corporativo/estrategico/planejamento/gut/[cicloId]/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/corporativo/estrategico/planejamento/gut/[cicloId]">> = Specific
+  const handler = {} as typeof import("../../../app/corporativo/estrategico/planejamento/gut/[cicloId]/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../../app/corporativo/estrategico/planejamento/monitoramento/[cicloId]/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/corporativo/estrategico/planejamento/monitoramento/[cicloId]">> = Specific
+  const handler = {} as typeof import("../../../app/corporativo/estrategico/planejamento/monitoramento/[cicloId]/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../../app/corporativo/estrategico/planejamento/novo/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/corporativo/estrategico/planejamento/novo">> = Specific
+  const handler = {} as typeof import("../../../app/corporativo/estrategico/planejamento/novo/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../../app/corporativo/estrategico/planejamento/okrs/[cicloId]/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/corporativo/estrategico/planejamento/okrs/[cicloId]">> = Specific
+  const handler = {} as typeof import("../../../app/corporativo/estrategico/planejamento/okrs/[cicloId]/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
 // Validate ../../../app/corporativo/estrategico/planejamento/page.tsx
 {
   type __IsExpected<Specific extends AppPageConfig<"/corporativo/estrategico/planejamento">> = Specific
   const handler = {} as typeof import("../../../app/corporativo/estrategico/planejamento/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../../app/corporativo/estrategico/planejamento/pestel/[cicloId]/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/corporativo/estrategico/planejamento/pestel/[cicloId]">> = Specific
+  const handler = {} as typeof import("../../../app/corporativo/estrategico/planejamento/pestel/[cicloId]/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../../app/corporativo/estrategico/planejamento/swot/[cicloId]/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/corporativo/estrategico/planejamento/swot/[cicloId]">> = Specific
+  const handler = {} as typeof import("../../../app/corporativo/estrategico/planejamento/swot/[cicloId]/page.js")
   type __Check = __IsExpected<typeof handler>
   // @ts-ignore
   type __Unused = __Check
@@ -508,15 +643,6 @@ type LayoutConfig<Route extends LayoutRoutes = LayoutRoutes> = {
 {
   type __IsExpected<Specific extends AppPageConfig<"/corporativo/inteligencia/treinamento">> = Specific
   const handler = {} as typeof import("../../../app/corporativo/inteligencia/treinamento/page.js")
-  type __Check = __IsExpected<typeof handler>
-  // @ts-ignore
-  type __Unused = __Check
-}
-
-// Validate ../../../app/corporativo/obras/acessos/page.tsx
-{
-  type __IsExpected<Specific extends AppPageConfig<"/corporativo/obras/acessos">> = Specific
-  const handler = {} as typeof import("../../../app/corporativo/obras/acessos/page.js")
   type __Check = __IsExpected<typeof handler>
   // @ts-ignore
   type __Unused = __Check
@@ -1567,6 +1693,15 @@ type LayoutConfig<Route extends LayoutRoutes = LayoutRoutes> = {
 {
   type __IsExpected<Specific extends LayoutConfig<"/corporativo/console">> = Specific
   const handler = {} as typeof import("../../../app/corporativo/console/layout.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../../app/corporativo/estrategico/planejamento/layout.tsx
+{
+  type __IsExpected<Specific extends LayoutConfig<"/corporativo/estrategico/planejamento">> = Specific
+  const handler = {} as typeof import("../../../app/corporativo/estrategico/planejamento/layout.js")
   type __Check = __IsExpected<typeof handler>
   // @ts-ignore
   type __Unused = __Check
