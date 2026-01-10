@@ -236,6 +236,72 @@ export interface DashboardComercial {
 }
 
 // ============================================================================
+// NOVOS TIPOS PARA VISÃO GERAL
+// ============================================================================
+
+export interface Alerta {
+  id: string
+  tipo: string
+  severidade: "critico" | "atencao"
+  mensagem: string
+  data: string
+  entidadeId: string
+  entidadeTipo: "cliente" | "proposta" | "contrato"
+}
+
+export interface KPIsPrimarios {
+  pipelineTotal: number
+  valorGanho: number
+  taxaConversao: number
+  totalAlertas: number
+}
+
+export interface DadosProspeccao {
+  prospeccoesAtivas: number
+  valorPotencial: number
+  clientesNovos: number
+  distribuicao: {
+    publico: number
+    privado: number
+  }
+  alertas: Alerta[]
+}
+
+export interface StatusEtapa {
+  nome: string
+  status: "ok" | "atencao" | "atrasado"
+  quantidade: number
+}
+
+export interface DadosPropostasAndamento {
+  propostasAtivas: number
+  valorEmDisputa: number
+  prazoMedio: number
+  percentualRisco: number
+  statusPorEtapa: StatusEtapa[]
+  alertas: Alerta[]
+}
+
+export interface DadosConsolidado {
+  valorGanho: number
+  valorPerdido: number
+  taxaConversao: number
+  margemMedia: number
+  descontoMedio: number
+  ticketMedio: number
+  distribuicao: {
+    publico: number
+    privado: number
+  }
+}
+
+export interface AlertasCriticos {
+  criticos: Alerta[]
+  atencao: Alerta[]
+  todos: Alerta[]
+}
+
+// ============================================================================
 // INTERFACE - CONTEXT
 // ============================================================================
 
@@ -282,4 +348,11 @@ export interface ComercialContextType {
   getContratoPorId: (id: string) => Contrato | undefined
   getPropostasPorCliente: (clienteId: string) => Proposta[]
   getContratosPorCliente: (clienteId: string) => Contrato[]
+  
+  // Novos para Visão Geral
+  getKPIsPrimarios: () => KPIsPrimarios
+  getDadosProspeccao: () => DadosProspeccao
+  getDadosPropostasAndamento: () => DadosPropostasAndamento
+  getDadosConsolidado: () => DadosConsolidado
+  getAlertasCriticos: () => AlertasCriticos
 }

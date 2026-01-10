@@ -4,6 +4,7 @@ import type React from "react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { ComercialHelpDialog } from "./comercial-help-dialog"
 import { Search, Building2 } from "lucide-react"
 
 // ============================================================================
@@ -73,7 +74,10 @@ export function ComercialTopBar({
       </div>
 
       {/* Ações */}
-      {actions && <div className="flex items-center gap-1.5">{actions}</div>}
+      <div className="flex items-center gap-1.5">
+        <ComercialHelpDialog />
+        {actions}
+      </div>
     </header>
   )
 }
