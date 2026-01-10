@@ -150,13 +150,17 @@ export default function PropostaDetalhesPage({
                     </CardHeader>
                     <CardContent>
                       <RadarViabilidade 
-                        pilares={{
-                          tecnica: { score: 8, comentario: "Capacidade técnica comprovada" },
-                          operacional: { score: 7, comentario: "Equipe disponível" },
-                          financeira: { score: 9, comentario: "Capital adequado" },
-                          economica: { score: 6, comentario: "Margem aceitável" },
-                          juridica: { score: 8, comentario: "Sem restrições" },
-                          risco: { score: 7, comentario: "Riscos gerenciáveis" },
+                        analise={{
+                          pilares: {
+                            tecnica: { score: 8, comentario: "Capacidade técnica comprovada" },
+                            operacional: { score: 7, comentario: "Equipe disponível" },
+                            financeira: { score: 9, comentario: "Capital adequado" },
+                            economica: { score: 6, comentario: "Margem aceitável" },
+                            juridica: { score: 8, comentario: "Sem restrições" },
+                            risco: { score: 7, comentario: "Riscos gerenciáveis" },
+                          },
+                          conclusao: "viavel",
+                          observacoes: "Projeto estratégico alinhado"
                         }}
                       />
                       <div className="mt-4 p-3 bg-emerald-50 border border-emerald-200 rounded-lg">

@@ -8219,3 +8219,26 @@ Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
 [02:07:36.905] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/corporativo/comercial/propostas/PROP-2026-507 color: rgb(120, 120, 120) color: inherit {"dp":"/corporativo/comercial/propostas/[id]","o":"http://localhost:3000/corporativo/comercial/propostas/PROP-2026-507","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1768074629388}
 [02:08:04.436] Server  LOG      ✓ Compiled in 270ms
 [02:08:04.562] Browser ERROR   uncaughtError: TypeError: Cannot read properties of undefined (reading 'pilares')
+[02:11:49.988] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/propostas/[id]. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[02:11:50.300] Server  ERROR   C:\Users\gpontes\Documents\Genesis\.next\dev\server\chunks\ssr\_42f1e0f2._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[02:11:50.300] Server  ERROR    ⨯ TypeError: Cannot read properties of undefined (reading 'pilares')
+[02:11:50.764] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[02:11:51.109] Browser ERROR   uncaughtError: TypeError: Cannot read properties of undefined (reading 'pilares')
+[02:12:13.990] Server  WARN     ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+[02:12:14.149] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/propostas/[id]. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[02:12:14.321] Server  ERROR   C:\Users\gpontes\Documents\Genesis\.next\dev\server\chunks\ssr\_42f1e0f2._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[02:12:14.321] Server  ERROR    ⨯ TypeError: Cannot read properties of undefined (reading 'matrizResumo')
+[02:12:14.322] Server  LOG      ✓ Compiled in 120ms
+[02:12:14.431] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[02:12:15.160] Browser ERROR   uncaughtError: Error: Switched to client rendering because the server rendering errored:
+
+Cannot read properties of undefined (reading 'matrizResumo')
+[02:12:15.160] Browser ERROR   uncaughtError: TypeError: Cannot read properties of undefined (reading 'matrizResumo')
+[02:12:21.310] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/propostas/[id]. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[02:12:21.412] Server  ERROR   C:\Users\gpontes\Documents\Genesis\.next\dev\server\chunks\ssr\_42f1e0f2._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[02:12:21.412] Server  ERROR    ⨯ TypeError: Cannot read properties of undefined (reading 'matrizResumo')
+[02:12:21.587] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[02:12:22.187] Browser ERROR   uncaughtError: TypeError: Cannot read properties of undefined (reading 'matrizResumo')
