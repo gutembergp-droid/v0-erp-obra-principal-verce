@@ -11,9 +11,9 @@ import { Zap, Target, TrendingUp, AlertCircle, ChevronRight } from "lucide-react
 
 export function SidebarInsights() {
   return (
-    <div className="w-80 border-l border-border bg-muted/30 flex flex-col h-full">
+    <div className="w-[360px] border-l border-border bg-muted/30 flex flex-col h-full">
       <ScrollArea className="flex-1">
-        <div className="p-4 space-y-4">
+        <div className="p-4 space-y-5">
           {/* PRÓXIMAS AÇÕES RECOMENDADAS */}
           <div className="space-y-3">
             <div className="flex items-center gap-2 pb-2 border-b">

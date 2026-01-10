@@ -39,9 +39,9 @@ export function KPIInteligente({ tipo, dados }: KPIInteligenteProps) {
 
     return (
       <Card className="border-l-4 border-l-blue-600 hover:shadow-lg transition-all h-full">
-        <div className="p-3 space-y-2.5 h-full flex flex-col">
+        <div className="p-3 space-y-2 h-full flex flex-col">
           {/* Header */}
-          <div className="flex items-start justify-between">
+          <div className="flex items-start justify-between gap-2">
             <div>
               <div className="flex items-center gap-2">
                 <Target className="w-4 h-4 text-blue-600" />
@@ -111,9 +111,9 @@ export function KPIInteligente({ tipo, dados }: KPIInteligenteProps) {
 
     return (
       <Card className="border-l-4 border-l-emerald-600 hover:shadow-lg transition-all h-full">
-        <div className="p-3 space-y-2.5 h-full flex flex-col">
+        <div className="p-3 space-y-2 h-full flex flex-col">
           {/* Header */}
-          <div className="flex items-start justify-between">
+          <div className="flex items-start justify-between gap-2">
             <div>
               <div className="flex items-center gap-2">
                 <TrendingUp className="w-4 h-4 text-emerald-600" />
@@ -184,9 +184,9 @@ export function KPIInteligente({ tipo, dados }: KPIInteligenteProps) {
 
     return (
       <Card className="border-l-4 border-l-red-600 hover:shadow-lg transition-all h-full">
-        <div className="p-3 space-y-2.5 h-full flex flex-col">
+        <div className="p-3 space-y-2 h-full flex flex-col">
           {/* Header */}
-          <div className="flex items-start justify-between">
+          <div className="flex items-start justify-between gap-2">
             <div>
               <div className="flex items-center gap-2">
                 <AlertTriangle className="w-4 h-4 text-red-600" />
@@ -262,9 +262,9 @@ export function KPIInteligente({ tipo, dados }: KPIInteligenteProps) {
 
     return (
       <Card className="border-l-4 border-l-orange-600 hover:shadow-lg transition-all animate-pulse h-full">
-        <div className="p-3 space-y-2.5 h-full flex flex-col">
+        <div className="p-3 space-y-2 h-full flex flex-col">
           {/* Header */}
-          <div className="flex items-start justify-between">
+          <div className="flex items-start justify-between gap-2">
             <div>
               <div className="flex items-center gap-2">
                 <AlertTriangle className="w-4 h-4 text-orange-600 animate-pulse" />

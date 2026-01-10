@@ -135,3 +135,37 @@ Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
 [00:29:21.491] Server  LOG      ✓ Compiled in 212ms
 [00:35:03.462] Server  LOG      ✓ Compiled in 319ms
 [00:35:25.312] Server  LOG      ✓ Compiled in 336ms
+[00:37:16.272] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:37:16.603] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:37:17.009] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:37:17.009] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/corporativo/comercial","route":"/corporativo/comercial"}
+[00:37:17.009] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/corporativo/comercial color: rgb(120, 120, 120) color: inherit {"dp":"/corporativo/comercial","o":"http://localhost:3000/corporativo/comercial","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1768069209497}
+[00:38:54.689] Server  LOG      ✓ Compiled in 220ms
+[00:39:05.686] Server  LOG      ✓ Compiled in 184ms
+[00:39:06.251] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/propostas. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:39:06.452] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/corporativo/comercial/propostas color: rgb(120, 120, 120) color: inherit {"dp":"/corporativo/comercial/propostas","o":"http://localhost:3000/corporativo/comercial/propostas","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1768069318938}
+[00:39:07.294] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:39:07.466] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/corporativo/comercial color: rgb(120, 120, 120) color: inherit {"dp":"/corporativo/comercial","o":"http://localhost:3000/corporativo/comercial","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1768069319965}
+[00:39:16.633] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:39:16.996] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:39:17.472] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:39:17.472] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/corporativo/comercial","route":"/corporativo/comercial"}
+[00:39:17.472] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/corporativo/comercial color: rgb(120, 120, 120) color: inherit {"dp":"/corporativo/comercial","o":"http://localhost:3000/corporativo/comercial","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1768069329973}
+[00:39:17.583] Server  LOG      ✓ Compiled in 220ms
+[00:39:28.300] Server  LOG      ✓ Compiled in 261ms
+[00:39:41.345] Server  LOG      ✓ Compiled in 238ms
+[00:39:52.659] Server  LOG      ✓ Compiled in 193ms
+[00:40:03.340] Server  LOG      ✓ Compiled in 246ms
+[00:40:13.639] Server  LOG      ✓ Compiled in 250ms
+[00:40:24.186] Server  LOG      ✓ Compiled in 295ms
+[00:40:34.599] Server  LOG      ✓ Compiled in 216ms
+[00:40:44.743] Server  LOG      ✓ Compiled in 226ms
+[00:40:54.673] Server  LOG      ✓ Compiled in 222ms
+[00:41:04.726] Server  LOG      ✓ Compiled in 228ms
+[00:41:14.606] Server  LOG      ✓ Compiled in 266ms
+[00:41:24.859] Server  LOG      ✓ Compiled in 244ms
+[00:41:34.555] Server  LOG      ✓ Compiled in 245ms

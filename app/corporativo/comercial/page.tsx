@@ -64,10 +64,10 @@ export default function ComercialDashboard() {
         {/* Layout Principal: Conteúdo + Sidebar Insights */}
         <div className="flex-1 flex overflow-hidden">
           {/* Área de Conteúdo Principal (Tela Cheia) */}
-          <main className="flex-1 overflow-auto p-6">
-            <div className="max-w-[1400px] mx-auto space-y-6">
+          <main className="flex-1 overflow-auto p-5">
+            <div className="h-full space-y-4">
               {/* LINHA 1: 4 KPIs Inteligentes */}
-              <div className="grid grid-cols-4 gap-4">
+              <div className="grid grid-cols-4 gap-3">
                 <KPIInteligente tipo="pipeline" dados={dadosPipeline} />
                 <KPIInteligente tipo="ganho" dados={dadosGanho} />
                 <KPIInteligente tipo="conversao" dados={dadosConversao} />
@@ -75,7 +75,7 @@ export default function ComercialDashboard() {
               </div>
 
               {/* LINHA 2: 3 Cards Grandes - Tela Cheia */}
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-3 gap-3 flex-1">
                 {/* Card 1: Prospecção */}
                 <CardProspeccaoV2 dados={dadosProspeccao} />
 
@@ -87,10 +87,10 @@ export default function ComercialDashboard() {
               </div>
 
               {/* Footer Informativo */}
-              <div className="p-3 rounded-lg border bg-gradient-to-r from-primary/5 to-primary/10 text-center">
-                <p className="text-xs text-muted-foreground">
+              <div className="p-2 rounded border bg-gradient-to-r from-primary/5 to-primary/10 text-center">
+                <p className="text-[10px] text-muted-foreground">
                   💡 <span className="font-medium">Visão Geral Inteligente</span> • Atualizado em tempo real • 
-                  Decisões baseadas em dados • Ações recomendadas por IA • <span className="font-semibold text-primary">ERP-GNESIS</span>
+                  Decisões baseadas em dados • <span className="font-semibold text-primary">ERP-GNESIS</span>
                 </p>
               </div>
             </div>
