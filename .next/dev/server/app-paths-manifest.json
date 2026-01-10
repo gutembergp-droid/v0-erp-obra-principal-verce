@@ -1,4 +1,5 @@
 {
+  "/corporativo/comercial/analytics/page": "app/corporativo/comercial/analytics/page.js",
   "/corporativo/comercial/clientes/page": "app/corporativo/comercial/clientes/page.js",
   "/corporativo/comercial/contratos/page": "app/corporativo/comercial/contratos/page.js",
   "/corporativo/comercial/page": "app/corporativo/comercial/page.js",
