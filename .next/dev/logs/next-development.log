@@ -3957,3 +3957,25 @@ Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
 [01:14:24.321] Server  LOG      ✓ Compiled in 155ms
 [01:14:56.702] Server  LOG      ✓ Compiled in 231ms
 [01:15:16.174] Server  LOG      ✓ Compiled in 153ms
+[01:16:31.699] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/propostas. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[01:16:31.970] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:16:32.279] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[01:16:32.279] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/corporativo/comercial/propostas","route":"/corporativo/comercial/propostas"}
+[01:16:32.279] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/corporativo/comercial/propostas color: rgb(120, 120, 120) color: inherit {"dp":"/corporativo/comercial/propostas","o":"http://localhost:3000/corporativo/comercial/propostas","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1768071564774}
+[01:17:18.633] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[01:17:18.997] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/corporativo/comercial color: rgb(120, 120, 120) color: inherit {"dp":"/corporativo/comercial","o":"http://localhost:3000/corporativo/comercial","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1768071611493}
+[01:18:14.376] Server  LOG      ✓ Compiled in 308ms
+[01:18:28.603] Server  LOG      ✓ Compiled in 207ms
+[01:18:28.930] Browser ERROR   uncaughtError: ReferenceError: FileText is not defined
+[01:18:59.776] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[01:18:59.864] Server  LOG      ✓ Compiled in 1044ms
+[01:19:00.180] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/propostas. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[01:19:00.654] Server  ERROR   C:\Users\gpontes\Documents\Genesis\.next\dev\server\chunks\ssr\_cf4d88a9._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[01:19:00.658] Server  ERROR    ⨯ ReferenceError: FileText is not defined
+[01:19:00.662] Server  WARN     ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+[01:19:00.921] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:19:01.939] Browser ERROR   uncaughtError: ReferenceError: FileText is not defined

@@ -8,9 +8,10 @@ import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { Plus, Search, Eye, FileText, TrendingUp, Clock, CheckCircle2, XCircle } from "lucide-react"
+import { Plus, Search, Eye } from "lucide-react"
 import { ComercialSidebar } from "../_components/comercial-sidebar"
 import { ComercialTopBar } from "../_components/comercial-top-bar"
+import { KPIsPropostas } from "./_components/kpis-propostas"
 
 // ============================================================================
 // MOCK DATA
@@ -129,165 +130,8 @@ export default function PropostasPage() {
 
         <main className="flex-1 overflow-auto p-6">
           <div className="max-w-[1800px] mx-auto space-y-6">
-            {/* KPIs - CARDS NO TOPO */}
-            <div className="grid grid-cols-5 gap-4">
-              {/* Total de Propostas */}
-              <Card className="border hover:shadow-md transition-shadow">
-                <CardHeader className="pb-3">
-                  <div className="flex items-center justify-between">
-                    <FileText className="w-5 h-5 text-blue-600" />
-                    <Badge variant="outline" className="text-xs">Total</Badge>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-3xl font-bold">{kpis.total}</p>
-                  <p className="text-xs text-muted-foreground mt-1">Propostas Ativas</p>
-                </CardContent>
-              </Card>
-
-              {/* Em Progresso */}
-              <Card className="border hover:shadow-md transition-shadow">
-                <CardHeader className="pb-3">
-                  <div className="flex items-center justify-between">
-                    <Clock className="w-5 h-5 text-amber-600" />
-                    <Badge variant="outline" className="text-xs">Andamento</Badge>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-3xl font-bold text-amber-600">{kpis.emProgresso}</p>
-                  <p className="text-xs text-muted-foreground mt-1">Em Progresso</p>
-                </CardContent>
-              </Card>
-
-              {/* Consolidadas */}
-              <Card className="border hover:shadow-md transition-shadow">
-                <CardHeader className="pb-3">
-                  <div className="flex items-center justify-between">
-                    <CheckCircle2 className="w-5 h-5 text-emerald-600" />
-                    <Badge variant="outline" className="text-xs">Prontas</Badge>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-3xl font-bold text-emerald-600">{kpis.consolidadas}</p>
-                  <p className="text-xs text-muted-foreground mt-1">Consolidadas</p>
-                </CardContent>
-              </Card>
-
-              {/* Enviadas */}
-              <Card className="border hover:shadow-md transition-shadow">
-                <CardHeader className="pb-3">
-                  <div className="flex items-center justify-between">
-                    <TrendingUp className="w-5 h-5 text-purple-600" />
-                    <Badge variant="outline" className="text-xs">Enviadas</Badge>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-3xl font-bold text-purple-600">{kpis.enviadas}</p>
-                  <p className="text-xs text-muted-foreground mt-1">Ao Cliente</p>
-                </CardContent>
-              </Card>
-
-              {/* Pipeline - Velocímetro */}
-              <Card className="border hover:shadow-md transition-shadow group cursor-pointer relative">
-                <CardHeader className="pb-3">
-                  <div className="flex items-center justify-between">
-                    <TrendingUp className="w-5 h-5 text-blue-600" />
-                    <Badge variant="outline" className="text-xs">Pipeline</Badge>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  {/* Velocímetro Visual */}
-                  <div className="relative mb-4">
-                    {/* Semi-círculo (gauge) */}
-                    <div className="relative w-full aspect-[2/1] flex items-end justify-center">
-                      <svg viewBox="0 0 100 50" className="w-full">
-                        {/* Background arc */}
-                        <path
-                          d="M 10,50 A 40,40 0 0,1 90,50"
-                          fill="none"
-                          stroke="#e5e7eb"
-                          strokeWidth="8"
-                          strokeLinecap="round"
-                        />
-                        {/* Colored segments */}
-                        {/* Amarelo (Enviado) - 0-33% */}
-                        <path
-                          d="M 10,50 A 40,40 0 0,1 36.3,23.4"
-                          fill="none"
-                          stroke="#f59e0b"
-                          strokeWidth="8"
-                          strokeLinecap="round"
-                          opacity="0.6"
-                        />
-                        {/* Azul (Elaboração) - 33-66% */}
-                        <path
-                          d="M 36.3,23.4 A 40,40 0 0,1 63.7,23.4"
-                          fill="none"
-                          stroke="#3b82f6"
-                          strokeWidth="8"
-                          strokeLinecap="round"
-                          opacity="0.6"
-                        />
-                        {/* Verde (Monitoramento) - 66-100% */}
-                        <path
-                          d="M 63.7,23.4 A 40,40 0 0,1 90,50"
-                          fill="none"
-                          stroke="#10b981"
-                          strokeWidth="8"
-                          strokeLinecap="round"
-                          opacity="0.6"
-                        />
-                        {/* Needle (ponteiro) - apontando para ~80% */}
-                        <line
-                          x1="50"
-                          y1="50"
-                          x2="78"
-                          y2="30"
-                          stroke="#1e40af"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                        />
-                        <circle cx="50" cy="50" r="3" fill="#1e40af" />
-                      </svg>
-                    </div>
-                  </div>
-
-                  {/* Valor */}
-                  <div className="text-center">
-                    <p className="text-2xl font-bold text-blue-600">{formatCurrency(kpis.valorTotal)}</p>
-                    <p className="text-xs text-muted-foreground mt-1">Pipeline Total</p>
-                  </div>
-
-                  {/* Tooltip on hover */}
-                  <div className="opacity-0 group-hover:opacity-100 absolute inset-0 bg-background/95 backdrop-blur-sm rounded-lg p-4 transition-opacity flex flex-col justify-center space-y-2">
-                    <p className="text-xs font-bold text-center mb-2">Breakdown:</p>
-                    <div className="space-y-1.5">
-                      <div className="flex items-center justify-between text-xs">
-                        <div className="flex items-center gap-1.5">
-                          <div className="w-2 h-2 rounded-full bg-amber-500" />
-                          <span>Enviado</span>
-                        </div>
-                        <span className="font-bold">{formatCurrency(kpis.valorEnviado)}</span>
-                      </div>
-                      <div className="flex items-center justify-between text-xs">
-                        <div className="flex items-center gap-1.5">
-                          <div className="w-2 h-2 rounded-full bg-blue-500" />
-                          <span>Elaboração</span>
-                        </div>
-                        <span className="font-bold">{formatCurrency(kpis.valorElaboracao)}</span>
-                      </div>
-                      <div className="flex items-center justify-between text-xs">
-                        <div className="flex items-center gap-1.5">
-                          <div className="w-2 h-2 rounded-full bg-emerald-500" />
-                          <span>Monitoramento</span>
-                        </div>
-                        <span className="font-bold">{formatCurrency(kpis.valorMonitoramento)}</span>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+            {/* KPIs PROFISSIONAIS */}
+            <KPIsPropostas kpis={kpis} />
 
             {/* TABELA DE PROPOSTAS */}
             <Card className="border">
