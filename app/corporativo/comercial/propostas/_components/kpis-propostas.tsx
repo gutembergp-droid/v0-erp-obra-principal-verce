@@ -2,8 +2,7 @@
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { FileText, Clock, CheckCircle2, TrendingUp as TrendingUpIcon, TrendingDown } from "lucide-react"
-import { BarChart, Bar, ResponsiveContainer } from "recharts"
+import { FileText, Clock, CheckCircle2, TrendingUp as TrendingUpIcon } from "lucide-react"
 
 // ============================================================================
 // COMPONENT - KPIs DE PROPOSTAS (NÍVEL EXCELÊNCIA - DESIGNER SENIOR)
@@ -32,8 +31,6 @@ export function KPIsPropostas({ kpis }: KPIPropostasProps) {
   // ============================================================================
   // DADOS MENSAIS (Últimos 6 meses) - TIMELINE
   // ============================================================================
-  const mesesLabels = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun"]
-  
   const timelineTotal = [
     { mes: "Jan", valor: 2 },
     { mes: "Fev", valor: 3 },
@@ -70,57 +67,37 @@ export function KPIsPropostas({ kpis }: KPIPropostasProps) {
     { mes: "Jun", valor: 1 },
   ]
 
-  // Mock data para sparklines (últimos 7 dias)
-  const sparklineData = [
-    { value: 3 }, { value: 4 }, { value: 3 }, { value: 5 }, { value: 4 }, { value: 5 }, { value: 5 }
-  ]
-
-  const progressoData = [
-    { value: 2 }, { value: 2 }, { value: 3 }, { value: 3 }, { value: 2 }, { value: 3 }, { value: 3 }
-  ]
-
-  const consolidadasData = [
-    { value: 0 }, { value: 1 }, { value: 1 }, { value: 1 }, { value: 1 }, { value: 1 }, { value: 1 }
-  ]
-
-  const enviadasData = [
-    { value: 1 }, { value: 1 }, { value: 1 }, { value: 1 }, { value: 1 }, { value: 1 }, { value: 1 }
-  ]
-
   // ============================================================================
   // COMPONENTE DE TIMELINE MENSAL (Reutilizável)
   // ============================================================================
-  const MonthlyTimeline = ({ data, color, label }: { data: typeof timelineTotal, color: string, label: string }) => {
+  const MonthlyTimeline = ({ data, color }: { data: typeof timelineTotal, color: string }) => {
     const maxValue = Math.max(...data.map(d => d.valor), 1)
     
     return (
       <div className="border-t border-border pt-3">
-        <p className="text-[10px] font-semibold text-muted-foreground mb-2 uppercase tracking-wide">
+        <p className="text-[10px] font-semibold text-muted-foreground mb-3 uppercase tracking-wide">
           Evolução Mensal (6 meses)
         </p>
-        <div className="flex items-end justify-between gap-1.5 h-14">
+        <div className="flex items-start justify-between gap-2">
           {data.map((item, idx) => {
             const heightPercent = (item.valor / maxValue) * 100
             return (
-              <div key={idx} className="flex-1 flex flex-col items-center gap-1 group cursor-pointer relative">
-                {/* Tooltip value on hover - ACIMA da barra */}
-                <div className="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-popover border-2 border-primary rounded-lg px-2.5 py-1.5 shadow-xl transition-all duration-200 pointer-events-none z-20 whitespace-nowrap">
-                  <p className="text-sm font-black text-primary">{item.valor}</p>
-                  <p className="text-[9px] text-muted-foreground">{label}</p>
-                  {/* Seta apontando para baixo */}
-                  <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-popover border-r-2 border-b-2 border-primary rotate-45" />
-                </div>
+              <div key={idx} className="flex-1 flex flex-col items-center gap-2">
+                {/* NÚMERO FIXO ACIMA DA BARRA */}
+                <span className="text-sm font-black text-foreground">
+                  {item.valor}
+                </span>
                 
                 {/* Barra */}
-                <div className="w-full flex items-end justify-center" style={{ height: '36px' }}>
+                <div className="w-full flex items-end justify-center" style={{ height: '48px' }}>
                   <div 
-                    className={`w-full ${color} rounded-t transition-all group-hover:opacity-90 group-hover:brightness-110`}
-                    style={{ height: `${heightPercent}%`, minHeight: item.valor > 0 ? '6px' : '0px' }}
+                    className={`w-full ${color} rounded-t`}
+                    style={{ height: `${heightPercent}%`, minHeight: item.valor > 0 ? '8px' : '0px' }}
                   />
                 </div>
                 
                 {/* Label do mês */}
-                <span className="text-[10px] font-bold text-muted-foreground group-hover:text-foreground transition-colors">
+                <span className="text-[11px] font-semibold text-muted-foreground">
                   {item.mes}
                 </span>
               </div>
@@ -159,19 +136,10 @@ export function KPIsPropostas({ kpis }: KPIPropostasProps) {
           </div>
 
           {/* TIMELINE MENSAL */}
-          <MonthlyTimeline data={timelineTotal} color="bg-blue-500" label="propostas" />
-          
-          {/* Sparkline (7 dias) */}
-          <div className="h-10 pt-2 border-t">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={sparklineData}>
-                <Bar dataKey="value" fill="#3b82f6" radius={[2, 2, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
+          <MonthlyTimeline data={timelineTotal} color="bg-blue-500" />
 
           {/* Tendência */}
-          <div className="flex items-center justify-between text-xs border-t pt-2">
+          <div className="flex items-center justify-between text-xs border-t pt-3 mt-3">
             <div className="flex items-center gap-1 text-emerald-600">
               <TrendingUpIcon className="w-3 h-3" />
               <span className="font-bold">↑ 25%</span>
@@ -210,17 +178,9 @@ export function KPIsPropostas({ kpis }: KPIPropostasProps) {
           </div>
 
           {/* TIMELINE MENSAL */}
-          <MonthlyTimeline data={timelineProgresso} color="bg-amber-500" label="em progresso" />
-          
-          <div className="h-10 pt-2 border-t">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={progressoData}>
-                <Bar dataKey="value" fill="#f59e0b" radius={[2, 2, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
+          <MonthlyTimeline data={timelineProgresso} color="bg-amber-500" />
 
-          <div className="flex items-center justify-between text-xs border-t pt-2">
+          <div className="flex items-center justify-between text-xs border-t pt-3 mt-3">
             <div className="flex items-center gap-1 text-amber-600">
               <TrendingUpIcon className="w-3 h-3" />
               <span className="font-bold">↑ 50%</span>
@@ -259,17 +219,9 @@ export function KPIsPropostas({ kpis }: KPIPropostasProps) {
           </div>
 
           {/* TIMELINE MENSAL */}
-          <MonthlyTimeline data={timelineConsolidadas} color="bg-emerald-500" label="consolidadas" />
-          
-          <div className="h-10 pt-2 border-t">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={consolidadasData}>
-                <Bar dataKey="value" fill="#10b981" radius={[2, 2, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
+          <MonthlyTimeline data={timelineConsolidadas} color="bg-emerald-500" />
 
-          <div className="flex items-center justify-between text-xs border-t pt-2">
+          <div className="flex items-center justify-between text-xs border-t pt-3 mt-3">
             <div className="flex items-center gap-1 text-emerald-600">
               <span className="font-bold">● Estável</span>
             </div>
@@ -307,17 +259,9 @@ export function KPIsPropostas({ kpis }: KPIPropostasProps) {
           </div>
 
           {/* TIMELINE MENSAL */}
-          <MonthlyTimeline data={timelineEnviadas} color="bg-purple-500" label="enviadas" />
-          
-          <div className="h-10 pt-2 border-t">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={enviadasData}>
-                <Bar dataKey="value" fill="#a855f7" radius={[2, 2, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
+          <MonthlyTimeline data={timelineEnviadas} color="bg-purple-500" />
 
-          <div className="flex items-center justify-between text-xs border-t pt-2">
+          <div className="flex items-center justify-between text-xs border-t pt-3 mt-3">
             <div className="flex items-center gap-1 text-purple-600">
               <span className="font-bold">● Estável</span>
             </div>

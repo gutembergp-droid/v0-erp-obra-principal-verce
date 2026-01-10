@@ -4092,3 +4092,15 @@ It can also happen if the client has a browser extension installed which messes 
 [01:28:57.231] Server  LOG      ✓ Compiled in 126ms
 [01:29:05.758] Server  LOG      ✓ Compiled in 136ms
 [01:29:14.860] Server  LOG      ✓ Compiled in 151ms
+[01:31:41.195] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:31:41.195] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:31:55.756] Server  LOG      ✓ Compiled in 158ms
+[01:32:08.054] Server  LOG      ✓ Compiled in 149ms
+[01:32:19.582] Server  LOG      ✓ Compiled in 156ms
+[01:32:30.043] Server  LOG      ✓ Compiled in 164ms
+[01:32:40.350] Server  LOG      ✓ Compiled in 170ms
+[01:32:49.272] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:32:49.272] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[01:32:53.155] Server  LOG      ✓ Compiled in 185ms
+[01:33:03.211] Server  LOG      ✓ Compiled in 142ms
+[01:33:12.831] Server  LOG      ✓ Compiled in 145ms
