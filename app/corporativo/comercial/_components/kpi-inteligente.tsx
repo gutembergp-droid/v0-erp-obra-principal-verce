@@ -106,8 +106,11 @@ export function KPIInteligente({ tipo, dados }: KPIInteligenteProps) {
     const margem = 18.5
     const margemSetor = 15.2
     const metaAnual = 800000000
+    const realizado = dados.valor
     const projecao = dados.valor + dados.pipelineAtual
     const percentualProjecao = ((projecao / metaAnual) * 100).toFixed(0)
+    const percentualRealizado = ((realizado / metaAnual) * 100).toFixed(0)
+    const acimaDaMeta = projecao > metaAnual
 
     return (
       <Card className="border-l-4 border-l-emerald-600 hover:shadow-lg transition-all h-full">
@@ -153,20 +156,66 @@ export function KPIInteligente({ tipo, dados }: KPIInteligenteProps) {
             </div>
           </div>
 
-          {/* Projeção */}
-          <div className="space-y-1">
-            <p className="text-[10px] text-muted-foreground font-medium uppercase">Projeção Anual:</p>
+          {/* PROJEÇÃO ANUAL - VISUAL INTERATIVO */}
+          <div className="space-y-2 p-2.5 rounded-lg border-2 border-emerald-300 bg-emerald-50/50">
             <div className="flex items-center justify-between">
-              <span className="text-sm font-bold">{formatCurrency(projecao)}</span>
-              <Badge variant="default" className="text-[10px]">
+              <p className="text-xs font-bold text-emerald-900">PROJEÇÃO ANUAL</p>
+              <Badge variant="default" className="text-xs bg-emerald-600">
                 {percentualProjecao}% da meta
               </Badge>
             </div>
-            <div className="h-1.5 rounded-full bg-muted overflow-hidden">
-              <div
-                className="h-full bg-emerald-600 transition-all duration-500"
-                style={{ width: `${Math.min(Number.parseInt(percentualProjecao), 100)}%` }}
-              />
+
+            {/* Gráfico de Barras Comparativo */}
+            <div className="space-y-2">
+              {/* Barra 1: META (Referência) */}
+              <div className="space-y-1">
+                <div className="flex items-center justify-between text-[10px]">
+                  <span className="font-medium text-muted-foreground">Meta Anual</span>
+                  <span className="font-bold">{formatCurrency(metaAnual)}</span>
+                </div>
+                <div className="h-2 rounded-full bg-muted border">
+                  <div className="h-full w-full bg-gray-400 rounded-full" />
+                </div>
+              </div>
+
+              {/* Barra 2: REALIZADO */}
+              <div className="space-y-1">
+                <div className="flex items-center justify-between text-[10px]">
+                  <span className="font-medium text-emerald-700">Realizado</span>
+                  <span className="font-bold text-emerald-600">{formatCurrency(realizado)}</span>
+                </div>
+                <div className="h-2 rounded-full bg-muted border">
+                  <div
+                    className="h-full bg-emerald-500 rounded-full transition-all duration-500"
+                    style={{ width: `${percentualRealizado}%` }}
+                  />
+                </div>
+                <p className="text-[9px] text-emerald-600 font-medium">
+                  {percentualRealizado}% da meta anual
+                </p>
+              </div>
+
+              {/* Barra 3: PROJEÇÃO (Realizado + Pipeline) */}
+              <div className="space-y-1">
+                <div className="flex items-center justify-between text-[10px]">
+                  <span className="font-medium text-emerald-900">Projeção (+ Pipeline)</span>
+                  <span className="font-bold text-emerald-600">{formatCurrency(projecao)}</span>
+                </div>
+                <div className="h-3 rounded-full bg-muted border-2 border-emerald-400 overflow-hidden">
+                  <div
+                    className="h-full bg-gradient-to-r from-emerald-500 to-emerald-600 transition-all duration-500"
+                    style={{ width: `${Math.min(Number.parseInt(percentualProjecao), 100)}%` }}
+                  />
+                </div>
+                {acimaDaMeta && (
+                  <div className="flex items-center gap-1">
+                    <TrendingUp className="w-3 h-3 text-emerald-600" />
+                    <p className="text-[9px] text-emerald-600 font-bold">
+                      ACIMA DA META! +{formatCurrency(projecao - metaAnual)} ({percentualProjecao}%)
+                    </p>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
