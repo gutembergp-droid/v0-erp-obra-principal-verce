@@ -3979,3 +3979,110 @@ Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
 [01:19:00.662] Server  WARN     ⚠ Fast Refresh had to perform a full reload due to a runtime error.
 [01:19:00.921] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
 [01:19:01.939] Browser ERROR   uncaughtError: ReferenceError: FileText is not defined
+[01:20:04.795] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/propostas. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[01:20:05.058] Browser ERROR   uncaughtError: ReferenceError: FileText is not defined
+[01:22:15.249] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/propostas. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[01:22:15.422] Server  ERROR   C:\Users\gpontes\Documents\Genesis\.next\dev\server\chunks\ssr\_cf4d88a9._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[01:22:15.425] Server  ERROR    ⨯ ReferenceError: FileText is not defined
+[01:22:15.741] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:22:16.216] Browser ERROR   uncaughtError: ReferenceError: FileText is not defined
+[01:22:44.111] Server  WARN     ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+[01:22:44.224] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/propostas. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[01:22:44.389] Server  WARN     ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+[01:22:44.389] Server  LOG      ✓ Compiled in 121ms
+[01:22:44.419] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /corporativo/comercial/propostas. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[01:22:44.690] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:22:44.775] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:22:44.956] Browser ERROR   A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+%s%s https://react.dev/link/hydration-mismatch 
+
+  ...
+    <div className="flex items...">
+      <div>
+      <Tooltip>
+      ...
+        <Slot aria-describedby={undefined} data-state="closed" data-slot="tooltip-tr..." ...>
+          <SlotClone aria-describedby={undefined} data-state="closed" data-slot="tooltip-tr..." ...>
+            <DropdownMenuTrigger asChild={true} aria-describedby={undefined} data-state="closed" ...>
+              <DropdownMenuTrigger data-slot="tooltip-tr..." asChild={true} aria-describedby={undefined} ...>
+                <MenuAnchor asChild={true} __scopeMenu={{Menu:[...], ...}}>
+                  <PopperAnchor __scopePopper={{Menu:[...], ...}} asChild={true} ref={null}>
+                    <Primitive.div asChild={true} ref={function}>
+                      <Slot ref={function}>
+                        <SlotClone ref={function}>
+                          <Primitive.button type="button" id="radix-_R_1..." aria-haspopup="menu" aria-expanded={false} ...>
+                            <Slot type="button" id="radix-_R_1..." aria-haspopup="menu" aria-expanded={false} ...>
+                              <SlotClone type="button" id="radix-_R_1..." aria-haspopup="menu" aria-expanded={false} ...>
+                                <Button variant="ghost" size="sm" className="h-7 w-7 p-..." type="button" ...>
+                                  <button
+                                    data-slot="tooltip-trigger"
+                                    className={"inline-flex items-center justify-center whitespace-nowrap text-sm fon..."}
+                                    type="button"
++                                   id="radix-_R_1tkndlb_"
+-                                   id="radix-_R_7mkndlb_"
+                                    aria-haspopup="menu"
+                                    aria-expanded={false}
+                                    aria-controls={undefined}
+                                    data-state="closed"
+                                    data-disabled={undefined}
+                                    disabled={false}
+                                    aria-describedby={undefined}
+                                    onPointerMove={function handleEvent}
+                                    onPointerLeave={function handleEvent}
+                                    onPointerDown={function handleEvent}
+                                    onFocus={function handleEvent}
+                                    onBlur={function handleEvent}
+                                    onClick={function handleEvent}
+                                    onKeyDown={function handleEvent}
+                                    ref={function}
+                                  >
+      ...
+        <MenuProvider scope={{Menu:[...], ...}} onClose={function Menu.useCallback} isUsingKeyboardRef={{current:false}} ...>
+          <DropdownMenuTrigger asChild={true}>
+            <DropdownMenuTrigger data-slot="dropdown-m..." asChild={true}>
+              <MenuAnchor asChild={true} __scopeMenu={{Menu:[...], ...}}>
+                <PopperAnchor __scopePopper={{Menu:[...], ...}} asChild={true} ref={null}>
+                  <Primitive.div asChild={true} ref={function}>
+                    <Slot ref={function}>
+                      <SlotClone ref={function}>
+                        <Primitive.button type="button" id="radix-_R_2..." aria-haspopup="menu" aria-expanded={false} ...>
+                          <Slot type="button" id="radix-_R_2..." aria-haspopup="menu" aria-expanded={false} ...>
+                            <SlotClone type="button" id="radix-_R_2..." aria-haspopup="menu" aria-expanded={false} ...>
+                              <Button variant="ghost" className="flex items..." type="button" id="radix-_R_2..." ...>
+                                <button
+                                  data-slot="dropdown-menu-trigger"
+                                  className={"justify-center whitespace-nowrap text-sm font-medium disabled:pointer-e..."}
+                                  type="button"
++                                 id="radix-_R_2dkndlb_"
+-                                 id="radix-_R_9mkndlb_"
+                                  aria-haspopup="menu"
+                                  aria-expanded={false}
+                                  aria-controls={undefined}
+                                  data-state="closed"
+                                  data-disabled={undefined}
+                                  disabled={false}
+                                  onPointerDown={function handleEvent}
+                                  onKeyDown={function handleEvent}
+                                  ref={function}
+                                >
+          ...
+
+[01:22:45.126] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[01:22:45.126] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/corporativo/comercial/propostas","route":"/corporativo/comercial/propostas"}
+[01:22:45.126] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/corporativo/comercial/propostas color: rgb(120, 120, 120) color: inherit {"dp":"/corporativo/comercial/propostas","o":"http://localhost:3000/corporativo/comercial/propostas","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1768071937602}
+[01:22:45.928] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[01:22:45.928] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/corporativo/comercial/propostas","route":"/corporativo/comercial/propostas"}
+[01:22:45.928] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/corporativo/comercial/propostas color: rgb(120, 120, 120) color: inherit {"dp":"/corporativo/comercial/propostas","o":"http://localhost:3000/corporativo/comercial/propostas","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1768071938202}
