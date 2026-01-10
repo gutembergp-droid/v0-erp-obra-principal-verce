@@ -94,6 +94,10 @@ export default function PropostasPage() {
     consolidadas: propostasMock.filter(p => p.status === "consolidada").length,
     enviadas: propostasMock.filter(p => p.status === "enviada").length,
     valorTotal: propostasMock.reduce((acc, p) => acc + p.valorInicial, 0),
+    // Breakdown por status
+    valorEnviado: propostasMock.filter(p => p.status === "enviada").reduce((acc, p) => acc + p.valorInicial, 0),
+    valorElaboracao: propostasMock.filter(p => p.status === "em_cadastro" || p.status === "em_revisao").reduce((acc, p) => acc + p.valorInicial, 0),
+    valorMonitoramento: propostasMock.filter(p => p.status === "em_analise" || p.status === "consolidada").reduce((acc, p) => acc + p.valorInicial, 0),
   }
 
   // Config de status
@@ -126,7 +130,7 @@ export default function PropostasPage() {
         <main className="flex-1 overflow-auto p-6">
           <div className="max-w-[1800px] mx-auto space-y-6">
             {/* KPIs - CARDS NO TOPO */}
-            <div className="grid grid-cols-5 gap-4">
+            <div className="grid grid-cols-4 gap-4">
               {/* Total de Propostas */}
               <Card className="border hover:shadow-md transition-shadow">
                 <CardHeader className="pb-3">
@@ -183,20 +187,109 @@ export default function PropostasPage() {
                 </CardContent>
               </Card>
 
-              {/* Valor Total */}
-              <Card className="border hover:shadow-md transition-shadow">
-                <CardHeader className="pb-3">
-                  <div className="flex items-center justify-between">
-                    <TrendingUp className="w-5 h-5 text-blue-600" />
-                    <Badge variant="outline" className="text-xs">Pipeline</Badge>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-2xl font-bold text-blue-600">{formatCurrency(kpis.valorTotal)}</p>
-                  <p className="text-xs text-muted-foreground mt-1">Valor Total</p>
-                </CardContent>
-              </Card>
             </div>
+
+            {/* CARD EXPANDIDO: PIPELINE POR STATUS */}
+            <Card className="border hover:shadow-md transition-shadow">
+              <CardHeader className="pb-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <TrendingUp className="w-5 h-5 text-blue-600" />
+                    <CardTitle className="text-base font-bold">PIPELINE DE PROPOSTAS</CardTitle>
+                  </div>
+                  <Badge variant="default" className="text-xs bg-blue-600">
+                    {kpis.total} propostas
+                  </Badge>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {/* Valor Total */}
+                <div className="text-center pb-3 border-b">
+                  <p className="text-xs text-muted-foreground mb-1">Valor Total</p>
+                  <p className="text-3xl font-bold text-blue-600">{formatCurrency(kpis.valorTotal)}</p>
+                </div>
+
+                {/* Breakdown por Status */}
+                <div className="space-y-3">
+                  <p className="text-xs font-semibold text-muted-foreground uppercase">Breakdown por Status:</p>
+                  
+                  {/* Enviado */}
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between text-xs">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-amber-500" />
+                        <span className="font-medium">Enviado</span>
+                      </div>
+                      <span className="font-bold text-amber-600">{formatCurrency(kpis.valorEnviado)}</span>
+                    </div>
+                    <div className="h-2 rounded-full bg-muted overflow-hidden">
+                      <div 
+                        className="h-full bg-amber-500 transition-all duration-500" 
+                        style={{ width: `${(kpis.valorEnviado / kpis.valorTotal * 100).toFixed(0)}%` }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Em Elaboração */}
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between text-xs">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-blue-500" />
+                        <span className="font-medium">Em Elaboração</span>
+                      </div>
+                      <span className="font-bold text-blue-600">{formatCurrency(kpis.valorElaboracao)}</span>
+                    </div>
+                    <div className="h-2 rounded-full bg-muted overflow-hidden">
+                      <div 
+                        className="h-full bg-blue-500 transition-all duration-500" 
+                        style={{ width: `${(kpis.valorElaboracao / kpis.valorTotal * 100).toFixed(0)}%` }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Sendo Monitorado */}
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between text-xs">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-emerald-500" />
+                        <span className="font-medium">Sendo Monitorado</span>
+                      </div>
+                      <span className="font-bold text-emerald-600">{formatCurrency(kpis.valorMonitoramento)}</span>
+                    </div>
+                    <div className="h-2 rounded-full bg-muted overflow-hidden">
+                      <div 
+                        className="h-full bg-emerald-500 transition-all duration-500" 
+                        style={{ width: `${(kpis.valorMonitoramento / kpis.valorTotal * 100).toFixed(0)}%` }}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Legenda */}
+                <div className="pt-3 border-t">
+                  <div className="grid grid-cols-3 gap-2 text-[10px]">
+                    <div className="text-center">
+                      <p className="text-amber-600 font-bold">
+                        {((kpis.valorEnviado / kpis.valorTotal) * 100).toFixed(0)}%
+                      </p>
+                      <p className="text-muted-foreground">Enviado</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-blue-600 font-bold">
+                        {((kpis.valorElaboracao / kpis.valorTotal) * 100).toFixed(0)}%
+                      </p>
+                      <p className="text-muted-foreground">Elaboração</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-emerald-600 font-bold">
+                        {((kpis.valorMonitoramento / kpis.valorTotal) * 100).toFixed(0)}%
+                      </p>
+                      <p className="text-muted-foreground">Monitoramento</p>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
 
             {/* TABELA DE PROPOSTAS */}
             <Card className="border">
