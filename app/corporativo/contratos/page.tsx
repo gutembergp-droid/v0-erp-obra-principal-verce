@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { AppLayout } from "@/components/layout/app-layout"
 import { Header } from "@/components/layout/header"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -100,7 +99,7 @@ export default function ContratosPage() {
   const valorTotal = contratosMock.reduce((acc, c) => acc + c.valorTotal, 0)
 
   return (
-    <AppLayout>
+    <>
       <Header title="Contratos" description="Gestão de contratos - valores, prazos, aditivos e documentação" />
 
       <div className="p-6 space-y-6">
@@ -248,6 +247,6 @@ export default function ContratosPage() {
           </CardContent>
         </Card>
       </div>
-    </AppLayout>
+    </>
   )
 }

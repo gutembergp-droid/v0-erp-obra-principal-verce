@@ -1,14 +1,12 @@
 "use client"
 
-import { AppLayout } from "@/components/layout/app-layout"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { InfoTooltip } from "@/components/ui/info-tooltip"
 import { PieChart, DollarSign, TrendingUp, AlertTriangle } from "lucide-react"
 
 export default function ControladoriaPage() {
   return (
-    <AppLayout>
-      <div className="space-y-6">
+    <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-primary/10">
@@ -81,6 +79,5 @@ export default function ControladoriaPage() {
           </CardContent>
         </Card>
       </div>
-    </AppLayout>
   )
 }

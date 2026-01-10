@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { AppLayout } from "@/components/layout/app-layout"
 import { Header } from "@/components/layout/header"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -86,7 +85,7 @@ export default function ClientesPage() {
   )
 
   return (
-    <AppLayout>
+    <>
       <Header title="Clientes" description="Cadastro e gestão de clientes - públicos e privados" />
 
       <div className="p-6 space-y-6">
@@ -276,6 +275,6 @@ export default function ClientesPage() {
           </CardContent>
         </Card>
       </div>
-    </AppLayout>
+    </>
   )
 }

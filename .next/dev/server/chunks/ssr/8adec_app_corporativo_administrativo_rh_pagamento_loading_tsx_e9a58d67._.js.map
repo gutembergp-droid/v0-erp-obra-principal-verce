@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 4, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/gpontes/Documents/v0-erp-obra-principal-verce/app/corporativo/administrativo/rh/pagamento/loading.tsx"],"sourcesContent":["import { Skeleton } from \"@/components/ui/skeleton\"\r\n\r\nexport default function Loading() {\r\n  return (\r\n    <div className=\"flex-1 space-y-6 p-6\">\r\n      <Skeleton className=\"h-[72px] w-full\" />\r\n      <div className=\"space-y-2\">\r\n        <Skeleton className=\"h-8 w-64\" />\r\n        <Skeleton className=\"h-4 w-96\" />\r\n      </div>\r\n      <div className=\"grid gap-4 md:grid-cols-4\">\r\n        {[...Array(4)].map((_, i) => (\r\n          <Skeleton key={i} className=\"h-[120px]\" />\r\n        ))}\r\n      </div>\r\n      <Skeleton className=\"h-[400px]\" />\r\n    </div>\r\n  )\r\n}\r\n"],"names":[],"mappings":";;;;;AAAA;;;AAEe,SAAS;IACtB,qBACE,sSAAC;QAAI,WAAU;;0BACb,sSAAC,iMAAQ;gBAAC,WAAU;;;;;;0BACpB,sSAAC;gBAAI,WAAU;;kCACb,sSAAC,iMAAQ;wBAAC,WAAU;;;;;;kCACpB,sSAAC,iMAAQ;wBAAC,WAAU;;;;;;;;;;;;0BAEtB,sSAAC;gBAAI,WAAU;0BACZ;uBAAI,MAAM;iBAAG,CAAC,GAAG,CAAC,CAAC,GAAG,kBACrB,sSAAC,iMAAQ;wBAAS,WAAU;uBAAb;;;;;;;;;;0BAGnB,sSAAC,iMAAQ;gBAAC,WAAU;;;;;;;;;;;;AAG1B"}}]
+}

@@ -1,4 +1,3 @@
-import { AppLayout } from "@/components/layout/app-layout"
 import { Header } from "@/components/layout/header"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -22,7 +21,7 @@ import Link from "next/link"
 // Dashboard do Módulo Corporativo - "O CORPORATIVO GOVERNA. A OBRA EXECUTA."
 export default function CorporativoDashboard() {
   return (
-    <AppLayout>
+    <>
       <Header
         title="Módulo Corporativo"
         description="Governança e Estratégia - O Corporativo Governa, a Obra Executa"
@@ -295,6 +294,6 @@ export default function CorporativoDashboard() {
           </CardContent>
         </Card>
       </PageContent>
-    </AppLayout>
+    </>
   )
 }

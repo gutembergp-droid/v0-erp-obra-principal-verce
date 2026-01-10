@@ -3438,6 +3438,10 @@
     border-top-color: #0000;
   }
 
+  .border-b-transparent {
+    border-bottom-color: #0000;
+  }
+
   .border-l-accent {
     border-left-color: var(--accent);
   }
@@ -5903,6 +5907,11 @@
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
 
+  .shadow-none {
+    --tw-shadow: 0 0 #0000;
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
+
   .shadow-sm {
     --tw-shadow: 0 1px 3px 0 var(--tw-shadow-color, #0000001a), 0 1px 2px -1px var(--tw-shadow-color, #0000001a);
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
@@ -7372,6 +7381,10 @@
     border-color: var(--primary);
   }
 
+  .data-\[state\=active\]\:border-b-primary[data-state="active"] {
+    border-bottom-color: var(--primary);
+  }
+
   .data-\[state\=active\]\:bg-background[data-state="active"] {
     background-color: var(--background);
   }
@@ -7384,8 +7397,17 @@
     background-color: #0000;
   }
 
+  .data-\[state\=active\]\:text-foreground[data-state="active"] {
+    color: var(--foreground);
+  }
+
   .data-\[state\=active\]\:text-primary-foreground[data-state="active"] {
     color: var(--primary-foreground);
+  }
+
+  .data-\[state\=active\]\:shadow-none[data-state="active"] {
+    --tw-shadow: 0 0 #0000;
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
 
   .data-\[state\=active\]\:shadow-sm[data-state="active"] {

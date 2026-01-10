@@ -1,0 +1,2142 @@
+(globalThis.TURBOPACK || (globalThis.TURBOPACK = [])).push([typeof document === "object" ? document.currentScript : undefined,
+"[project]/Documents/v0-erp-obra-principal-verce/node_modules/@radix-ui/react-tabs/dist/index.mjs [app-client] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+__turbopack_context__.s([
+    "Content",
+    ()=>Content,
+    "List",
+    ()=>List,
+    "Root",
+    ()=>Root2,
+    "Tabs",
+    ()=>Tabs,
+    "TabsContent",
+    ()=>TabsContent,
+    "TabsList",
+    ()=>TabsList,
+    "TabsTrigger",
+    ()=>TabsTrigger,
+    "Trigger",
+    ()=>Trigger,
+    "createTabsScope",
+    ()=>createTabsScope
+]);
+// packages/react/tabs/src/Tabs.tsx
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$primitive$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/@radix-ui/primitive/dist/index.mjs [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$context$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/@radix-ui/react-context/dist/index.mjs [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$roving$2d$focus$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/@radix-ui/react-roving-focus/dist/index.mjs [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$presence$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/@radix-ui/react-presence/dist/index.mjs [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$primitive$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/@radix-ui/react-primitive/dist/index.mjs [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$direction$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/@radix-ui/react-direction/dist/index.mjs [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$use$2d$controllable$2d$state$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/@radix-ui/react-use-controllable-state/dist/index.mjs [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$id$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/@radix-ui/react-id/dist/index.mjs [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/next/dist/compiled/react/jsx-runtime.js [app-client] (ecmascript)");
+"use client";
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+var TABS_NAME = "Tabs";
+var [createTabsContext, createTabsScope] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$context$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["createContextScope"])(TABS_NAME, [
+    __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$roving$2d$focus$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["createRovingFocusGroupScope"]
+]);
+var useRovingFocusGroupScope = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$roving$2d$focus$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["createRovingFocusGroupScope"])();
+var [TabsProvider, useTabsContext] = createTabsContext(TABS_NAME);
+var Tabs = __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["forwardRef"]((props, forwardedRef)=>{
+    const { __scopeTabs, value: valueProp, onValueChange, defaultValue, orientation = "horizontal", dir, activationMode = "automatic", ...tabsProps } = props;
+    const direction = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$direction$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useDirection"])(dir);
+    const [value, setValue] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$use$2d$controllable$2d$state$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useControllableState"])({
+        prop: valueProp,
+        onChange: onValueChange,
+        defaultProp: defaultValue
+    });
+    return /* @__PURE__ */ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsx"])(TabsProvider, {
+        scope: __scopeTabs,
+        baseId: (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$id$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useId"])(),
+        value,
+        onValueChange: setValue,
+        orientation,
+        dir: direction,
+        activationMode,
+        children: /* @__PURE__ */ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsx"])(__TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$primitive$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Primitive"].div, {
+            dir: direction,
+            "data-orientation": orientation,
+            ...tabsProps,
+            ref: forwardedRef
+        })
+    });
+});
+Tabs.displayName = TABS_NAME;
+var TAB_LIST_NAME = "TabsList";
+var TabsList = __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["forwardRef"]((props, forwardedRef)=>{
+    const { __scopeTabs, loop = true, ...listProps } = props;
+    const context = useTabsContext(TAB_LIST_NAME, __scopeTabs);
+    const rovingFocusGroupScope = useRovingFocusGroupScope(__scopeTabs);
+    return /* @__PURE__ */ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsx"])(__TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$roving$2d$focus$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Root"], {
+        asChild: true,
+        ...rovingFocusGroupScope,
+        orientation: context.orientation,
+        dir: context.dir,
+        loop,
+        children: /* @__PURE__ */ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsx"])(__TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$primitive$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Primitive"].div, {
+            role: "tablist",
+            "aria-orientation": context.orientation,
+            ...listProps,
+            ref: forwardedRef
+        })
+    });
+});
+TabsList.displayName = TAB_LIST_NAME;
+var TRIGGER_NAME = "TabsTrigger";
+var TabsTrigger = __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["forwardRef"]((props, forwardedRef)=>{
+    const { __scopeTabs, value, disabled = false, ...triggerProps } = props;
+    const context = useTabsContext(TRIGGER_NAME, __scopeTabs);
+    const rovingFocusGroupScope = useRovingFocusGroupScope(__scopeTabs);
+    const triggerId = makeTriggerId(context.baseId, value);
+    const contentId = makeContentId(context.baseId, value);
+    const isSelected = value === context.value;
+    return /* @__PURE__ */ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsx"])(__TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$roving$2d$focus$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Item"], {
+        asChild: true,
+        ...rovingFocusGroupScope,
+        focusable: !disabled,
+        active: isSelected,
+        children: /* @__PURE__ */ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsx"])(__TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$primitive$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Primitive"].button, {
+            type: "button",
+            role: "tab",
+            "aria-selected": isSelected,
+            "aria-controls": contentId,
+            "data-state": isSelected ? "active" : "inactive",
+            "data-disabled": disabled ? "" : void 0,
+            disabled,
+            id: triggerId,
+            ...triggerProps,
+            ref: forwardedRef,
+            onMouseDown: (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$primitive$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["composeEventHandlers"])(props.onMouseDown, (event)=>{
+                if (!disabled && event.button === 0 && event.ctrlKey === false) {
+                    context.onValueChange(value);
+                } else {
+                    event.preventDefault();
+                }
+            }),
+            onKeyDown: (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$primitive$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["composeEventHandlers"])(props.onKeyDown, (event)=>{
+                if ([
+                    " ",
+                    "Enter"
+                ].includes(event.key)) context.onValueChange(value);
+            }),
+            onFocus: (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$primitive$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["composeEventHandlers"])(props.onFocus, ()=>{
+                const isAutomaticActivation = context.activationMode !== "manual";
+                if (!isSelected && !disabled && isAutomaticActivation) {
+                    context.onValueChange(value);
+                }
+            })
+        })
+    });
+});
+TabsTrigger.displayName = TRIGGER_NAME;
+var CONTENT_NAME = "TabsContent";
+var TabsContent = __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["forwardRef"]((props, forwardedRef)=>{
+    const { __scopeTabs, value, forceMount, children, ...contentProps } = props;
+    const context = useTabsContext(CONTENT_NAME, __scopeTabs);
+    const triggerId = makeTriggerId(context.baseId, value);
+    const contentId = makeContentId(context.baseId, value);
+    const isSelected = value === context.value;
+    const isMountAnimationPreventedRef = __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"](isSelected);
+    __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"]({
+        "TabsContent.useEffect": ()=>{
+            const rAF = requestAnimationFrame({
+                "TabsContent.useEffect.rAF": ()=>isMountAnimationPreventedRef.current = false
+            }["TabsContent.useEffect.rAF"]);
+            return ({
+                "TabsContent.useEffect": ()=>cancelAnimationFrame(rAF)
+            })["TabsContent.useEffect"];
+        }
+    }["TabsContent.useEffect"], []);
+    return /* @__PURE__ */ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsx"])(__TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$presence$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Presence"], {
+        present: forceMount || isSelected,
+        children: ({ present })=>/* @__PURE__ */ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsx"])(__TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$primitive$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Primitive"].div, {
+                "data-state": isSelected ? "active" : "inactive",
+                "data-orientation": context.orientation,
+                role: "tabpanel",
+                "aria-labelledby": triggerId,
+                hidden: !present,
+                id: contentId,
+                tabIndex: 0,
+                ...contentProps,
+                ref: forwardedRef,
+                style: {
+                    ...props.style,
+                    animationDuration: isMountAnimationPreventedRef.current ? "0s" : void 0
+                },
+                children: present && children
+            })
+    });
+});
+TabsContent.displayName = CONTENT_NAME;
+function makeTriggerId(baseId, value) {
+    return `${baseId}-trigger-${value}`;
+}
+function makeContentId(baseId, value) {
+    return `${baseId}-content-${value}`;
+}
+var Root2 = Tabs;
+var List = TabsList;
+var Trigger = TabsTrigger;
+var Content = TabsContent;
+;
+ //# sourceMappingURL=index.mjs.map
+}),
+"[project]/Documents/v0-erp-obra-principal-verce/node_modules/@radix-ui/number/dist/index.mjs [app-client] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+// packages/core/number/src/number.ts
+__turbopack_context__.s([
+    "clamp",
+    ()=>clamp
+]);
+function clamp(value, [min, max]) {
+    return Math.min(max, Math.max(min, value));
+}
+;
+ //# sourceMappingURL=index.mjs.map
+}),
+"[project]/Documents/v0-erp-obra-principal-verce/node_modules/@radix-ui/react-scroll-area/dist/index.mjs [app-client] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+__turbopack_context__.s([
+    "Corner",
+    ()=>Corner,
+    "Root",
+    ()=>Root,
+    "ScrollArea",
+    ()=>ScrollArea,
+    "ScrollAreaCorner",
+    ()=>ScrollAreaCorner,
+    "ScrollAreaScrollbar",
+    ()=>ScrollAreaScrollbar,
+    "ScrollAreaThumb",
+    ()=>ScrollAreaThumb,
+    "ScrollAreaViewport",
+    ()=>ScrollAreaViewport,
+    "Scrollbar",
+    ()=>Scrollbar,
+    "Thumb",
+    ()=>Thumb,
+    "Viewport",
+    ()=>Viewport,
+    "createScrollAreaScope",
+    ()=>createScrollAreaScope
+]);
+// packages/react/scroll-area/src/ScrollArea.tsx
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$primitive$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/@radix-ui/react-primitive/dist/index.mjs [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$presence$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/@radix-ui/react-presence/dist/index.mjs [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$context$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/@radix-ui/react-context/dist/index.mjs [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$compose$2d$refs$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/@radix-ui/react-compose-refs/dist/index.mjs [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$use$2d$callback$2d$ref$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/@radix-ui/react-use-callback-ref/dist/index.mjs [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$direction$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/@radix-ui/react-direction/dist/index.mjs [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$use$2d$layout$2d$effect$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/@radix-ui/react-use-layout-effect/dist/index.mjs [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$number$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/@radix-ui/number/dist/index.mjs [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$primitive$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/@radix-ui/primitive/dist/index.mjs [app-client] (ecmascript)");
+// packages/react/scroll-area/src/ScrollArea.tsx
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/next/dist/compiled/react/jsx-runtime.js [app-client] (ecmascript)");
+"use client";
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+function useStateMachine(initialState, machine) {
+    return __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useReducer"]({
+        "useStateMachine.useReducer": (state, event)=>{
+            const nextState = machine[state][event];
+            return nextState ?? state;
+        }
+    }["useStateMachine.useReducer"], initialState);
+}
+;
+var SCROLL_AREA_NAME = "ScrollArea";
+var [createScrollAreaContext, createScrollAreaScope] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$context$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["createContextScope"])(SCROLL_AREA_NAME);
+var [ScrollAreaProvider, useScrollAreaContext] = createScrollAreaContext(SCROLL_AREA_NAME);
+var ScrollArea = __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["forwardRef"]((props, forwardedRef)=>{
+    const { __scopeScrollArea, type = "hover", dir, scrollHideDelay = 600, ...scrollAreaProps } = props;
+    const [scrollArea, setScrollArea] = __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"](null);
+    const [viewport, setViewport] = __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"](null);
+    const [content, setContent] = __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"](null);
+    const [scrollbarX, setScrollbarX] = __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"](null);
+    const [scrollbarY, setScrollbarY] = __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"](null);
+    const [cornerWidth, setCornerWidth] = __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"](0);
+    const [cornerHeight, setCornerHeight] = __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"](0);
+    const [scrollbarXEnabled, setScrollbarXEnabled] = __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"](false);
+    const [scrollbarYEnabled, setScrollbarYEnabled] = __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"](false);
+    const composedRefs = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$compose$2d$refs$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useComposedRefs"])(forwardedRef, {
+        "ScrollArea.useComposedRefs[composedRefs]": (node)=>setScrollArea(node)
+    }["ScrollArea.useComposedRefs[composedRefs]"]);
+    const direction = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$direction$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useDirection"])(dir);
+    return /* @__PURE__ */ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsx"])(ScrollAreaProvider, {
+        scope: __scopeScrollArea,
+        type,
+        dir: direction,
+        scrollHideDelay,
+        scrollArea,
+        viewport,
+        onViewportChange: setViewport,
+        content,
+        onContentChange: setContent,
+        scrollbarX,
+        onScrollbarXChange: setScrollbarX,
+        scrollbarXEnabled,
+        onScrollbarXEnabledChange: setScrollbarXEnabled,
+        scrollbarY,
+        onScrollbarYChange: setScrollbarY,
+        scrollbarYEnabled,
+        onScrollbarYEnabledChange: setScrollbarYEnabled,
+        onCornerWidthChange: setCornerWidth,
+        onCornerHeightChange: setCornerHeight,
+        children: /* @__PURE__ */ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsx"])(__TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$primitive$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Primitive"].div, {
+            dir: direction,
+            ...scrollAreaProps,
+            ref: composedRefs,
+            style: {
+                position: "relative",
+                // Pass corner sizes as CSS vars to reduce re-renders of context consumers
+                ["--radix-scroll-area-corner-width"]: cornerWidth + "px",
+                ["--radix-scroll-area-corner-height"]: cornerHeight + "px",
+                ...props.style
+            }
+        })
+    });
+});
+ScrollArea.displayName = SCROLL_AREA_NAME;
+var VIEWPORT_NAME = "ScrollAreaViewport";
+var ScrollAreaViewport = __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["forwardRef"]((props, forwardedRef)=>{
+    const { __scopeScrollArea, children, nonce, ...viewportProps } = props;
+    const context = useScrollAreaContext(VIEWPORT_NAME, __scopeScrollArea);
+    const ref = __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"](null);
+    const composedRefs = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$compose$2d$refs$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useComposedRefs"])(forwardedRef, ref, context.onViewportChange);
+    return /* @__PURE__ */ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxs"])(__TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
+        children: [
+            /* @__PURE__ */ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsx"])("style", {
+                dangerouslySetInnerHTML: {
+                    __html: `[data-radix-scroll-area-viewport]{scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch;}[data-radix-scroll-area-viewport]::-webkit-scrollbar{display:none}`
+                },
+                nonce
+            }),
+            /* @__PURE__ */ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsx"])(__TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$primitive$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Primitive"].div, {
+                "data-radix-scroll-area-viewport": "",
+                ...viewportProps,
+                ref: composedRefs,
+                style: {
+                    /**
+             * We don't support `visible` because the intention is to have at least one scrollbar
+             * if this component is used and `visible` will behave like `auto` in that case
+             * https://developer.mozilla.org/en-US/docs/Web/CSS/overflow#description
+             *
+             * We don't handle `auto` because the intention is for the native implementation
+             * to be hidden if using this component. We just want to ensure the node is scrollable
+             * so could have used either `scroll` or `auto` here. We picked `scroll` to prevent
+             * the browser from having to work out whether to render native scrollbars or not,
+             * we tell it to with the intention of hiding them in CSS.
+             */ overflowX: context.scrollbarXEnabled ? "scroll" : "hidden",
+                    overflowY: context.scrollbarYEnabled ? "scroll" : "hidden",
+                    ...props.style
+                },
+                children: /* @__PURE__ */ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsx"])("div", {
+                    ref: context.onContentChange,
+                    style: {
+                        minWidth: "100%",
+                        display: "table"
+                    },
+                    children
+                })
+            })
+        ]
+    });
+});
+ScrollAreaViewport.displayName = VIEWPORT_NAME;
+var SCROLLBAR_NAME = "ScrollAreaScrollbar";
+var ScrollAreaScrollbar = __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["forwardRef"]((props, forwardedRef)=>{
+    const { forceMount, ...scrollbarProps } = props;
+    const context = useScrollAreaContext(SCROLLBAR_NAME, props.__scopeScrollArea);
+    const { onScrollbarXEnabledChange, onScrollbarYEnabledChange } = context;
+    const isHorizontal = props.orientation === "horizontal";
+    __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"]({
+        "ScrollAreaScrollbar.useEffect": ()=>{
+            isHorizontal ? onScrollbarXEnabledChange(true) : onScrollbarYEnabledChange(true);
+            return ({
+                "ScrollAreaScrollbar.useEffect": ()=>{
+                    isHorizontal ? onScrollbarXEnabledChange(false) : onScrollbarYEnabledChange(false);
+                }
+            })["ScrollAreaScrollbar.useEffect"];
+        }
+    }["ScrollAreaScrollbar.useEffect"], [
+        isHorizontal,
+        onScrollbarXEnabledChange,
+        onScrollbarYEnabledChange
+    ]);
+    return context.type === "hover" ? /* @__PURE__ */ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsx"])(ScrollAreaScrollbarHover, {
+        ...scrollbarProps,
+        ref: forwardedRef,
+        forceMount
+    }) : context.type === "scroll" ? /* @__PURE__ */ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsx"])(ScrollAreaScrollbarScroll, {
+        ...scrollbarProps,
+        ref: forwardedRef,
+        forceMount
+    }) : context.type === "auto" ? /* @__PURE__ */ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsx"])(ScrollAreaScrollbarAuto, {
+        ...scrollbarProps,
+        ref: forwardedRef,
+        forceMount
+    }) : context.type === "always" ? /* @__PURE__ */ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsx"])(ScrollAreaScrollbarVisible, {
+        ...scrollbarProps,
+        ref: forwardedRef
+    }) : null;
+});
+ScrollAreaScrollbar.displayName = SCROLLBAR_NAME;
+var ScrollAreaScrollbarHover = __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["forwardRef"]((props, forwardedRef)=>{
+    const { forceMount, ...scrollbarProps } = props;
+    const context = useScrollAreaContext(SCROLLBAR_NAME, props.__scopeScrollArea);
+    const [visible, setVisible] = __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"](false);
+    __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"]({
+        "ScrollAreaScrollbarHover.useEffect": ()=>{
+            const scrollArea = context.scrollArea;
+            let hideTimer = 0;
+            if (scrollArea) {
+                const handlePointerEnter = {
+                    "ScrollAreaScrollbarHover.useEffect.handlePointerEnter": ()=>{
+                        window.clearTimeout(hideTimer);
+                        setVisible(true);
+                    }
+                }["ScrollAreaScrollbarHover.useEffect.handlePointerEnter"];
+                const handlePointerLeave = {
+                    "ScrollAreaScrollbarHover.useEffect.handlePointerLeave": ()=>{
+                        hideTimer = window.setTimeout({
+                            "ScrollAreaScrollbarHover.useEffect.handlePointerLeave": ()=>setVisible(false)
+                        }["ScrollAreaScrollbarHover.useEffect.handlePointerLeave"], context.scrollHideDelay);
+                    }
+                }["ScrollAreaScrollbarHover.useEffect.handlePointerLeave"];
+                scrollArea.addEventListener("pointerenter", handlePointerEnter);
+                scrollArea.addEventListener("pointerleave", handlePointerLeave);
+                return ({
+                    "ScrollAreaScrollbarHover.useEffect": ()=>{
+                        window.clearTimeout(hideTimer);
+                        scrollArea.removeEventListener("pointerenter", handlePointerEnter);
+                        scrollArea.removeEventListener("pointerleave", handlePointerLeave);
+                    }
+                })["ScrollAreaScrollbarHover.useEffect"];
+            }
+        }
+    }["ScrollAreaScrollbarHover.useEffect"], [
+        context.scrollArea,
+        context.scrollHideDelay
+    ]);
+    return /* @__PURE__ */ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsx"])(__TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$presence$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Presence"], {
+        present: forceMount || visible,
+        children: /* @__PURE__ */ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsx"])(ScrollAreaScrollbarAuto, {
+            "data-state": visible ? "visible" : "hidden",
+            ...scrollbarProps,
+            ref: forwardedRef
+        })
+    });
+});
+var ScrollAreaScrollbarScroll = __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["forwardRef"]((props, forwardedRef)=>{
+    const { forceMount, ...scrollbarProps } = props;
+    const context = useScrollAreaContext(SCROLLBAR_NAME, props.__scopeScrollArea);
+    const isHorizontal = props.orientation === "horizontal";
+    const debounceScrollEnd = useDebounceCallback({
+        "ScrollAreaScrollbarScroll.useDebounceCallback[debounceScrollEnd]": ()=>send("SCROLL_END")
+    }["ScrollAreaScrollbarScroll.useDebounceCallback[debounceScrollEnd]"], 100);
+    const [state, send] = useStateMachine("hidden", {
+        hidden: {
+            SCROLL: "scrolling"
+        },
+        scrolling: {
+            SCROLL_END: "idle",
+            POINTER_ENTER: "interacting"
+        },
+        interacting: {
+            SCROLL: "interacting",
+            POINTER_LEAVE: "idle"
+        },
+        idle: {
+            HIDE: "hidden",
+            SCROLL: "scrolling",
+            POINTER_ENTER: "interacting"
+        }
+    });
+    __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"]({
+        "ScrollAreaScrollbarScroll.useEffect": ()=>{
+            if (state === "idle") {
+                const hideTimer = window.setTimeout({
+                    "ScrollAreaScrollbarScroll.useEffect.hideTimer": ()=>send("HIDE")
+                }["ScrollAreaScrollbarScroll.useEffect.hideTimer"], context.scrollHideDelay);
+                return ({
+                    "ScrollAreaScrollbarScroll.useEffect": ()=>window.clearTimeout(hideTimer)
+                })["ScrollAreaScrollbarScroll.useEffect"];
+            }
+        }
+    }["ScrollAreaScrollbarScroll.useEffect"], [
+        state,
+        context.scrollHideDelay,
+        send
+    ]);
+    __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"]({
+        "ScrollAreaScrollbarScroll.useEffect": ()=>{
+            const viewport = context.viewport;
+            const scrollDirection = isHorizontal ? "scrollLeft" : "scrollTop";
+            if (viewport) {
+                let prevScrollPos = viewport[scrollDirection];
+                const handleScroll = {
+                    "ScrollAreaScrollbarScroll.useEffect.handleScroll": ()=>{
+                        const scrollPos = viewport[scrollDirection];
+                        const hasScrollInDirectionChanged = prevScrollPos !== scrollPos;
+                        if (hasScrollInDirectionChanged) {
+                            send("SCROLL");
+                            debounceScrollEnd();
+                        }
+                        prevScrollPos = scrollPos;
+                    }
+                }["ScrollAreaScrollbarScroll.useEffect.handleScroll"];
+                viewport.addEventListener("scroll", handleScroll);
+                return ({
+                    "ScrollAreaScrollbarScroll.useEffect": ()=>viewport.removeEventListener("scroll", handleScroll)
+                })["ScrollAreaScrollbarScroll.useEffect"];
+            }
+        }
+    }["ScrollAreaScrollbarScroll.useEffect"], [
+        context.viewport,
+        isHorizontal,
+        send,
+        debounceScrollEnd
+    ]);
+    return /* @__PURE__ */ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsx"])(__TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$presence$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Presence"], {
+        present: forceMount || state !== "hidden",
+        children: /* @__PURE__ */ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsx"])(ScrollAreaScrollbarVisible, {
+            "data-state": state === "hidden" ? "hidden" : "visible",
+            ...scrollbarProps,
+            ref: forwardedRef,
+            onPointerEnter: (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$primitive$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["composeEventHandlers"])(props.onPointerEnter, ()=>send("POINTER_ENTER")),
+            onPointerLeave: (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$primitive$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["composeEventHandlers"])(props.onPointerLeave, ()=>send("POINTER_LEAVE"))
+        })
+    });
+});
+var ScrollAreaScrollbarAuto = __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["forwardRef"]((props, forwardedRef)=>{
+    const context = useScrollAreaContext(SCROLLBAR_NAME, props.__scopeScrollArea);
+    const { forceMount, ...scrollbarProps } = props;
+    const [visible, setVisible] = __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"](false);
+    const isHorizontal = props.orientation === "horizontal";
+    const handleResize = useDebounceCallback({
+        "ScrollAreaScrollbarAuto.useDebounceCallback[handleResize]": ()=>{
+            if (context.viewport) {
+                const isOverflowX = context.viewport.offsetWidth < context.viewport.scrollWidth;
+                const isOverflowY = context.viewport.offsetHeight < context.viewport.scrollHeight;
+                setVisible(isHorizontal ? isOverflowX : isOverflowY);
+            }
+        }
+    }["ScrollAreaScrollbarAuto.useDebounceCallback[handleResize]"], 10);
+    useResizeObserver(context.viewport, handleResize);
+    useResizeObserver(context.content, handleResize);
+    return /* @__PURE__ */ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsx"])(__TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$presence$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Presence"], {
+        present: forceMount || visible,
+        children: /* @__PURE__ */ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsx"])(ScrollAreaScrollbarVisible, {
+            "data-state": visible ? "visible" : "hidden",
+            ...scrollbarProps,
+            ref: forwardedRef
+        })
+    });
+});
+var ScrollAreaScrollbarVisible = __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["forwardRef"]((props, forwardedRef)=>{
+    const { orientation = "vertical", ...scrollbarProps } = props;
+    const context = useScrollAreaContext(SCROLLBAR_NAME, props.__scopeScrollArea);
+    const thumbRef = __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"](null);
+    const pointerOffsetRef = __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"](0);
+    const [sizes, setSizes] = __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"]({
+        content: 0,
+        viewport: 0,
+        scrollbar: {
+            size: 0,
+            paddingStart: 0,
+            paddingEnd: 0
+        }
+    });
+    const thumbRatio = getThumbRatio(sizes.viewport, sizes.content);
+    const commonProps = {
+        ...scrollbarProps,
+        sizes,
+        onSizesChange: setSizes,
+        hasThumb: Boolean(thumbRatio > 0 && thumbRatio < 1),
+        onThumbChange: (thumb)=>thumbRef.current = thumb,
+        onThumbPointerUp: ()=>pointerOffsetRef.current = 0,
+        onThumbPointerDown: (pointerPos)=>pointerOffsetRef.current = pointerPos
+    };
+    function getScrollPosition(pointerPos, dir) {
+        return getScrollPositionFromPointer(pointerPos, pointerOffsetRef.current, sizes, dir);
+    }
+    if (orientation === "horizontal") {
+        return /* @__PURE__ */ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsx"])(ScrollAreaScrollbarX, {
+            ...commonProps,
+            ref: forwardedRef,
+            onThumbPositionChange: ()=>{
+                if (context.viewport && thumbRef.current) {
+                    const scrollPos = context.viewport.scrollLeft;
+                    const offset = getThumbOffsetFromScroll(scrollPos, sizes, context.dir);
+                    thumbRef.current.style.transform = `translate3d(${offset}px, 0, 0)`;
+                }
+            },
+            onWheelScroll: (scrollPos)=>{
+                if (context.viewport) context.viewport.scrollLeft = scrollPos;
+            },
+            onDragScroll: (pointerPos)=>{
+                if (context.viewport) {
+                    context.viewport.scrollLeft = getScrollPosition(pointerPos, context.dir);
+                }
+            }
+        });
+    }
+    if (orientation === "vertical") {
+        return /* @__PURE__ */ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsx"])(ScrollAreaScrollbarY, {
+            ...commonProps,
+            ref: forwardedRef,
+            onThumbPositionChange: ()=>{
+                if (context.viewport && thumbRef.current) {
+                    const scrollPos = context.viewport.scrollTop;
+                    const offset = getThumbOffsetFromScroll(scrollPos, sizes);
+                    thumbRef.current.style.transform = `translate3d(0, ${offset}px, 0)`;
+                }
+            },
+            onWheelScroll: (scrollPos)=>{
+                if (context.viewport) context.viewport.scrollTop = scrollPos;
+            },
+            onDragScroll: (pointerPos)=>{
+                if (context.viewport) context.viewport.scrollTop = getScrollPosition(pointerPos);
+            }
+        });
+    }
+    return null;
+});
+var ScrollAreaScrollbarX = __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["forwardRef"]((props, forwardedRef)=>{
+    const { sizes, onSizesChange, ...scrollbarProps } = props;
+    const context = useScrollAreaContext(SCROLLBAR_NAME, props.__scopeScrollArea);
+    const [computedStyle, setComputedStyle] = __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"]();
+    const ref = __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"](null);
+    const composeRefs = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$compose$2d$refs$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useComposedRefs"])(forwardedRef, ref, context.onScrollbarXChange);
+    __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"]({
+        "ScrollAreaScrollbarX.useEffect": ()=>{
+            if (ref.current) setComputedStyle(getComputedStyle(ref.current));
+        }
+    }["ScrollAreaScrollbarX.useEffect"], [
+        ref
+    ]);
+    return /* @__PURE__ */ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsx"])(ScrollAreaScrollbarImpl, {
+        "data-orientation": "horizontal",
+        ...scrollbarProps,
+        ref: composeRefs,
+        sizes,
+        style: {
+            bottom: 0,
+            left: context.dir === "rtl" ? "var(--radix-scroll-area-corner-width)" : 0,
+            right: context.dir === "ltr" ? "var(--radix-scroll-area-corner-width)" : 0,
+            ["--radix-scroll-area-thumb-width"]: getThumbSize(sizes) + "px",
+            ...props.style
+        },
+        onThumbPointerDown: (pointerPos)=>props.onThumbPointerDown(pointerPos.x),
+        onDragScroll: (pointerPos)=>props.onDragScroll(pointerPos.x),
+        onWheelScroll: (event, maxScrollPos)=>{
+            if (context.viewport) {
+                const scrollPos = context.viewport.scrollLeft + event.deltaX;
+                props.onWheelScroll(scrollPos);
+                if (isScrollingWithinScrollbarBounds(scrollPos, maxScrollPos)) {
+                    event.preventDefault();
+                }
+            }
+        },
+        onResize: ()=>{
+            if (ref.current && context.viewport && computedStyle) {
+                onSizesChange({
+                    content: context.viewport.scrollWidth,
+                    viewport: context.viewport.offsetWidth,
+                    scrollbar: {
+                        size: ref.current.clientWidth,
+                        paddingStart: toInt(computedStyle.paddingLeft),
+                        paddingEnd: toInt(computedStyle.paddingRight)
+                    }
+                });
+            }
+        }
+    });
+});
+var ScrollAreaScrollbarY = __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["forwardRef"]((props, forwardedRef)=>{
+    const { sizes, onSizesChange, ...scrollbarProps } = props;
+    const context = useScrollAreaContext(SCROLLBAR_NAME, props.__scopeScrollArea);
+    const [computedStyle, setComputedStyle] = __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"]();
+    const ref = __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"](null);
+    const composeRefs = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$compose$2d$refs$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useComposedRefs"])(forwardedRef, ref, context.onScrollbarYChange);
+    __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"]({
+        "ScrollAreaScrollbarY.useEffect": ()=>{
+            if (ref.current) setComputedStyle(getComputedStyle(ref.current));
+        }
+    }["ScrollAreaScrollbarY.useEffect"], [
+        ref
+    ]);
+    return /* @__PURE__ */ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsx"])(ScrollAreaScrollbarImpl, {
+        "data-orientation": "vertical",
+        ...scrollbarProps,
+        ref: composeRefs,
+        sizes,
+        style: {
+            top: 0,
+            right: context.dir === "ltr" ? 0 : void 0,
+            left: context.dir === "rtl" ? 0 : void 0,
+            bottom: "var(--radix-scroll-area-corner-height)",
+            ["--radix-scroll-area-thumb-height"]: getThumbSize(sizes) + "px",
+            ...props.style
+        },
+        onThumbPointerDown: (pointerPos)=>props.onThumbPointerDown(pointerPos.y),
+        onDragScroll: (pointerPos)=>props.onDragScroll(pointerPos.y),
+        onWheelScroll: (event, maxScrollPos)=>{
+            if (context.viewport) {
+                const scrollPos = context.viewport.scrollTop + event.deltaY;
+                props.onWheelScroll(scrollPos);
+                if (isScrollingWithinScrollbarBounds(scrollPos, maxScrollPos)) {
+                    event.preventDefault();
+                }
+            }
+        },
+        onResize: ()=>{
+            if (ref.current && context.viewport && computedStyle) {
+                onSizesChange({
+                    content: context.viewport.scrollHeight,
+                    viewport: context.viewport.offsetHeight,
+                    scrollbar: {
+                        size: ref.current.clientHeight,
+                        paddingStart: toInt(computedStyle.paddingTop),
+                        paddingEnd: toInt(computedStyle.paddingBottom)
+                    }
+                });
+            }
+        }
+    });
+});
+var [ScrollbarProvider, useScrollbarContext] = createScrollAreaContext(SCROLLBAR_NAME);
+var ScrollAreaScrollbarImpl = __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["forwardRef"]((props, forwardedRef)=>{
+    const { __scopeScrollArea, sizes, hasThumb, onThumbChange, onThumbPointerUp, onThumbPointerDown, onThumbPositionChange, onDragScroll, onWheelScroll, onResize, ...scrollbarProps } = props;
+    const context = useScrollAreaContext(SCROLLBAR_NAME, __scopeScrollArea);
+    const [scrollbar, setScrollbar] = __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"](null);
+    const composeRefs = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$compose$2d$refs$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useComposedRefs"])(forwardedRef, {
+        "ScrollAreaScrollbarImpl.useComposedRefs[composeRefs]": (node)=>setScrollbar(node)
+    }["ScrollAreaScrollbarImpl.useComposedRefs[composeRefs]"]);
+    const rectRef = __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"](null);
+    const prevWebkitUserSelectRef = __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"]("");
+    const viewport = context.viewport;
+    const maxScrollPos = sizes.content - sizes.viewport;
+    const handleWheelScroll = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$use$2d$callback$2d$ref$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallbackRef"])(onWheelScroll);
+    const handleThumbPositionChange = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$use$2d$callback$2d$ref$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallbackRef"])(onThumbPositionChange);
+    const handleResize = useDebounceCallback(onResize, 10);
+    function handleDragScroll(event) {
+        if (rectRef.current) {
+            const x = event.clientX - rectRef.current.left;
+            const y = event.clientY - rectRef.current.top;
+            onDragScroll({
+                x,
+                y
+            });
+        }
+    }
+    __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"]({
+        "ScrollAreaScrollbarImpl.useEffect": ()=>{
+            const handleWheel = {
+                "ScrollAreaScrollbarImpl.useEffect.handleWheel": (event)=>{
+                    const element = event.target;
+                    const isScrollbarWheel = scrollbar?.contains(element);
+                    if (isScrollbarWheel) handleWheelScroll(event, maxScrollPos);
+                }
+            }["ScrollAreaScrollbarImpl.useEffect.handleWheel"];
+            document.addEventListener("wheel", handleWheel, {
+                passive: false
+            });
+            return ({
+                "ScrollAreaScrollbarImpl.useEffect": ()=>document.removeEventListener("wheel", handleWheel, {
+                        passive: false
+                    })
+            })["ScrollAreaScrollbarImpl.useEffect"];
+        }
+    }["ScrollAreaScrollbarImpl.useEffect"], [
+        viewport,
+        scrollbar,
+        maxScrollPos,
+        handleWheelScroll
+    ]);
+    __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"](handleThumbPositionChange, [
+        sizes,
+        handleThumbPositionChange
+    ]);
+    useResizeObserver(scrollbar, handleResize);
+    useResizeObserver(context.content, handleResize);
+    return /* @__PURE__ */ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsx"])(ScrollbarProvider, {
+        scope: __scopeScrollArea,
+        scrollbar,
+        hasThumb,
+        onThumbChange: (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$use$2d$callback$2d$ref$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallbackRef"])(onThumbChange),
+        onThumbPointerUp: (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$use$2d$callback$2d$ref$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallbackRef"])(onThumbPointerUp),
+        onThumbPositionChange: handleThumbPositionChange,
+        onThumbPointerDown: (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$use$2d$callback$2d$ref$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallbackRef"])(onThumbPointerDown),
+        children: /* @__PURE__ */ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsx"])(__TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$primitive$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Primitive"].div, {
+            ...scrollbarProps,
+            ref: composeRefs,
+            style: {
+                position: "absolute",
+                ...scrollbarProps.style
+            },
+            onPointerDown: (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$primitive$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["composeEventHandlers"])(props.onPointerDown, (event)=>{
+                const mainPointer = 0;
+                if (event.button === mainPointer) {
+                    const element = event.target;
+                    element.setPointerCapture(event.pointerId);
+                    rectRef.current = scrollbar.getBoundingClientRect();
+                    prevWebkitUserSelectRef.current = document.body.style.webkitUserSelect;
+                    document.body.style.webkitUserSelect = "none";
+                    if (context.viewport) context.viewport.style.scrollBehavior = "auto";
+                    handleDragScroll(event);
+                }
+            }),
+            onPointerMove: (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$primitive$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["composeEventHandlers"])(props.onPointerMove, handleDragScroll),
+            onPointerUp: (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$primitive$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["composeEventHandlers"])(props.onPointerUp, (event)=>{
+                const element = event.target;
+                if (element.hasPointerCapture(event.pointerId)) {
+                    element.releasePointerCapture(event.pointerId);
+                }
+                document.body.style.webkitUserSelect = prevWebkitUserSelectRef.current;
+                if (context.viewport) context.viewport.style.scrollBehavior = "";
+                rectRef.current = null;
+            })
+        })
+    });
+});
+var THUMB_NAME = "ScrollAreaThumb";
+var ScrollAreaThumb = __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["forwardRef"]((props, forwardedRef)=>{
+    const { forceMount, ...thumbProps } = props;
+    const scrollbarContext = useScrollbarContext(THUMB_NAME, props.__scopeScrollArea);
+    return /* @__PURE__ */ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsx"])(__TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$presence$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Presence"], {
+        present: forceMount || scrollbarContext.hasThumb,
+        children: /* @__PURE__ */ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsx"])(ScrollAreaThumbImpl, {
+            ref: forwardedRef,
+            ...thumbProps
+        })
+    });
+});
+var ScrollAreaThumbImpl = __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["forwardRef"]((props, forwardedRef)=>{
+    const { __scopeScrollArea, style, ...thumbProps } = props;
+    const scrollAreaContext = useScrollAreaContext(THUMB_NAME, __scopeScrollArea);
+    const scrollbarContext = useScrollbarContext(THUMB_NAME, __scopeScrollArea);
+    const { onThumbPositionChange } = scrollbarContext;
+    const composedRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$compose$2d$refs$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useComposedRefs"])(forwardedRef, {
+        "ScrollAreaThumbImpl.useComposedRefs[composedRef]": (node)=>scrollbarContext.onThumbChange(node)
+    }["ScrollAreaThumbImpl.useComposedRefs[composedRef]"]);
+    const removeUnlinkedScrollListenerRef = __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"](void 0);
+    const debounceScrollEnd = useDebounceCallback({
+        "ScrollAreaThumbImpl.useDebounceCallback[debounceScrollEnd]": ()=>{
+            if (removeUnlinkedScrollListenerRef.current) {
+                removeUnlinkedScrollListenerRef.current();
+                removeUnlinkedScrollListenerRef.current = void 0;
+            }
+        }
+    }["ScrollAreaThumbImpl.useDebounceCallback[debounceScrollEnd]"], 100);
+    __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"]({
+        "ScrollAreaThumbImpl.useEffect": ()=>{
+            const viewport = scrollAreaContext.viewport;
+            if (viewport) {
+                const handleScroll = {
+                    "ScrollAreaThumbImpl.useEffect.handleScroll": ()=>{
+                        debounceScrollEnd();
+                        if (!removeUnlinkedScrollListenerRef.current) {
+                            const listener = addUnlinkedScrollListener(viewport, onThumbPositionChange);
+                            removeUnlinkedScrollListenerRef.current = listener;
+                            onThumbPositionChange();
+                        }
+                    }
+                }["ScrollAreaThumbImpl.useEffect.handleScroll"];
+                onThumbPositionChange();
+                viewport.addEventListener("scroll", handleScroll);
+                return ({
+                    "ScrollAreaThumbImpl.useEffect": ()=>viewport.removeEventListener("scroll", handleScroll)
+                })["ScrollAreaThumbImpl.useEffect"];
+            }
+        }
+    }["ScrollAreaThumbImpl.useEffect"], [
+        scrollAreaContext.viewport,
+        debounceScrollEnd,
+        onThumbPositionChange
+    ]);
+    return /* @__PURE__ */ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsx"])(__TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$primitive$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Primitive"].div, {
+        "data-state": scrollbarContext.hasThumb ? "visible" : "hidden",
+        ...thumbProps,
+        ref: composedRef,
+        style: {
+            width: "var(--radix-scroll-area-thumb-width)",
+            height: "var(--radix-scroll-area-thumb-height)",
+            ...style
+        },
+        onPointerDownCapture: (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$primitive$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["composeEventHandlers"])(props.onPointerDownCapture, (event)=>{
+            const thumb = event.target;
+            const thumbRect = thumb.getBoundingClientRect();
+            const x = event.clientX - thumbRect.left;
+            const y = event.clientY - thumbRect.top;
+            scrollbarContext.onThumbPointerDown({
+                x,
+                y
+            });
+        }),
+        onPointerUp: (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$primitive$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["composeEventHandlers"])(props.onPointerUp, scrollbarContext.onThumbPointerUp)
+    });
+});
+ScrollAreaThumb.displayName = THUMB_NAME;
+var CORNER_NAME = "ScrollAreaCorner";
+var ScrollAreaCorner = __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["forwardRef"]((props, forwardedRef)=>{
+    const context = useScrollAreaContext(CORNER_NAME, props.__scopeScrollArea);
+    const hasBothScrollbarsVisible = Boolean(context.scrollbarX && context.scrollbarY);
+    const hasCorner = context.type !== "scroll" && hasBothScrollbarsVisible;
+    return hasCorner ? /* @__PURE__ */ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsx"])(ScrollAreaCornerImpl, {
+        ...props,
+        ref: forwardedRef
+    }) : null;
+});
+ScrollAreaCorner.displayName = CORNER_NAME;
+var ScrollAreaCornerImpl = __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["forwardRef"]((props, forwardedRef)=>{
+    const { __scopeScrollArea, ...cornerProps } = props;
+    const context = useScrollAreaContext(CORNER_NAME, __scopeScrollArea);
+    const [width, setWidth] = __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"](0);
+    const [height, setHeight] = __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"](0);
+    const hasSize = Boolean(width && height);
+    useResizeObserver(context.scrollbarX, {
+        "ScrollAreaCornerImpl.useResizeObserver": ()=>{
+            const height2 = context.scrollbarX?.offsetHeight || 0;
+            context.onCornerHeightChange(height2);
+            setHeight(height2);
+        }
+    }["ScrollAreaCornerImpl.useResizeObserver"]);
+    useResizeObserver(context.scrollbarY, {
+        "ScrollAreaCornerImpl.useResizeObserver": ()=>{
+            const width2 = context.scrollbarY?.offsetWidth || 0;
+            context.onCornerWidthChange(width2);
+            setWidth(width2);
+        }
+    }["ScrollAreaCornerImpl.useResizeObserver"]);
+    return hasSize ? /* @__PURE__ */ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsx"])(__TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$primitive$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Primitive"].div, {
+        ...cornerProps,
+        ref: forwardedRef,
+        style: {
+            width,
+            height,
+            position: "absolute",
+            right: context.dir === "ltr" ? 0 : void 0,
+            left: context.dir === "rtl" ? 0 : void 0,
+            bottom: 0,
+            ...props.style
+        }
+    }) : null;
+});
+function toInt(value) {
+    return value ? parseInt(value, 10) : 0;
+}
+function getThumbRatio(viewportSize, contentSize) {
+    const ratio = viewportSize / contentSize;
+    return isNaN(ratio) ? 0 : ratio;
+}
+function getThumbSize(sizes) {
+    const ratio = getThumbRatio(sizes.viewport, sizes.content);
+    const scrollbarPadding = sizes.scrollbar.paddingStart + sizes.scrollbar.paddingEnd;
+    const thumbSize = (sizes.scrollbar.size - scrollbarPadding) * ratio;
+    return Math.max(thumbSize, 18);
+}
+function getScrollPositionFromPointer(pointerPos, pointerOffset, sizes, dir = "ltr") {
+    const thumbSizePx = getThumbSize(sizes);
+    const thumbCenter = thumbSizePx / 2;
+    const offset = pointerOffset || thumbCenter;
+    const thumbOffsetFromEnd = thumbSizePx - offset;
+    const minPointerPos = sizes.scrollbar.paddingStart + offset;
+    const maxPointerPos = sizes.scrollbar.size - sizes.scrollbar.paddingEnd - thumbOffsetFromEnd;
+    const maxScrollPos = sizes.content - sizes.viewport;
+    const scrollRange = dir === "ltr" ? [
+        0,
+        maxScrollPos
+    ] : [
+        maxScrollPos * -1,
+        0
+    ];
+    const interpolate = linearScale([
+        minPointerPos,
+        maxPointerPos
+    ], scrollRange);
+    return interpolate(pointerPos);
+}
+function getThumbOffsetFromScroll(scrollPos, sizes, dir = "ltr") {
+    const thumbSizePx = getThumbSize(sizes);
+    const scrollbarPadding = sizes.scrollbar.paddingStart + sizes.scrollbar.paddingEnd;
+    const scrollbar = sizes.scrollbar.size - scrollbarPadding;
+    const maxScrollPos = sizes.content - sizes.viewport;
+    const maxThumbPos = scrollbar - thumbSizePx;
+    const scrollClampRange = dir === "ltr" ? [
+        0,
+        maxScrollPos
+    ] : [
+        maxScrollPos * -1,
+        0
+    ];
+    const scrollWithoutMomentum = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$number$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["clamp"])(scrollPos, scrollClampRange);
+    const interpolate = linearScale([
+        0,
+        maxScrollPos
+    ], [
+        0,
+        maxThumbPos
+    ]);
+    return interpolate(scrollWithoutMomentum);
+}
+function linearScale(input, output) {
+    return (value)=>{
+        if (input[0] === input[1] || output[0] === output[1]) return output[0];
+        const ratio = (output[1] - output[0]) / (input[1] - input[0]);
+        return output[0] + ratio * (value - input[0]);
+    };
+}
+function isScrollingWithinScrollbarBounds(scrollPos, maxScrollPos) {
+    return scrollPos > 0 && scrollPos < maxScrollPos;
+}
+var addUnlinkedScrollListener = (node, handler = ()=>{})=>{
+    let prevPosition = {
+        left: node.scrollLeft,
+        top: node.scrollTop
+    };
+    let rAF = 0;
+    (function loop() {
+        const position = {
+            left: node.scrollLeft,
+            top: node.scrollTop
+        };
+        const isHorizontalScroll = prevPosition.left !== position.left;
+        const isVerticalScroll = prevPosition.top !== position.top;
+        if (isHorizontalScroll || isVerticalScroll) handler();
+        prevPosition = position;
+        rAF = window.requestAnimationFrame(loop);
+    })();
+    return ()=>window.cancelAnimationFrame(rAF);
+};
+function useDebounceCallback(callback, delay) {
+    const handleCallback = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$use$2d$callback$2d$ref$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallbackRef"])(callback);
+    const debounceTimerRef = __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"](0);
+    __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"]({
+        "useDebounceCallback.useEffect": ()=>({
+                "useDebounceCallback.useEffect": ()=>window.clearTimeout(debounceTimerRef.current)
+            })["useDebounceCallback.useEffect"]
+    }["useDebounceCallback.useEffect"], []);
+    return __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"]({
+        "useDebounceCallback.useCallback": ()=>{
+            window.clearTimeout(debounceTimerRef.current);
+            debounceTimerRef.current = window.setTimeout(handleCallback, delay);
+        }
+    }["useDebounceCallback.useCallback"], [
+        handleCallback,
+        delay
+    ]);
+}
+function useResizeObserver(element, onResize) {
+    const handleResize = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$use$2d$callback$2d$ref$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallbackRef"])(onResize);
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$use$2d$layout$2d$effect$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useLayoutEffect"])({
+        "useResizeObserver.useLayoutEffect": ()=>{
+            let rAF = 0;
+            if (element) {
+                const resizeObserver = new ResizeObserver({
+                    "useResizeObserver.useLayoutEffect": ()=>{
+                        cancelAnimationFrame(rAF);
+                        rAF = window.requestAnimationFrame(handleResize);
+                    }
+                }["useResizeObserver.useLayoutEffect"]);
+                resizeObserver.observe(element);
+                return ({
+                    "useResizeObserver.useLayoutEffect": ()=>{
+                        window.cancelAnimationFrame(rAF);
+                        resizeObserver.unobserve(element);
+                    }
+                })["useResizeObserver.useLayoutEffect"];
+            }
+        }
+    }["useResizeObserver.useLayoutEffect"], [
+        element,
+        handleResize
+    ]);
+}
+var Root = ScrollArea;
+var Viewport = ScrollAreaViewport;
+var Scrollbar = ScrollAreaScrollbar;
+var Thumb = ScrollAreaThumb;
+var Corner = ScrollAreaCorner;
+;
+ //# sourceMappingURL=index.mjs.map
+}),
+"[project]/Documents/v0-erp-obra-principal-verce/node_modules/lucide-react/dist/esm/icons/layout-dashboard.js [app-client] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+/**
+ * @license lucide-react v0.454.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */ __turbopack_context__.s([
+    "default",
+    ()=>LayoutDashboard
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$createLucideIcon$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/lucide-react/dist/esm/createLucideIcon.js [app-client] (ecmascript)");
+;
+const LayoutDashboard = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$createLucideIcon$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"])("LayoutDashboard", [
+    [
+        "rect",
+        {
+            width: "7",
+            height: "9",
+            x: "3",
+            y: "3",
+            rx: "1",
+            key: "10lvy0"
+        }
+    ],
+    [
+        "rect",
+        {
+            width: "7",
+            height: "5",
+            x: "14",
+            y: "3",
+            rx: "1",
+            key: "16une8"
+        }
+    ],
+    [
+        "rect",
+        {
+            width: "7",
+            height: "9",
+            x: "14",
+            y: "12",
+            rx: "1",
+            key: "1hutg5"
+        }
+    ],
+    [
+        "rect",
+        {
+            width: "7",
+            height: "5",
+            x: "3",
+            y: "16",
+            rx: "1",
+            key: "ldoo1y"
+        }
+    ]
+]);
+;
+ //# sourceMappingURL=layout-dashboard.js.map
+}),
+"[project]/Documents/v0-erp-obra-principal-verce/node_modules/lucide-react/dist/esm/icons/layout-dashboard.js [app-client] (ecmascript) <export default as LayoutDashboard>", ((__turbopack_context__) => {
+"use strict";
+
+__turbopack_context__.s([
+    "LayoutDashboard",
+    ()=>__TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$layout$2d$dashboard$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"]
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$layout$2d$dashboard$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/lucide-react/dist/esm/icons/layout-dashboard.js [app-client] (ecmascript)");
+}),
+"[project]/Documents/v0-erp-obra-principal-verce/node_modules/lucide-react/dist/esm/icons/fingerprint.js [app-client] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+/**
+ * @license lucide-react v0.454.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */ __turbopack_context__.s([
+    "default",
+    ()=>Fingerprint
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$createLucideIcon$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/lucide-react/dist/esm/createLucideIcon.js [app-client] (ecmascript)");
+;
+const Fingerprint = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$createLucideIcon$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"])("Fingerprint", [
+    [
+        "path",
+        {
+            d: "M12 10a2 2 0 0 0-2 2c0 1.02-.1 2.51-.26 4",
+            key: "1nerag"
+        }
+    ],
+    [
+        "path",
+        {
+            d: "M14 13.12c0 2.38 0 6.38-1 8.88",
+            key: "o46ks0"
+        }
+    ],
+    [
+        "path",
+        {
+            d: "M17.29 21.02c.12-.6.43-2.3.5-3.02",
+            key: "ptglia"
+        }
+    ],
+    [
+        "path",
+        {
+            d: "M2 12a10 10 0 0 1 18-6",
+            key: "ydlgp0"
+        }
+    ],
+    [
+        "path",
+        {
+            d: "M2 16h.01",
+            key: "1gqxmh"
+        }
+    ],
+    [
+        "path",
+        {
+            d: "M21.8 16c.2-2 .131-5.354 0-6",
+            key: "drycrb"
+        }
+    ],
+    [
+        "path",
+        {
+            d: "M5 19.5C5.5 18 6 15 6 12a6 6 0 0 1 .34-2",
+            key: "1tidbn"
+        }
+    ],
+    [
+        "path",
+        {
+            d: "M8.65 22c.21-.66.45-1.32.57-2",
+            key: "13wd9y"
+        }
+    ],
+    [
+        "path",
+        {
+            d: "M9 6.8a6 6 0 0 1 9 5.2v2",
+            key: "1fr1j5"
+        }
+    ]
+]);
+;
+ //# sourceMappingURL=fingerprint.js.map
+}),
+"[project]/Documents/v0-erp-obra-principal-verce/node_modules/lucide-react/dist/esm/icons/fingerprint.js [app-client] (ecmascript) <export default as Fingerprint>", ((__turbopack_context__) => {
+"use strict";
+
+__turbopack_context__.s([
+    "Fingerprint",
+    ()=>__TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$fingerprint$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"]
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$fingerprint$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/lucide-react/dist/esm/icons/fingerprint.js [app-client] (ecmascript)");
+}),
+"[project]/Documents/v0-erp-obra-principal-verce/node_modules/lucide-react/dist/esm/icons/file-spreadsheet.js [app-client] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+/**
+ * @license lucide-react v0.454.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */ __turbopack_context__.s([
+    "default",
+    ()=>FileSpreadsheet
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$createLucideIcon$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/lucide-react/dist/esm/createLucideIcon.js [app-client] (ecmascript)");
+;
+const FileSpreadsheet = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$createLucideIcon$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"])("FileSpreadsheet", [
+    [
+        "path",
+        {
+            d: "M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z",
+            key: "1rqfz7"
+        }
+    ],
+    [
+        "path",
+        {
+            d: "M14 2v4a2 2 0 0 0 2 2h4",
+            key: "tnqrlb"
+        }
+    ],
+    [
+        "path",
+        {
+            d: "M8 13h2",
+            key: "yr2amv"
+        }
+    ],
+    [
+        "path",
+        {
+            d: "M14 13h2",
+            key: "un5t4a"
+        }
+    ],
+    [
+        "path",
+        {
+            d: "M8 17h2",
+            key: "2yhykz"
+        }
+    ],
+    [
+        "path",
+        {
+            d: "M14 17h2",
+            key: "10kma7"
+        }
+    ]
+]);
+;
+ //# sourceMappingURL=file-spreadsheet.js.map
+}),
+"[project]/Documents/v0-erp-obra-principal-verce/node_modules/lucide-react/dist/esm/icons/file-spreadsheet.js [app-client] (ecmascript) <export default as FileSpreadsheet>", ((__turbopack_context__) => {
+"use strict";
+
+__turbopack_context__.s([
+    "FileSpreadsheet",
+    ()=>__TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$file$2d$spreadsheet$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"]
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$file$2d$spreadsheet$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/lucide-react/dist/esm/icons/file-spreadsheet.js [app-client] (ecmascript)");
+}),
+"[project]/Documents/v0-erp-obra-principal-verce/node_modules/lucide-react/dist/esm/icons/landmark.js [app-client] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+/**
+ * @license lucide-react v0.454.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */ __turbopack_context__.s([
+    "default",
+    ()=>Landmark
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$createLucideIcon$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/lucide-react/dist/esm/createLucideIcon.js [app-client] (ecmascript)");
+;
+const Landmark = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$createLucideIcon$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"])("Landmark", [
+    [
+        "line",
+        {
+            x1: "3",
+            x2: "21",
+            y1: "22",
+            y2: "22",
+            key: "j8o0r"
+        }
+    ],
+    [
+        "line",
+        {
+            x1: "6",
+            x2: "6",
+            y1: "18",
+            y2: "11",
+            key: "10tf0k"
+        }
+    ],
+    [
+        "line",
+        {
+            x1: "10",
+            x2: "10",
+            y1: "18",
+            y2: "11",
+            key: "54lgf6"
+        }
+    ],
+    [
+        "line",
+        {
+            x1: "14",
+            x2: "14",
+            y1: "18",
+            y2: "11",
+            key: "380y"
+        }
+    ],
+    [
+        "line",
+        {
+            x1: "18",
+            x2: "18",
+            y1: "18",
+            y2: "11",
+            key: "1kevvc"
+        }
+    ],
+    [
+        "polygon",
+        {
+            points: "12 2 20 7 4 7",
+            key: "jkujk7"
+        }
+    ]
+]);
+;
+ //# sourceMappingURL=landmark.js.map
+}),
+"[project]/Documents/v0-erp-obra-principal-verce/node_modules/lucide-react/dist/esm/icons/landmark.js [app-client] (ecmascript) <export default as Landmark>", ((__turbopack_context__) => {
+"use strict";
+
+__turbopack_context__.s([
+    "Landmark",
+    ()=>__TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$landmark$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"]
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$landmark$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/lucide-react/dist/esm/icons/landmark.js [app-client] (ecmascript)");
+}),
+"[project]/Documents/v0-erp-obra-principal-verce/node_modules/lucide-react/dist/esm/icons/shield-alert.js [app-client] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+/**
+ * @license lucide-react v0.454.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */ __turbopack_context__.s([
+    "default",
+    ()=>ShieldAlert
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$createLucideIcon$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/lucide-react/dist/esm/createLucideIcon.js [app-client] (ecmascript)");
+;
+const ShieldAlert = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$createLucideIcon$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"])("ShieldAlert", [
+    [
+        "path",
+        {
+            d: "M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z",
+            key: "oel41y"
+        }
+    ],
+    [
+        "path",
+        {
+            d: "M12 8v4",
+            key: "1got3b"
+        }
+    ],
+    [
+        "path",
+        {
+            d: "M12 16h.01",
+            key: "1drbdi"
+        }
+    ]
+]);
+;
+ //# sourceMappingURL=shield-alert.js.map
+}),
+"[project]/Documents/v0-erp-obra-principal-verce/node_modules/lucide-react/dist/esm/icons/shield-alert.js [app-client] (ecmascript) <export default as ShieldAlert>", ((__turbopack_context__) => {
+"use strict";
+
+__turbopack_context__.s([
+    "ShieldAlert",
+    ()=>__TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shield$2d$alert$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"]
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shield$2d$alert$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/lucide-react/dist/esm/icons/shield-alert.js [app-client] (ecmascript)");
+}),
+"[project]/Documents/v0-erp-obra-principal-verce/node_modules/lucide-react/dist/esm/icons/file-check.js [app-client] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+/**
+ * @license lucide-react v0.454.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */ __turbopack_context__.s([
+    "default",
+    ()=>FileCheck
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$createLucideIcon$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/lucide-react/dist/esm/createLucideIcon.js [app-client] (ecmascript)");
+;
+const FileCheck = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$createLucideIcon$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"])("FileCheck", [
+    [
+        "path",
+        {
+            d: "M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z",
+            key: "1rqfz7"
+        }
+    ],
+    [
+        "path",
+        {
+            d: "M14 2v4a2 2 0 0 0 2 2h4",
+            key: "tnqrlb"
+        }
+    ],
+    [
+        "path",
+        {
+            d: "m9 15 2 2 4-4",
+            key: "1grp1n"
+        }
+    ]
+]);
+;
+ //# sourceMappingURL=file-check.js.map
+}),
+"[project]/Documents/v0-erp-obra-principal-verce/node_modules/lucide-react/dist/esm/icons/file-check.js [app-client] (ecmascript) <export default as FileCheck>", ((__turbopack_context__) => {
+"use strict";
+
+__turbopack_context__.s([
+    "FileCheck",
+    ()=>__TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$file$2d$check$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"]
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$file$2d$check$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/lucide-react/dist/esm/icons/file-check.js [app-client] (ecmascript)");
+}),
+"[project]/Documents/v0-erp-obra-principal-verce/node_modules/lucide-react/dist/esm/icons/gavel.js [app-client] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+/**
+ * @license lucide-react v0.454.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */ __turbopack_context__.s([
+    "default",
+    ()=>Gavel
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$createLucideIcon$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/lucide-react/dist/esm/createLucideIcon.js [app-client] (ecmascript)");
+;
+const Gavel = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$createLucideIcon$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"])("Gavel", [
+    [
+        "path",
+        {
+            d: "m14.5 12.5-8 8a2.119 2.119 0 1 1-3-3l8-8",
+            key: "15492f"
+        }
+    ],
+    [
+        "path",
+        {
+            d: "m16 16 6-6",
+            key: "vzrcl6"
+        }
+    ],
+    [
+        "path",
+        {
+            d: "m8 8 6-6",
+            key: "18bi4p"
+        }
+    ],
+    [
+        "path",
+        {
+            d: "m9 7 8 8",
+            key: "5jnvq1"
+        }
+    ],
+    [
+        "path",
+        {
+            d: "m21 11-8-8",
+            key: "z4y7zo"
+        }
+    ]
+]);
+;
+ //# sourceMappingURL=gavel.js.map
+}),
+"[project]/Documents/v0-erp-obra-principal-verce/node_modules/lucide-react/dist/esm/icons/gavel.js [app-client] (ecmascript) <export default as Gavel>", ((__turbopack_context__) => {
+"use strict";
+
+__turbopack_context__.s([
+    "Gavel",
+    ()=>__TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$gavel$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"]
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$gavel$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/lucide-react/dist/esm/icons/gavel.js [app-client] (ecmascript)");
+}),
+"[project]/Documents/v0-erp-obra-principal-verce/node_modules/lucide-react/dist/esm/icons/circle-alert.js [app-client] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+/**
+ * @license lucide-react v0.454.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */ __turbopack_context__.s([
+    "default",
+    ()=>CircleAlert
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$createLucideIcon$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/lucide-react/dist/esm/createLucideIcon.js [app-client] (ecmascript)");
+;
+const CircleAlert = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$createLucideIcon$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"])("CircleAlert", [
+    [
+        "circle",
+        {
+            cx: "12",
+            cy: "12",
+            r: "10",
+            key: "1mglay"
+        }
+    ],
+    [
+        "line",
+        {
+            x1: "12",
+            x2: "12",
+            y1: "8",
+            y2: "12",
+            key: "1pkeuh"
+        }
+    ],
+    [
+        "line",
+        {
+            x1: "12",
+            x2: "12.01",
+            y1: "16",
+            y2: "16",
+            key: "4dfq90"
+        }
+    ]
+]);
+;
+ //# sourceMappingURL=circle-alert.js.map
+}),
+"[project]/Documents/v0-erp-obra-principal-verce/node_modules/lucide-react/dist/esm/icons/circle-alert.js [app-client] (ecmascript) <export default as AlertCircle>", ((__turbopack_context__) => {
+"use strict";
+
+__turbopack_context__.s([
+    "AlertCircle",
+    ()=>__TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$alert$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"]
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$alert$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/lucide-react/dist/esm/icons/circle-alert.js [app-client] (ecmascript)");
+}),
+"[project]/Documents/v0-erp-obra-principal-verce/node_modules/lucide-react/dist/esm/icons/trending-down.js [app-client] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+/**
+ * @license lucide-react v0.454.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */ __turbopack_context__.s([
+    "default",
+    ()=>TrendingDown
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$createLucideIcon$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/lucide-react/dist/esm/createLucideIcon.js [app-client] (ecmascript)");
+;
+const TrendingDown = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$createLucideIcon$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"])("TrendingDown", [
+    [
+        "polyline",
+        {
+            points: "22 17 13.5 8.5 8.5 13.5 2 7",
+            key: "1r2t7k"
+        }
+    ],
+    [
+        "polyline",
+        {
+            points: "16 17 22 17 22 11",
+            key: "11uiuu"
+        }
+    ]
+]);
+;
+ //# sourceMappingURL=trending-down.js.map
+}),
+"[project]/Documents/v0-erp-obra-principal-verce/node_modules/lucide-react/dist/esm/icons/trending-down.js [app-client] (ecmascript) <export default as TrendingDown>", ((__turbopack_context__) => {
+"use strict";
+
+__turbopack_context__.s([
+    "TrendingDown",
+    ()=>__TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trending$2d$down$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"]
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trending$2d$down$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/lucide-react/dist/esm/icons/trending-down.js [app-client] (ecmascript)");
+}),
+"[project]/Documents/v0-erp-obra-principal-verce/node_modules/lucide-react/dist/esm/icons/circle-check.js [app-client] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+/**
+ * @license lucide-react v0.454.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */ __turbopack_context__.s([
+    "default",
+    ()=>CircleCheck
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$createLucideIcon$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/lucide-react/dist/esm/createLucideIcon.js [app-client] (ecmascript)");
+;
+const CircleCheck = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$createLucideIcon$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"])("CircleCheck", [
+    [
+        "circle",
+        {
+            cx: "12",
+            cy: "12",
+            r: "10",
+            key: "1mglay"
+        }
+    ],
+    [
+        "path",
+        {
+            d: "m9 12 2 2 4-4",
+            key: "dzmm74"
+        }
+    ]
+]);
+;
+ //# sourceMappingURL=circle-check.js.map
+}),
+"[project]/Documents/v0-erp-obra-principal-verce/node_modules/lucide-react/dist/esm/icons/circle-check.js [app-client] (ecmascript) <export default as CheckCircle2>", ((__turbopack_context__) => {
+"use strict";
+
+__turbopack_context__.s([
+    "CheckCircle2",
+    ()=>__TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$check$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"]
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$check$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/lucide-react/dist/esm/icons/circle-check.js [app-client] (ecmascript)");
+}),
+"[project]/Documents/v0-erp-obra-principal-verce/node_modules/lucide-react/dist/esm/icons/send.js [app-client] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+/**
+ * @license lucide-react v0.454.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */ __turbopack_context__.s([
+    "default",
+    ()=>Send
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$createLucideIcon$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/lucide-react/dist/esm/createLucideIcon.js [app-client] (ecmascript)");
+;
+const Send = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$createLucideIcon$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"])("Send", [
+    [
+        "path",
+        {
+            d: "M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z",
+            key: "1ffxy3"
+        }
+    ],
+    [
+        "path",
+        {
+            d: "m21.854 2.147-10.94 10.939",
+            key: "12cjpa"
+        }
+    ]
+]);
+;
+ //# sourceMappingURL=send.js.map
+}),
+"[project]/Documents/v0-erp-obra-principal-verce/node_modules/lucide-react/dist/esm/icons/send.js [app-client] (ecmascript) <export default as Send>", ((__turbopack_context__) => {
+"use strict";
+
+__turbopack_context__.s([
+    "Send",
+    ()=>__TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$send$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"]
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$send$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/lucide-react/dist/esm/icons/send.js [app-client] (ecmascript)");
+}),
+"[project]/Documents/v0-erp-obra-principal-verce/node_modules/lucide-react/dist/esm/icons/banknote.js [app-client] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+/**
+ * @license lucide-react v0.454.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */ __turbopack_context__.s([
+    "default",
+    ()=>Banknote
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$createLucideIcon$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/lucide-react/dist/esm/createLucideIcon.js [app-client] (ecmascript)");
+;
+const Banknote = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$createLucideIcon$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"])("Banknote", [
+    [
+        "rect",
+        {
+            width: "20",
+            height: "12",
+            x: "2",
+            y: "6",
+            rx: "2",
+            key: "9lu3g6"
+        }
+    ],
+    [
+        "circle",
+        {
+            cx: "12",
+            cy: "12",
+            r: "2",
+            key: "1c9p78"
+        }
+    ],
+    [
+        "path",
+        {
+            d: "M6 12h.01M18 12h.01",
+            key: "113zkx"
+        }
+    ]
+]);
+;
+ //# sourceMappingURL=banknote.js.map
+}),
+"[project]/Documents/v0-erp-obra-principal-verce/node_modules/lucide-react/dist/esm/icons/banknote.js [app-client] (ecmascript) <export default as Banknote>", ((__turbopack_context__) => {
+"use strict";
+
+__turbopack_context__.s([
+    "Banknote",
+    ()=>__TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$banknote$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"]
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$banknote$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/lucide-react/dist/esm/icons/banknote.js [app-client] (ecmascript)");
+}),
+"[project]/Documents/v0-erp-obra-principal-verce/node_modules/@radix-ui/react-progress/dist/index.mjs [app-client] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+__turbopack_context__.s([
+    "Indicator",
+    ()=>Indicator,
+    "Progress",
+    ()=>Progress,
+    "ProgressIndicator",
+    ()=>ProgressIndicator,
+    "Root",
+    ()=>Root,
+    "createProgressScope",
+    ()=>createProgressScope
+]);
+// packages/react/progress/src/Progress.tsx
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$context$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/@radix-ui/react-context/dist/index.mjs [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$primitive$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/@radix-ui/react-primitive/dist/index.mjs [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/next/dist/compiled/react/jsx-runtime.js [app-client] (ecmascript)");
+"use client";
+;
+;
+;
+;
+var PROGRESS_NAME = "Progress";
+var DEFAULT_MAX = 100;
+var [createProgressContext, createProgressScope] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$context$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["createContextScope"])(PROGRESS_NAME);
+var [ProgressProvider, useProgressContext] = createProgressContext(PROGRESS_NAME);
+var Progress = __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["forwardRef"]((props, forwardedRef)=>{
+    const { __scopeProgress, value: valueProp = null, max: maxProp, getValueLabel = defaultGetValueLabel, ...progressProps } = props;
+    if ((maxProp || maxProp === 0) && !isValidMaxNumber(maxProp)) {
+        console.error(getInvalidMaxError(`${maxProp}`, "Progress"));
+    }
+    const max = isValidMaxNumber(maxProp) ? maxProp : DEFAULT_MAX;
+    if (valueProp !== null && !isValidValueNumber(valueProp, max)) {
+        console.error(getInvalidValueError(`${valueProp}`, "Progress"));
+    }
+    const value = isValidValueNumber(valueProp, max) ? valueProp : null;
+    const valueLabel = isNumber(value) ? getValueLabel(value, max) : void 0;
+    return /* @__PURE__ */ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsx"])(ProgressProvider, {
+        scope: __scopeProgress,
+        value,
+        max,
+        children: /* @__PURE__ */ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsx"])(__TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$primitive$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Primitive"].div, {
+            "aria-valuemax": max,
+            "aria-valuemin": 0,
+            "aria-valuenow": isNumber(value) ? value : void 0,
+            "aria-valuetext": valueLabel,
+            role: "progressbar",
+            "data-state": getProgressState(value, max),
+            "data-value": value ?? void 0,
+            "data-max": max,
+            ...progressProps,
+            ref: forwardedRef
+        })
+    });
+});
+Progress.displayName = PROGRESS_NAME;
+var INDICATOR_NAME = "ProgressIndicator";
+var ProgressIndicator = __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["forwardRef"]((props, forwardedRef)=>{
+    const { __scopeProgress, ...indicatorProps } = props;
+    const context = useProgressContext(INDICATOR_NAME, __scopeProgress);
+    return /* @__PURE__ */ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsx"])(__TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$primitive$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Primitive"].div, {
+        "data-state": getProgressState(context.value, context.max),
+        "data-value": context.value ?? void 0,
+        "data-max": context.max,
+        ...indicatorProps,
+        ref: forwardedRef
+    });
+});
+ProgressIndicator.displayName = INDICATOR_NAME;
+function defaultGetValueLabel(value, max) {
+    return `${Math.round(value / max * 100)}%`;
+}
+function getProgressState(value, maxValue) {
+    return value == null ? "indeterminate" : value === maxValue ? "complete" : "loading";
+}
+function isNumber(value) {
+    return typeof value === "number";
+}
+function isValidMaxNumber(max) {
+    return isNumber(max) && !isNaN(max) && max > 0;
+}
+function isValidValueNumber(value, max) {
+    return isNumber(value) && !isNaN(value) && value <= max && value >= 0;
+}
+function getInvalidMaxError(propValue, componentName) {
+    return `Invalid prop \`max\` of value \`${propValue}\` supplied to \`${componentName}\`. Only numbers greater than 0 are valid max values. Defaulting to \`${DEFAULT_MAX}\`.`;
+}
+function getInvalidValueError(propValue, componentName) {
+    return `Invalid prop \`value\` of value \`${propValue}\` supplied to \`${componentName}\`. The \`value\` prop must be:
+  - a positive number
+  - less than the value passed to \`max\` (or ${DEFAULT_MAX} if no \`max\` prop is set)
+  - \`null\` or \`undefined\` if the progress is indeterminate.
+
+Defaulting to \`null\`.`;
+}
+var Root = Progress;
+var Indicator = ProgressIndicator;
+;
+ //# sourceMappingURL=index.mjs.map
+}),
+"[project]/Documents/v0-erp-obra-principal-verce/node_modules/next/dist/shared/lib/lazy-dynamic/dynamic-bailout-to-csr.js [app-client] (ecmascript)", ((__turbopack_context__, module, exports) => {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "BailoutToCSR", {
+    enumerable: true,
+    get: function() {
+        return BailoutToCSR;
+    }
+});
+const _bailouttocsr = __turbopack_context__.r("[project]/Documents/v0-erp-obra-principal-verce/node_modules/next/dist/shared/lib/lazy-dynamic/bailout-to-csr.js [app-client] (ecmascript)");
+function BailoutToCSR({ reason, children }) {
+    if (typeof window === 'undefined') {
+        throw Object.defineProperty(new _bailouttocsr.BailoutToCSRError(reason), "__NEXT_ERROR_CODE", {
+            value: "E394",
+            enumerable: false,
+            configurable: true
+        });
+    }
+    return children;
+} //# sourceMappingURL=dynamic-bailout-to-csr.js.map
+}),
+"[project]/Documents/v0-erp-obra-principal-verce/node_modules/next/dist/shared/lib/encode-uri-path.js [app-client] (ecmascript)", ((__turbopack_context__, module, exports) => {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "encodeURIPath", {
+    enumerable: true,
+    get: function() {
+        return encodeURIPath;
+    }
+});
+function encodeURIPath(file) {
+    return file.split('/').map((p)=>encodeURIComponent(p)).join('/');
+} //# sourceMappingURL=encode-uri-path.js.map
+}),
+"[project]/Documents/v0-erp-obra-principal-verce/node_modules/next/dist/shared/lib/lazy-dynamic/preload-chunks.js [app-client] (ecmascript)", ((__turbopack_context__, module, exports) => {
+"use strict";
+
+var __TURBOPACK__imported__module__$5b$project$5d2f$Documents$2f$v0$2d$erp$2d$obra$2d$principal$2d$verce$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = /*#__PURE__*/ __turbopack_context__.i("[project]/Documents/v0-erp-obra-principal-verce/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)");
+'use client';
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "PreloadChunks", {
+    enumerable: true,
+    get: function() {
+        return PreloadChunks;
+    }
+});
+const _jsxruntime = __turbopack_context__.r("[project]/Documents/v0-erp-obra-principal-verce/node_modules/next/dist/compiled/react/jsx-runtime.js [app-client] (ecmascript)");
+const _reactdom = __turbopack_context__.r("[project]/Documents/v0-erp-obra-principal-verce/node_modules/next/dist/compiled/react-dom/index.js [app-client] (ecmascript)");
+const _workasyncstorageexternal = __turbopack_context__.r("[project]/Documents/v0-erp-obra-principal-verce/node_modules/next/dist/server/app-render/work-async-storage.external.js [app-client] (ecmascript)");
+const _encodeuripath = __turbopack_context__.r("[project]/Documents/v0-erp-obra-principal-verce/node_modules/next/dist/shared/lib/encode-uri-path.js [app-client] (ecmascript)");
+function PreloadChunks({ moduleIds }) {
+    // Early return in client compilation and only load requestStore on server side
+    if (typeof window !== 'undefined') {
+        return null;
+    }
+    const workStore = _workasyncstorageexternal.workAsyncStorage.getStore();
+    if (workStore === undefined) {
+        return null;
+    }
+    const allFiles = [];
+    // Search the current dynamic call unique key id in react loadable manifest,
+    // and find the corresponding CSS files to preload
+    if (workStore.reactLoadableManifest && moduleIds) {
+        const manifest = workStore.reactLoadableManifest;
+        for (const key of moduleIds){
+            if (!manifest[key]) continue;
+            const chunks = manifest[key].files;
+            allFiles.push(...chunks);
+        }
+    }
+    if (allFiles.length === 0) {
+        return null;
+    }
+    const dplId = ("TURBOPACK compile-time falsy", 0) ? "TURBOPACK unreachable" : '';
+    return /*#__PURE__*/ (0, _jsxruntime.jsx)(_jsxruntime.Fragment, {
+        children: allFiles.map((chunk)=>{
+            const href = `${workStore.assetPrefix}/_next/${(0, _encodeuripath.encodeURIPath)(chunk)}${dplId}`;
+            const isCss = chunk.endsWith('.css');
+            // If it's stylesheet we use `precedence` o help hoist with React Float.
+            // For stylesheets we actually need to render the CSS because nothing else is going to do it so it needs to be part of the component tree.
+            // The `preload` for stylesheet is not optional.
+            if (isCss) {
+                return /*#__PURE__*/ (0, _jsxruntime.jsx)("link", {
+                    // @ts-ignore
+                    precedence: "dynamic",
+                    href: href,
+                    rel: "stylesheet",
+                    as: "style",
+                    nonce: workStore.nonce
+                }, chunk);
+            } else {
+                // If it's script we use ReactDOM.preload to preload the resources
+                (0, _reactdom.preload)(href, {
+                    as: 'script',
+                    fetchPriority: 'low',
+                    nonce: workStore.nonce
+                });
+                return null;
+            }
+        })
+    });
+} //# sourceMappingURL=preload-chunks.js.map
+}),
+"[project]/Documents/v0-erp-obra-principal-verce/node_modules/next/dist/shared/lib/lazy-dynamic/loadable.js [app-client] (ecmascript)", ((__turbopack_context__, module, exports) => {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "default", {
+    enumerable: true,
+    get: function() {
+        return _default;
+    }
+});
+const _jsxruntime = __turbopack_context__.r("[project]/Documents/v0-erp-obra-principal-verce/node_modules/next/dist/compiled/react/jsx-runtime.js [app-client] (ecmascript)");
+const _react = __turbopack_context__.r("[project]/Documents/v0-erp-obra-principal-verce/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
+const _dynamicbailouttocsr = __turbopack_context__.r("[project]/Documents/v0-erp-obra-principal-verce/node_modules/next/dist/shared/lib/lazy-dynamic/dynamic-bailout-to-csr.js [app-client] (ecmascript)");
+const _preloadchunks = __turbopack_context__.r("[project]/Documents/v0-erp-obra-principal-verce/node_modules/next/dist/shared/lib/lazy-dynamic/preload-chunks.js [app-client] (ecmascript)");
+// Normalize loader to return the module as form { default: Component } for `React.lazy`.
+// Also for backward compatible since next/dynamic allows to resolve a component directly with loader
+// Client component reference proxy need to be converted to a module.
+function convertModule(mod) {
+    // Check "default" prop before accessing it, as it could be client reference proxy that could break it reference.
+    // Cases:
+    // mod: { default: Component }
+    // mod: Component
+    // mod: { default: proxy(Component) }
+    // mod: proxy(Component)
+    const hasDefault = mod && 'default' in mod;
+    return {
+        default: hasDefault ? mod.default : mod
+    };
+}
+const defaultOptions = {
+    loader: ()=>Promise.resolve(convertModule(()=>null)),
+    loading: null,
+    ssr: true
+};
+function Loadable(options) {
+    const opts = {
+        ...defaultOptions,
+        ...options
+    };
+    const Lazy = /*#__PURE__*/ (0, _react.lazy)(()=>opts.loader().then(convertModule));
+    const Loading = opts.loading;
+    function LoadableComponent(props) {
+        const fallbackElement = Loading ? /*#__PURE__*/ (0, _jsxruntime.jsx)(Loading, {
+            isLoading: true,
+            pastDelay: true,
+            error: null
+        }) : null;
+        // If it's non-SSR or provided a loading component, wrap it in a suspense boundary
+        const hasSuspenseBoundary = !opts.ssr || !!opts.loading;
+        const Wrap = hasSuspenseBoundary ? _react.Suspense : _react.Fragment;
+        const wrapProps = hasSuspenseBoundary ? {
+            fallback: fallbackElement
+        } : {};
+        const children = opts.ssr ? /*#__PURE__*/ (0, _jsxruntime.jsxs)(_jsxruntime.Fragment, {
+            children: [
+                typeof window === 'undefined' ? /*#__PURE__*/ (0, _jsxruntime.jsx)(_preloadchunks.PreloadChunks, {
+                    moduleIds: opts.modules
+                }) : null,
+                /*#__PURE__*/ (0, _jsxruntime.jsx)(Lazy, {
+                    ...props
+                })
+            ]
+        }) : /*#__PURE__*/ (0, _jsxruntime.jsx)(_dynamicbailouttocsr.BailoutToCSR, {
+            reason: "next/dynamic",
+            children: /*#__PURE__*/ (0, _jsxruntime.jsx)(Lazy, {
+                ...props
+            })
+        });
+        return /*#__PURE__*/ (0, _jsxruntime.jsx)(Wrap, {
+            ...wrapProps,
+            children: children
+        });
+    }
+    LoadableComponent.displayName = 'LoadableComponent';
+    return LoadableComponent;
+}
+const _default = Loadable; //# sourceMappingURL=loadable.js.map
+}),
+"[project]/Documents/v0-erp-obra-principal-verce/node_modules/next/dist/shared/lib/app-dynamic.js [app-client] (ecmascript)", ((__turbopack_context__, module, exports) => {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "default", {
+    enumerable: true,
+    get: function() {
+        return dynamic;
+    }
+});
+const _interop_require_default = __turbopack_context__.r("[project]/Documents/v0-erp-obra-principal-verce/node_modules/@swc/helpers/cjs/_interop_require_default.cjs [app-client] (ecmascript)");
+const _loadable = /*#__PURE__*/ _interop_require_default._(__turbopack_context__.r("[project]/Documents/v0-erp-obra-principal-verce/node_modules/next/dist/shared/lib/lazy-dynamic/loadable.js [app-client] (ecmascript)"));
+function dynamic(dynamicOptions, options) {
+    const loadableOptions = {};
+    if (typeof dynamicOptions === 'function') {
+        loadableOptions.loader = dynamicOptions;
+    }
+    const mergedOptions = {
+        ...loadableOptions,
+        ...options
+    };
+    return (0, _loadable.default)({
+        ...mergedOptions,
+        modules: mergedOptions.loadableGenerated?.modules
+    });
+}
+if ((typeof exports.default === 'function' || typeof exports.default === 'object' && exports.default !== null) && typeof exports.default.__esModule === 'undefined') {
+    Object.defineProperty(exports.default, '__esModule', {
+        value: true
+    });
+    Object.assign(exports.default, exports);
+    module.exports = exports.default;
+} //# sourceMappingURL=app-dynamic.js.map
+}),
+]);
+
+//# sourceMappingURL=de892_b47297d0._.js.map

@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { AppLayout } from "@/components/layout/app-layout"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { InfoTooltip } from "@/components/ui/info-tooltip"
 import { Badge } from "@/components/ui/badge"
@@ -99,8 +98,7 @@ export default function AnalyticsCorporativoPage() {
   }
 
   return (
-    <AppLayout>
-      <div className="space-y-6">
+    <div className="space-y-6">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
@@ -438,6 +436,5 @@ export default function AnalyticsCorporativoPage() {
           </CardContent>
         </Card>
       </div>
-    </AppLayout>
   )
 }

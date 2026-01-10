@@ -1,0 +1,31 @@
+"use client"
+
+import { Suspense } from "react"
+import Link from "next/link"
+import { Card, CardContent } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { ExternalLink } from "lucide-react"
+
+export function ConsolidacaoTab() {
+  return (
+    <div className="p-6 space-y-6">
+      <Card>
+        <CardContent className="pt-6">
+          <div className="text-center space-y-4">
+            <h3 className="text-lg font-semibold">Consolidação Final</h3>
+            <p className="text-muted-foreground">
+              O conteúdo completo está disponível na página dedicada.
+              Esta página mostra a consolidação mensal final com todos os colaboradores e valores totais.
+            </p>
+            <Link href="/corporativo/administrativo/rh/consolidacao">
+              <Button>
+                <ExternalLink className="h-4 w-4 mr-2" />
+                Acessar Página Completa
+              </Button>
+            </Link>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}

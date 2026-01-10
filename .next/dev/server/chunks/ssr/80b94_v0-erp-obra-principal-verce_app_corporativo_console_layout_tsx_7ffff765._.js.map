@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 4, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/gpontes/Documents/v0-erp-obra-principal-verce/app/corporativo/console/layout.tsx"],"sourcesContent":["import type React from \"react\"\r\n\r\nexport default function ConsoleLayout({\r\n  children,\r\n}: {\r\n  children: React.ReactNode\r\n}) {\r\n  // Layout proprio do Console - sem a sidebar padrao do ERP\r\n  return <>{children}</>\r\n}\r\n"],"names":[],"mappings":";;;;;;AAEe,SAAS,cAAc,EACpC,QAAQ,EAGT;IACC,0DAA0D;IAC1D,qBAAO;kBAAG;;AACZ"}}]
+}

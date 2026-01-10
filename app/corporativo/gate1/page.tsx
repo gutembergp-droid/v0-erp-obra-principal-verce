@@ -2,7 +2,6 @@
 
 import type React from "react"
 
-import { AppLayout } from "@/components/layout/app-layout"
 import { Header } from "@/components/layout/header"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -97,7 +96,7 @@ function ValidationItem({ label, icon: Icon, valid }: { label: string; icon: Rea
 
 export default function Gate1Page() {
   return (
-    <AppLayout>
+    <>
       <Header
         title="Gate 1 - Liberação de Obra"
         description="Validações obrigatórias para transição Corporativo → Obra"
@@ -259,6 +258,6 @@ export default function Gate1Page() {
           </div>
         </div>
       </div>
-    </AppLayout>
+    </>
   )
 }

@@ -1,6 +1,5 @@
 "use client"
 
-import { AppLayout } from "@/components/layout/app-layout"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -16,8 +15,7 @@ const auditorias = [
 
 export default function CompliancePage() {
   return (
-    <AppLayout>
-      <div className="space-y-6">
+    <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <h1 className="text-2xl font-bold text-foreground">Compliance & Processos</h1>
@@ -130,6 +128,5 @@ export default function CompliancePage() {
           </CardContent>
         </Card>
       </div>
-    </AppLayout>
   )
 }

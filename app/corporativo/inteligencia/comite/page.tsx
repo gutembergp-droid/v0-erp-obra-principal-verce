@@ -1,6 +1,5 @@
 "use client"
 
-import { AppLayout } from "@/components/layout/app-layout"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -59,8 +58,7 @@ const metricas = [
 
 export default function ComitePage() {
   return (
-    <AppLayout>
-      <div className="flex flex-col h-[calc(100vh-80px)] overflow-hidden">
+    <div className="flex flex-col h-[calc(100vh-80px)] overflow-hidden">
         {/* Header */}
         <div className="flex items-center justify-between mb-6 flex-shrink-0">
           <div className="flex items-center gap-3">
@@ -223,6 +221,5 @@ export default function ComitePage() {
           </div>
         </div>
       </div>
-    </AppLayout>
   )
 }

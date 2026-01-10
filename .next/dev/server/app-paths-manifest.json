@@ -1,12 +1,13 @@
 {
-  "/corporativo/comercial/clientes/page": "app/corporativo/comercial/clientes/page.js",
-  "/corporativo/comercial/contratos/page": "app/corporativo/comercial/contratos/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/corporativo/administrativo/rh/analytics/page": "app/corporativo/administrativo/rh/analytics/page.js",
+  "/corporativo/administrativo/rh/conformidade/page": "app/corporativo/administrativo/rh/conformidade/page.js",
+  "/corporativo/administrativo/rh/convencoes/page": "app/corporativo/administrativo/rh/convencoes/page.js",
+  "/corporativo/administrativo/rh/pagamento/page": "app/corporativo/administrativo/rh/pagamento/page.js",
+  "/corporativo/administrativo/rh/page": "app/corporativo/administrativo/rh/page.js",
+  "/corporativo/administrativo/rh/pessoas/page": "app/corporativo/administrativo/rh/pessoas/page.js",
+  "/corporativo/administrativo/rh/ponto/page": "app/corporativo/administrativo/rh/ponto/page.js",
+  "/corporativo/administrativo/rh/previa-folha/page": "app/corporativo/administrativo/rh/previa-folha/page.js",
   "/intranet/page": "app/intranet/page.js",
-  "/obra/producao/diario/page": "app/obra/producao/diario/page.js",
-  "/obra/producao/eap/page": "app/obra/producao/eap/page.js",
-  "/obra/producao/page": "app/obra/producao/page.js",
-  "/obra/producao/pds/page": "app/obra/producao/pds/page.js",
-  "/obra/producao/produtividade/page": "app/obra/producao/produtividade/page.js",
-  "/page": "app/page.js",
-  "/suporte/page": "app/suporte/page.js"
+  "/page": "app/page.js"
 }

@@ -1,6 +1,5 @@
 "use client"
 
-import { AppLayout } from "@/components/layout/app-layout"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { FileSearch, Plus, Calendar, User } from "lucide-react"
@@ -14,8 +13,7 @@ const auditoriasCampo = [
 
 export default function AuditoriaCampoPage() {
   return (
-    <AppLayout>
-      <div className="p-6 space-y-6">
+    <div className="p-6 space-y-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <h1 className="text-2xl font-bold text-foreground">Auditoria de Campo</h1>
@@ -118,6 +116,5 @@ export default function AuditoriaCampoPage() {
           </CardContent>
         </Card>
       </div>
-    </AppLayout>
   )
 }
