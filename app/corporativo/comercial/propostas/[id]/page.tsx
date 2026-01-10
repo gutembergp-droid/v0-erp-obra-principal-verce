@@ -249,17 +249,20 @@ export default function PropostaDetalhesPage({
                   </CardHeader>
                   <CardContent>
                     <MatrizRisco 
-                      riscos={[
-                        {
-                          id: "R1",
-                          descricao: "Atraso em licenças ambientais",
-                          categoria: "juridico",
-                          probabilidade: 3,
-                          impacto: 4,
-                          classificacao: "medio",
-                          mitigacao: "Antecipar processos",
-                        },
-                      ]}
+                      analise={{
+                        riscos: [
+                          {
+                            id: "R1",
+                            descricao: "Atraso em licenças ambientais",
+                            categoria: "juridico",
+                            probabilidade: 3,
+                            impacto: 4,
+                            classificacao: "medio",
+                            mitigacao: "Antecipar processos",
+                          },
+                        ],
+                        matrizResumo: { baixo: 0, medio: 1, alto: 0, critico: 0 }
+                      }}
                     />
                   </CardContent>
                 </Card>
