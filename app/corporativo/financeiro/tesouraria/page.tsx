@@ -544,6 +544,8 @@ export default function TesourariaPage() {
             </Card>
           </div>
         </div>
+      </div>
+      </div>
       </main>
     </div>
   )

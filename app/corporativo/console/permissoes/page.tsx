@@ -733,7 +733,6 @@ export default function PermissoesPage() {
             </DialogFooter>
           </DialogContent>
         </Dialog>
-      </div>
     </TooltipProvider>
         </div>
       </main>

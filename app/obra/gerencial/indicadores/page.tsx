@@ -472,6 +472,7 @@ function IndicadoresContent() {
 
           </div>
         </div>
+      </div>
       </main>
     </div>
   )

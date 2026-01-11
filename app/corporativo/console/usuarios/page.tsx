@@ -959,6 +959,12 @@ export default function UsuariosPage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+      </div>
+      </div>
+      </div>
+      </div>
+      </div>
+      </main>
     </div>
   )
 }

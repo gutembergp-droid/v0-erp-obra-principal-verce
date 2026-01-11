@@ -451,6 +451,7 @@ export default function AnalyticsCorporativoPage() {
         </Card>
         </div>
         </div>
+      </div>
       </main>
     </div>
   )

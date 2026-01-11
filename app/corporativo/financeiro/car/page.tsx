@@ -614,6 +614,9 @@ export default function CARPage() {
           </ScrollArea>
         </aside>
       )}
+      </div>
+      </main>
+      </div>
     </div>
   )
 }

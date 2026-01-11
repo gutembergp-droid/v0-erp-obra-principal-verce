@@ -709,6 +709,7 @@ export default function ApropriacaoPage() {
           </Tabs>
             </div>
           </div>
+        </div>
         </main>
       </div>
     </TooltipProvider>
