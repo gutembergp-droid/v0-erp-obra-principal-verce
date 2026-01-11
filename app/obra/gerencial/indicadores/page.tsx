@@ -8,7 +8,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sh
 import { Badge } from "@/components/ui/badge"
 import { Download, Calculator, BarChart2, Table, Info } from "lucide-react"
 import { ObraGerencialNavbar } from "../../_components/obra-gerencial-navbar"
-import { IndicadoresTabsNavbar } from "../../_components/indicadores-tabs-navbar"
+import { IndicadoresTabsNavbar } from "../_components/indicadores-tabs-navbar"
 
 import {
   KPICardOficial,
