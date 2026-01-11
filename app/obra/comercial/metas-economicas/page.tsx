@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { Target, TrendingUp, TrendingDown, AlertTriangle, CheckCircle2, FileText, Send, Settings } from "lucide-react"
-import { ObraComercialNavbar } from "../_components/obra-comercial-navbar"
+import { ObraComercialNavbar } from "../../_components/obra-comercial-navbar"
 
 // Dados mockados - Metas por Servico
 const metasServico = [

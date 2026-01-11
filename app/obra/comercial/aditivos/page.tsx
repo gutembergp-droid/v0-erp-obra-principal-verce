@@ -1,7 +1,7 @@
 "use client"
 
 import { InfoTooltip } from "@/components/ui/info-tooltip"
-import { ObraComercialNavbar } from "../_components/obra-comercial-navbar"
+import { ObraComercialNavbar } from "../../_components/obra-comercial-navbar"
 
 export default function AditivosPage() {
   return (

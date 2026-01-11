@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { ObraComercialNavbar } from "../_components/obra-comercial-navbar"
+import { ObraComercialNavbar } from "../../_components/obra-comercial-navbar"
 import {
   ChevronRight,
   ChevronDown,

@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { InfoTooltip } from "@/components/ui/info-tooltip"
-import { ObraComercialNavbar } from "../_components/obra-comercial-navbar"
+import { ObraComercialNavbar } from "../../_components/obra-comercial-navbar"
 import {
   Search,
   Plus,
