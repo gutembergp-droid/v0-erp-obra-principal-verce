@@ -10,6 +10,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Progress } from "@/components/ui/progress"
 import { InfoTooltip } from "@/components/ui/info-tooltip"
 import { Plus, CheckCircle2, Clock, TrendingUp, TrendingDown, Target, Users, Truck, Timer } from "lucide-react"
+import { ObraProducaoNavbar } from "../../_components/obra-producao-navbar"
 
 // Dados mockados de Apontamentos
 const apontamentosMock = [

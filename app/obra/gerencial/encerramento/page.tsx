@@ -7,6 +7,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Textarea } from "@/components/ui/textarea"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Card } from "@/components/ui/card"
+import { ObraGerencialNavbar } from "../../_components/obra-gerencial-navbar"
 import {
   Dialog,
   DialogContent,

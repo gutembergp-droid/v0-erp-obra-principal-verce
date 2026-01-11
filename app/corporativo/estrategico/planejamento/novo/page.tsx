@@ -13,6 +13,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { PageContent } from "@/components/layout/page-content"
 import { Header } from "@/components/layout/header"
 import { Calendar, ArrowLeft, ArrowRight, CheckCircle2, Copy, Zap } from "lucide-react"
+import { EstrategicoNavbar } from "../../../_components/estrategico-navbar"
 import { toast } from "sonner"
 import type { StatusCiclo } from "@/lib/types/planejamento"
 

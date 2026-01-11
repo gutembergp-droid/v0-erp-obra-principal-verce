@@ -1,7 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
+import { useTopbar } from "@/contexts/topbar-context"
 import {
   Star,
   ShoppingCart,
@@ -117,8 +118,14 @@ const themeColorOptions: { value: ColorTheme; label: string; description: string
 export function Topbar() {
   const pathname = usePathname()
   const [currentStatus, setCurrentStatus] = useState(statusOptions[0])
+  const [isMounted, setIsMounted] = useState(false)
   const { theme, colorTheme, setTheme, setColorTheme, toggleTheme } = useTheme()
   const { language, setLanguage, t } = useLanguage()
+  const { title, subtitle, actions, showQuickActions = true } = useTopbar()
+
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
 
   const getBreadcrumb = () => {
     const parts = pathname.split("/").filter(Boolean)
@@ -129,48 +136,69 @@ export function Topbar() {
   return (
     <TooltipProvider delayDuration={200}>
       <header className="flex items-center justify-between h-[61px] px-3 bg-card border-b border-border">
-        <div className="flex items-center gap-1.5 text-xs">
-          <span className="text-foreground/70">{getBreadcrumb()}</span>
-          <span className="text-border">/</span>
-          <span className="text-foreground font-medium">Dashboard da Obra</span>
-        </div>
-
-        <div className="flex-1 flex items-center justify-center">
-          <div className="inline-flex items-center bg-card/95 backdrop-blur-md border border-border/50 rounded-xl p-1 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.1),0_4px_16px_-4px_rgba(0,0,0,0.05)]">
-            {acoesRapidas.map((acao, index) => {
-              const isHome = index === 4
-              return (
-                <Tooltip key={acao.label}>
-                  <TooltipTrigger asChild>
-                    <Link
-                      href={acao.href}
-                      className={cn(
-                        "relative flex items-center justify-center w-8 h-8 rounded-lg transition-all duration-200 cursor-pointer",
-                        isHome
-                          ? "bg-primary text-primary-foreground mx-0.5 shadow-[0_2px_8px_-2px_var(--primary)] hover:shadow-[0_4px_12px_-2px_var(--primary)] hover:brightness-110"
-                          : "text-muted-foreground hover:text-foreground hover:bg-accent/60",
-                      )}
-                    >
-                      <acao.icon
-                        className={cn("w-4 h-4", isHome && "w-[15px] h-[15px]")}
-                        strokeWidth={isHome ? 2.5 : 1.8}
-                      />
-                    </Link>
-                  </TooltipTrigger>
-                  <TooltipContent
-                    side="bottom"
-                    sideOffset={6}
-                    className="bg-foreground text-background px-2 py-0.5 text-[10px] font-medium rounded-md shadow-lg border-0"
-                  >
-                    {acao.label}
-                  </TooltipContent>
-                </Tooltip>
-              )
-            })}
+        {/* LADO ESQUERDO: Título customizado ou breadcrumb padrão */}
+        {isMounted && title ? (
+          <div className="flex items-center gap-3">
+            <div>
+              <h1 className="text-base font-bold text-foreground">{title}</h1>
+              {subtitle && <p className="text-[10px] text-muted-foreground">{subtitle}</p>}
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="flex items-center gap-1.5 text-xs">
+            <span className="text-foreground/70">{getBreadcrumb()}</span>
+            <span className="text-border">/</span>
+            <span className="text-foreground font-medium">Dashboard da Obra</span>
+          </div>
+        )}
 
+        {/* CENTRO: Ações rápidas (condicional) */}
+        {(!isMounted || showQuickActions) && (
+          <div className="flex-1 flex items-center justify-center">
+            <div className="inline-flex items-center bg-card/95 backdrop-blur-md border border-border/50 rounded-xl p-1 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.1),0_4px_16px_-4px_rgba(0,0,0,0.05)]">
+              {acoesRapidas.map((acao, index) => {
+                const isHome = index === 4
+                return (
+                  <Tooltip key={acao.label}>
+                    <TooltipTrigger asChild>
+                      <Link
+                        href={acao.href}
+                        className={cn(
+                          "relative flex items-center justify-center w-8 h-8 rounded-lg transition-all duration-200 cursor-pointer",
+                          isHome
+                            ? "bg-primary text-primary-foreground mx-0.5 shadow-[0_2px_8px_-2px_var(--primary)] hover:shadow-[0_4px_12px_-2px_var(--primary)] hover:brightness-110"
+                            : "text-muted-foreground hover:text-foreground hover:bg-accent/60",
+                        )}
+                      >
+                        <acao.icon
+                          className={cn("w-4 h-4", isHome && "w-[15px] h-[15px]")}
+                          strokeWidth={isHome ? 2.5 : 1.8}
+                        />
+                      </Link>
+                    </TooltipTrigger>
+                    <TooltipContent
+                      side="bottom"
+                      sideOffset={6}
+                      className="bg-foreground text-background px-2 py-0.5 text-[10px] font-medium rounded-md shadow-lg border-0"
+                    >
+                      {acao.label}
+                    </TooltipContent>
+                  </Tooltip>
+                )
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* DIREITA: Ações customizadas + controles padrão */}
         <div className="flex items-center gap-3">
+          {/* Ações customizadas da página */}
+          {isMounted && actions && (
+            <>
+              {actions}
+              <div className="h-6 w-px bg-border" />
+            </>
+          )}
           <div className="flex items-center gap-1 text-muted-foreground">
             <Cloud className="w-3.5 h-3.5" />
             <span className="font-medium text-[10px]">28°C</span>

@@ -21,6 +21,7 @@ import {
   TrendingUp,
 } from "lucide-react"
 import { InfoTooltip } from "@/components/ui/info-tooltip"
+import { InteligenciaNavbar } from "../_components/inteligencia-navbar"
 
 const treinamentosAtivos = [
   {
@@ -69,7 +70,20 @@ const metricas = [
 
 export default function TreinamentoPage() {
   return (
-    <div className="flex flex-col h-[calc(100vh-80px)] overflow-hidden">
+    <div className="flex flex-col h-screen bg-muted/30 overflow-hidden">
+      <div className="flex-shrink-0 z-40 mt-0">
+        <InteligenciaNavbar />
+      </div>
+      <main className="flex-1 bg-background overflow-hidden p-6">
+        <div 
+          className="h-full border-0 bg-background overflow-y-auto overflow-x-hidden scrollbar-hide p-6 space-y-6" 
+          style={{ 
+            borderRadius: '25px', 
+            boxShadow: 'inset 0 0 10px rgba(0, 0, 0, 0.13), 0 2px 8px rgba(0, 0, 0, 0.05)',
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none'
+          }}
+        >
         {/* Header */}
         <div className="flex items-center justify-between mb-6 flex-shrink-0">
           <div className="flex items-center gap-3">
@@ -236,6 +250,8 @@ export default function TreinamentoPage() {
             </TabsContent>
           </Tabs>
         </div>
-      </div>
+        </div>
+      </main>
+    </div>
   )
 }

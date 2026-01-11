@@ -4,11 +4,11 @@ import { useState, Suspense } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { InfoTooltip } from "@/components/ui/info-tooltip"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { ObraProducaoNavbar } from "../_components/obra-producao-navbar"
 import {
   Area,
   BarChart,
@@ -781,9 +781,83 @@ function ProducaoContent() {
   )
 
   return (
-    <div className="flex flex-col h-full overflow-auto">
+    <div className="flex flex-col h-screen bg-muted/30 overflow-hidden">
+      {/* Topbar Secundário */}
+      <div className="flex-shrink-0 z-40 mt-0">
+        <ObraProducaoNavbar />
+      </div>
+
+      {/* Topbar Terciário - Tabs FORA da moldura */}
+      <div className="flex-shrink-0 z-30 mt-3">
+        <div className="flex items-end relative pb-0 border-b border-border/40 bg-gradient-to-b from-muted/20 to-transparent px-[10px] overflow-hidden border-0">
+          <div className="w-[calc(100%-32px)] ml-4 px-[10px] overflow-hidden border-0">
+            <nav 
+              className="flex items-center gap-0 overflow-x-hidden border-0" 
+              style={{ border: 'none', boxShadow: 'none' }}
+            >
+              {[
+                { value: "dashboard", label: "Dashboard" },
+                { value: "pbs", label: "PBS" },
+                { value: "parametrizacao", label: "Parametrização" },
+                { value: "mapa-custo", label: "Mapa Custo" },
+                { value: "desvios", label: "Desvios" },
+                { value: "medicoes", label: "Medições" },
+              ].map((tab) => {
+                const isActive = activeTab === tab.value
+                
+                return (
+                  <button
+                    key={tab.value}
+                    onClick={() => setActiveTab(tab.value)}
+                    className={`group relative px-4 py-3 text-sm font-bold whitespace-nowrap transition-all duration-200 ease-in-out flex items-center gap-2 ${
+                      isActive
+                        ? "bg-background text-primary font-bold z-30 pb-3 scale-105 py-3 border-0 outline-none"
+                        : "bg-muted/20 text-muted-foreground/50 font-bold hover:bg-background hover:text-foreground hover:shadow-[0_6px_20px_rgba(0,0,0,0.25),0_3px_10px_rgba(0,0,0,0.15),0_1px_4px_rgba(0,0,0,0.1)] hover:scale-[1.03] hover:-translate-y-[2px] border-0 outline-none"
+                    }`}
+                    style={{
+                      clipPath: "polygon(0 0, calc(100% - 12px) 0, 100% 100%, 0 100%)",
+                      boxShadow: isActive
+                        ? "0 8px 24px rgba(0, 0, 0, 0.25), 0 4px 12px rgba(0, 0, 0, 0.15), 0 2px 6px rgba(0, 0, 0, 0.1)"
+                        : undefined,
+                    }}
+                  >
+                    <div 
+                      className="absolute inset-0 pointer-events-none rounded-t-[8px]"
+                      style={{
+                        border: isActive ? '3px solid hsl(var(--primary))' : '1px solid rgba(0, 0, 0, 0.1)',
+                        borderBottom: 'none',
+                        opacity: isActive ? '1' : '0',
+                        clipPath: "polygon(0 0, calc(100% - 12px) 0, 100% 100%, 0 100%)",
+                      }}
+                    />
+                    {isActive && (
+                      <div 
+                        className="absolute left-0 right-0 h-[4px] bg-background"
+                        style={{ bottom: '-2px' }}
+                      />
+                    )}
+                    {tab.label}
+                  </button>
+                )
+              })}
+            </nav>
+          </div>
+        </div>
+      </div>
+
+      {/* Conteúdo com moldura - APENAS CONTEÚDO */}
+      <main className="flex-1 bg-background overflow-hidden p-6">
+        <div 
+          className="h-full border-0 bg-background overflow-y-auto overflow-x-hidden scrollbar-hide p-6" 
+          style={{ 
+            borderRadius: '25px', 
+            boxShadow: 'inset 0 0 10px rgba(0, 0, 0, 0.13), 0 2px 8px rgba(0, 0, 0, 0.05)',
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none'
+          }}
+        >
       {/* Header */}
-      <div className="px-6 pt-6 pb-2 border-b">
+      <div className="pb-2 border-b mb-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="p-2 rounded-lg bg-chart-4/10">
@@ -891,22 +965,11 @@ function ProducaoContent() {
         </div>
       </div>
 
-      {/* Tabs */}
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col">
-        <div className="px-6 pt-4 border-b">
-          <TabsList className="bg-muted/50">
-            <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
-            <TabsTrigger value="pbs">PBS</TabsTrigger>
-            <TabsTrigger value="parametrizacao">Parametrizacao</TabsTrigger>
-            <TabsTrigger value="mapa-custo">Mapa Custo</TabsTrigger>
-            <TabsTrigger value="desvios">Desvios</TabsTrigger>
-            <TabsTrigger value="medicoes">Medicoes</TabsTrigger>
-          </TabsList>
-        </div>
-
-        <div className="flex-1 overflow-auto p-6">
+      {/* Conteúdo das Tabs */}
+      <div className="space-y-6 mt-4">
           {/* Dashboard */}
-          <TabsContent value="dashboard" className="mt-0 space-y-6">
+          {activeTab === "dashboard" && (
+            <div className="space-y-6">
             {/* Curva S */}
             <Card>
               <CardHeader className="pb-2">
@@ -1334,10 +1397,12 @@ function ProducaoContent() {
                 </CardContent>
               </Card>
             )}
-          </TabsContent>
+          </div>
+          )}
 
           {/* PBS - Estrutura Operacional */}
-          <TabsContent value="pbs" className="mt-0 space-y-4">
+          {activeTab === "pbs" && (
+            <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="font-semibold">Estrutura PBS</h3>
@@ -1594,10 +1659,12 @@ function ProducaoContent() {
                 </Table>
               </CardContent>
             </Card>
-          </TabsContent>
+          </div>
+          )}
 
           {/* Parametrizacao PBS */}
-          <TabsContent value="parametrizacao" className="mt-0 space-y-4">
+          {activeTab === "parametrizacao" && (
+            <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="font-semibold">Parametrizacao PBS</h3>
@@ -1659,10 +1726,12 @@ function ProducaoContent() {
                 </Table>
               </CardContent>
             </Card>
-          </TabsContent>
+          </div>
+          )}
 
           {/* MAPA Producao -> Custo */}
-          <TabsContent value="mapa-custo" className="mt-0 space-y-4">
+          {activeTab === "mapa-custo" && (
+            <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="font-semibold">Mapa Producao → Custo</h3>
@@ -1731,10 +1800,12 @@ function ProducaoContent() {
                 </Table>
               </CardContent>
             </Card>
-          </TabsContent>
+          </div>
+          )}
 
           {/* Desvios */}
-          <TabsContent value="desvios" className="mt-0 space-y-4">
+          {activeTab === "desvios" && (
+            <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <Select defaultValue="todos">
@@ -1825,10 +1896,12 @@ function ProducaoContent() {
                 </Table>
               </CardContent>
             </Card>
-          </TabsContent>
+          </div>
+          )}
 
           {/* Medicoes */}
-          <TabsContent value="medicoes" className="mt-0 space-y-4">
+          {activeTab === "medicoes" && (
+            <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="font-semibold">Medicoes de Producao</h3>
@@ -1891,9 +1964,11 @@ function ProducaoContent() {
                 </Table>
               </CardContent>
             </Card>
-          </TabsContent>
+          </div>
+          )}
         </div>
-      </Tabs>
+        </div>
+      </main>
     </div>
   )
 }

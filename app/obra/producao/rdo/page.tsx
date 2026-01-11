@@ -9,6 +9,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { InfoTooltip } from "@/components/ui/info-tooltip"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet"
+import { ObraProducaoNavbar } from "../../_components/obra-producao-navbar"
 import {
   Plus,
   CheckCircle2,
@@ -132,21 +133,14 @@ function RDOContent() {
   const totalOcorrencias = rdosMock.reduce((acc, r) => acc + r.ocorrencias, 0)
 
   return (
-    <div className="flex flex-col h-full overflow-auto">
-      <div className="px-6 pt-6 pb-2">
-        <div className="flex items-center gap-3">
-          <h1 className="text-2xl font-bold">RDO - Relatorio Diario de Obra</h1>
-          <InfoTooltip
-            title="Setor de Campo / Execucao"
-            description="O RDO (Relatorio Diario de Obra) registra todas as atividades executadas, condicoes climaticas, efetivo mobilizado, equipamentos em operacao e ocorrencias do dia."
-          />
-        </div>
-        <p className="text-sm text-muted-foreground mt-1">
-          Registro diario de clima, efetivo, equipamentos e atividades executadas
-        </p>
+    <div className="flex flex-col h-screen bg-muted/30 overflow-hidden">
+      <div className="flex-shrink-0 z-40 mt-0">
+        <ObraProducaoNavbar />
       </div>
 
-      <div className="p-6 space-y-6 flex-1">
+      <main className="flex-1 bg-background overflow-hidden p-6">
+        <div className="h-full border-0 bg-background overflow-y-auto overflow-x-hidden scrollbar-hide p-6" style={{ borderRadius: '25px', boxShadow: 'inset 0 0 10px rgba(0, 0, 0, 0.13), 0 2px 8px rgba(0, 0, 0, 0.05)', scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+          <div className="space-y-6">
         {/* Metricas */}
         <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
           <Card>
@@ -492,6 +486,9 @@ function RDOContent() {
           )}
         </SheetContent>
       </Sheet>
+          </div>
+        </div>
+      </main>
     </div>
   )
 }

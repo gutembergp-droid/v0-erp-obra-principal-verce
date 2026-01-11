@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
+import { CockpitTabsNavbar } from "../_components/cockpit-tabs-navbar"
 import {
   Gauge,
   AlertTriangle,
@@ -432,50 +433,6 @@ function CockpitContent() {
           </div>
 
           <div className="flex items-center gap-2">
-            <div className="flex items-center gap-1 p-1 rounded-lg border border-border bg-muted/30">
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-7 px-3 text-xs bg-muted/50 border border-primary/30"
-                disabled
-              >
-                Geral
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-7 px-3 text-xs hover:bg-muted/50"
-                onClick={() => router.push("/obra/gerencial/cockpit/visao-contrato")}
-              >
-                Contrato
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-7 px-3 text-xs hover:bg-muted/50"
-                onClick={() => router.push("/obra/gerencial/cockpit/visao-performance")}
-              >
-                Performance
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-7 px-3 text-xs hover:bg-muted/50"
-                onClick={() => router.push("/obra/gerencial/cockpit/visao-financeiro")}
-              >
-                Financeiro
-              </Button>
-            </div>
-            <Button
-              variant="outline"
-              size="sm"
-              className="h-7 px-3 text-xs gap-1 border-violet-500/50 text-violet-600 hover:bg-violet-50 dark:hover:bg-violet-950 bg-transparent"
-              onClick={() => router.push("/obra/gerencial/cockpit/prism-demo")}
-              title="Analise Prismatica (Demo)"
-            >
-              <Shield className="w-3 h-3" />
-              Prisma
-            </Button>
             <Badge variant="outline" className="text-[10px] h-6 px-2">
               Janeiro 2025
             </Badge>
@@ -958,9 +915,24 @@ export default function CockpitGovernanca() {
   ]
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="p-6 space-y-6">
-        {/* Header com navegacao */}
+    <div className="flex flex-col h-screen bg-muted/30 overflow-hidden">
+      {/* Topbar Secundário - Navegação INTERNA do Cockpit */}
+      <div className="flex-shrink-0 z-40 mt-0">
+        <CockpitTabsNavbar />
+      </div>
+
+      {/* Conteúdo com moldura */}
+      <main className="flex-1 bg-background overflow-hidden p-6">
+        <div 
+          className="h-full border-0 bg-background overflow-y-auto overflow-x-hidden scrollbar-hide p-6 space-y-6" 
+          style={{ 
+            borderRadius: '25px', 
+            boxShadow: 'inset 0 0 10px rgba(0, 0, 0, 0.13), 0 2px 8px rgba(0, 0, 0, 0.05)',
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none'
+          }}
+        >
+        {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-primary/10 rounded-lg">
@@ -979,51 +951,11 @@ export default function CockpitGovernanca() {
           </div>
 
           <div className="flex items-center gap-2">
-            <div className="flex bg-muted rounded-lg p-1">
-              <Button variant="default" size="sm" className="rounded-md">
-                Geral
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="rounded-md"
-                onClick={() => router.push("/obra/gerencial/cockpit/visao-contrato")}
-              >
-                Contrato
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="rounded-md"
-                onClick={() => router.push("/obra/gerencial/cockpit/visao-performance")}
-              >
-                Performance
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="rounded-md"
-                onClick={() => router.push("/obra/gerencial/cockpit/visao-financeiro")}
-              >
-                Financeiro
-              </Button>
-            </div>
-            <Button
-              variant="outline"
-              size="sm"
-              className="h-7 px-3 text-xs gap-1 border-violet-500/50 text-violet-600 hover:bg-violet-50 dark:hover:bg-violet-950 bg-transparent"
-              onClick={() => router.push("/obra/gerencial/cockpit/prism-demo")}
-              title="Analise Prismatica (Demo)"
-            >
-              <Shield className="w-3 h-3" />
-              Prisma
-            </Button>
-            <Button variant="outline" size="sm">
-              <Calendar className="h-4 w-4 mr-2" />
+            <Badge variant="outline" className="text-[10px] h-6 px-2">
               Janeiro 2025
-            </Button>
-            <Button variant="outline" size="sm">
-              <FileText className="h-4 w-4" />
+            </Badge>
+            <Button variant="outline" size="sm" className="h-8 w-8 p-0 bg-transparent" title="Gerar Relatorio">
+              <FileText className="w-4 h-4" />
             </Button>
           </div>
         </div>
@@ -1306,7 +1238,8 @@ export default function CockpitGovernanca() {
             </div>
           </div>
         </div>
-      </div>
+        </div>
+      </main>
     </div>
   )
 }

@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Progress } from "@/components/ui/progress"
 import { InfoTooltip } from "@/components/ui/info-tooltip"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet"
+import { ObraProducaoNavbar } from "../../_components/obra-producao-navbar"
 import {
   Plus,
   CheckCircle2,

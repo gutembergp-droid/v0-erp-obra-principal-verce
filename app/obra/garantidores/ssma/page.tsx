@@ -9,6 +9,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Plus, Shield, AlertTriangle, CheckCircle2, Clock, HardHat, Leaf, FileText, Users } from "lucide-react"
 import { InfoTooltip } from "@/components/ui/info-tooltip"
+import { ObraGarantidoresNavbar } from "../../_components/obra-garantidores-navbar"
 
 // Dados mockados de Seguranca (SST)
 const segurancaMock = [

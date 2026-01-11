@@ -6,10 +6,10 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { InfoTooltip } from "@/components/ui/info-tooltip"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { ObraAdministrativoNavbar } from "../../_components/obra-administrativo-navbar"
 import {
   Plus,
   DollarSign,
@@ -524,8 +524,83 @@ function FinanceiroContent() {
   }, [])
 
   return (
-    <div className="overflow-auto h-full">
-      <div className="flex flex-col h-full p-4">
+    <div className="flex flex-col h-screen bg-muted/30 overflow-hidden">
+      {/* Topbar Secundário */}
+      <div className="flex-shrink-0 z-40 mt-0">
+        <ObraAdministrativoNavbar />
+      </div>
+
+      {/* Topbar Terciário - Tabs FORA da moldura */}
+      <div className="flex-shrink-0 z-30 mt-3">
+        <div className="flex items-end relative pb-0 border-b border-border/40 bg-gradient-to-b from-muted/20 to-transparent px-[10px] overflow-hidden border-0">
+          <div className="w-[calc(100%-32px)] ml-4 px-[10px] overflow-hidden border-0">
+            <nav 
+              className="flex items-center gap-0 overflow-x-hidden border-0" 
+              style={{ border: 'none', boxShadow: 'none' }}
+            >
+              {[
+                { value: "visao", label: "Visão Geral" },
+                { value: "fluxo", label: "Fluxo de Caixa" },
+                { value: "cap", label: "Contas a Pagar" },
+                { value: "car", label: "Contas a Receber" },
+                { value: "borderos", label: "Borderos" },
+                { value: "conciliacao", label: "Conciliação" },
+                { value: "dre", label: "DRE" },
+                { value: "fundofixo", label: "Fundo Fixo" },
+              ].map((tabItem) => {
+                const isActive = tab === tabItem.value
+                
+                return (
+                  <button
+                    key={tabItem.value}
+                    onClick={() => setTab(tabItem.value)}
+                    className={`group relative px-4 py-3 text-sm font-bold whitespace-nowrap transition-all duration-200 ease-in-out flex items-center gap-2 ${
+                      isActive
+                        ? "bg-background text-primary font-bold z-30 pb-3 scale-105 py-3 border-0 outline-none"
+                        : "bg-muted/20 text-muted-foreground/50 font-bold hover:bg-background hover:text-foreground hover:shadow-[0_6px_20px_rgba(0,0,0,0.25),0_3px_10px_rgba(0,0,0,0.15),0_1px_4px_rgba(0,0,0,0.1)] hover:scale-[1.03] hover:-translate-y-[2px] border-0 outline-none"
+                    }`}
+                    style={{
+                      clipPath: "polygon(0 0, calc(100% - 12px) 0, 100% 100%, 0 100%)",
+                      boxShadow: isActive
+                        ? "0 8px 24px rgba(0, 0, 0, 0.25), 0 4px 12px rgba(0, 0, 0, 0.15), 0 2px 6px rgba(0, 0, 0, 0.1)"
+                        : undefined,
+                    }}
+                  >
+                    <div 
+                      className="absolute inset-0 pointer-events-none rounded-t-[8px]"
+                      style={{
+                        border: isActive ? '3px solid hsl(var(--primary))' : '1px solid rgba(0, 0, 0, 0.1)',
+                        borderBottom: 'none',
+                        opacity: isActive ? '1' : '0',
+                        clipPath: "polygon(0 0, calc(100% - 12px) 0, 100% 100%, 0 100%)",
+                      }}
+                    />
+                    {isActive && (
+                      <div 
+                        className="absolute left-0 right-0 h-[4px] bg-background"
+                        style={{ bottom: '-2px' }}
+                      />
+                    )}
+                    {tabItem.label}
+                  </button>
+                )
+              })}
+            </nav>
+          </div>
+        </div>
+      </div>
+
+      {/* Conteúdo com moldura - APENAS CONTEÚDO */}
+      <main className="flex-1 bg-background overflow-hidden p-6">
+        <div 
+          className="h-full border-0 bg-background overflow-y-auto overflow-x-hidden scrollbar-hide p-6" 
+          style={{ 
+            borderRadius: '25px', 
+            boxShadow: 'inset 0 0 10px rgba(0, 0, 0, 0.13), 0 2px 8px rgba(0, 0, 0, 0.05)',
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none'
+          }}
+        >
         {/* Header */}
         <div className="flex items-center justify-between mb-4 flex-shrink-0">
           <div className="flex items-center gap-3">
@@ -636,23 +711,11 @@ function FinanceiroContent() {
           </Card>
         </div>
 
-        <Tabs value={tab} onValueChange={setTab} className="flex-1 flex flex-col min-h-0">
-          <TabsList className="w-fit mb-3 flex-shrink-0">
-            <TabsTrigger value="visao">Visao Geral</TabsTrigger>
-            <TabsTrigger value="fluxo">Fluxo de Caixa</TabsTrigger>
-            <TabsTrigger value="cap">Contas a Pagar</TabsTrigger>
-            <TabsTrigger value="car">Contas a Receber</TabsTrigger>
-            <TabsTrigger value="borderos">Borderos</TabsTrigger>
-            <TabsTrigger value="conciliacao">Conciliacao</TabsTrigger>
-            <TabsTrigger value="dre">DRE</TabsTrigger>
-            <TabsTrigger value="fundofixo">Fundo Fixo</TabsTrigger>
-          </TabsList>
-
-          <div className="flex-1 min-h-0">
-            <ScrollArea className="h-full">
-              <div className="space-y-4 pr-4">
+        {/* Conteúdo das Tabs */}
+        <div className="space-y-4 mt-4">
                 {/* VISAO GERAL */}
-                <TabsContent value="visao" className="mt-0 space-y-4">
+                {tab === "visao" && (
+                  <div className="space-y-4">
                   {totalVencidosCAP > 0 && (
                     <Card className="border-destructive/30 bg-destructive/5">
                       <CardContent className="p-3">
@@ -946,10 +1009,12 @@ function FinanceiroContent() {
                       )}
                     </CardContent>
                   </Card>
-                </TabsContent>
+                </div>
+                )}
 
                 {/* FLUXO DE CAIXA */}
-                <TabsContent value="fluxo" className="mt-0 space-y-4">
+                {tab === "fluxo" && (
+                  <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Button size="sm" variant="ghost" className="h-8 px-2" onClick={() => navegarPeriodo("anterior")}>
@@ -1381,9 +1446,11 @@ function FinanceiroContent() {
                       )}
                     </CardContent>
                   </Card>
-                </TabsContent>
+                </div>
+                )}
 
-                <TabsContent value="cap" className="mt-0 space-y-4">
+                {tab === "cap" && (
+                  <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <div className="relative">
@@ -1496,9 +1563,11 @@ function FinanceiroContent() {
                       </div>
                     </CardContent>
                   </Card>
-                </TabsContent>
+                </div>
+                )}
 
-                <TabsContent value="car" className="mt-0 space-y-4">
+                {tab === "car" && (
+                  <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <div className="relative">
@@ -1634,9 +1703,11 @@ function FinanceiroContent() {
                       </div>
                     </CardContent>
                   </Card>
-                </TabsContent>
+                </div>
+                )}
 
-                <TabsContent value="borderos" className="mt-0 space-y-4">
+                {tab === "borderos" && (
+                  <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Select defaultValue="todos">
@@ -1728,9 +1799,11 @@ function FinanceiroContent() {
                       </div>
                     </CardContent>
                   </Card>
-                </TabsContent>
+                </div>
+                )}
 
-                <TabsContent value="conciliacao" className="mt-0 space-y-4">
+                {tab === "conciliacao" && (
+                  <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
                       <Select defaultValue="bb">
@@ -1840,10 +1913,12 @@ function FinanceiroContent() {
                       </div>
                     </CardContent>
                   </Card>
-                </TabsContent>
+                </div>
+                )}
 
                 {/* DRE */}
-                <TabsContent value="dre" className="mt-0 space-y-4">
+                {tab === "dre" && (
+                  <div className="space-y-4">
                   <div className="grid grid-cols-3 gap-3">
                     <Card className="border-success/30 bg-success/5">
                       <CardContent className="p-4 text-center">
@@ -1965,10 +2040,12 @@ function FinanceiroContent() {
                       )}
                     </CardContent>
                   </Card>
-                </TabsContent>
+                </div>
+                )}
 
                 {/* FUNDO FIXO */}
-                <TabsContent value="fundofixo" className="mt-0 space-y-4">
+                {tab === "fundofixo" && (
+                  <div className="space-y-4">
                   <Card className="border-border/50">
                     <CardHeader className="py-3">
                       <CardTitle className="flex items-center justify-between text-base">
@@ -2040,29 +2117,29 @@ function FinanceiroContent() {
                       </div>
                     </CardContent>
                   </Card>
-                </TabsContent>
 
-                {/* Governanca */}
-                <Card className="border-warning/30 bg-warning/5">
-                  <CardContent className="p-3">
-                    <div className="flex items-start gap-2">
-                      <AlertTriangle className="w-4 h-4 text-warning mt-0.5" />
-                      <div className="flex-1">
-                        <p className="text-sm font-medium">Regras de Governanca</p>
-                        <ul className="text-xs text-muted-foreground mt-1 space-y-1">
-                          <li>Fundo fixo deve ser prestado em ate 48h</li>
-                          <li>Pagamentos acima de R$ 5.000 exigem aprovacao do gerente</li>
-                          <li>Borderos devem ser aprovados antes de execucao</li>
-                          <li>Conciliacao bancaria deve ser feita diariamente</li>
-                        </ul>
+                  {/* Governanca */}
+                  <Card className="border-warning/30 bg-warning/5">
+                    <CardContent className="p-3">
+                      <div className="flex items-start gap-2">
+                        <AlertTriangle className="w-4 h-4 text-warning mt-0.5" />
+                        <div className="flex-1">
+                          <p className="text-sm font-medium">Regras de Governanca</p>
+                          <ul className="text-xs text-muted-foreground mt-1 space-y-1">
+                            <li>Fundo fixo deve ser prestado em ate 48h</li>
+                            <li>Pagamentos acima de R$ 5.000 exigem aprovacao do gerente</li>
+                            <li>Borderos devem ser aprovados antes de execucao</li>
+                            <li>Conciliacao bancaria deve ser feita diariamente</li>
+                          </ul>
+                        </div>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            </ScrollArea>
-          </div>
-        </Tabs>
+                    </CardContent>
+                  </Card>
+                </div>
+                )}
+        </div>
+        </div>
+      </main>
 
         {/* Painel Lateral - Mantido igual */}
         <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
@@ -2202,7 +2279,6 @@ function FinanceiroContent() {
             )}
           </SheetContent>
         </Sheet>
-      </div>
     </div>
   )
 }

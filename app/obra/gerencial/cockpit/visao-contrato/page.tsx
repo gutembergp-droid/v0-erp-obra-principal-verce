@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
+import { CockpitTabsNavbar } from "../../_components/cockpit-tabs-navbar"
 import {
   AlertTriangle,
   Clock,
@@ -330,8 +331,23 @@ function VisaoContratoContent() {
   }
 
   return (
-    <div className="overflow-auto h-full">
-      <div className="flex flex-col h-full p-4">
+    <div className="flex flex-col h-screen bg-muted/30 overflow-hidden">
+      {/* Topbar Secundário - Navegação INTERNA do Cockpit */}
+      <div className="flex-shrink-0 z-40 mt-0">
+        <CockpitTabsNavbar />
+      </div>
+
+      {/* Conteúdo com moldura */}
+      <main className="flex-1 bg-background overflow-hidden p-6">
+        <div 
+          className="h-full border-0 bg-background overflow-y-auto overflow-x-hidden scrollbar-hide p-6" 
+          style={{ 
+            borderRadius: '25px', 
+            boxShadow: 'inset 0 0 10px rgba(0, 0, 0, 0.13), 0 2px 8px rgba(0, 0, 0, 0.05)',
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none'
+          }}
+        >
         {/* HEADER */}
         <div className="flex items-center justify-between mb-4 flex-shrink-0">
           <div className="flex items-center gap-3">
@@ -352,51 +368,11 @@ function VisaoContratoContent() {
               <p className="text-[11px] text-muted-foreground">BR-101 LOTE 2 | Compor 90</p>
             </div>
           </div>
-          <div className="flex items-center gap-3">
-            {/* Navegacao sem container - botoes individuais */}
-            <div className="flex items-center gap-1">
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-8 px-4 text-xs text-muted-foreground hover:text-foreground hover:bg-muted/50"
-                onClick={() => router.push("/obra/gerencial/cockpit")}
-              >
-                Geral
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                className="h-8 px-4 text-xs bg-muted/50 border-foreground/20 text-foreground font-medium"
-                disabled
-              >
-                Contrato
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-8 px-4 text-xs text-muted-foreground hover:text-foreground hover:bg-muted/50"
-                onClick={() => router.push("/obra/gerencial/cockpit/visao-performance")}
-              >
-                Performance
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-8 px-4 text-xs text-muted-foreground hover:text-foreground hover:bg-muted/50"
-                onClick={() => router.push("/obra/gerencial/cockpit/visao-financeiro")}
-              >
-                Financeiro
-              </Button>
-            </div>
-            <Badge variant="outline" className="text-[10px] h-8 px-3 border-foreground/20 font-medium">
+          <div className="flex items-center gap-2">
+            <Badge variant="outline" className="text-[10px] h-6 px-2">
               Janeiro 2025
             </Badge>
-            <Button
-              variant="outline"
-              size="sm"
-              className="h-8 w-8 p-0 border-foreground/20 bg-transparent"
-              title="Gerar Relatorio"
-            >
+            <Button variant="outline" size="sm" className="h-8 w-8 p-0 bg-transparent" title="Gerar Relatorio">
               <FileText className="w-4 h-4" />
             </Button>
           </div>
@@ -968,7 +944,8 @@ function VisaoContratoContent() {
             </ScrollArea>
           </SheetContent>
         </Sheet>
-      </div>
+        </div>
+      </main>
     </div>
   )
 }

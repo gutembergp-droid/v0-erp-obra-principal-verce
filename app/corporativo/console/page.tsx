@@ -5,22 +5,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
   Users,
   Shield,
   Key,
-  Network,
-  Bot,
-  DollarSign,
-  FileSearch,
-  Headphones,
-  Plug,
-  Settings,
-  LayoutDashboard,
   Search,
   Plus,
   AlertTriangle,
@@ -28,8 +18,6 @@ import {
   Lock,
   Unlock,
   MoreHorizontal,
-  ChevronRight,
-  Building2,
   UserCheck,
   UserX,
   Mail,
@@ -39,9 +27,10 @@ import {
   ExternalLink,
   ShieldAlert,
   Activity,
+  ChevronRight,
+  FileSearch,
+  Network,
 } from "lucide-react"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import {
   DropdownMenu,
@@ -50,23 +39,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-
-// Navegacao do Console
-const consoleNavigation = [
-  { name: "Visao Geral", href: "/corporativo/console", icon: LayoutDashboard },
-  { name: "Usuarios", href: "/corporativo/console/usuarios", icon: Users },
-  { name: "Perfis de Acesso", href: "/corporativo/console/perfis", icon: Shield },
-  { name: "Permissoes", href: "/corporativo/console/permissoes", icon: Key },
-  { name: "Alcadas & Aprovacoes", href: "/corporativo/console/alcadas", icon: Network },
-  { name: "Centros de Custo", href: "/corporativo/console/centros-custo", icon: Building2 },
-  { name: "IAs & Agentes", href: "/corporativo/console/ias", icon: Bot },
-  { name: "Limites & Custos", href: "/corporativo/console/limites", icon: DollarSign },
-  { name: "Auditoria", href: "/corporativo/console/auditoria", icon: FileSearch },
-  { name: "Convites Pendentes", href: "/corporativo/console/convites", icon: Mail },
-  { name: "Suporte", href: "/corporativo/console/suporte", icon: Headphones },
-  { name: "Integracoes", href: "/corporativo/console/integracoes", icon: Plug },
-  { name: "Parametros", href: "/corporativo/console/parametros", icon: Settings },
-]
+import { ConsoleNavbar } from "./_components/console-navbar"
 
 // Mock data - Usuarios recentes
 const usuariosRecentes = [
@@ -220,68 +193,25 @@ export default function ConsolePage() {
   }
 
   return (
-    <div className="flex h-screen bg-muted/30">
-      {/* Sidebar do Console */}
-      <aside className="w-56 bg-background border-r flex flex-col">
-        <div className="p-3 border-b">
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 bg-primary rounded flex items-center justify-center">
-              <Settings className="w-4 h-4 text-primary-foreground" />
-            </div>
-            <div>
-              <h1 className="font-semibold text-sm">Console</h1>
-              <p className="text-[10px] text-muted-foreground">Administracao</p>
-            </div>
-          </div>
-        </div>
+    <div className="flex flex-col h-screen bg-muted/30 overflow-hidden">
+      {/* Topbar Secundário */}
+      <div className="flex-shrink-0 z-40 mt-0">
+        <ConsoleNavbar />
+      </div>
 
-        <ScrollArea className="flex-1 py-1">
-          <nav className="px-2 space-y-0.5">
-            {consoleNavigation.map((item) => {
-              const Icon = item.icon
-              const isActive = pathname === item.href
-              return (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className={cn(
-                    "flex items-center gap-2 px-2 py-1.5 rounded text-xs transition-colors",
-                    isActive
-                      ? "bg-primary/10 text-primary font-medium"
-                      : "text-muted-foreground hover:bg-muted hover:text-foreground",
-                  )}
-                >
-                  <Icon className="w-3.5 h-3.5" />
-                  {item.name}
-                </Link>
-              )
-            })}
-          </nav>
-        </ScrollArea>
-
-        <div className="p-2 border-t">
-          <div className="flex items-center gap-2 px-2 py-1">
-            <Avatar className="w-6 h-6">
-              <AvatarFallback className="bg-primary/10 text-primary text-[10px]">AD</AvatarFallback>
-            </Avatar>
-            <div className="flex-1 min-w-0">
-              <p className="text-xs font-medium truncate">Administrador</p>
-              <p className="text-[10px] text-muted-foreground truncate">Super Admin</p>
-            </div>
-          </div>
-        </div>
-      </aside>
-
-      {/* Conteudo Principal */}
-      <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Header compacto */}
-        <header className="h-12 bg-background border-b flex items-center justify-between px-4">
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-1.5 px-2 py-1 bg-muted rounded text-xs">
-              <Building2 className="w-3.5 h-3.5 text-muted-foreground" />
-              <span className="font-medium">Corporativo</span>
-            </div>
-
+      {/* Conteúdo com moldura */}
+      <main className="flex-1 bg-background overflow-hidden p-6">
+        <div 
+          className="h-full border-0 bg-background overflow-y-auto overflow-x-hidden scrollbar-hide p-6" 
+          style={{ 
+            borderRadius: '25px', 
+            boxShadow: 'inset 0 0 10px rgba(0, 0, 0, 0.13), 0 2px 8px rgba(0, 0, 0, 0.05)',
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none'
+          }}
+        >
+          {/* Busca */}
+          <div className="mb-4 flex items-center justify-between">
             <div className="relative">
               <Search className="absolute left-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
               <Input
@@ -291,23 +221,19 @@ export default function ConsolePage() {
                 className="w-64 pl-7 h-8 text-xs"
               />
             </div>
+            <div className="flex items-center gap-1.5">
+              <Button variant="outline" size="sm" className="h-7 text-xs gap-1.5 bg-transparent">
+                <Plus className="w-3.5 h-3.5" />
+                Novo Usuario
+              </Button>
+              <Button variant="outline" size="sm" className="h-7 text-xs gap-1.5 bg-transparent">
+                <Download className="w-3.5 h-3.5" />
+                Exportar
+              </Button>
+            </div>
           </div>
 
-          <div className="flex items-center gap-1.5">
-            <Button variant="outline" size="sm" className="h-7 text-xs gap-1.5 bg-transparent">
-              <Plus className="w-3.5 h-3.5" />
-              Novo Usuario
-            </Button>
-            <Button variant="outline" size="sm" className="h-7 text-xs gap-1.5 bg-transparent">
-              <Download className="w-3.5 h-3.5" />
-              Exportar
-            </Button>
-          </div>
-        </header>
-
-        {/* Conteudo */}
-        <main className="flex-1 overflow-auto p-4">
-          <div className="max-w-[1600px] mx-auto space-y-4">
+          <div className="space-y-6">
             {/* Alertas - Barra superior */}
             {alertas.length > 0 && (
               <div className="flex gap-2 overflow-x-auto pb-1">
@@ -656,8 +582,8 @@ export default function ConsolePage() {
               </Link>
             </div>
           </div>
-        </main>
-      </div>
+        </div>
+      </main>
     </div>
   )
 }

@@ -263,6 +263,8 @@ export default function ObrasDepartamental() {
                           </div>
                         </div>
                       ))}
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
             ))}

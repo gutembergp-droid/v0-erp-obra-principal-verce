@@ -20,8 +20,7 @@ import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { ComercialSidebar } from "../_components/comercial-sidebar"
-import { ComercialTopBar } from "../_components/comercial-top-bar"
+import { ComercialNavbar } from "../_components/comercial-navbar"
 import { useComercial } from "@/contexts/comercial-context"
 import { toast } from "sonner"
 import { cn } from "@/lib/utils"
@@ -217,35 +216,37 @@ export default function ClientesCRMPage() {
   }
 
   return (
-    <div className="flex h-screen bg-muted/30">
-      {/* Sidebar */}
-      <ComercialSidebar />
+    <div className="flex flex-col h-screen bg-muted/30 overflow-hidden">
+      {/* TOPBAR SECUNDÁRIO */}
+      <div className="flex-shrink-0 z-50">
+        <ComercialNavbar />
+      </div>
 
-      {/* Conteúdo Principal */}
-      <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Top Bar */}
-        <ComercialTopBar
-          titulo="Clientes & CRM"
-          searchPlaceholder="Buscar clientes..."
-          searchValue={searchTerm}
-          onSearchChange={setSearchTerm}
-          badges={[{ label: "Total", value: clientes.length }]}
-          actions={
-            <>
-              <div className="flex gap-1 mr-2">
-                {(["Publico", "Privado", "Misto"] as TipoCliente[]).map((tipo) => (
-                  <Button
-                    key={tipo}
-                    variant={filtroTipo === tipo ? "default" : "ghost"}
-                    size="sm"
-                    className="h-6 text-[10px] px-2"
-                    onClick={() => setFiltroTipo(filtroTipo === tipo ? null : tipo)}
-                  >
-                    {tipo}
-                  </Button>
-                ))}
+      {/* Conteúdo Principal - SEM SCROLL (scroll fica na moldura) */}
+      <main className="flex-1 overflow-hidden bg-background mt-3 p-6">
+        <div className="h-full border-0 bg-background overflow-y-auto overflow-x-hidden scrollbar-hide" style={{ borderRadius: '25px', boxShadow: 'inset 0 0 10px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.05)', padding: '25px', scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+            <div className="space-y-4">
+            {/* Header com ações */}
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-2xl font-bold">Clientes & CRM</h1>
+                <p className="text-sm text-muted-foreground">Total: {clientes.length}</p>
               </div>
-              <Button variant="outline" size="sm" className="h-7 text-xs gap-1.5 bg-transparent">
+              <div className="flex items-center gap-2">
+                <div className="flex gap-1 mr-2">
+                  {(["Publico", "Privado", "Misto"] as TipoCliente[]).map((tipo) => (
+                    <Button
+                      key={tipo}
+                      variant={filtroTipo === tipo ? "default" : "ghost"}
+                      size="sm"
+                      className="h-8 text-xs px-3"
+                      onClick={() => setFiltroTipo(filtroTipo === tipo ? null : tipo)}
+                    >
+                      {tipo}
+                    </Button>
+                  ))}
+                </div>
+                <Button variant="outline" size="sm" className="h-8 text-xs gap-1.5">
                 <Download className="w-3.5 h-3.5" />
                 Exportar
               </Button>
@@ -409,13 +410,8 @@ export default function ClientesCRMPage() {
                   </DialogFooter>
                 </DialogContent>
               </Dialog>
-            </>
-          }
-        />
-
-        {/* Conteúdo */}
-        <main className="flex-1 overflow-auto p-4">
-          <div className="max-w-[1600px] mx-auto space-y-4">
+            </div>
+          </div>
             {/* Métricas */}
             <div className="grid grid-cols-5 gap-3">
               <Card className="p-3 border hover:border-primary/50 transition-colors">
@@ -844,8 +840,15 @@ export default function ClientesCRMPage() {
               </Card>
             </div>
           </div>
-        </main>
-      </div>
+        </div>
+      </main>
+
+      {/* CSS Global para esconder scrollbars */}
+      <style jsx global>{`
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
     </div>
   )
 }

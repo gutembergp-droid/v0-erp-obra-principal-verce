@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { useTheme, colorThemeNames, colorThemeDescriptions } from "@/contexts/theme-context"
 import { Sun, Moon, Check, Settings, Palette, Monitor } from "lucide-react"
+import { ObraAdministrativoNavbar } from "../../_components/obra-administrativo-navbar"
 
 type ColorTheme = "aahbrant" | "mono" | "acro" | "dourado"
 

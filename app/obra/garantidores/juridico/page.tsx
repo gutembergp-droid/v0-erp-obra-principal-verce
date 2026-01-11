@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { InfoTooltip } from "@/components/ui/info-tooltip"
 import { Plus, Search, FileText, CheckCircle2, Clock, AlertTriangle, Eye, Calendar, DollarSign } from "lucide-react"
+import { ObraGarantidoresNavbar } from "../../_components/obra-garantidores-navbar"
 
 // Dados mockados de Contratos
 const contratosMock = [

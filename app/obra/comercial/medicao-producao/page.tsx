@@ -8,6 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { ChevronDown, ChevronRight, Save, Send, Lock, AlertTriangle, FileText, Info } from "lucide-react"
+import { ObraComercialNavbar } from "../../_components/obra-comercial-navbar"
 
 // ========================================
 // DADOS MOCKADOS - EAP HIERARQUICA

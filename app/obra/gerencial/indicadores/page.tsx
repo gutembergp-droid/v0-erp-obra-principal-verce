@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { Badge } from "@/components/ui/badge"
 import { Download, Calculator, BarChart2, Table, Info } from "lucide-react"
+import { ObraGerencialNavbar } from "../../_components/obra-gerencial-navbar"
+import { IndicadoresTabsNavbar } from "../../_components/indicadores-tabs-navbar"
 
 import {
   KPICardOficial,
@@ -214,84 +216,47 @@ function IndicadoresContent() {
   const meses = ["Jul", "Ago", "Set", "Out", "Nov", "Dez"]
 
   return (
-    <div className="flex flex-col h-full overflow-auto bg-background">
-      <div className="p-6 space-y-6">
-        {/* Header com navegação */}
-        <div className="flex items-center justify-between">
-          <div>
-            <div className="flex items-center gap-3">
-              <h1 className="text-2xl font-bold text-foreground">Indicadores & KPIs</h1>
-              <Badge variant="outline">GC-04</Badge>
+    <div className="flex flex-col h-screen bg-muted/30 overflow-hidden">
+      {/* Topbar Secundário */}
+      <div className="flex-shrink-0 z-40 mt-0">
+        <ObraGerencialNavbar />
+      </div>
+
+      {/* Topbar Terciário */}
+      <div className="flex-shrink-0 z-30 mt-3">
+        <IndicadoresTabsNavbar />
+      </div>
+
+      {/* Conteúdo com moldura */}
+      <main className="flex-1 bg-background overflow-hidden p-6">
+        <div
+          className="h-full border-0 bg-background overflow-y-auto overflow-x-hidden scrollbar-hide p-6"
+          style={{
+            borderRadius: '25px',
+            boxShadow: 'inset 0 0 10px rgba(0, 0, 0, 0.13), 0 2px 8px rgba(0, 0, 0, 0.05)',
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none'
+          }}
+        >
+          <div className="space-y-6">
+            {/* Header sem navegação duplicada */}
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="flex items-center gap-3">
+                  <h1 className="text-2xl font-bold text-foreground">Indicadores & KPIs</h1>
+                  <Badge variant="outline">GC-04</Badge>
+                </div>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Central de Inteligência e Análise - Módulo Gestão de Custos ERP-GNESIS
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <Button variant="outline" size="sm">
+                  <Download className="h-4 w-4 mr-1" />
+                  Exportar
+                </Button>
+              </div>
             </div>
-            <p className="text-sm text-muted-foreground mt-1">
-              Central de Inteligência e Análise - Módulo Gestão de Custos ERP-GNESIS
-            </p>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="flex items-center gap-1 border rounded-lg p-1">
-              <Button
-                variant={isAtivo("/obra/gerencial/indicadores") ? "secondary" : "ghost"}
-                size="sm"
-                onClick={() => navegarPara("/obra/gerencial/indicadores")}
-              >
-                Geral
-              </Button>
-              <Button
-                variant={isAtivo("/obra/gerencial/indicadores/analise-contratual") ? "secondary" : "ghost"}
-                size="sm"
-                onClick={() => navegarPara("/obra/gerencial/indicadores/analise-contratual")}
-              >
-                Contratual
-              </Button>
-              <Button
-                variant={isAtivo("/obra/gerencial/indicadores/analise-financeira") ? "secondary" : "ghost"}
-                size="sm"
-                onClick={() => navegarPara("/obra/gerencial/indicadores/analise-financeira")}
-              >
-                Financeira
-              </Button>
-              <Button
-                variant={isAtivo("/obra/gerencial/indicadores/analise-risco") ? "secondary" : "ghost"}
-                size="sm"
-                onClick={() => navegarPara("/obra/gerencial/indicadores/analise-risco")}
-              >
-                Risco
-              </Button>
-              <Button
-                variant={isAtivo("/obra/gerencial/indicadores/analise-suprimentos") ? "secondary" : "ghost"}
-                size="sm"
-                onClick={() => navegarPara("/obra/gerencial/indicadores/analise-suprimentos")}
-              >
-                Suprimentos
-              </Button>
-              <Button
-                variant={isAtivo("/obra/gerencial/indicadores/resultado-economico") ? "secondary" : "ghost"}
-                size="sm"
-                onClick={() => navegarPara("/obra/gerencial/indicadores/resultado-economico")}
-              >
-                Econômico
-              </Button>
-              <Button
-                variant={isAtivo("/obra/gerencial/indicadores/performance") ? "secondary" : "ghost"}
-                size="sm"
-                onClick={() => navegarPara("/obra/gerencial/indicadores/performance")}
-              >
-                Performance
-              </Button>
-              <Button
-                variant={isAtivo("/obra/gerencial/indicadores/cenarios") ? "secondary" : "ghost"}
-                size="sm"
-                onClick={() => navegarPara("/obra/gerencial/indicadores/cenarios")}
-              >
-                Cenários
-              </Button>
-            </div>
-            <Button variant="outline" size="sm">
-              <Download className="h-4 w-4 mr-1" />
-              Exportar
-            </Button>
-          </div>
-        </div>
 
         <Card className="border-t-4 border-t-primary">
           <CardHeader className="pb-3">
@@ -504,6 +469,10 @@ function IndicadoresContent() {
           </div>
         </SheetContent>
       </Sheet>
+
+          </div>
+        </div>
+      </main>
     </div>
   )
 }

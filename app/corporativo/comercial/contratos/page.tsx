@@ -28,8 +28,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { ComercialSidebar } from "../_components/comercial-sidebar"
-import { ComercialTopBar } from "../_components/comercial-top-bar"
+import { ComercialNavbar } from "../_components/comercial-navbar"
 import { useComercial } from "@/contexts/comercial-context"
 import { toast } from "sonner"
 import { cn } from "@/lib/utils"
@@ -127,7 +126,7 @@ export default function ContratosPage() {
   const totalContratos = contratos.length
   const contratosAtivos = contratos.filter((c) => c.status === "ativo").length
   const valorTotal = contratos.reduce((acc, c) => acc + c.valorAtual, 0)
-  const totalAditivos = contratos.reduce((acc, c) => acc + c.aditivos.length, 0)
+  const totalAditivos = contratos.reduce((acc, c) => acc + (c.aditivos?.length || 0), 0) || 0
 
   // Handlers
   const handleSalvarContrato = () => {
@@ -206,25 +205,25 @@ export default function ContratosPage() {
   }
 
   return (
-    <div className="flex h-screen bg-muted/30">
-      {/* Sidebar */}
-      <ComercialSidebar />
+    <div className="flex flex-col h-screen bg-muted/30 overflow-hidden">
+      {/* TOPBAR SECUNDÁRIO */}
+      <div className="flex-shrink-0 z-50">
+        <ComercialNavbar />
+      </div>
 
-      {/* Conteúdo Principal */}
-      <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Top Bar */}
-        <ComercialTopBar
-          titulo="Contratos"
-          searchPlaceholder="Buscar contratos..."
-          searchValue={searchTerm}
-          onSearchChange={setSearchTerm}
-          badges={[
-            { label: "Total", value: totalContratos },
-            { label: "Ativos", value: contratosAtivos, variant: "default" },
-            { label: "Aditivos", value: totalAditivos, variant: "secondary" },
-          ]}
-          actions={
-            <>
+      {/* Conteúdo Principal - SEM SCROLL (scroll fica na moldura) */}
+      <main className="flex-1 overflow-hidden bg-background mt-3 p-6">
+        <div className="h-full border-0 bg-background overflow-y-auto overflow-x-hidden scrollbar-hide" style={{ borderRadius: '25px', boxShadow: 'inset 0 0 10px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.05)', padding: '25px', scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+          <div className="space-y-6">
+          {/* Header */}
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl font-bold">Contratos</h1>
+              <p className="text-sm text-muted-foreground">
+                Total: {totalContratos} | Ativos: {contratosAtivos} | Aditivos: {totalAditivos}
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
               <Select value={statusFilter} onValueChange={(v) => setStatusFilter(v as StatusContrato | "todos")}>
                 <SelectTrigger className="h-7 w-[140px] text-xs bg-transparent">
                   <SelectValue />
@@ -418,15 +417,11 @@ export default function ContratosPage() {
                   </DialogFooter>
                 </DialogContent>
               </Dialog>
-            </>
-          }
-        />
+            </div>
+          </div>
 
-        {/* Conteúdo */}
-        <main className="flex-1 overflow-auto p-4">
-          <div className="max-w-[1800px] mx-auto space-y-4">
-            {/* KPIs */}
-            <div className="grid grid-cols-4 gap-3">
+          {/* KPIs */}
+          <div className="grid grid-cols-4 gap-3">
               <Card className="p-3 border hover:border-primary/50 transition-colors">
                 <div className="flex items-center justify-between">
                   <div>
@@ -561,8 +556,8 @@ export default function ContratosPage() {
               </CardContent>
             </Card>
           </div>
-        </main>
-      </div>
+        </div>
+      </main>
 
       {/* Dialog de Detalhes */}
       <Dialog open={showDetalhesDialog} onOpenChange={setShowDetalhesDialog}>
@@ -740,6 +735,13 @@ export default function ContratosPage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* CSS Global para esconder scrollbars */}
+      <style jsx global>{`
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
     </div>
   )
 }

@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { ObraComercialNavbar } from "../_components/obra-comercial-navbar"
 import {
   ChevronRight,
   ChevronDown,
@@ -182,7 +183,20 @@ export default function EAPPage() {
   const valorTotalEAP = eapMock.reduce((acc, item) => acc + item.valorTotal, 0)
 
   return (
-    <>
+    <div className="flex flex-col h-screen bg-muted/30 overflow-hidden">
+      <div className="flex-shrink-0 z-40 mt-0">
+        <ObraComercialNavbar />
+      </div>
+      <main className="flex-1 bg-background overflow-hidden p-6">
+        <div 
+          className="h-full border-0 bg-background overflow-y-auto overflow-x-hidden scrollbar-hide p-6" 
+          style={{ 
+            borderRadius: '25px', 
+            boxShadow: 'inset 0 0 10px rgba(0, 0, 0, 0.13), 0 2px 8px rgba(0, 0, 0, 0.05)',
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none'
+          }}
+        >
       <Header
         title="EAP - Estrutura Analítica do Projeto"
         description="A EAP é criada no Módulo Obra pelo Comercial, com visão dual: Comercial e Operacional"
@@ -380,6 +394,8 @@ export default function EAPPage() {
           </CardContent>
         </Card>
       </div>
-    </>
+        </div>
+      </main>
+    </div>
   )
 }

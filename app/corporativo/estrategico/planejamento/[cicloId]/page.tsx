@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { PageContent } from "@/components/layout/page-content"
 import { Header } from "@/components/layout/header"
 import { AcoesCicloCard } from "../_components/acoes-ciclo-card"
+import { EstrategicoNavbar } from "../../../_components/estrategico-navbar"
 import {
   TrendingUp,
   DollarSign,

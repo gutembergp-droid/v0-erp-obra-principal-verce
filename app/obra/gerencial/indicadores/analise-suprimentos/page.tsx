@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { ObraGerencialNavbar } from "../../../_components/obra-gerencial-navbar"
+import { IndicadoresTabsNavbar } from "../../_components/indicadores-tabs-navbar"
 import {
   BarChart3,
   FileText,
@@ -151,64 +153,18 @@ function AnaliseSuprimentosContent() {
   }
 
   return (
-    <div className="flex-1 overflow-auto h-full">
-      <div className="p-6 space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-bold text-foreground">Analise de Suprimentos</h1>
-            <Badge variant="secondary">Cadeia de Fornecimento</Badge>
-          </div>
-          <div className="flex items-center gap-2 flex-wrap">
-            <Button variant="outline" size="sm" onClick={() => navegarPara("/obra/gerencial/indicadores")}>
-              <BarChart3 className="h-4 w-4 mr-1" />
-              Geral
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => navegarPara("/obra/gerencial/indicadores/analise-contratual")}
-            >
-              <FileText className="h-4 w-4 mr-1" />
-              Contratual
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => navegarPara("/obra/gerencial/indicadores/analise-financeira")}
-            >
-              <DollarSign className="h-4 w-4 mr-1" />
-              Financeira
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => navegarPara("/obra/gerencial/indicadores/analise-risco")}
-            >
-              <AlertTriangle className="h-4 w-4 mr-1" />
-              Risco
-            </Button>
-            <Button variant="default" size="sm">
-              <Package className="h-4 w-4 mr-1" />
-              Suprimentos
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => navegarPara("/obra/gerencial/indicadores/resultado-economico")}
-            >
-              <Calculator className="h-4 w-4 mr-1" />
-              Economico
-            </Button>
-            <Button variant="outline" size="sm" onClick={() => navegarPara("/obra/gerencial/indicadores/performance")}>
-              <Gauge className="h-4 w-4 mr-1" />
-              Performance
-            </Button>
-            <Button variant="outline" size="sm" onClick={() => navegarPara("/obra/gerencial/indicadores/cenarios")}>
-              <Lightbulb className="h-4 w-4 mr-1" />
-              Cenarios
-            </Button>
-          </div>
-        </div>
+    <div className="flex flex-col h-screen bg-muted/30 overflow-hidden">
+      <div className="flex-shrink-0 z-40 mt-0"><ObraGerencialNavbar /></div>
+      <div className="flex-shrink-0 z-30 mt-3"><IndicadoresTabsNavbar /></div>
+      <main className="flex-1 bg-background overflow-hidden p-6">
+        <div className="h-full border-0 bg-background overflow-y-auto overflow-x-hidden scrollbar-hide p-6" style={{ borderRadius: '25px', boxShadow: 'inset 0 0 10px rgba(0, 0, 0, 0.13), 0 2px 8px rgba(0, 0, 0, 0.05)', scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+          <div className="space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <h1 className="text-2xl font-bold text-foreground">Análise de Suprimentos</h1>
+                <Badge variant="secondary">Cadeia de Fornecimento</Badge>
+              </div>
+            </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
           <Card className="border-l-4 border-l-amber-500">
@@ -261,7 +217,9 @@ function AnaliseSuprimentosContent() {
           {renderCardHibrido("Gestao de Estoque", indicadoresSuprimentos.estoque, Package)}
           {renderCardHibrido("Custos e Economia", indicadoresSuprimentos.custos, DollarSign)}
         </div>
-      </div>
+          </div>
+        </div>
+      </main>
     </div>
   )
 }

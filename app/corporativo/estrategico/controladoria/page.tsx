@@ -3,10 +3,24 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { InfoTooltip } from "@/components/ui/info-tooltip"
 import { PieChart, DollarSign, TrendingUp, AlertTriangle } from "lucide-react"
+import { EstrategicoNavbar } from "../_components/estrategico-navbar"
 
 export default function ControladoriaPage() {
   return (
-    <div className="space-y-6">
+    <div className="flex flex-col h-screen bg-muted/30 overflow-hidden">
+      <div className="flex-shrink-0 z-40 mt-0">
+        <EstrategicoNavbar />
+      </div>
+      <main className="flex-1 bg-background overflow-hidden p-6">
+        <div 
+          className="h-full border-0 bg-background overflow-y-auto overflow-x-hidden scrollbar-hide p-6 space-y-6" 
+          style={{ 
+            borderRadius: '25px', 
+            boxShadow: 'inset 0 0 10px rgba(0, 0, 0, 0.13), 0 2px 8px rgba(0, 0, 0, 0.05)',
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none'
+          }}
+        >
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-primary/10">
@@ -78,6 +92,8 @@ export default function ControladoriaPage() {
             <p className="text-muted-foreground">Modulo em desenvolvimento...</p>
           </CardContent>
         </Card>
-      </div>
+        </div>
+      </main>
+    </div>
   )
 }

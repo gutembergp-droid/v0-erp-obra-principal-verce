@@ -8,8 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Plus, Search, Eye, FileText } from "lucide-react"
-import { ComercialSidebar } from "../_components/comercial-sidebar"
-import { ComercialTopBar } from "../_components/comercial-top-bar"
+import { ComercialNavbar } from "../_components/comercial-navbar"
 import { KPIsPropostas } from "./_components/kpis-propostas"
 
 // ============================================================================
@@ -126,18 +125,20 @@ export default function PropostasPage() {
   }
 
   const verProposta = (id: string) => {
-    router.push(`/corporativo/comercial/propostas/${id}`)
+    router.push(`/corporativo/comercial/propostas/${id}/elaboracao`)
   }
 
   return (
-    <div className="flex h-screen bg-muted/30">
-      <ComercialSidebar />
+    <div className="flex flex-col h-screen bg-muted/30 overflow-hidden">
+      {/* TOPBAR SECUNDÁRIO */}
+      <div className="flex-shrink-0 z-50">
+        <ComercialNavbar />
+      </div>
 
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <ComercialTopBar titulo="Propostas - Visão Geral" hideNovaPropostaButton={true} />
-
-        <main className="flex-1 overflow-auto p-6">
-          <div className="max-w-[1800px] mx-auto space-y-6">
+      {/* Conteúdo Principal - SEM SCROLL (scroll fica na moldura) */}
+      <main className="flex-1 overflow-hidden bg-background mt-3 p-6">
+        <div className="h-full border-0 bg-background overflow-y-auto overflow-x-hidden scrollbar-hide" style={{ borderRadius: '25px', boxShadow: 'inset 0 0 10px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.05)', padding: '25px', scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+          <div className="space-y-6">
             {/* KPIs PROFISSIONAIS */}
             <KPIsPropostas kpis={kpis} />
 
@@ -237,8 +238,15 @@ export default function PropostasPage() {
               </CardContent>
             </Card>
           </div>
-        </main>
-      </div>
+        </div>
+      </main>
+
+      {/* CSS Global para esconder scrollbars */}
+      <style jsx global>{`
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
     </div>
   )
 }

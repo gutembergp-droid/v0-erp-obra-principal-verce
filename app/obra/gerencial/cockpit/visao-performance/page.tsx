@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
+import { CockpitTabsNavbar } from "../../_components/cockpit-tabs-navbar"
 import { InfoTooltip } from "@/components/ui/info-tooltip"
 import {
   Gauge,
@@ -346,8 +347,23 @@ function VisaoPerformanceContent() {
   }
 
   return (
-    <div className="overflow-auto h-full">
-      <div className="flex flex-col h-full p-4">
+    <div className="flex flex-col h-screen bg-muted/30 overflow-hidden">
+      {/* Topbar Secundário */}
+      <div className="flex-shrink-0 z-40 mt-0">
+        <CockpitTabsNavbar />
+      </div>
+
+      {/* Conteúdo com moldura */}
+      <main className="flex-1 bg-background overflow-hidden p-6">
+        <div 
+          className="h-full border-0 bg-background overflow-y-auto overflow-x-hidden scrollbar-hide p-6" 
+          style={{ 
+            borderRadius: '25px', 
+            boxShadow: 'inset 0 0 10px rgba(0, 0, 0, 0.13), 0 2px 8px rgba(0, 0, 0, 0.05)',
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none'
+          }}
+        >
         {/* Header */}
         <div className="flex items-center justify-between mb-4 flex-shrink-0">
           <div className="flex items-center gap-3">
@@ -366,42 +382,7 @@ function VisaoPerformanceContent() {
             </div>
           </div>
 
-          {/* Navegacao entre visoes */}
           <div className="flex items-center gap-2">
-            <div className="flex items-center gap-1 p-1 rounded-lg border border-border bg-muted/30">
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-7 px-3 text-xs hover:bg-muted/50"
-                onClick={() => navegarPara("/obra/gerencial/cockpit")}
-              >
-                Geral
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-7 px-3 text-xs hover:bg-muted/50"
-                onClick={() => navegarPara("/obra/gerencial/cockpit/visao-contrato")}
-              >
-                Contrato
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-7 px-3 text-xs bg-muted/50 border border-primary/30"
-                disabled
-              >
-                Performance
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-7 px-3 text-xs hover:bg-muted/50"
-                onClick={() => navegarPara("/obra/gerencial/cockpit/visao-financeiro")}
-              >
-                Financeiro
-              </Button>
-            </div>
             <Badge variant="outline" className="text-[10px] h-6 px-2">
               Janeiro 2025
             </Badge>
@@ -668,7 +649,8 @@ function VisaoPerformanceContent() {
             ))}
           </div>
         </div>
-      </div>
+        </div>
+      </main>
 
       {/* Sheet para detalhes */}
       <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>

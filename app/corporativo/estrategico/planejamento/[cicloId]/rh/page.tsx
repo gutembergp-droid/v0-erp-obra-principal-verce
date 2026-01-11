@@ -261,8 +261,10 @@ export default function RHDepartamental() {
                               <span>Meta: <span className="font-semibold text-foreground">{kr.meta}</span></span>
                             </div>
                           </div>
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  </div>
                 </CardContent>
               </Card>
             ))}

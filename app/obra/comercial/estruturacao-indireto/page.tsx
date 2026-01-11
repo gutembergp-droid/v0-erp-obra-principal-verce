@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { ObraComercialNavbar } from "../../_components/obra-comercial-navbar"
 import {
   FileText,
   Send,

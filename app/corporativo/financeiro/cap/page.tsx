@@ -11,22 +11,12 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Checkbox } from "@/components/ui/checkbox"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { cn } from "@/lib/utils"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
 import {
   Search,
   DollarSign,
   Wallet,
   CreditCard,
-  Receipt,
-  PiggyBank,
-  BarChart3,
-  FileText,
-  LayoutDashboard,
   AlertTriangle,
-  Landmark,
-  ArrowLeftRight,
-  Settings,
   Download,
   CheckCircle2,
   Clock,
@@ -37,21 +27,8 @@ import {
   Calendar,
   Building2,
 } from "lucide-react"
-import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Cell } from "recharts"
-
-// Navegacao do Financeiro Corporativo
-const financeiroNavigation = [
-  { name: "Visao Geral", href: "/corporativo/financeiro", icon: LayoutDashboard },
-  { name: "Tesouraria", href: "/corporativo/financeiro/tesouraria", icon: Landmark },
-  { name: "Contas a Pagar", href: "/corporativo/financeiro/cap", icon: CreditCard },
-  { name: "Contas a Receber", href: "/corporativo/financeiro/car", icon: Receipt },
-  { name: "Fluxo de Caixa", href: "/corporativo/financeiro/fluxo-caixa", icon: ArrowLeftRight },
-  { name: "DRE Consolidado", href: "/corporativo/financeiro/dre", icon: BarChart3 },
-  { name: "Conciliacao", href: "/corporativo/financeiro/conciliacao", icon: FileText },
-  { name: "Orcamento", href: "/corporativo/financeiro/orcamento", icon: PiggyBank },
-  { name: "Relatorios", href: "/corporativo/financeiro/relatorios", icon: FileText },
-  { name: "Parametros", href: "/corporativo/financeiro/parametros", icon: Settings },
-]
+import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Cell } from "recharts"
+import { FinanceiroNavbar } from "../_components/financeiro-navbar"
 
 // Resumo CAP
 const resumoCAP = {
@@ -230,139 +207,95 @@ export default function CAPPage() {
   })
 
   return (
-    <div className="flex h-screen bg-muted/30">
-      {/* Sidebar do Financeiro */}
-      <aside className="w-56 bg-background border-r flex flex-col">
-        <div className="p-3 border-b">
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 bg-emerald-600 rounded flex items-center justify-center">
-              <DollarSign className="w-4 h-4 text-white" />
-            </div>
-            <div>
-              <h1 className="font-semibold text-sm">Financeiro</h1>
-              <p className="text-[10px] text-muted-foreground">Corporativo</p>
-            </div>
-          </div>
-        </div>
+    <div className="flex flex-col h-screen bg-muted/30 overflow-hidden">
+      {/* Topbar Secundário */}
+      <div className="flex-shrink-0 z-40 mt-0">
+        <FinanceiroNavbar />
+      </div>
 
-        <ScrollArea className="flex-1 py-1">
-          <nav className="px-2 space-y-0.5">
-            {financeiroNavigation.map((item) => {
-              const Icon = item.icon
-              const isActive = pathname === item.href
-              return (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className={cn(
-                    "flex items-center gap-2 px-2 py-1.5 rounded text-xs transition-colors",
-                    isActive
-                      ? "bg-emerald-600/10 text-emerald-600 font-medium"
-                      : "text-muted-foreground hover:bg-muted hover:text-foreground",
-                  )}
-                >
-                  <Icon className="w-3.5 h-3.5" />
-                  {item.name}
-                </Link>
-              )
-            })}
-          </nav>
-        </ScrollArea>
-
-        <div className="p-2 border-t">
-          <div className="flex items-center gap-2 px-2 py-1">
-            <Avatar className="w-6 h-6">
-              <AvatarFallback className="bg-emerald-600/10 text-emerald-600 text-[10px]">CF</AvatarFallback>
-            </Avatar>
-            <div className="flex-1 min-w-0">
-              <p className="text-xs font-medium truncate">Carlos Ferreira</p>
-              <p className="text-[10px] text-muted-foreground truncate">Controller</p>
-            </div>
-          </div>
-        </div>
-      </aside>
-
-      {/* Conteudo Principal */}
-      <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Header */}
-        <header className="h-12 bg-background border-b flex items-center justify-between px-4">
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-1.5 px-2 py-1 bg-amber-100 rounded text-xs">
-              <CreditCard className="w-3.5 h-3.5 text-amber-700" />
-              <span className="font-medium text-amber-700">Contas a Pagar</span>
-            </div>
-            <div className="relative">
-              <Search className="absolute left-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
-              <Input
-                placeholder="Buscar fornecedor..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-64 pl-7 h-8 text-xs"
-              />
-            </div>
-            <Select value={filtroObra} onValueChange={setFiltroObra}>
-              <SelectTrigger className="w-40 h-8 text-xs">
-                <SelectValue placeholder="Todas as obras" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="todas" className="text-xs">
-                  Todas as obras
-                </SelectItem>
-                {capPorObra.map((o) => (
-                  <SelectItem key={o.obra} value={o.obra} className="text-xs">
-                    {o.obra}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <Select value={filtroStatus} onValueChange={setFiltroStatus}>
-              <SelectTrigger className="w-32 h-8 text-xs">
-                <SelectValue placeholder="Status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="todos" className="text-xs">
-                  Todos
-                </SelectItem>
-                <SelectItem value="vencido" className="text-xs">
-                  Vencidos
-                </SelectItem>
-                <SelectItem value="hoje" className="text-xs">
-                  Vence Hoje
-                </SelectItem>
-                <SelectItem value="proximo" className="text-xs">
-                  Proximos 7 dias
-                </SelectItem>
-                <SelectItem value="normal" className="text-xs">
-                  A vencer
-                </SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="flex items-center gap-1.5">
-            {titulosSelecionados.length > 0 && (
-              <div className="flex items-center gap-2 mr-2 px-3 py-1 bg-emerald-50 rounded-lg border border-emerald-200">
-                <span className="text-xs text-emerald-700">
-                  {titulosSelecionados.length} selecionados:{" "}
-                  <span className="font-bold">{formatCurrency(valorSelecionado)}</span>
-                </span>
+      {/* Conteúdo com moldura */}
+      <main className="flex-1 bg-background overflow-hidden p-6">
+        <div 
+          className="h-full border-0 bg-background overflow-y-auto overflow-x-hidden scrollbar-hide p-6" 
+          style={{ 
+            borderRadius: '25px', 
+            boxShadow: 'inset 0 0 10px rgba(0, 0, 0, 0.13), 0 2px 8px rgba(0, 0, 0, 0.05)',
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none'
+          }}
+        >
+          {/* Busca e Filtros */}
+          <div className="mb-4 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="relative">
+                <Search className="absolute left-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
+                <Input
+                  placeholder="Buscar fornecedor..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-64 pl-7 h-8 text-xs"
+                />
               </div>
-            )}
-            <Button variant="outline" size="sm" className="h-7 text-xs gap-1 bg-transparent">
-              <Download className="w-3.5 h-3.5" />
-              Exportar
-            </Button>
-            {titulosSelecionados.length > 0 && (
-              <Button size="sm" className="h-7 text-xs gap-1 bg-emerald-600 hover:bg-emerald-700">
-                <Send className="w-3.5 h-3.5" />
-                Gerar Bordero
-              </Button>
-            )}
-          </div>
-        </header>
+              <Select value={filtroObra} onValueChange={setFiltroObra}>
+                <SelectTrigger className="w-40 h-8 text-xs">
+                  <SelectValue placeholder="Todas as obras" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="todas" className="text-xs">
+                    Todas as obras
+                  </SelectItem>
+                  {capPorObra.map((o) => (
+                    <SelectItem key={o.obra} value={o.obra} className="text-xs">
+                      {o.obra}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <Select value={filtroStatus} onValueChange={setFiltroStatus}>
+                <SelectTrigger className="w-32 h-8 text-xs">
+                  <SelectValue placeholder="Status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="todos" className="text-xs">
+                    Todos
+                  </SelectItem>
+                  <SelectItem value="vencido" className="text-xs">
+                    Vencidos
+                  </SelectItem>
+                  <SelectItem value="hoje" className="text-xs">
+                    Vence Hoje
+                  </SelectItem>
+                  <SelectItem value="proximo" className="text-xs">
+                    Proximos 7 dias
+                  </SelectItem>
+                  <SelectItem value="normal" className="text-xs">
+                    A vencer
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
 
-        {/* Conteudo */}
-        <main className="flex-1 overflow-auto p-4">
+            <div className="flex items-center gap-1.5">
+              {titulosSelecionados.length > 0 && (
+                <div className="flex items-center gap-2 mr-2 px-3 py-1 bg-emerald-50 rounded-lg border border-emerald-200">
+                  <span className="text-xs text-emerald-700">
+                    {titulosSelecionados.length} selecionados:{" "}
+                    <span className="font-bold">{formatCurrency(valorSelecionado)}</span>
+                  </span>
+                </div>
+              )}
+              <Button variant="outline" size="sm" className="h-7 text-xs gap-1 bg-transparent">
+                <Download className="w-3.5 h-3.5" />
+                Exportar
+              </Button>
+              {titulosSelecionados.length > 0 && (
+                <Button size="sm" className="h-7 text-xs gap-1 bg-emerald-600 hover:bg-emerald-700">
+                  <Send className="w-3.5 h-3.5" />
+                  Gerar Bordero
+                </Button>
+              )}
+            </div>
+          </div>
           <div className="max-w-[1600px] mx-auto space-y-4">
             {/* Resumo */}
             <div className="grid grid-cols-6 gap-3">
@@ -593,8 +526,8 @@ export default function CAPPage() {
               </CardContent>
             </Card>
           </div>
-        </main>
-      </div>
+        </div>
+      </main>
 
       {/* Painel de Detalhes */}
       {tituloDetalhe && (

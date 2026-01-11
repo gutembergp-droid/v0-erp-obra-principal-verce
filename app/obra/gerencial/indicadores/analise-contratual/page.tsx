@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { Badge } from "@/components/ui/badge"
 import { KPICardOficial, AlertasModulo } from "@/components/indicadores"
+import { ObraGerencialNavbar } from "../../../_components/obra-gerencial-navbar"
+import { IndicadoresTabsNavbar } from "../../_components/indicadores-tabs-navbar"
 import {
   BarChart3,
   FileText,
@@ -265,128 +267,100 @@ function AnaliseContratualContent() {
   }
 
   return (
-    <div className="flex-1 overflow-auto h-full">
-      <div className="p-6 space-y-6">
-        {/* Header com navegacao */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-bold text-foreground">Analise Contratual</h1>
-            <Badge variant="secondary">100% Cliente</Badge>
-          </div>
-
-          <div className="flex items-center gap-2 flex-wrap">
-            <Button variant="outline" size="sm" onClick={() => navegarPara("/obra/gerencial/indicadores")}>
-              <BarChart3 className="h-4 w-4 mr-1" />
-              Geral
-            </Button>
-            <Button variant="default" size="sm">
-              <FileText className="h-4 w-4 mr-1" />
-              Contratual
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => navegarPara("/obra/gerencial/indicadores/analise-financeira")}
-            >
-              <DollarSign className="h-4 w-4 mr-1" />
-              Financeira
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => navegarPara("/obra/gerencial/indicadores/analise-risco")}
-            >
-              <AlertTriangle className="h-4 w-4 mr-1" />
-              Risco
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => navegarPara("/obra/gerencial/indicadores/analise-suprimentos")}
-            >
-              <Package className="h-4 w-4 mr-1" />
-              Suprimentos
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => navegarPara("/obra/gerencial/indicadores/resultado-economico")}
-            >
-              <Calculator className="h-4 w-4 mr-1" />
-              Economico
-            </Button>
-            <Button variant="outline" size="sm" onClick={() => navegarPara("/obra/gerencial/indicadores/performance")}>
-              <Gauge className="h-4 w-4 mr-1" />
-              Performance
-            </Button>
-            <Button variant="outline" size="sm" onClick={() => navegarPara("/obra/gerencial/indicadores/cenarios")}>
-              <Lightbulb className="h-4 w-4 mr-1" />
-              Cenarios
-            </Button>
-          </div>
-        </div>
-
-        <Card className="border-primary/20 bg-primary/5">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium flex items-center gap-2">
-              <FileText className="h-4 w-4 text-primary" />
-              KPIs Oficiais do Contrato (Manual GNESIS)
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {kpisOficiais.map((kpi) => (
-                <KPICardOficial
-                  key={kpi.codigo}
-                  codigo={kpi.codigo}
-                  nome={kpi.nome}
-                  valor={kpi.valor}
-                  meta={kpi.meta}
-                  formula={kpi.formula}
-                  interpretacao={kpi.interpretacao}
-                  acaoGerencial={kpi.acaoGerencial}
-                  tendencia={kpi.tendencia}
-                  historico={kpi.historico}
-                  onClick={() => setSelectedKPI(kpi)}
-                />
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Grid de indicadores detalhados */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          <div className="lg:col-span-8 space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {renderCardCategoria("Receita Contratual", indicadoresContrato.receita, DollarSign)}
-              {renderCardCategoria("Faturamento e Recebimento", indicadoresContrato.faturamento, Receipt)}
-              {renderCardCategoria("Cronograma Contratual", indicadoresContrato.cronograma, Calendar)}
-              {renderCardCategoria("Change Control", indicadoresContrato.changeControl, FileCheck)}
-            </div>
-            {renderCardCategoria("Desvios Contratuais", indicadoresContrato.desvios, Scale)}
-          </div>
-
-          {/* Painel lateral */}
-          <div className="lg:col-span-4">
-            <AlertasModulo
-              alertas={alertasContrato}
-              titulo="Alertas Contratuais"
-              onAlertaClick={(alerta) => console.log("Alerta clicado:", alerta)}
-            />
-          </div>
-        </div>
+    <div className="flex flex-col h-screen bg-muted/30 overflow-hidden">
+      {/* Topbar Secundário */}
+      <div className="flex-shrink-0 z-40 mt-0">
+        <ObraGerencialNavbar />
       </div>
 
+      {/* Topbar Terciário */}
+      <div className="flex-shrink-0 z-30 mt-3">
+        <IndicadoresTabsNavbar />
+      </div>
+
+      {/* Conteúdo com moldura */}
+      <main className="flex-1 bg-background overflow-hidden p-6">
+        <div
+          className="h-full border-0 bg-background overflow-y-auto overflow-x-hidden scrollbar-hide p-6"
+          style={{
+            borderRadius: '25px',
+            boxShadow: 'inset 0 0 10px rgba(0, 0, 0, 0.13), 0 2px 8px rgba(0, 0, 0, 0.05)',
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none'
+          }}
+        >
+          <div className="space-y-6">
+            {/* Header sem navegação duplicada */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <h1 className="text-2xl font-bold text-foreground">Análise Contratual</h1>
+                <Badge variant="secondary">100% Cliente</Badge>
+              </div>
+            </div>
+
+            <Card className="border-primary/20 bg-primary/5">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium flex items-center gap-2">
+                  <FileText className="h-4 w-4 text-primary" />
+                  KPIs Oficiais do Contrato (Manual GNESIS)
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  {kpisOficiais.map((kpi) => (
+                    <KPICardOficial
+                      key={kpi.codigo}
+                      codigo={kpi.codigo}
+                      nome={kpi.nome}
+                      valor={kpi.valor}
+                      meta={kpi.meta}
+                      formula={kpi.formula}
+                      interpretacao={kpi.interpretacao}
+                      acaoGerencial={kpi.acaoGerencial}
+                      tendencia={kpi.tendencia}
+                      historico={kpi.historico}
+                      onClick={() => setSelectedKPI(kpi)}
+                    />
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Grid de indicadores detalhados */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+              <div className="lg:col-span-8 space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {renderCardCategoria("Receita Contratual", indicadoresContrato.receita, DollarSign)}
+                  {renderCardCategoria("Faturamento e Recebimento", indicadoresContrato.faturamento, Receipt)}
+                  {renderCardCategoria("Cronograma Contratual", indicadoresContrato.cronograma, Calendar)}
+                  {renderCardCategoria("Change Control", indicadoresContrato.changeControl, FileCheck)}
+                </div>
+                {renderCardCategoria("Desvios Contratuais", indicadoresContrato.desvios, Scale)}
+              </div>
+
+              {/* Painel lateral */}
+              <div className="lg:col-span-4">
+                <AlertasModulo
+                  alertas={alertasContrato}
+                  titulo="Alertas Contratuais"
+                  onAlertaClick={(alerta) => console.log("Alerta clicado:", alerta)}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
       {/* Sheet de detalhes do KPI */}
-      <Sheet open={!!selectedKPI} onOpenChange={() => setSelectedKPI(null)}>
-        <SheetContent className="w-full sm:max-w-lg">
-          <SheetHeader>
-            <SheetTitle className="flex items-center gap-2">
-              <Badge variant="outline">{selectedKPI?.codigo}</Badge>
-              {selectedKPI?.nome}
-            </SheetTitle>
-          </SheetHeader>
-          {selectedKPI && (
+      {selectedKPI && (
+        <Sheet open={true} onOpenChange={() => setSelectedKPI(null)}>
+          <SheetContent className="w-full sm:max-w-lg">
+            <SheetHeader>
+              <SheetTitle className="flex items-center gap-2">
+                <Badge variant="outline">{selectedKPI.codigo}</Badge>
+                {selectedKPI.nome}
+              </SheetTitle>
+            </SheetHeader>
             <div className="mt-6 space-y-6">
               <div className="text-center p-6 bg-muted/30 rounded-lg">
                 <p className="text-4xl font-bold text-foreground">{selectedKPI.valor}%</p>
@@ -431,9 +405,9 @@ function AnaliseContratualContent() {
                 </CardContent>
               </Card>
             </div>
-          )}
-        </SheetContent>
-      </Sheet>
+          </SheetContent>
+        </Sheet>
+      )}
     </div>
   )
 }

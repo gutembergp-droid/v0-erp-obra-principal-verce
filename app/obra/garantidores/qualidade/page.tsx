@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { InfoTooltip } from "@/components/ui/info-tooltip"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet"
 import { Progress } from "@/components/ui/progress"
+import { ObraGarantidoresNavbar } from "../../_components/obra-garantidores-navbar"
 import {
   Plus,
   Search,
@@ -139,8 +140,21 @@ function QualidadeContent() {
   const taxaConformidade = ((fvsConformes / totalFVS) * 100).toFixed(0)
 
   return (
-    <div className="flex flex-col h-full overflow-auto">
-      <div className="px-6 pt-6 pb-2">
+    <div className="flex flex-col h-screen bg-muted/30 overflow-hidden">
+      <div className="flex-shrink-0 z-40 mt-0">
+        <ObraGarantidoresNavbar />
+      </div>
+      <main className="flex-1 bg-background overflow-hidden p-6">
+        <div 
+          className="h-full border-0 bg-background overflow-y-auto overflow-x-hidden scrollbar-hide p-6" 
+          style={{ 
+            borderRadius: '25px', 
+            boxShadow: 'inset 0 0 10px rgba(0, 0, 0, 0.13), 0 2px 8px rgba(0, 0, 0, 0.05)',
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none'
+          }}
+        >
+      <div className="pb-2">
         <div className="flex items-center gap-3">
           <h1 className="text-2xl font-bold">Qualidade</h1>
           <InfoTooltip
@@ -653,6 +667,8 @@ function QualidadeContent() {
           )}
         </SheetContent>
       </Sheet>
+        </div>
+      </main>
     </div>
   )
 }

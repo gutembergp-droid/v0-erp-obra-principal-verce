@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { InfoTooltip } from "@/components/ui/info-tooltip"
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { ObraComercialNavbar } from "../../_components/obra-comercial-navbar"
 import {
   CheckCircle2,
   Clock,

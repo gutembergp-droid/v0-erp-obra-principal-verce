@@ -4,6 +4,7 @@ import { useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { CockpitTabsNavbar } from "../../_components/cockpit-tabs-navbar"
 import {
   MOCK_VERDE,
   MOCK_AMARELO,
@@ -30,6 +31,32 @@ export default function PrismDemoPage() {
 
   const result = mocks[mockType]
 
+  return (
+    <div className="flex flex-col h-screen bg-muted/30 overflow-hidden">
+      {/* Topbar Secundário */}
+      <div className="flex-shrink-0 z-40 mt-0">
+        <CockpitTabsNavbar />
+      </div>
+
+      {/* Conteúdo com moldura */}
+      <main className="flex-1 bg-background overflow-hidden p-6">
+        <div 
+          className="h-full border-0 bg-background overflow-y-auto overflow-x-hidden scrollbar-hide p-6" 
+          style={{ 
+            borderRadius: '25px', 
+            boxShadow: 'inset 0 0 10px rgba(0, 0, 0, 0.13), 0 2px 8px rgba(0, 0, 0, 0.05)',
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none'
+          }}
+        >
+        <PrismDemoContent mockType={mockType} setMockType={setMockType} selectedOption={selectedOption} setSelectedOption={setSelectedOption} result={result} />
+        </div>
+      </main>
+    </div>
+  )
+}
+
+function PrismDemoContent({ mockType, setMockType, selectedOption, setSelectedOption, result }: any) {
   const options = [
     {
       id: "radar",

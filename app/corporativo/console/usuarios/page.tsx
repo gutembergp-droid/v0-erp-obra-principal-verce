@@ -28,6 +28,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { ConsoleNavbar } from "../_components/console-navbar"
 import {
   Users,
   Shield,
@@ -60,24 +61,7 @@ import {
   Smartphone,
   Send,
 } from "lucide-react"
-import Link from "next/link"
-
-// Navegacao do Console
-const consoleNavigation = [
-  { name: "Visao Geral", href: "/corporativo/console", icon: LayoutDashboard },
-  { name: "Usuarios", href: "/corporativo/console/usuarios", icon: Users, active: true },
-  { name: "Perfis de Acesso", href: "/corporativo/console/perfis", icon: Shield },
-  { name: "Permissoes", href: "/corporativo/console/permissoes", icon: Key },
-  { name: "Alcadas & Aprovacoes", href: "/corporativo/console/alcadas", icon: Network },
-  { name: "Centros de Custo", href: "/corporativo/console/centros-custo", icon: Building2 },
-  { name: "IAs & Agentes", href: "/corporativo/console/ias", icon: Bot },
-  { name: "Limites & Custos", href: "/corporativo/console/limites", icon: DollarSign },
-  { name: "Auditoria", href: "/corporativo/console/auditoria", icon: FileSearch },
-  { name: "Convites Pendentes", href: "/corporativo/console/convites", icon: Mail },
-  { name: "Suporte", href: "/corporativo/console/suporte", icon: Headphones },
-  { name: "Integracoes", href: "/corporativo/console/integracoes", icon: Plug },
-  { name: "Parametros", href: "/corporativo/console/parametros", icon: Settings },
-]
+import { ConsoleNavbar } from "../_components/console-navbar"
 
 // Mock data - Usuarios
 const usuariosMock = [
@@ -300,61 +284,22 @@ export default function UsuariosPage() {
   )
 
   return (
-    <div className="flex h-screen bg-muted/30">
-      {/* Sidebar */}
-      <aside className="w-56 bg-background border-r flex flex-col">
-        <div className="p-3 border-b">
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 bg-primary/10 rounded flex items-center justify-center">
-              <Settings className="w-4 h-4 text-primary" />
-            </div>
-            <div>
-              <h1 className="font-semibold text-sm">Console</h1>
-              <p className="text-[10px] text-muted-foreground">Administracao</p>
-            </div>
-          </div>
-        </div>
-
-        <ScrollArea className="flex-1 py-1">
-          <nav className="px-2 space-y-0.5">
-            {consoleNavigation.map((item) => {
-              const Icon = item.icon
-              const isActive = item.active
-              return (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className={`flex items-center gap-2 px-2 py-1.5 rounded text-xs transition-colors ${
-                    isActive
-                      ? "bg-primary/10 text-primary font-medium"
-                      : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                  }`}
-                >
-                  <Icon className="w-3.5 h-3.5" />
-                  {item.name}
-                </Link>
-              )
-            })}
-          </nav>
-        </ScrollArea>
-
-        <div className="p-3 border-t">
-          <div className="flex items-center gap-2">
-            <Avatar className="w-7 h-7">
-              <AvatarFallback className="bg-primary/10 text-primary text-[10px]">AD</AvatarFallback>
-            </Avatar>
-            <div className="flex-1 min-w-0">
-              <p className="text-xs font-medium truncate">Administrador</p>
-              <p className="text-[10px] text-muted-foreground truncate">Super Admin</p>
-            </div>
-          </div>
-        </div>
-      </aside>
-
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+    <div className="flex flex-col h-screen bg-muted/30 overflow-hidden">
+      <div className="flex-shrink-0 z-40 mt-0">
+        <ConsoleNavbar />
+      </div>
+        <main className="flex-1 bg-background overflow-hidden p-6">
+        <div 
+          className="h-full border-0 bg-background overflow-y-auto overflow-x-hidden scrollbar-hide p-6" 
+          style={{ 
+            borderRadius: '25px', 
+            boxShadow: 'inset 0 0 10px rgba(0, 0, 0, 0.13), 0 2px 8px rgba(0, 0, 0, 0.05)',
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none'
+          }}
+        >
         {/* Header */}
-        <header className="h-12 bg-background border-b flex items-center justify-between px-4">
+        <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
             <Badge variant="outline" className="gap-1 text-xs">
               <Building2 className="w-3 h-3" />
@@ -387,10 +332,10 @@ export default function UsuariosPage() {
               Exportar
             </Button>
           </div>
-        </header>
+        </div>
 
         {/* Alert Bar */}
-        <div className="h-9 bg-background border-b flex items-center gap-4 px-4 overflow-x-auto">
+        <div className="h-9 bg-muted/30 rounded border flex items-center gap-4 px-4 overflow-x-auto mb-4">
           <div className="flex items-center gap-2 text-xs">
             <div className="w-1.5 h-1.5 rounded-full bg-red-500" />
             <AlertTriangle className="w-3.5 h-3.5 text-red-600" />
@@ -422,7 +367,16 @@ export default function UsuariosPage() {
         </div>
 
         {/* Content */}
-        <main className="flex-1 overflow-auto p-4">
+        <main className="flex-1 bg-background overflow-hidden p-6">
+        <div 
+          className="h-full border-0 bg-background overflow-y-auto overflow-x-hidden scrollbar-hide p-6" 
+          style={{ 
+            borderRadius: '25px', 
+            boxShadow: 'inset 0 0 10px rgba(0, 0, 0, 0.13), 0 2px 8px rgba(0, 0, 0, 0.05)',
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none'
+          }}
+        >
           <div className="max-w-[1600px] mx-auto space-y-4">
             {/* Metrics */}
             <div className="grid grid-cols-6 gap-3">
@@ -675,8 +629,8 @@ export default function UsuariosPage() {
               </Card>
             </div>
           </div>
-        </main>
-      </div>
+        </div>
+      </main>
 
       {/* User Details Drawer */}
       <Sheet open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>

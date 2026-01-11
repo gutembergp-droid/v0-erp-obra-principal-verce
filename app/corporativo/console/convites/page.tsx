@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { ConsoleNavbar } from "../_components/console-navbar"
 import {
   Search,
   ChevronRight,
@@ -119,9 +120,22 @@ export default function ConvitesPage() {
   ]
 
   return (
-    <div className="flex-1 flex flex-col h-full overflow-hidden bg-background">
+    <div className="flex flex-col h-screen bg-muted/30 overflow-hidden">
+      <div className="flex-shrink-0 z-40 mt-0">
+        <ConsoleNavbar />
+      </div>
+      <main className="flex-1 bg-background overflow-hidden p-6">
+        <div 
+          className="h-full border-0 bg-background overflow-y-auto overflow-x-hidden scrollbar-hide p-6" 
+          style={{ 
+            borderRadius: '25px', 
+            boxShadow: 'inset 0 0 10px rgba(0, 0, 0, 0.13), 0 2px 8px rgba(0, 0, 0, 0.05)',
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none'
+          }}
+        >
       {/* Header */}
-      <div className="h-14 border-b flex items-center justify-between px-4 bg-card">
+      <div className="h-14 border-b flex items-center justify-between px-4 bg-card mb-4">
         <div className="flex items-center gap-3">
           <Mail className="h-5 w-5 text-primary" />
           <div>
@@ -426,6 +440,8 @@ export default function ConvitesPage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+        </div>
+      </main>
     </div>
   )
 }

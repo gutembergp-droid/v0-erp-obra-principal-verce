@@ -2,6 +2,7 @@
 
 import type React from "react"
 import { useState } from "react"
+import { ConsoleNavbar } from "../_components/console-navbar"
 import {
   Search,
   MoreHorizontal,
@@ -337,9 +338,22 @@ export default function SuporteGerencialPage() {
   }
 
   return (
-    <div className="flex-1 flex flex-col h-full bg-muted/30">
+    <div className="flex flex-col h-screen bg-muted/30 overflow-hidden">
+      <div className="flex-shrink-0 z-40 mt-0">
+        <ConsoleNavbar />
+      </div>
+      <main className="flex-1 bg-background overflow-hidden p-6">
+        <div 
+          className="h-full border-0 bg-background overflow-y-auto overflow-x-hidden scrollbar-hide p-6" 
+          style={{ 
+            borderRadius: '25px', 
+            boxShadow: 'inset 0 0 10px rgba(0, 0, 0, 0.13), 0 2px 8px rgba(0, 0, 0, 0.05)',
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none'
+          }}
+        >
       {/* Header compacto */}
-      <div className="h-12 border-b bg-card px-4 flex items-center justify-between shrink-0">
+      <div className="h-12 border-b bg-card px-4 flex items-center justify-between shrink-0 mb-4">
         <div className="flex items-center gap-3">
           <h1 className="text-sm font-semibold">Central de Suporte</h1>
           <span className="text-xs text-muted-foreground">Gestão de chamados e tarefas</span>
@@ -913,6 +927,8 @@ export default function SuporteGerencialPage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+        </div>
+      </main>
     </div>
   )
 }

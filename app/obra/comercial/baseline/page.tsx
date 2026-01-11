@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { ObraComercialNavbar } from "../_components/obra-comercial-navbar"
 import {
   CheckCircle2,
   Clock,
@@ -60,13 +61,14 @@ export default function BaselinePage() {
   const baselinePendente = baselinesMock.find((b) => b.status === "proposta")
 
   return (
-    <>
-      <Header
-        title="Baseline Comercial"
-        description="A obra propõe, o corporativo homologa. Verdade econômica oficial da obra."
-      />
+    <div className="flex flex-col h-screen bg-muted/30 overflow-hidden">
+      <div className="flex-shrink-0 z-40 mt-0">
+        <ObraComercialNavbar />
+      </div>
 
-      <div className="p-6 space-y-6">
+      <main className="flex-1 bg-background overflow-hidden p-6">
+        <div className="h-full border-0 bg-background overflow-y-auto overflow-x-hidden scrollbar-hide p-6" style={{ borderRadius: '25px', boxShadow: 'inset 0 0 10px rgba(0, 0, 0, 0.13), 0 2px 8px rgba(0, 0, 0, 0.05)', scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+          <div className="space-y-6">
         {/* Conceito */}
         <Card className="border-cyan-500/20 bg-cyan-500/5">
           <CardContent className="pt-6">

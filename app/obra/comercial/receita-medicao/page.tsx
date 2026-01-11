@@ -7,6 +7,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { InfoTooltip } from "@/components/ui/info-tooltip"
 import { FileText, DollarSign, ArrowRight, Banknote, Receipt, ClipboardCheck, Scale, AlertTriangle } from "lucide-react"
 import Link from "next/link"
+import { ObraComercialNavbar } from "../../_components/obra-comercial-navbar"
 
 // Dados mockados
 const resumoExecutivo = {

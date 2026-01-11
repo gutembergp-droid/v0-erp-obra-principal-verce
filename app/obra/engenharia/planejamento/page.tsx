@@ -10,6 +10,7 @@ import { Progress } from "@/components/ui/progress"
 import { InfoTooltip } from "@/components/ui/info-tooltip"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet"
 import { Input } from "@/components/ui/input"
+import { ObraEngenhariaNavbar } from "../../_components/obra-engenharia-navbar"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import {
   BarChart,

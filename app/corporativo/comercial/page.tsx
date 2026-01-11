@@ -1,12 +1,11 @@
 "use client"
 
-import { ComercialSidebar } from "./_components/comercial-sidebar"
-import { ComercialTopBar } from "./_components/comercial-top-bar"
 import { SidebarInsights } from "./_components/sidebar-insights"
 import { KPIInteligente } from "./_components/kpi-inteligente"
 import { CardProspeccaoV2 } from "./_components/card-prospeccao-v2"
 import { CardPropostasV2 } from "./_components/card-propostas-v2"
 import { CardConsolidadoV2 } from "./_components/card-consolidado-v2"
+import { ComercialNavbar } from "./_components/comercial-navbar"
 import { useComercial } from "@/contexts/comercial-context"
 
 // ============================================================================
@@ -45,27 +44,18 @@ export default function ComercialDashboard() {
   }
 
   return (
-    <div className="flex h-screen bg-muted/30">
-      {/* Sidebar Esquerda (Navegação) */}
-      <ComercialSidebar />
+    <div className="flex flex-col h-screen bg-muted/30 overflow-hidden">
+      {/* TOPBAR SECUNDÁRIO */}
+      <div className="flex-shrink-0 z-50">
+        <ComercialNavbar />
+      </div>
 
-      {/* Conteúdo Principal */}
-      <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Top Bar com Alertas Integrados */}
-        <ComercialTopBar
-          titulo="Visão Geral Inteligente"
-          badges={[
-            { label: "Pipeline", value: `R$ ${(kpisPrimarios.pipelineTotal / 1000000).toFixed(0)}Mi`, variant: "outline" },
-            { label: "Conversão", value: `${kpisPrimarios.taxaConversao}%`, variant: kpisPrimarios.taxaConversao < 20 ? "destructive" : "default" },
-          ]}
-          alertasCriticos={alertasCriticos}
-        />
-
-        {/* Layout Principal: Conteúdo + Sidebar Insights */}
-        <div className="flex-1 flex overflow-hidden">
-          {/* Área de Conteúdo Principal (Tela Cheia) */}
-          <main className="flex-1 overflow-auto p-5">
-            <div className="h-full space-y-4">
+      {/* Conteúdo Principal - SEM SCROLL (scroll fica na moldura) */}
+      <div className="flex-1 flex overflow-hidden bg-background mt-3">
+        {/* Área de Conteúdo Principal */}
+        <main className="flex-1 overflow-hidden p-6">
+          <div className="h-full border-0 bg-background overflow-y-auto overflow-x-hidden scrollbar-hide" style={{ borderRadius: '25px', boxShadow: 'inset 0 0 10px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.05)', padding: '25px', scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+            <div className="space-y-4">
               {/* LINHA 1: 4 KPIs Inteligentes */}
               <div className="grid grid-cols-4 gap-3">
                 <KPIInteligente tipo="pipeline" dados={dadosPipeline} />
@@ -94,12 +84,19 @@ export default function ComercialDashboard() {
                 </p>
               </div>
             </div>
-          </main>
+          </div>
+        </main>
 
-          {/* Sidebar Direita: Insights e Recomendações */}
-          <SidebarInsights />
-        </div>
+        {/* Sidebar Direita: Insights e Recomendações */}
+        <SidebarInsights />
       </div>
+
+      {/* CSS Global para esconder scrollbars */}
+      <style jsx global>{`
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
     </div>
   )
 }

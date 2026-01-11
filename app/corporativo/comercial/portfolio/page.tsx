@@ -12,6 +12,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { cn } from "@/lib/utils"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { ComercialNavbar } from "../_components/comercial-navbar"
 import {
   FileText,
   Search,
@@ -225,68 +226,24 @@ export default function PortfolioObrasPage() {
   const obrasComAlerta = obrasMock.filter((o) => o.alertas > 0).length
 
   return (
-    <div className="flex h-screen bg-muted/30">
-      {/* Sidebar do Comercial */}
-      <aside className="w-56 bg-background border-r flex flex-col">
-        <div className="p-3 border-b">
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 bg-primary rounded flex items-center justify-center">
-              <Briefcase className="w-4 h-4 text-primary-foreground" />
-            </div>
+    <div className="flex flex-col h-screen bg-muted/30 overflow-hidden">
+      {/* TOPBAR SECUNDÁRIO */}
+      <div className="flex-shrink-0 z-50">
+        <ComercialNavbar />
+      </div>
+
+      {/* Conteúdo Principal - SEM SCROLL (scroll fica na moldura) */}
+      <main className="flex-1 overflow-hidden bg-background mt-3 p-6">
+        <div className="h-full border-0 bg-background overflow-y-auto overflow-x-hidden scrollbar-hide" style={{ borderRadius: '25px', boxShadow: 'inset 0 0 10px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.05)', padding: '25px', scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+          <div className="space-y-6">
+          {/* Header */}
+          <div className="flex items-center justify-between">
             <div>
-              <h1 className="font-semibold text-sm">Comercial</h1>
-              <p className="text-[10px] text-muted-foreground">Corporativo</p>
+              <h1 className="text-2xl font-bold">Portfolio de Obras</h1>
+              <p className="text-sm text-muted-foreground">Total: {obrasMock.length} obras</p>
             </div>
-          </div>
-        </div>
-
-        <ScrollArea className="flex-1 py-1">
-          <nav className="px-2 space-y-0.5">
-            {comercialNavigation.map((item) => {
-              const Icon = item.icon
-              const isActive = pathname === item.href
-              return (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className={cn(
-                    "flex items-center gap-2 px-2 py-1.5 rounded text-xs transition-colors",
-                    isActive
-                      ? "bg-primary/10 text-primary font-medium"
-                      : "text-muted-foreground hover:bg-muted hover:text-foreground",
-                  )}
-                >
-                  <Icon className="w-3.5 h-3.5" />
-                  {item.name}
-                </Link>
-              )
-            })}
-          </nav>
-        </ScrollArea>
-
-        <div className="p-2 border-t">
-          <div className="flex items-center gap-2 px-2 py-1">
-            <Avatar className="w-6 h-6">
-              <AvatarFallback className="bg-primary/10 text-primary text-[10px]">JS</AvatarFallback>
-            </Avatar>
-            <div className="flex-1 min-w-0">
-              <p className="text-xs font-medium truncate">João Silva</p>
-              <p className="text-[10px] text-muted-foreground truncate">Gerente Comercial</p>
-            </div>
-          </div>
-        </div>
-      </aside>
-
-      {/* Conteudo Principal */}
-      <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Header */}
-        <header className="h-12 bg-background border-b flex items-center justify-between px-4">
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-1.5 px-2 py-1 bg-muted rounded text-xs">
-              <Building2 className="w-3.5 h-3.5 text-muted-foreground" />
-              <span className="font-medium">Corporativo</span>
-            </div>
-            <div className="relative">
+            <div className="flex items-center gap-2">
+              <div className="relative">
               <Search className="absolute left-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
               <Input
                 placeholder="Buscar obras..."
@@ -295,6 +252,7 @@ export default function PortfolioObrasPage() {
                 className="w-64 pl-7 h-8 text-xs"
               />
             </div>
+          </div>
           </div>
 
           <div className="flex items-center gap-1.5">
@@ -334,13 +292,9 @@ export default function PortfolioObrasPage() {
               Exportar
             </Button>
           </div>
-        </header>
 
-        {/* Conteudo */}
-        <main className="flex-1 overflow-auto p-4">
-          <div className="max-w-[1600px] mx-auto space-y-4">
-            {/* Metricas */}
-            <div className="grid grid-cols-6 gap-3">
+          {/* Metricas */}
+          <div className="grid grid-cols-6 gap-3">
               <Card className="p-3">
                 <div className="flex items-center justify-between">
                   <div>
@@ -785,8 +739,15 @@ export default function PortfolioObrasPage() {
               </Card>
             )}
           </div>
-        </main>
-      </div>
+        </div>
+      </main>
+
+      {/* CSS Global para esconder scrollbars */}
+      <style jsx global>{`
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
     </div>
   )
 }

@@ -5,10 +5,24 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { TreePine, Plus, Droplets, Wind, Recycle, HeartHandshake } from "lucide-react"
 import { InfoTooltip } from "@/components/ui/info-tooltip"
+import { QSMSNavbar } from "../_components/qsms-navbar"
 
 export default function MeioAmbienteSocialPage() {
   return (
-    <div className="space-y-6">
+    <div className="flex flex-col h-screen bg-muted/30 overflow-hidden">
+      <div className="flex-shrink-0 z-40 mt-0">
+        <QSMSNavbar />
+      </div>
+      <main className="flex-1 bg-background overflow-hidden p-6">
+        <div 
+          className="h-full border-0 bg-background overflow-y-auto overflow-x-hidden scrollbar-hide p-6 space-y-6" 
+          style={{ 
+            borderRadius: '25px', 
+            boxShadow: 'inset 0 0 10px rgba(0, 0, 0, 0.13), 0 2px 8px rgba(0, 0, 0, 0.05)',
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none'
+          }}
+        >
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <h1 className="text-2xl font-bold text-foreground">Meio Ambiente & Social</h1>
@@ -116,6 +130,8 @@ export default function MeioAmbienteSocialPage() {
             </CardContent>
           </Card>
         </div>
-      </div>
+        </div>
+      </main>
+    </div>
   )
 }

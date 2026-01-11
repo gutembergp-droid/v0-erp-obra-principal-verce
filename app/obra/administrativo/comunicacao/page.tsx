@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { InfoTooltip } from "@/components/ui/info-tooltip"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet"
 import { Megaphone, Mail, Bell, Users, Plus, Search, Eye, CheckCircle2, Clock, Pin } from "lucide-react"
+import { ObraAdministrativoNavbar } from "../../_components/obra-administrativo-navbar"
 
 // Dados mockados de Comunicados
 const comunicadosMock = [

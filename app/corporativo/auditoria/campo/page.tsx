@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { FileSearch, Plus, Calendar, User } from "lucide-react"
 import { InfoTooltip } from "@/components/ui/info-tooltip"
+import { AuditoriaNavbar } from "../_components/auditoria-navbar"
 
 const auditoriasCampo = [
   { id: 1, obra: "BR-101 Lote 2", auditor: "Carlos Mendes", data: "20/12/2025", itens: 45, conformes: 42 },
@@ -13,7 +14,20 @@ const auditoriasCampo = [
 
 export default function AuditoriaCampoPage() {
   return (
-    <div className="p-6 space-y-6">
+    <div className="flex flex-col h-screen bg-muted/30 overflow-hidden">
+      <div className="flex-shrink-0 z-40 mt-0">
+        <AuditoriaNavbar />
+      </div>
+      <main className="flex-1 bg-background overflow-hidden p-6">
+        <div 
+          className="h-full border-0 bg-background overflow-y-auto overflow-x-hidden scrollbar-hide p-6 space-y-6" 
+          style={{ 
+            borderRadius: '25px', 
+            boxShadow: 'inset 0 0 10px rgba(0, 0, 0, 0.13), 0 2px 8px rgba(0, 0, 0, 0.05)',
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none'
+          }}
+        >
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <h1 className="text-2xl font-bold text-foreground">Auditoria de Campo</h1>
@@ -115,6 +129,8 @@ export default function AuditoriaCampoPage() {
             </div>
           </CardContent>
         </Card>
-      </div>
+        </div>
+      </main>
+    </div>
   )
 }

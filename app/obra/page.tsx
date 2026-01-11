@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { PageContent, KPIGrid } from "@/components/layout/page-content"
+import { ObraNavbar } from "./_components/obra-navbar"
 import {
   Factory,
   TrendingUp,
@@ -20,7 +21,20 @@ import {
 // Dashboard do Módulo Obra - "EXECUTAR, MEDIR, COMPARAR, CORRIGIR"
 export default function ObraDashboard() {
   return (
-    <div className="overflow-auto h-full">
+    <div className="flex flex-col h-screen bg-muted/30 overflow-hidden">
+      <div className="flex-shrink-0 z-40 mt-0">
+        <ObraNavbar />
+      </div>
+      <main className="flex-1 bg-background overflow-hidden p-6">
+        <div 
+          className="h-full border-0 bg-background overflow-y-auto overflow-x-hidden scrollbar-hide p-6" 
+          style={{ 
+            borderRadius: '25px', 
+            boxShadow: 'inset 0 0 10px rgba(0, 0, 0, 0.13), 0 2px 8px rgba(0, 0, 0, 0.05)',
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none'
+          }}
+        >
       <Header title="Módulo Obra" description="Execução e Controle - Executar, Medir, Comparar, Corrigir" />
 
       <PageContent>
@@ -321,6 +335,8 @@ export default function ObraDashboard() {
           </Card>
         </div>
       </PageContent>
+        </div>
+      </main>
     </div>
   )
 }

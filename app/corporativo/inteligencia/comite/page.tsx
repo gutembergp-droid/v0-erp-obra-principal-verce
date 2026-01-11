@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Users2, CheckCircle, XCircle, Clock, ThumbsUp, ThumbsDown, Calendar, BarChart3 } from "lucide-react"
 import { InfoTooltip } from "@/components/ui/info-tooltip"
+import { InteligenciaNavbar } from "../_components/inteligencia-navbar"
 
 const validacoesPendentes = [
   {
@@ -220,6 +221,8 @@ export default function ComitePage() {
             </Card>
           </div>
         </div>
-      </div>
+        </div>
+      </main>
+    </div>
   )
 }
