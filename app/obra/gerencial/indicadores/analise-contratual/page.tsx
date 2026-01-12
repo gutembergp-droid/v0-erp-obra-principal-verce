@@ -209,8 +209,8 @@ function AnaliseContratualContent() {
               const variacao =
                 ind.historico.length > 1
                   ? ((ind.historico[ind.historico.length - 1] - ind.historico[ind.historico.length - 2]) /
-                      Math.abs(ind.historico[ind.historico.length - 2] || 1)) *
-                    100
+                    Math.abs(ind.historico[ind.historico.length - 2] || 1)) *
+                  100
                   : 0
 
               return (
@@ -352,15 +352,15 @@ function AnaliseContratualContent() {
       </main>
 
       {/* Sheet de detalhes do KPI */}
-      {selectedKPI && (
-        <Sheet open={true} onOpenChange={() => setSelectedKPI(null)}>
-          <SheetContent className="w-full sm:max-w-lg">
-            <SheetHeader>
-              <SheetTitle className="flex items-center gap-2">
-                <Badge variant="outline">{selectedKPI.codigo}</Badge>
-                {selectedKPI.nome}
-              </SheetTitle>
-            </SheetHeader>
+      <Sheet open={!!selectedKPI} onOpenChange={() => setSelectedKPI(null)}>
+        <SheetContent className="w-full sm:max-w-lg">
+          <SheetHeader>
+            <SheetTitle className="flex items-center gap-2">
+              <Badge variant="outline">{selectedKPI?.codigo}</Badge>
+              {selectedKPI?.nome}
+            </SheetTitle>
+          </SheetHeader>
+          {selectedKPI && (
             <div className="mt-6 space-y-6">
               <div className="text-center p-6 bg-muted/30 rounded-lg">
                 <p className="text-4xl font-bold text-foreground">{selectedKPI.valor}%</p>
@@ -405,10 +405,10 @@ function AnaliseContratualContent() {
                 </CardContent>
               </Card>
             </div>
-          </SheetContent>
-        </Sheet>
-      )}
-    </div>
+          )}
+        </SheetContent>
+      </Sheet>
+    </div >
   )
 }
 

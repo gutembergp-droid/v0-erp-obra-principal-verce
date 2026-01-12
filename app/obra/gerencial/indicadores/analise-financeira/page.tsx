@@ -412,15 +412,7 @@ function AnaliseFinanceiraContent() {
           )}
         </SheetContent>
       </Sheet>
-
-          </div>
         </div>
-      </div>
-      </div>
-      </div>
-      </div>
-      </div>
-      </div>
       </main>
     </div>
   )

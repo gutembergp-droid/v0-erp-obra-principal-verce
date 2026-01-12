@@ -221,7 +221,6 @@ export default function ComitePage() {
             </Card>
           </div>
         </div>
-      </main>
     </div>
   )
 }

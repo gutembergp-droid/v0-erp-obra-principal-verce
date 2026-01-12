@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { DollarSign, TrendingDown, ArrowRight, ArrowLeft } from "lucide-react"
 import { InfoTooltip } from "@/components/ui/info-tooltip"
-import { ObraComercialNavbar } from "../../_components/obra-comercial-navbar"
+import { ObraComercialNavbar } from "@/app/obra/_components/obra-comercial-navbar"
 
 export default function CustoPage() {
   return (

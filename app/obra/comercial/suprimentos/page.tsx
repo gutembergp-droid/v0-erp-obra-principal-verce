@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { InfoTooltip } from "@/components/ui/info-tooltip"
-import { ObraComercialNavbar } from "../../_components/obra-comercial-navbar"
+import { ObraComercialNavbar } from "@/app/obra/_components/obra-comercial-navbar"
 import {
   Search,
   Plus,
@@ -153,321 +153,321 @@ export default function SuprimentosPage() {
               <h1 className="text-2xl font-bold">Suprimentos</h1>
               <InfoTooltip
                 title="Setor de Suprimentos"
-            description="Gerencia todo o ciclo de aquisicoes: Requisicao (pedido interno vinculado a EAP), Compra (cotacao e ordem de compra) e Medicao de Terceiros (pagamento de subcontratados)."
-            icon={<ShoppingCart className="w-4 h-4" />}
-          />
-        </div>
-        <p className="text-sm text-muted-foreground mt-1">
-          Requisicao, Compra e Medicao de Terceiros - Fluxo completo de aquisicoes
-        </p>
-      </div>
+                description="Gerencia todo o ciclo de aquisicoes: Requisicao (pedido interno vinculado a EAP), Compra (cotacao e ordem de compra) e Medicao de Terceiros (pagamento de subcontratados)."
+                icon={<ShoppingCart className="w-4 h-4" />}
+              />
+            </div>
+            <p className="text-sm text-muted-foreground mt-1">
+              Requisicao, Compra e Medicao de Terceiros - Fluxo completo de aquisicoes
+            </p>
+          </div>
 
-      <div className="p-6 space-y-6">
-        {/* Metricas */}
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-                <ClipboardList className="w-4 h-4" />
-                Requisicoes
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{totalRequisicoes}</div>
-              <p className="text-xs text-amber-500">{requisicoesPendentes} pendentes</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-                <Package className="w-4 h-4" />
-                Ordens de Compra
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{ordensCompraMock.length}</div>
-              <p className="text-xs text-muted-foreground">ativas</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-                <DollarSign className="w-4 h-4" />
-                Volume Compras
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-green-500">{formatCurrency(valorTotalOC)}</div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-                <Truck className="w-4 h-4" />
-                Medicao Terceiros
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-blue-500">{formatCurrency(valorMedicaoTerceiros)}</div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-                <TrendingDown className="w-4 h-4" />
-                Economia
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-green-500">3.2%</div>
-              <p className="text-xs text-muted-foreground">vs baseline</p>
-            </CardContent>
-          </Card>
-        </div>
+          <div className="p-6 space-y-6">
+            {/* Metricas */}
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+              <Card>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+                    <ClipboardList className="w-4 h-4" />
+                    Requisicoes
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">{totalRequisicoes}</div>
+                  <p className="text-xs text-amber-500">{requisicoesPendentes} pendentes</p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+                    <Package className="w-4 h-4" />
+                    Ordens de Compra
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">{ordensCompraMock.length}</div>
+                  <p className="text-xs text-muted-foreground">ativas</p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+                    <DollarSign className="w-4 h-4" />
+                    Volume Compras
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold text-green-500">{formatCurrency(valorTotalOC)}</div>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+                    <Truck className="w-4 h-4" />
+                    Medicao Terceiros
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold text-blue-500">{formatCurrency(valorMedicaoTerceiros)}</div>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+                    <TrendingDown className="w-4 h-4" />
+                    Economia
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold text-green-500">3.2%</div>
+                  <p className="text-xs text-muted-foreground">vs baseline</p>
+                </CardContent>
+              </Card>
+            </div>
 
-        {/* Tabs */}
-        <Tabs value={tab} onValueChange={setTab}>
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="requisicoes">
-              <ClipboardList className="w-4 h-4 mr-2" />
-              Requisicoes
-            </TabsTrigger>
-            <TabsTrigger value="compras">
-              <ShoppingCart className="w-4 h-4 mr-2" />
-              Ordens de Compra
-            </TabsTrigger>
-            <TabsTrigger value="terceiros">
-              <Truck className="w-4 h-4 mr-2" />
-              Medicao Terceiros
-            </TabsTrigger>
-          </TabsList>
+            {/* Tabs */}
+            <Tabs value={tab} onValueChange={setTab}>
+              <TabsList className="grid w-full grid-cols-3">
+                <TabsTrigger value="requisicoes">
+                  <ClipboardList className="w-4 h-4 mr-2" />
+                  Requisicoes
+                </TabsTrigger>
+                <TabsTrigger value="compras">
+                  <ShoppingCart className="w-4 h-4 mr-2" />
+                  Ordens de Compra
+                </TabsTrigger>
+                <TabsTrigger value="terceiros">
+                  <Truck className="w-4 h-4 mr-2" />
+                  Medicao Terceiros
+                </TabsTrigger>
+              </TabsList>
 
-          {/* Requisicoes */}
-          <TabsContent value="requisicoes">
-            <Card>
-              <CardHeader>
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                  <div>
-                    <CardTitle className="text-base">Requisicoes de Compra</CardTitle>
-                    <CardDescription>Pedidos internos vinculados a itens da EAP</CardDescription>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="relative">
-                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                      <Input
-                        placeholder="Buscar..."
-                        className="pl-9 w-48"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                      />
+              {/* Requisicoes */}
+              <TabsContent value="requisicoes">
+                <Card>
+                  <CardHeader>
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                      <div>
+                        <CardTitle className="text-base">Requisicoes de Compra</CardTitle>
+                        <CardDescription>Pedidos internos vinculados a itens da EAP</CardDescription>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <div className="relative">
+                          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                          <Input
+                            placeholder="Buscar..."
+                            className="pl-9 w-48"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                          />
+                        </div>
+                        <Button>
+                          <Plus className="w-4 h-4 mr-2" />
+                          Nova Requisicao
+                        </Button>
+                      </div>
                     </div>
-                    <Button>
-                      <Plus className="w-4 h-4 mr-2" />
-                      Nova Requisicao
-                    </Button>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>ID</TableHead>
-                      <TableHead>Item EAP</TableHead>
-                      <TableHead>Descricao</TableHead>
-                      <TableHead className="text-right">Qtd</TableHead>
-                      <TableHead className="text-right">Valor Est.</TableHead>
-                      <TableHead>Prioridade</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead></TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {requisicoesMock.map((req) => (
-                      <TableRow key={req.id}>
-                        <TableCell className="font-mono font-bold">{req.id}</TableCell>
-                        <TableCell className="text-sm text-muted-foreground">{req.itemEAP}</TableCell>
-                        <TableCell>{req.descricao}</TableCell>
-                        <TableCell className="text-right font-mono">
-                          {formatNumber(req.quantidade)} {req.unidade}
-                        </TableCell>
-                        <TableCell className="text-right font-mono">{formatCurrency(req.valorEstimado)}</TableCell>
-                        <TableCell>
-                          <Badge
-                            variant={
-                              req.prioridade === "urgente"
-                                ? "destructive"
-                                : req.prioridade === "alta"
-                                  ? "default"
-                                  : "secondary"
-                            }
-                          >
-                            {req.prioridade}
-                          </Badge>
-                        </TableCell>
-                        <TableCell>
-                          {req.status === "aprovada" && (
-                            <Badge className="bg-green-500">
-                              <CheckCircle2 className="w-3 h-3 mr-1" />
-                              Aprovada
-                            </Badge>
-                          )}
-                          {req.status === "pendente" && (
-                            <Badge variant="outline" className="text-amber-500">
-                              <Clock className="w-3 h-3 mr-1" />
-                              Pendente
-                            </Badge>
-                          )}
-                          {req.status === "cotacao" && (
-                            <Badge variant="outline" className="text-blue-500">
-                              <FileText className="w-3 h-3 mr-1" />
-                              Em Cotacao
-                            </Badge>
-                          )}
-                        </TableCell>
-                        <TableCell>
-                          <Button variant="ghost" size="icon">
-                            <Eye className="w-4 h-4" />
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </CardContent>
-            </Card>
-          </TabsContent>
+                  </CardHeader>
+                  <CardContent>
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>ID</TableHead>
+                          <TableHead>Item EAP</TableHead>
+                          <TableHead>Descricao</TableHead>
+                          <TableHead className="text-right">Qtd</TableHead>
+                          <TableHead className="text-right">Valor Est.</TableHead>
+                          <TableHead>Prioridade</TableHead>
+                          <TableHead>Status</TableHead>
+                          <TableHead></TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {requisicoesMock.map((req) => (
+                          <TableRow key={req.id}>
+                            <TableCell className="font-mono font-bold">{req.id}</TableCell>
+                            <TableCell className="text-sm text-muted-foreground">{req.itemEAP}</TableCell>
+                            <TableCell>{req.descricao}</TableCell>
+                            <TableCell className="text-right font-mono">
+                              {formatNumber(req.quantidade)} {req.unidade}
+                            </TableCell>
+                            <TableCell className="text-right font-mono">{formatCurrency(req.valorEstimado)}</TableCell>
+                            <TableCell>
+                              <Badge
+                                variant={
+                                  req.prioridade === "urgente"
+                                    ? "destructive"
+                                    : req.prioridade === "alta"
+                                      ? "default"
+                                      : "secondary"
+                                }
+                              >
+                                {req.prioridade}
+                              </Badge>
+                            </TableCell>
+                            <TableCell>
+                              {req.status === "aprovada" && (
+                                <Badge className="bg-green-500">
+                                  <CheckCircle2 className="w-3 h-3 mr-1" />
+                                  Aprovada
+                                </Badge>
+                              )}
+                              {req.status === "pendente" && (
+                                <Badge variant="outline" className="text-amber-500">
+                                  <Clock className="w-3 h-3 mr-1" />
+                                  Pendente
+                                </Badge>
+                              )}
+                              {req.status === "cotacao" && (
+                                <Badge variant="outline" className="text-blue-500">
+                                  <FileText className="w-3 h-3 mr-1" />
+                                  Em Cotacao
+                                </Badge>
+                              )}
+                            </TableCell>
+                            <TableCell>
+                              <Button variant="ghost" size="icon">
+                                <Eye className="w-4 h-4" />
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </CardContent>
+                </Card>
+              </TabsContent>
 
-          {/* Ordens de Compra */}
-          <TabsContent value="compras">
-            <Card>
-              <CardHeader>
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                  <div>
-                    <CardTitle className="text-base">Ordens de Compra</CardTitle>
-                    <CardDescription>Compras aprovadas e em andamento</CardDescription>
-                  </div>
-                  <Button>
-                    <Plus className="w-4 h-4 mr-2" />
-                    Nova Ordem
-                  </Button>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>OC</TableHead>
-                      <TableHead>Fornecedor</TableHead>
-                      <TableHead>Descricao</TableHead>
-                      <TableHead className="text-right">Qtd</TableHead>
-                      <TableHead className="text-right">Valor Unit.</TableHead>
-                      <TableHead className="text-right">Valor Total</TableHead>
-                      <TableHead>Entrega</TableHead>
-                      <TableHead>Status</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {ordensCompraMock.map((oc) => (
-                      <TableRow key={oc.id}>
-                        <TableCell className="font-mono font-bold">{oc.id}</TableCell>
-                        <TableCell>{oc.fornecedor}</TableCell>
-                        <TableCell>{oc.descricao}</TableCell>
-                        <TableCell className="text-right font-mono">
-                          {formatNumber(oc.quantidade)} {oc.unidade}
-                        </TableCell>
-                        <TableCell className="text-right font-mono">{formatCurrency(oc.valorUnitario)}</TableCell>
-                        <TableCell className="text-right font-mono font-bold text-green-600">
-                          {formatCurrency(oc.valorTotal)}
-                        </TableCell>
-                        <TableCell>{new Date(oc.prazoEntrega).toLocaleDateString("pt-BR")}</TableCell>
-                        <TableCell>
-                          {oc.status === "entregue" && (
-                            <Badge className="bg-green-500">
-                              <CheckCircle2 className="w-3 h-3 mr-1" />
-                              Entregue
-                            </Badge>
-                          )}
-                          {oc.status === "em_transito" && (
-                            <Badge variant="outline" className="text-blue-500">
-                              <Truck className="w-3 h-3 mr-1" />
-                              Em Transito
-                            </Badge>
-                          )}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </CardContent>
-            </Card>
-          </TabsContent>
+              {/* Ordens de Compra */}
+              <TabsContent value="compras">
+                <Card>
+                  <CardHeader>
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                      <div>
+                        <CardTitle className="text-base">Ordens de Compra</CardTitle>
+                        <CardDescription>Compras aprovadas e em andamento</CardDescription>
+                      </div>
+                      <Button>
+                        <Plus className="w-4 h-4 mr-2" />
+                        Nova Ordem
+                      </Button>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>OC</TableHead>
+                          <TableHead>Fornecedor</TableHead>
+                          <TableHead>Descricao</TableHead>
+                          <TableHead className="text-right">Qtd</TableHead>
+                          <TableHead className="text-right">Valor Unit.</TableHead>
+                          <TableHead className="text-right">Valor Total</TableHead>
+                          <TableHead>Entrega</TableHead>
+                          <TableHead>Status</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {ordensCompraMock.map((oc) => (
+                          <TableRow key={oc.id}>
+                            <TableCell className="font-mono font-bold">{oc.id}</TableCell>
+                            <TableCell>{oc.fornecedor}</TableCell>
+                            <TableCell>{oc.descricao}</TableCell>
+                            <TableCell className="text-right font-mono">
+                              {formatNumber(oc.quantidade)} {oc.unidade}
+                            </TableCell>
+                            <TableCell className="text-right font-mono">{formatCurrency(oc.valorUnitario)}</TableCell>
+                            <TableCell className="text-right font-mono font-bold text-green-600">
+                              {formatCurrency(oc.valorTotal)}
+                            </TableCell>
+                            <TableCell>{new Date(oc.prazoEntrega).toLocaleDateString("pt-BR")}</TableCell>
+                            <TableCell>
+                              {oc.status === "entregue" && (
+                                <Badge className="bg-green-500">
+                                  <CheckCircle2 className="w-3 h-3 mr-1" />
+                                  Entregue
+                                </Badge>
+                              )}
+                              {oc.status === "em_transito" && (
+                                <Badge variant="outline" className="text-blue-500">
+                                  <Truck className="w-3 h-3 mr-1" />
+                                  Em Transito
+                                </Badge>
+                              )}
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </CardContent>
+                </Card>
+              </TabsContent>
 
-          {/* Medicao Terceiros */}
-          <TabsContent value="terceiros">
-            <Card>
-              <CardHeader>
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                  <div>
-                    <CardTitle className="text-base">Medicao de Terceiros</CardTitle>
-                    <CardDescription>Medicao de servicos de subcontratados</CardDescription>
-                  </div>
-                  <Button>
-                    <Plus className="w-4 h-4 mr-2" />
-                    Nova Medicao
-                  </Button>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>ID</TableHead>
-                      <TableHead>Contrato</TableHead>
-                      <TableHead>Fornecedor</TableHead>
-                      <TableHead>Servico</TableHead>
-                      <TableHead className="text-right">Valor Medido</TableHead>
-                      <TableHead className="text-right">Retencao</TableHead>
-                      <TableHead className="text-right">Valor Liquido</TableHead>
-                      <TableHead>Status</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {medicaoTerceirosMock.map((med) => (
-                      <TableRow key={med.id}>
-                        <TableCell className="font-mono font-bold">{med.id}</TableCell>
-                        <TableCell className="font-mono text-sm">{med.contrato}</TableCell>
-                        <TableCell>{med.fornecedor}</TableCell>
-                        <TableCell>{med.servico}</TableCell>
-                        <TableCell className="text-right font-mono">{formatCurrency(med.valorMedido)}</TableCell>
-                        <TableCell className="text-right font-mono text-red-500">
-                          -{formatCurrency(med.valorRetido)}
-                        </TableCell>
-                        <TableCell className="text-right font-mono font-bold text-green-600">
-                          {formatCurrency(med.valorLiquido)}
-                        </TableCell>
-                        <TableCell>
-                          {med.status === "aprovada" && (
-                            <Badge className="bg-green-500">
-                              <CheckCircle2 className="w-3 h-3 mr-1" />
-                              Aprovada
-                            </Badge>
-                          )}
-                          {med.status === "pendente" && (
-                            <Badge variant="outline" className="text-amber-500">
-                              <Clock className="w-3 h-3 mr-1" />
-                              Pendente
-                            </Badge>
-                          )}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
+              {/* Medicao Terceiros */}
+              <TabsContent value="terceiros">
+                <Card>
+                  <CardHeader>
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                      <div>
+                        <CardTitle className="text-base">Medicao de Terceiros</CardTitle>
+                        <CardDescription>Medicao de servicos de subcontratados</CardDescription>
+                      </div>
+                      <Button>
+                        <Plus className="w-4 h-4 mr-2" />
+                        Nova Medicao
+                      </Button>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>ID</TableHead>
+                          <TableHead>Contrato</TableHead>
+                          <TableHead>Fornecedor</TableHead>
+                          <TableHead>Servico</TableHead>
+                          <TableHead className="text-right">Valor Medido</TableHead>
+                          <TableHead className="text-right">Retencao</TableHead>
+                          <TableHead className="text-right">Valor Liquido</TableHead>
+                          <TableHead>Status</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {medicaoTerceirosMock.map((med) => (
+                          <TableRow key={med.id}>
+                            <TableCell className="font-mono font-bold">{med.id}</TableCell>
+                            <TableCell className="font-mono text-sm">{med.contrato}</TableCell>
+                            <TableCell>{med.fornecedor}</TableCell>
+                            <TableCell>{med.servico}</TableCell>
+                            <TableCell className="text-right font-mono">{formatCurrency(med.valorMedido)}</TableCell>
+                            <TableCell className="text-right font-mono text-red-500">
+                              -{formatCurrency(med.valorRetido)}
+                            </TableCell>
+                            <TableCell className="text-right font-mono font-bold text-green-600">
+                              {formatCurrency(med.valorLiquido)}
+                            </TableCell>
+                            <TableCell>
+                              {med.status === "aprovada" && (
+                                <Badge className="bg-green-500">
+                                  <CheckCircle2 className="w-3 h-3 mr-1" />
+                                  Aprovada
+                                </Badge>
+                              )}
+                              {med.status === "pendente" && (
+                                <Badge variant="outline" className="text-amber-500">
+                                  <Clock className="w-3 h-3 mr-1" />
+                                  Pendente
+                                </Badge>
+                              )}
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+            </Tabs>
           </div>
         </div>
       </main>

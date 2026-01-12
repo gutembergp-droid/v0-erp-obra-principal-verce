@@ -258,219 +258,217 @@ function IndicadoresContent() {
               </div>
             </div>
 
-        <Card className="border-t-4 border-t-primary">
-          <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-primary/10">
-                  <Calculator className="h-5 w-5 text-primary" />
+            <Card className="border-t-4 border-t-primary">
+              <CardHeader className="pb-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 rounded-lg bg-primary/10">
+                      <Calculator className="h-5 w-5 text-primary" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-base font-semibold">KPIs Oficiais do Módulo</CardTitle>
+                      <p className="text-xs text-muted-foreground">Conforme Manual ERP-GNESIS v1.0</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Badge variant="outline" className="text-xs">
+                      Micro-Unidade: Obra Principal
+                    </Badge>
+                    <div className="flex items-center border rounded-md">
+                      <Button
+                        variant={visaoCustos === "grafico" ? "secondary" : "ghost"}
+                        size="sm"
+                        className="h-8 px-2"
+                        onClick={() => setVisaoCustos("grafico")}
+                      >
+                        <BarChart2 className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant={visaoCustos === "tabela" ? "secondary" : "ghost"}
+                        size="sm"
+                        className="h-8 px-2"
+                        onClick={() => setVisaoCustos("tabela")}
+                      >
+                        <Table className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <CardTitle className="text-base font-semibold">KPIs Oficiais do Módulo</CardTitle>
-                  <p className="text-xs text-muted-foreground">Conforme Manual ERP-GNESIS v1.0</p>
-                </div>
+              </CardHeader>
+              <CardContent className="pt-0">
+                {visaoCustos === "grafico" ? (
+                  <div className="grid grid-cols-4 gap-4">
+                    {kpisOficiais.map((kpi) => (
+                      <KPICardOficial
+                        key={kpi.codigo}
+                        codigo={kpi.codigo}
+                        nome={kpi.nome}
+                        valor={kpi.valor}
+                        meta={kpi.meta}
+                        anterior={kpi.anterior}
+                        formula={kpi.formula}
+                        historico={kpi.historico}
+                        icone={Calculator}
+                        formato={kpi.formatoPercentual ? "percentual" : "decimal"}
+                        inverso={kpi.tipo === "menor_melhor"}
+                        onClick={() => setSelectedKPI(kpi)}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="border-b">
+                          <th className="text-left py-2 px-3 font-medium">Código</th>
+                          <th className="text-left py-2 px-3 font-medium">Indicador</th>
+                          <th className="text-right py-2 px-3 font-medium">Valor</th>
+                          <th className="text-right py-2 px-3 font-medium">Meta</th>
+                          <th className="text-right py-2 px-3 font-medium">Anterior</th>
+                          <th className="text-right py-2 px-3 font-medium">Variação</th>
+                          <th className="text-center py-2 px-3 font-medium">Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {kpisOficiais.map((kpi) => {
+                          const variacao = ((kpi.valor - kpi.anterior) / Math.abs(kpi.anterior)) * 100
+                          const atingiuMeta = kpi.tipo === "menor_melhor" ? kpi.valor <= kpi.meta : kpi.valor >= kpi.meta
+                          return (
+                            <tr
+                              key={kpi.codigo}
+                              className="border-b hover:bg-muted/50 cursor-pointer"
+                              onClick={() => setSelectedKPI(kpi)}
+                            >
+                              <td className="py-2 px-3 font-mono font-semibold">{kpi.codigo}</td>
+                              <td className="py-2 px-3">{kpi.nome}</td>
+                              <td className="py-2 px-3 text-right font-semibold">
+                                {kpi.formatoPercentual ? `${(kpi.valor * 100).toFixed(2)}%` : kpi.valor.toFixed(2)}
+                              </td>
+                              <td className="py-2 px-3 text-right text-muted-foreground">
+                                {kpi.formatoPercentual ? `${(kpi.meta * 100).toFixed(2)}%` : kpi.meta.toFixed(2)}
+                              </td>
+                              <td className="py-2 px-3 text-right text-muted-foreground">
+                                {kpi.formatoPercentual ? `${(kpi.anterior * 100).toFixed(2)}%` : kpi.anterior.toFixed(2)}
+                              </td>
+                              <td className={`py-2 px-3 text-right ${variacao >= 0 ? "text-emerald-600" : "text-red-600"}`}>
+                                {variacao >= 0 ? "+" : ""}
+                                {variacao.toFixed(1)}%
+                              </td>
+                              <td className="py-2 px-3 text-center">
+                                <Badge variant={atingiuMeta ? "default" : "destructive"} className="text-xs">
+                                  {atingiuMeta ? "OK" : "Atenção"}
+                                </Badge>
+                              </td>
+                            </tr>
+                          )
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            <ComposicaoCustos dados={composicaoCustos} onSelectItem={(item) => setSelectedKPI(item)} />
+
+            <div className="grid grid-cols-2 gap-6">
+              <CardConsolidado
+                titulo="Análise Operacional"
+                temas={[
+                  { id: "performance", nome: "Performance" },
+                  { id: "suprimentos", nome: "Suprimentos" },
+                ]}
+                temaSelecionado={operacional.tema}
+                visao={operacional.visao}
+                onChangeTema={(tema) => setOperacional((prev) => ({ ...prev, tema }))}
+                onChangeVisao={(visao) => setOperacional((prev) => ({ ...prev, visao }))}
+                dados={dadosOperacional[operacional.tema as keyof typeof dadosOperacional]}
+                meses={meses}
+                onSelectKPI={(kpi) => setSelectedKPI(kpi)}
+              />
+
+              <CardConsolidado
+                titulo="Análise de Riscos"
+                temas={[
+                  { id: "contratual", nome: "Contratual" },
+                  { id: "risco", nome: "Gestão de Risco" },
+                ]}
+                temaSelecionado={riscos.tema}
+                visao={riscos.visao}
+                onChangeTema={(tema) => setRiscos((prev) => ({ ...prev, tema }))}
+                onChangeVisao={(visao) => setRiscos((prev) => ({ ...prev, visao }))}
+                dados={dadosRiscos[riscos.tema as keyof typeof dadosRiscos]}
+                meses={meses}
+                onSelectKPI={(kpi) => setSelectedKPI(kpi)}
+              />
+            </div>
+
+            <div className="grid grid-cols-12 gap-6">
+              <div className="col-span-5">
+                <CicloGovernanca etapas={cicloGovernanca} />
               </div>
-              <div className="flex items-center gap-2">
-                <Badge variant="outline" className="text-xs">
-                  Micro-Unidade: Obra Principal
-                </Badge>
-                <div className="flex items-center border rounded-md">
-                  <Button
-                    variant={visaoCustos === "grafico" ? "secondary" : "ghost"}
-                    size="sm"
-                    className="h-8 px-2"
-                    onClick={() => setVisaoCustos("grafico")}
-                  >
-                    <BarChart2 className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant={visaoCustos === "tabela" ? "secondary" : "ghost"}
-                    size="sm"
-                    className="h-8 px-2"
-                    onClick={() => setVisaoCustos("tabela")}
-                  >
-                    <Table className="h-4 w-4" />
-                  </Button>
-                </div>
+              <div className="col-span-7">
+                <AlertasModulo alertas={alertas} onSelectAlerta={(alerta) => setSelectedKPI(alerta)} />
               </div>
             </div>
-          </CardHeader>
-          <CardContent className="pt-0">
-            {visaoCustos === "grafico" ? (
-              <div className="grid grid-cols-4 gap-4">
-                {kpisOficiais.map((kpi) => (
-                  <KPICardOficial
-                    key={kpi.codigo}
-                    codigo={kpi.codigo}
-                    nome={kpi.nome}
-                    valor={kpi.valor}
-                    meta={kpi.meta}
-                    anterior={kpi.anterior}
-                    formula={kpi.formula}
-                    historico={kpi.historico}
-                    icone={Calculator}
-                    formato={kpi.formatoPercentual ? "percentual" : "decimal"}
-                    inverso={kpi.tipo === "menor_melhor"}
-                    onClick={() => setSelectedKPI(kpi)}
-                  />
-                ))}
-              </div>
-            ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="border-b">
-                      <th className="text-left py-2 px-3 font-medium">Código</th>
-                      <th className="text-left py-2 px-3 font-medium">Indicador</th>
-                      <th className="text-right py-2 px-3 font-medium">Valor</th>
-                      <th className="text-right py-2 px-3 font-medium">Meta</th>
-                      <th className="text-right py-2 px-3 font-medium">Anterior</th>
-                      <th className="text-right py-2 px-3 font-medium">Variação</th>
-                      <th className="text-center py-2 px-3 font-medium">Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {kpisOficiais.map((kpi) => {
-                      const variacao = ((kpi.valor - kpi.anterior) / Math.abs(kpi.anterior)) * 100
-                      const atingiuMeta = kpi.tipo === "menor_melhor" ? kpi.valor <= kpi.meta : kpi.valor >= kpi.meta
-                      return (
-                        <tr
-                          key={kpi.codigo}
-                          className="border-b hover:bg-muted/50 cursor-pointer"
-                          onClick={() => setSelectedKPI(kpi)}
-                        >
-                          <td className="py-2 px-3 font-mono font-semibold">{kpi.codigo}</td>
-                          <td className="py-2 px-3">{kpi.nome}</td>
-                          <td className="py-2 px-3 text-right font-semibold">
-                            {kpi.formatoPercentual ? `${(kpi.valor * 100).toFixed(2)}%` : kpi.valor.toFixed(2)}
-                          </td>
-                          <td className="py-2 px-3 text-right text-muted-foreground">
-                            {kpi.formatoPercentual ? `${(kpi.meta * 100).toFixed(2)}%` : kpi.meta.toFixed(2)}
-                          </td>
-                          <td className="py-2 px-3 text-right text-muted-foreground">
-                            {kpi.formatoPercentual ? `${(kpi.anterior * 100).toFixed(2)}%` : kpi.anterior.toFixed(2)}
-                          </td>
-                          <td className={`py-2 px-3 text-right ${variacao >= 0 ? "text-emerald-600" : "text-red-600"}`}>
-                            {variacao >= 0 ? "+" : ""}
-                            {variacao.toFixed(1)}%
-                          </td>
-                          <td className="py-2 px-3 text-center">
-                            <Badge variant={atingiuMeta ? "default" : "destructive"} className="text-xs">
-                              {atingiuMeta ? "OK" : "Atenção"}
-                            </Badge>
-                          </td>
-                        </tr>
-                      )
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-
-        <ComposicaoCustos dados={composicaoCustos} onSelectItem={(item) => setSelectedKPI(item)} />
-
-        <div className="grid grid-cols-2 gap-6">
-          <CardConsolidado
-            titulo="Análise Operacional"
-            temas={[
-              { id: "performance", nome: "Performance" },
-              { id: "suprimentos", nome: "Suprimentos" },
-            ]}
-            temaSelecionado={operacional.tema}
-            visao={operacional.visao}
-            onChangeTema={(tema) => setOperacional((prev) => ({ ...prev, tema }))}
-            onChangeVisao={(visao) => setOperacional((prev) => ({ ...prev, visao }))}
-            dados={dadosOperacional[operacional.tema as keyof typeof dadosOperacional]}
-            meses={meses}
-            onSelectKPI={(kpi) => setSelectedKPI(kpi)}
-          />
-
-          <CardConsolidado
-            titulo="Análise de Riscos"
-            temas={[
-              { id: "contratual", nome: "Contratual" },
-              { id: "risco", nome: "Gestão de Risco" },
-            ]}
-            temaSelecionado={riscos.tema}
-            visao={riscos.visao}
-            onChangeTema={(tema) => setRiscos((prev) => ({ ...prev, tema }))}
-            onChangeVisao={(visao) => setRiscos((prev) => ({ ...prev, visao }))}
-            dados={dadosRiscos[riscos.tema as keyof typeof dadosRiscos]}
-            meses={meses}
-            onSelectKPI={(kpi) => setSelectedKPI(kpi)}
-          />
-        </div>
-
-        <div className="grid grid-cols-12 gap-6">
-          <div className="col-span-5">
-            <CicloGovernanca etapas={cicloGovernanca} />
           </div>
-          <div className="col-span-7">
-            <AlertasModulo alertas={alertas} onSelectAlerta={(alerta) => setSelectedKPI(alerta)} />
-          </div>
-        </div>
-      </div>
 
-      <Sheet open={!!selectedKPI} onOpenChange={() => setSelectedKPI(null)}>
-        <SheetContent className="sm:max-w-lg">
-          <SheetHeader>
-            <SheetTitle className="flex items-center gap-2">
-              {selectedKPI?.codigo && (
-                <Badge variant="outline" className="font-mono">
-                  {selectedKPI.codigo}
-                </Badge>
-              )}
-              {selectedKPI?.nome || selectedKPI?.msg || "Detalhes"}
-            </SheetTitle>
-          </SheetHeader>
-          <div className="mt-6 space-y-6">
-            {selectedKPI?.formula && (
-              <div className="p-4 rounded-lg bg-muted/50">
-                <p className="text-sm font-medium mb-1">Fórmula</p>
-                <p className="text-sm text-muted-foreground font-mono">{selectedKPI.formula}</p>
+          <Sheet open={!!selectedKPI} onOpenChange={() => setSelectedKPI(null)}>
+            <SheetContent className="sm:max-w-lg">
+              <SheetHeader>
+                <SheetTitle className="flex items-center gap-2">
+                  {selectedKPI?.codigo && (
+                    <Badge variant="outline" className="font-mono">
+                      {selectedKPI.codigo}
+                    </Badge>
+                  )}
+                  {selectedKPI?.nome || selectedKPI?.msg || "Detalhes"}
+                </SheetTitle>
+              </SheetHeader>
+              <div className="mt-6 space-y-6">
+                {selectedKPI?.formula && (
+                  <div className="p-4 rounded-lg bg-muted/50">
+                    <p className="text-sm font-medium mb-1">Fórmula</p>
+                    <p className="text-sm text-muted-foreground font-mono">{selectedKPI.formula}</p>
+                  </div>
+                )}
+                {selectedKPI?.interpretacao && (
+                  <div className="p-4 rounded-lg border">
+                    <p className="text-sm font-medium mb-1 flex items-center gap-2">
+                      <Info className="h-4 w-4" /> Interpretação
+                    </p>
+                    <p className="text-sm text-muted-foreground">{selectedKPI.interpretacao}</p>
+                  </div>
+                )}
+                {selectedKPI?.acao && (
+                  <div className="p-4 rounded-lg border border-primary/30 bg-primary/5">
+                    <p className="text-sm font-medium mb-1">Ação Recomendada</p>
+                    <p className="text-sm text-muted-foreground">{selectedKPI.acao}</p>
+                  </div>
+                )}
+                {selectedKPI?.historico && (
+                  <div>
+                    <p className="text-sm font-medium mb-3">Histórico (6 meses)</p>
+                    <div className="flex items-end gap-2 h-24">
+                      {selectedKPI.historico.map((valor: number, i: number) => {
+                        const max = Math.max(...selectedKPI.historico)
+                        const altura = (valor / max) * 100
+                        return (
+                          <div key={i} className="flex-1 flex flex-col items-center gap-1">
+                            <span className="text-xs text-muted-foreground">
+                              {typeof valor === "number" && valor < 10 ? valor.toFixed(2) : valor}
+                            </span>
+                            <div className="w-full bg-primary/80 rounded-t" style={{ height: `${altura}%` }} />
+                            <span className="text-xs text-muted-foreground">{meses[i]}</span>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+                )}
               </div>
-            )}
-            {selectedKPI?.interpretacao && (
-              <div className="p-4 rounded-lg border">
-                <p className="text-sm font-medium mb-1 flex items-center gap-2">
-                  <Info className="h-4 w-4" /> Interpretação
-                </p>
-                <p className="text-sm text-muted-foreground">{selectedKPI.interpretacao}</p>
-              </div>
-            )}
-            {selectedKPI?.acao && (
-              <div className="p-4 rounded-lg border border-primary/30 bg-primary/5">
-                <p className="text-sm font-medium mb-1">Ação Recomendada</p>
-                <p className="text-sm text-muted-foreground">{selectedKPI.acao}</p>
-              </div>
-            )}
-            {selectedKPI?.historico && (
-              <div>
-                <p className="text-sm font-medium mb-3">Histórico (6 meses)</p>
-                <div className="flex items-end gap-2 h-24">
-                  {selectedKPI.historico.map((valor: number, i: number) => {
-                    const max = Math.max(...selectedKPI.historico)
-                    const altura = (valor / max) * 100
-                    return (
-                      <div key={i} className="flex-1 flex flex-col items-center gap-1">
-                        <span className="text-xs text-muted-foreground">
-                          {typeof valor === "number" && valor < 10 ? valor.toFixed(2) : valor}
-                        </span>
-                        <div className="w-full bg-primary/80 rounded-t" style={{ height: `${altura}%` }} />
-                        <span className="text-xs text-muted-foreground">{meses[i]}</span>
-                      </div>
-                    )
-                  })}
-                </div>
-              </div>
-            )}
-          </div>
-        </SheetContent>
-      </Sheet>
-
-          </div>
+            </SheetContent>
+          </Sheet>
         </div>
       </main>
     </div>

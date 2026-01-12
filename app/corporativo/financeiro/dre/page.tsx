@@ -8,6 +8,7 @@ import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import {
   TrendingUp,
   Download,
@@ -17,7 +18,9 @@ import {
   DollarSign,
   Percent,
   Target,
+  BarChart3,
   BarChart3 as BarChartIcon,
+  PieChart,
   PieChart as PieChartIcon,
 } from "lucide-react"
 import {

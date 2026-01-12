@@ -486,8 +486,8 @@ function RDOContent() {
           )}
         </SheetContent>
       </Sheet>
-          </div>
-        </main>
+        </div>
+      </main>
     </div>
   )
 }

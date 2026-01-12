@@ -195,12 +195,6 @@ function EstruturacaoMedicaoContent() {
       <div className="border-b border-border bg-muted/30 px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <Link href="/obra/comercial/estruturacao-geral">
-              <Button variant="ghost" size="sm" className="gap-1">
-                <FileText className="h-4 w-4" />
-                Voltar
-              </Button>
-            </Link>
             <div>
               <div className="flex items-center gap-3">
                 <h1 className="text-xl font-semibold text-foreground">Estruturacao da Medicao</h1>

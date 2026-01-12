@@ -1,12 +1,15 @@
 "use client"
 
 import { useState } from "react"
+import { usePathname } from "next/navigation"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { ScrollArea } from "@/components/ui/scroll-area"
 import { cn } from "@/lib/utils"
 import {
   Search,
@@ -18,6 +21,9 @@ import {
   Phone,
   Mail,
   AlertTriangle,
+  Receipt,
+  Wallet,
+  Building2,
 } from "lucide-react"
 import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip as RechartsTooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid } from "recharts"
 import { FinanceiroNavbar } from "../_components/financeiro-navbar"
@@ -244,10 +250,9 @@ export default function CARPage() {
               Exportar
             </Button>
           </div>
-        </header>
+        </div>
 
         {/* Conteudo */}
-        <main className="flex-1 overflow-auto p-4">
           <div className="max-w-[1600px] mx-auto space-y-4">
             {/* Resumo */}
             <div className="grid grid-cols-6 gap-3">
@@ -511,7 +516,6 @@ export default function CARPage() {
             </div>
           </div>
         </div>
-      </main>
 
       {/* Painel de Detalhes */}
       {tituloDetalhe && (
@@ -614,9 +618,7 @@ export default function CARPage() {
           </ScrollArea>
         </aside>
       )}
-      </div>
       </main>
-      </div>
     </div>
   )
 }

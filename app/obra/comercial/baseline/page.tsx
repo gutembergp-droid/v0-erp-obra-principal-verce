@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { ObraComercialNavbar } from "../_components/obra-comercial-navbar"
+import { ObraComercialNavbar } from "@/app/obra/_components/obra-comercial-navbar"
 import {
   CheckCircle2,
   Clock,
@@ -268,7 +268,7 @@ export default function BaselinePage() {
         </div>
       </div>
       </div>
-      </div>
-    </>
+      </main>
+    </div>
   )
 }

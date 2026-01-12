@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Link from "next/link"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -61,7 +62,6 @@ import {
   Smartphone,
   Send,
 } from "lucide-react"
-import { ConsoleNavbar } from "../_components/console-navbar"
 
 // Mock data - Usuarios
 const usuariosMock = [
@@ -367,16 +367,6 @@ export default function UsuariosPage() {
         </div>
 
         {/* Content */}
-        <main className="flex-1 bg-background overflow-hidden p-6">
-        <div 
-          className="h-full border-0 bg-background overflow-y-auto overflow-x-hidden scrollbar-hide p-6" 
-          style={{ 
-            borderRadius: '25px', 
-            boxShadow: 'inset 0 0 10px rgba(0, 0, 0, 0.13), 0 2px 8px rgba(0, 0, 0, 0.05)',
-            scrollbarWidth: 'none',
-            msOverflowStyle: 'none'
-          }}
-        >
           <div className="max-w-[1600px] mx-auto space-y-4">
             {/* Metrics */}
             <div className="grid grid-cols-6 gap-3">
@@ -959,12 +949,6 @@ export default function UsuariosPage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      </div>
-      </div>
-      </div>
-      </div>
-      </div>
-      </main>
     </div>
   )
 }

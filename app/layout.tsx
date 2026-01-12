@@ -1,5 +1,6 @@
 import type React from "react"
-import type { Metadata } from "next"
+import { Suspense } from "react"
+import type { Metadata, Viewport } from "next"
 import { Montserrat, Bebas_Neue } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { AuthProvider } from "@/contexts/auth-context"
@@ -21,14 +22,9 @@ const bebasNeue = Bebas_Neue({
 
 export const metadata: Metadata = {
   title: "ERP GENESIS - Plataforma de Gestao de Obras",
-  description: "Sistema ERP para engenharia pesada e infraestrutura - O Corporativo Governa, a Obra Executa",
+  description:
+    "Sistema ERP para engenharia pesada e infraestrutura - O Corporativo Governa, a Obra Executa",
   generator: "v0.dev",
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 5,
-    userScalable: true,
-  },
   icons: {
     icon: [
       {
@@ -48,6 +44,11 @@ export const metadata: Metadata = {
   },
 }
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+}
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -58,11 +59,13 @@ export default function RootLayout({
       <body
         className={`${montserrat.variable} ${bebasNeue.variable} font-sans antialiased bg-background text-foreground min-h-screen w-full`}
       >
-        <ThemeProvider>
-          <LanguageProvider>
-            <AuthProvider>{children}</AuthProvider>
-          </LanguageProvider>
-        </ThemeProvider>
+        <Suspense fallback={<div className="flex items-center justify-center min-h-screen">Carregando...</div>}>
+          <ThemeProvider>
+            <LanguageProvider>
+              <AuthProvider>{children}</AuthProvider>
+            </LanguageProvider>
+          </ThemeProvider>
+        </Suspense>
         <Toaster position="top-right" richColors />
         <Analytics />
       </body>
