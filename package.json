@@ -6,7 +6,8 @@
     "build": "next build",
     "dev": "next dev",
     "lint": "eslint .",
-    "start": "next start"
+    "start": "next start",
+    "restart": "powershell -ExecutionPolicy Bypass -File ./restart-server.ps1"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
