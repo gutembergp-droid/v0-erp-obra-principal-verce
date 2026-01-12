@@ -1,5 +1,14 @@
-import { redirect } from "next/navigation"
+"use client"
+
+import { useEffect } from "react"
+import { useRouter } from "next/navigation"
 
 export default function EstruturacaoPage() {
-  redirect("/obra/comercial/eap")
+  const router = useRouter()
+
+  useEffect(() => {
+    router.replace("/obra/comercial/estruturacao-geral")
+  }, [router])
+
+  return null
 }
